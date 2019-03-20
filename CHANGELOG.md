@@ -1,19 +1,83 @@
-<a name="2.1.2"></a>
-## [2.1.2](https://github.com/slimkit/plus/compare/2.0.7...2.1.2) (2018-11-07)
+# [2.3.0](https://github.com/slimkit/plus/compare/2.2.3...2.3.0) (2019-03-07)
+
+### Refactor
+
+- 重构消息通知系统
+- 重构 SPA 多个页面
 
 
-
-<a name="2.0.7"></a>
-## [2.0.7](https://github.com/slimkit/plus/compare/2.1.1...2.0.7) (2018-11-07)
+## [2.2.3](https://github.com/slimkit/plus/compare/2.2.2...2.2.3) (2019-03-07)
 
 
 ### Bug Fixes
 
-* 修复附近的人后台配置面板无法提交配置问题 ([c98a46f](https://github.com/slimkit/plus/commit/c98a46f)), closes [zhiyicx/plus-component-pc#1081](https://github.com/zhiyicx/plus-component-pc/issues/1081) [zhiyicx/plus-jiajialin#1](https://github.com/zhiyicx/plus-jiajialin/issues/1)
-* **file-storage:** 本地驱动不支持视频在线播放问题 ([76ae3a8](https://github.com/slimkit/plus/commit/76ae3a8))
-* **file-storage:** 修复本地存储系统不支持 GIF 图片 ([99e4e8a](https://github.com/slimkit/plus/commit/99e4e8a))
-* **file-storage:** 增加存储系统兼容性，错误配置将不会导致全站崩溃 ([af821ff](https://github.com/slimkit/plus/commit/af821ff))
-* **news:** 修复资讯前台投稿未做 Markdown 转换处理 ([0009250](https://github.com/slimkit/plus/commit/0009250))
+* **动态:** 修复动态热门话题报错 fix [#586](https://github.com/slimkit/plus/issues/586) ([a6b49ae](https://github.com/slimkit/plus/commit/a6b49ae))
+* **动态:** 修复动态热门话题报错 fix [#586](https://github.com/slimkit/plus/issues/586) ([69be235](https://github.com/slimkit/plus/commit/69be235))
+* **动态:** 修复动态热门话题报错 fix [#586](https://github.com/slimkit/plus/issues/586) ([d47e3dd](https://github.com/slimkit/plus/commit/d47e3dd))
+* **Admin:** 修复后台动态管理预览动态图片非原本动态图片 Bug ([da22ac9](https://github.com/slimkit/plus/commit/da22ac9)), closes [#624](https://github.com/slimkit/plus/issues/624)
+* **IM:** 修复未使用环信情况下后台更新用户资料永远都会失败问题 ([155005a](https://github.com/slimkit/plus/commit/155005a))
+* **News:** 兼容 PC 需要获取置顶用户信息需求 ([cfbc299](https://github.com/slimkit/plus/commit/cfbc299))
+* **PC:** 动图识别的问题 ([035520a](https://github.com/slimkit/plus/commit/035520a))
+* **PC:** 系统消息类型 ([96a6090](https://github.com/slimkit/plus/commit/96a6090))
+* **PC:** 修补消息类型 ([b003e45](https://github.com/slimkit/plus/commit/b003e45))
+* **PC:** 修复开源版圈子页面报错的问题 ([b9a65cd](https://github.com/slimkit/plus/commit/b9a65cd))
+* **PC:** 修复全局评论时没有自动添加评论的问题 ([26284d0](https://github.com/slimkit/plus/commit/26284d0)), closes [#629](https://github.com/slimkit/plus/issues/629)
+* **PC:** 修复帖子的图片 mime 解析错误的问题 ([f3c57b2](https://github.com/slimkit/plus/commit/f3c57b2))
+* **PC:** 修复系统消息被拒绝的状态 ([cab0119](https://github.com/slimkit/plus/commit/cab0119))
+* **PC:** 在个人主页转发动态时会添加到其他人个人主页时间线中的问题 ([5faf023](https://github.com/slimkit/plus/commit/5faf023)), closes [#628](https://github.com/slimkit/plus/issues/628)
+* **SPA:** 参与话题的人数据错误的问题 ([0049580](https://github.com/slimkit/plus/commit/0049580))
+* **SPA:** 定位后保存当前位置信息到服务器 ([1eb93c0](https://github.com/slimkit/plus/commit/1eb93c0)), closes [#480](https://github.com/slimkit/plus/issues/480)
+* **SPA:** 动图不能播放的问题 ([06bcd3d](https://github.com/slimkit/plus/commit/06bcd3d))
+* **SPA:** 发起聊天时跳转到错误的路由的问题 ([9565f01](https://github.com/slimkit/plus/commit/9565f01))
+* **SPA:** 解决安卓微信下无法上传图片的问题(hack) ([b390b44](https://github.com/slimkit/plus/commit/b390b44))
+* **SPA:** 解决安卓微信下无法上传图片的问题(hack) ([5840826](https://github.com/slimkit/plus/commit/5840826))
+* **SPA:** 某些情况下弹起键盘框会导致字体重复的问题 ([72027c0](https://github.com/slimkit/plus/commit/72027c0))
+* **SPA:** 容器最大宽度限制 ([2fa7978](https://github.com/slimkit/plus/commit/2fa7978))
+* **SPA:** 头像引用路径不正常的问题 ([788002a](https://github.com/slimkit/plus/commit/788002a)), closes [#657](https://github.com/slimkit/plus/issues/657)
+* **SPA:** 无时间时显示为 NaN 的问题 ([20fedea](https://github.com/slimkit/plus/commit/20fedea)), closes [#655](https://github.com/slimkit/plus/issues/655)
+* **SPA:** 修补消息类型 ([5670f7d](https://github.com/slimkit/plus/commit/5670f7d))
+* **SPA:** 修复动态列表出现两次的问题 ([82d2a27](https://github.com/slimkit/plus/commit/82d2a27))
+* **SPA:** 修复合并代码后的一些问题 ([5a52f5d](https://github.com/slimkit/plus/commit/5a52f5d))
+* **SPA:** 修复获取数据时数量传出10而判断为15的问题 ([673080c](https://github.com/slimkit/plus/commit/673080c))
+* **SPA:** 修复如果资讯被打赏则无法显示系统消息的问题 ([77657be](https://github.com/slimkit/plus/commit/77657be)), closes [#654](https://github.com/slimkit/plus/issues/654)
+* **SPA:** 修复头像为空时会报错的问题 ([570691a](https://github.com/slimkit/plus/commit/570691a))
+* **SPA:** 修复未读消息小红点提示 ([94a7606](https://github.com/slimkit/plus/commit/94a7606)), closes [#529](https://github.com/slimkit/plus/issues/529)
+* **SPA:** 修复未读消息小红点提示 ([e69e6e8](https://github.com/slimkit/plus/commit/e69e6e8)), closes [#529](https://github.com/slimkit/plus/issues/529)
+* **SPA:** 修复未读消息小红点提示 ([74dd0c1](https://github.com/slimkit/plus/commit/74dd0c1)), closes [#529](https://github.com/slimkit/plus/issues/529)
+* **SPA:** 修复系统消息文本不正确的问题 ([a4195d4](https://github.com/slimkit/plus/commit/a4195d4))
+* **SPA:** 修复消息错误显示小红点 ([4dc0550](https://github.com/slimkit/plus/commit/4dc0550)), closes [#529](https://github.com/slimkit/plus/issues/529)
+* **SPA:** 修复消息错误显示小红点 ([1e56725](https://github.com/slimkit/plus/commit/1e56725)), closes [#529](https://github.com/slimkit/plus/issues/529)
+* **SPA:** 修复消息错误显示小红点 ([d8838fb](https://github.com/slimkit/plus/commit/d8838fb)), closes [#529](https://github.com/slimkit/plus/issues/529)
+* **SPA:** 修复消息页面含有时间差的问题 ([f451ae0](https://github.com/slimkit/plus/commit/f451ae0))
+* **SPA:** 修复在 hash 模式下无法微信登录的问题 ([5b5281c](https://github.com/slimkit/plus/commit/5b5281c))
+* **SPA:** 修正动态卡片时间 ([b9ad1fc](https://github.com/slimkit/plus/commit/b9ad1fc))
+* **SPA:** 修正动态卡片时间 ([c57333d](https://github.com/slimkit/plus/commit/c57333d))
+* **SPA:** 一些翻译问题 ([0db0012](https://github.com/slimkit/plus/commit/0db0012))
+* **SPA:** 一些翻译问题 ([af69326](https://github.com/slimkit/plus/commit/af69326))
+* **SPA:** 移除多余符号 ([9e7a23b](https://github.com/slimkit/plus/commit/9e7a23b))
+* **SPA:** 在每次进入聊天室或发送消息后清空未读聊天数量 ([c6091c0](https://github.com/slimkit/plus/commit/c6091c0))
+* **SPA:** 直辖市的定位问题 ([2a9e44b](https://github.com/slimkit/plus/commit/2a9e44b))
+* **SPA:** 资讯被打赏时无法正常显示消息预览的问题 ([a0dbd58](https://github.com/slimkit/plus/commit/a0dbd58)), closes [#654](https://github.com/slimkit/plus/issues/654)
+* **SPA:** GIF -> Gif ([cbe870a](https://github.com/slimkit/plus/commit/cbe870a)), closes [#644](https://github.com/slimkit/plus/issues/644)
+* 签到若未登录，不返回rank字段 ([f00c455](https://github.com/slimkit/plus/commit/f00c455))
+* 转发时at用户没有反应的问题 ([9430f5c](https://github.com/slimkit/plus/commit/9430f5c))
+* Fixed local CDN gif bepass ([ba50f4d](https://github.com/slimkit/plus/commit/ba50f4d))
+
+
+### Features
+
+* **动态:** 增加动态话题列表返回关注状态功能 ([0cd3f10](https://github.com/slimkit/plus/commit/0cd3f10))
+* **Music:** Add a list songs API ([5342b4f](https://github.com/slimkit/plus/commit/5342b4f))
+* **Music:** List api add multiple get ([925b85e](https://github.com/slimkit/plus/commit/925b85e)), closes [#625](https://github.com/slimkit/plus/issues/625)
+* **PC:** 增加 ThinkSNS 下载二维码 ([8740301](https://github.com/slimkit/plus/commit/8740301))
+* **PC:** 增加右侧在线咨询弹框 ([65f601f](https://github.com/slimkit/plus/commit/65f601f))
+* **PC:** GIF 动图按顺序播放 ([0eb45d1](https://github.com/slimkit/plus/commit/0eb45d1))
+* **SPA:** GIF 动图播放 ([69c7ac3](https://github.com/slimkit/plus/commit/69c7ac3))
+* Add using Tags find users ([6035fdc](https://github.com/slimkit/plus/commit/6035fdc))
+* **SPA:** 动态话题 ([157cf3a](https://github.com/slimkit/plus/commit/157cf3a)), closes [#467](https://github.com/slimkit/plus/issues/467)
+* **SPA:** 多国语言文本替换 ([e015aec](https://github.com/slimkit/plus/commit/e015aec))
+* **SPA:** 好友功能 ([6f53f4c](https://github.com/slimkit/plus/commit/6f53f4c))
+* **SPA:** 增加 QQ 在线咨询可选功能 ([284fc35](https://github.com/slimkit/plus/commit/284fc35))
 
 
 

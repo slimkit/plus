@@ -1,16 +1,18 @@
 <template>
   <div @touchmove.prevent>
-    <transition name="toast">
+    <Transition name="toast">
       <div
         v-if="show"
         class="m-pop-box"
-        @click="cancel"/>
-    </transition>
-    <transition name="pop">
+        @click="cancel"
+      />
+    </Transition>
+    <Transition name="pop">
       <div
         v-if="show"
         class="c-comment-input"
-        @touch.prevent>
+        @touch.prevent
+      >
         <span class="textarea-wrap">
           <textarea
             ref="textarea"
@@ -18,27 +20,31 @@
             :placeholder="placeholder"
             :style="{ height: `${textareaHeight}px` }"
             maxlength="255"
-            @focus="onFocus"
             @blur="moveCurPos"
             @keydown.enter.prevent="sendText"
-            @input="moveCurPos"/>
+            @input="moveCurPos"
+          />
           <textarea
             ref="shadow"
             :value="shadowText"
             :disabled="true"
             class="textarea-shadow"
             rows="1"
-            maxlength="255"/>
+            maxlength="255"
+          />
         </span>
         <div class="submit-wrap">
           <span v-if="contentText.length >= 210" class="content-length">{{ contentText.length }}/255</span>
           <button
             :disabled="!contentText.length"
             class="submit-btn"
-            @click="sendText">发送</button>
+            @click="sendText"
+          >
+            {{ $t('send') }}
+          </button>
         </div>
       </div>
-    </transition>
+    </Transition>
   </div>
 </template>
 
@@ -53,7 +59,7 @@ export default {
       loading: false,
       scrollHeight: 0,
       contentText: '',
-      placeholder: '随便说说~',
+      placeholder: this.$t('comment_placeholder'),
     }
   },
   computed: {
@@ -145,13 +151,6 @@ export default {
       this.onOk = null
       this.show = false
     },
-    onFocus () {
-      // 有用 ???
-      setTimeout(() => {
-        const wH2 = window.innerHeight
-        window.scrollTo(0, wH2 - 70)
-      }, 300)
-    },
   },
 }
 </script>
@@ -168,7 +167,7 @@ export default {
   min-height: 100px;
   padding: 20px;
   background-color: @body-bg;
-  border-top: 1px solid @border-color;
+  border-top: 1px solid @border-color;/*no*/
 
   .textarea-wrap {
     flex: auto;

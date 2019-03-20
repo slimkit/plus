@@ -28,6 +28,21 @@ export function getFeeds (params) {
 }
 
 /**
+ * 获取动态详情
+ *
+ * @author mutoe <mutoe@foxmail.com>
+ * @export
+ * @param {string} feedId
+ * @param {boolean} [params.allow404=false] 允许404
+ * @returns
+ */
+export function getFeed (feedId, { allow404 = false }) {
+  const allowedStatus = [200]
+  if (allow404) allowedStatus.push(404)
+  return api.get(`/feeds/${feedId}`, { validateStatus: s => allowedStatus.includes(s) })
+}
+
+/**
  * 申请动态置顶
  * @author mutoe <mutoe@foxmail.com>
  * @export
@@ -53,8 +68,24 @@ export function applyTopFeed (feedId, params) {
  * @param {string} [params.oforder_type] date 按时间 amount 按金额
  * @returns
  */
-export function getRewards (feedId, params) {
+export function getFeedRewards (feedId, params) {
   const url = `/feeds/${feedId}/rewards`
+  return api.get(url, { params, validateStatus: s => s === 200 })
+}
+
+/**
+ * 获取点赞列表
+ *
+ * @author mutoe <mutoe@foxmail.com>
+ * @export
+ * @param {number} feedId
+ * @param {Object} params
+ * @param {number} [params.limit=20]
+ * @param {number} [params.after=0]
+ * @returns {Promise<Object[]>}
+ */
+export function getFeedLikers (feedId, params) {
+  const url = `/feeds/${feedId}/likes`
   return api.get(url, { params, validateStatus: s => s === 200 })
 }
 
@@ -80,7 +111,7 @@ export function rewardFeed (feedId, data) {
  * @returns {Promise}
  */
 export function deleteFeed (feedId) {
-  return api.delete(`/feeds/${feedId}`, { validateStatus: s => s === 204 })
+  return api.delete(`/feeds/${feedId}/currency`, { validateStatus: s => s === 204 })
 }
 
 /**
@@ -161,13 +192,13 @@ export function getFeedCommentPinneds (after = 0) {
  * @param {Object} payload
  * @param {string} payload.body 评论内容
  * @param {number} [payload.reply_user] 回复的用户id
- * @returns {Promise<{comment}>}
+ * @returns {Promise<{CommentObject}>}
  */
-export function postComment (feedId, payload) {
+export function postFeedComment (feedId, payload) {
   const url = `/feeds/${feedId}/comments`
   return api
     .post(url, payload, { validateStatus: s => s === 201 })
-    .then(({ data = { comment: {} } }) => data.comment)
+    .then(({ data: { comment } }) => comment)
 }
 
 /**

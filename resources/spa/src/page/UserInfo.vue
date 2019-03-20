@@ -1,99 +1,67 @@
 <template>
   <div class="m-box-model p-user-info">
-
-    <common-header>
-      个人资料
+    <CommonHeader>
+      {{ $t('profile.info') }}
       <template slot="right">
-        <circle-loading v-if="loading" />
+        <CircleLoading v-if="loading" />
         <a
           v-else
           :class="{ disabled }"
-          class="m-send-btn"
-          @click.prevent="handleOk">完成</a>
+          class="submit-btn"
+          @click.prevent="handleOk"
+        >
+          {{ $t('complete') }}
+        </a>
       </template>
-    </common-header>
+    </CommonHeader>
 
     <main>
-
       <form>
-        <form-avatar-item
+        <FormAvatarItem
           v-model="avatar"
-          label="更换头像"
-          type="storage"/>
+          :label="$t('profile.label.avatar')"
+          type="storage"
+        />
 
-        <form-input-item
+        <FormInputItem
           v-model="name"
-          placeholder="请输入用户名"
-          label="用户名"/>
+          :label="$t('profile.label.username')"
+          :placeholder="$t('profile.placeholder.username')"
+        />
 
-        <form-select-item
+        <FormSelectItem
           v-model="sexMap[sex]"
-          label="性别"
-          @click="switchSex"/>
+          :label="$t('profile.label.sex')"
+          @click="switchSex"
+        />
 
-        <form-location-item
+        <FormLocationItem
           v-model="location"
-          label="城市"/>
+          :label="$t('profile.label.city')"
+        />
 
-        <!-- form-tags-selected -->
+        <FormTagsItem
+          v-model="tags"
+          :label="$t('profile.label.tag')"
+          @select="onTagSelect"
+          @delete="onTagRemove"
+        />
 
-        <section class="m-box m-aln-stre m-justify-bet p-info-row m-bb1" @click="switchTags">
-          <label>标签</label>
-          <div class="m-box m-aln-center m-justify-bet m-flex-grow1 m-flex-shrink1 input">
-            <span v-if="tags.length === 0" class="placeholder">选择标签</span>
-            <div v-else class="m-tag-list m-tags">
-              <span
-                v-for="tag in tags"
-                :key="tag.id"
-                class="m-tag">{{ tag.name }}</span>
-            </div>
-            <svg class="m-style-svg m-svg-def m-entry-append">
-              <use xlink:href="#icon-arrow-right"/>
-            </svg>
-          </div>
-        </section>
-
-        <form-input-item
+        <FormInputItem
           v-model="bio"
           :maxlength="50"
           :warnlength="40"
           type="textarea"
-          label="简介"
-          placeholder="编辑简介"/>
-
+          :label="$t('profile.label.bio')"
+          :placeholder="$t('profile.placeholder.bio')"
+        />
       </form>
     </main>
-
   </div>
 </template>
 
 <script>
 import { mapState } from 'vuex'
-
-/**
- * Canvas toBlob
- */
-if (!HTMLCanvasElement.prototype.toBlob) {
-  Object.defineProperty(HTMLCanvasElement.prototype, 'toBlob', {
-    value: function (callback, type, quality) {
-      const binStr = atob(this.toDataURL(type, quality).split(',')[1])
-      const len = binStr.length
-      const arr = new Uint8Array(len)
-
-      for (let i = 0; i < len; i++) {
-        arr[i] = binStr.charCodeAt(i)
-      }
-
-      callback(new Blob([arr], { type: type || 'image/png' }))
-    },
-  })
-}
-
-const sexMap = {
-  0: '保密',
-  1: '男',
-  2: '女',
-}
 
 export default {
   name: 'UserInfo',
@@ -103,12 +71,12 @@ export default {
       scrollHeight: 0,
       showCleanName: false,
 
-      sexMap,
+      sexMap: this.$t('profile.sex'),
       sex: 0,
       bio: '',
       name: '',
       tags: [],
-      location: { label: '请选择地理位置' },
+      location: { label: this.$t('profile.placeholder.location') },
       avatar: {},
       avatarNode: '',
       change: false,
@@ -129,34 +97,36 @@ export default {
       )
     },
     sexTxt () {
-      const sex = ['保密', '男', '女']
-      return sex[this.sex] || '选择性别'
+      return this.sexMap[this.sex] || this.$t('profile.placeholder.sex')
     },
   },
   created () {
-    const {
-      sex = 0,
-      bio = '',
-      location = '',
-      avatar = '',
-      tags = [],
-      name = '',
-    } = this.CURRENTUSER
-    this.name = name
-    this.sex = sex
-    this.bio = bio || ''
-    this.tags = tags || []
-    this.avatar = avatar
-    this.location.label = location || ''
-    this.$http
-      .get(`users/${this.CURRENTUSER.id}/tags`)
-      .then(({ data = [] }) => {
-        this.tags = data
-        this.CURRENTUSER.tags = data
-        this.$store.commit('SAVE_CURRENTUSER', this.CURRENTUSER)
-      })
+    this.fetchUser()
   },
   methods: {
+    fetchUser () {
+      const {
+        sex = 0,
+        bio = '',
+        location = '',
+        avatar = '',
+        tags = [],
+        name = '',
+      } = this.CURRENTUSER
+      this.name = name
+      this.sex = sex
+      this.bio = bio || ''
+      this.tags = tags || []
+      this.avatar = avatar
+      this.location.label = location || ''
+      this.$http
+        .get(`users/${this.CURRENTUSER.id}/tags`)
+        .then(({ data = [] }) => {
+          this.tags = data
+          this.CURRENTUSER.tags = data
+          this.$store.commit('SAVE_CURRENTUSER', this.CURRENTUSER)
+        })
+    },
     handleOk () {
       if (this.disabled) return
       if (this.loading) return
@@ -184,25 +154,11 @@ export default {
           this.loading = false
         })
     },
-    switchTags () {
-      const chooseTags = this.tags.map(t => t.id)
-      const nextStep = tags => {
-        this.change =
-          tags.map(n => n.id).join(',') !== this.CURRENTUSER.tags.join(',')
-        this.tags = tags
-      }
-      const onSelect = tagId => {
-        this.$http.put(`/user/tags/${tagId}`)
-      }
-      const onRemove = tagId => {
-        this.$http.delete(`/user/tags/${tagId}`)
-      }
-      this.$bus.$emit('choose-tags', {
-        chooseTags,
-        nextStep,
-        onSelect,
-        onRemove,
-      })
+    onTagSelect (tagId) {
+      this.$http.put(`/user/tags/${tagId}`)
+    },
+    onTagRemove (tagId) {
+      this.$http.delete(`/user/tags/${tagId}`)
     },
     switchPosition (val) {
       this.showPosition = !this.showPosition
@@ -210,11 +166,11 @@ export default {
     },
     switchSex () {
       const options = [
-        { text: '男', method: () => (this.sex = 1) },
-        { text: '女', method: () => (this.sex = 2) },
-        { text: '保密', method: () => (this.sex = 0) },
+        { text: this.$t('profile.sex[1]'), method: () => void (this.sex = 1) },
+        { text: this.$t('profile.sex[2]'), method: () => void (this.sex = 2) },
+        { text: this.$t('profile.sex[0]'), method: () => void (this.sex = 0) },
       ]
-      this.$bus.$emit('actionSheet', options, '取消')
+      this.$bus.$emit('actionSheet', options)
     },
   },
 }
@@ -222,43 +178,16 @@ export default {
 
 <style lang="less" scoped>
 .p-user-info {
-  main {
-    background-color: #fff;
-  }
-
-  input[type="text"] {
-    height: 100%;
-    font-size: 28px;
-    line-height: normal;
-    vertical-align: middle;
-  }
-
-  textarea {
-    font-size: inherit;
-    font-family: inherit;
-    line-height: inherit;
-    background-color: transparent;
-    outline: 0;
-    border: 0;
-    resize: none;
-    padding: 0;
-    margin: 0;
-    width: 100%;
-    box-sizing: border-box;
-    -webkit-appearance: none !important;
-    -moz-appearance: none !important;
-  }
-
-  .m-avatar-box {
-    margin-right: 35px;
-  }
-
-  .m-send-btn {
+  .submit-btn {
     color: @primary;
 
     &.disabled {
       color: @gray;
     }
+  }
+
+  main {
+    background-color: #fff;
   }
 
   .m-entry-append {
@@ -293,11 +222,5 @@ export default {
   .placeholder {
     color: #ccc;
   }
-}
-</style>
-
-<style lang="less">
-.c-textarea-input {
-  padding-top: 28px;
 }
 </style>

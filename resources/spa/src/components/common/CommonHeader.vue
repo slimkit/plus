@@ -1,21 +1,17 @@
 <template>
-  <header
-    :class="{pinned}"
-    class="c-common-header">
+  <header :class="{pinned}" class="c-common-header">
     <div class="left">
       <slot name="left">
-        <svg
-          class="m-style-svg m-svg-def"
-          @click="onBackClick">
-          <use xlink:href="#icon-back"/>
+        <svg class="m-style-svg m-svg-def" @click="onBackClick">
+          <use xlink:href="#icon-back" />
         </svg>
       </slot>
     </div>
     <div class="title">
-      <div class="title-wrap"><slot/></div>
+      <div class="title-wrap"><slot /></div>
     </div>
     <div class="right">
-      <slot name="right"/>
+      <slot name="right" />
     </div>
   </header>
 </template>
@@ -48,12 +44,12 @@ export default {
   bottom: initial;
   width: 100%;
   height: @header-height;
-  max-width: 1080px;
+  max-width: 768px;
   margin: 0 auto;
   justify-content: space-between;
   overflow: hidden;
   background: #fff;
-  border-bottom: 1px solid #ededed;
+  border-bottom: 1px solid #ededed; /* no */
   font-size: 32px;
   color: inherit;
   z-index: 10;
@@ -81,7 +77,7 @@ export default {
     left: 0;
     right: 0;
     height: 100%;
-    width: 12em;
+    width: 16em;
     margin: 0 auto;
     text-align: center;
 

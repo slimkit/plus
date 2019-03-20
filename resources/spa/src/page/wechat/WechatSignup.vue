@@ -1,17 +1,18 @@
 <template>
-  <transition
+  <Transition
     enter-active-class="animated bounceInRight"
-    leave-active-class="animated bounceOutLeft">
+    leave-active-class="animated bounceOutLeft"
+  >
     <div class="p-signup">
       <header class="m-box m-aln-center m-head-top m-pos-f m-main m-bb1">
-        <div class="m-box m-aln-center m-flex-grow1 m-flex-base0"/>
+        <div class="m-box m-aln-center m-flex-grow1 m-flex-base0" />
         <div class="m-box m-aln-center m-justify-center m-flex-grow1 m-flex-base0 m-head-top-title">
           <span>完善资料</span>
         </div>
         <div class="m-box m-aln-center m-justify-end m-flex-grow1 m-flex-base0">
-          <router-link to="/wechat/bind">
+          <RouterLink to="/wechat/bind">
             <a>已有账号</a>
-          </router-link>
+          </RouterLink>
         </div>
       </header>
 
@@ -25,15 +26,18 @@
               type="text"
               placeholder="请输入用户名"
               @focus="onFocus"
-              @blur="checkName(nickname)">
+              @blur="checkName(nickname)"
+            >
           </div>
           <svg
             v-show="nickname.length > 0"
             class="m-style-svg m-svg-def"
-            @click="nickname = ''">
+            @click="nickname = ''"
+          >
             <use
               xmlns:xlink="http://www.w3.org/1999/xlink"
-              xlink:href="#icon-clean"/>
+              xlink:href="#icon-clean"
+            />
           </svg>
         </div>
         <div class="m-box m-aln-center m-text-box m-form-err-box">
@@ -42,18 +46,20 @@
         <div
           v-if="displayBtn"
           class="m-form-row"
-          style="border: 0">
+          style="border: 0"
+        >
           <button
             :disabled="err||loading"
             class="m-long-btn m-signin-btn"
-            @click="signupByWechat">
-            <circle-loading v-if="loading" />
+            @click="signupByWechat"
+          >
+            <CircleLoading v-if="loading" />
             <span v-else>提交</span>
           </button>
         </div>
       </main>
     </div>
-  </transition>
+  </Transition>
 </template>
 
 <script>
@@ -143,6 +149,7 @@ export default {
           // 保存用户信息 并跳转
           this.$store.commit('SAVE_CURRENTUSER', { ...user, token })
           this.$nextTick(() => {
+            this.$lstore.setData('H5_ACCESS_TOKEN', `Bearer ${token}`)
             this.$router.push('/feeds?type=hot')
             this.$store.dispatch('GET_UNREAD_COUNT')
             this.$store.dispatch('GET_NEW_UNREAD_COUNT')

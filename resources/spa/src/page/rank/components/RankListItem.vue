@@ -2,12 +2,12 @@
   <div class="rank-list-item">
     <span :class="{ top: index < 3 }" class="rank">{{ index + 1 }}</span>
 
-    <div class="rank-info" @click="to(`/users/${user.id}`)">
-      <avatar :user="user" class="rank-avatar"/>
+    <div class="rank-info" @click="$router.push(`/users/${user.id}`)">
+      <Avatar :user="user" class="rank-avatar" />
       <div class="rank-title m-text-cut">
         <h6>{{ user.name }}</h6>
         <!-- 用于显示各排行榜数据的插槽 -->
-        <slot/>
+        <slot />
       </div>
     </div>
 
@@ -15,7 +15,8 @@
       v-if="!isMine"
       :class="{active: isFollow === 'unFollow'}"
       class="follow-btn"
-      @click.stop="followUser">
+      @click.stop="followUser"
+    >
       {{ followText }}
     </button>
   </div>
@@ -43,8 +44,8 @@ export default {
           : 'unFollow'
     },
     followText () {
-      if (this.isFollow === 'eachFollow') return '相互关注'
-      return this.isFollow === 'follow' ? '已关注' : '+ 关注'
+      if (this.isFollow === 'eachFollow') return this.$t('follow.each')
+      return this.isFollow === 'follow' ? this.$t('follow.already') : `+ ${this.$t('follow.name')}`
     },
   },
   methods: {
@@ -72,7 +73,7 @@ export default {
   height: 135px;
   padding: 0 30px;
   background: #fff;
-  border-bottom: 1px solid #ededed;
+  border-bottom: 1px solid #ededed; /* no */
 
   .rank {
     flex: none;
@@ -111,11 +112,11 @@ export default {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 5em;
+    width: 6em;
     height: 1.8em;
     background: #fff;
     color: @primary;
-    border: 1px solid currentColor;
+    border: 1px solid currentColor; /* no */
     border-radius: 8px;
     white-space: nowrap;
 

@@ -22,12 +22,6 @@
                 @endif
             </div>
             <div class="m-chip">
-                @foreach ($cates as $cate)
-                    <span class="u-chip" rel="{{$cate['id']}}">{{$cate['name']}}</span>
-                @endforeach
-                @if (count($cates) > 10)
-                    <a class="u-chip cur">查看更多</a>
-                @endif
             </div>
             <div class="m-search-area f-dn">
                 <input class="search-ipt" id="location" type="text" name="search_key" placeholder="输入关键字搜索">
@@ -69,16 +63,4 @@
     </div>
 </div>
 <div class="f-dn" id="iCenter"></div>
-@endsection
-@section('scripts')
-<script>
-loader.init({
-    container: '#group_box',
-    loading: '.group_container',
-    paramtype: 1,
-    loadtype: 2,
-    url: '/groups',
-    params: {limit: 10}
-});
-</script>
 @endsection

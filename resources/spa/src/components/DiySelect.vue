@@ -2,18 +2,18 @@
   <div
     :class="{open}"
     class="diy-select"
-    @click="onClick">
+    @click="onClick"
+  >
     <div class="diy-select--label">{{ curSelectValue }}</div>
-    <div
-      v-show="open"
-      class="diy-select--options">
+    <div v-show="open" class="diy-select--options">
       <div
         v-for="option in options"
         :key="option.label"
         class="diy-select--option"
-        @click="setCurVal(option)">
+        @click="setCurVal(option)"
+      >
         <template v-if="option.hasMsg">
-          <v-badge :dot="option.hasMsg">{{ option.label }}</v-badge>
+          <BadgeIcon :dot="option.hasMsg">{{ option.label }}</BadgeIcon>
         </template>
         <span v-else>{{ option.label }}</span>
       </div>
@@ -22,12 +22,14 @@
 </template>
 
 <script>
+import i18n from '@/i18n'
+
 export default {
   name: 'DiySelect',
   props: {
     value: { type: null, default: '' },
     options: { type: Array, default: () => [] },
-    placeholder: { type: String, default: '请选择' },
+    placeholder: { type: String, default: i18n.t('please_select') },
     readonly: { type: Boolean, default: false },
   },
   data () {
@@ -98,7 +100,7 @@ export default {
     position: fixed;
     left: 0;
     right: 0;
-    box-shadow: -1px 0 3px #ededed;
+    box-shadow: -1px 0 3px #ededed;/*no*/
   }
 
   &--option {

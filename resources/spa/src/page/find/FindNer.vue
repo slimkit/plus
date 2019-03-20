@@ -1,20 +1,24 @@
 <template>
-  <jo-load-more
+  <JoLoadMore
     key="find-ner"
     ref="loadmore"
     @onRefresh="onRefresh"
-    @onLoadMore="onLoadMore">
-    <user-item
+    @onLoadMore="onLoadMore"
+  >
+    <UserItem
       v-for="user in users"
+      :key="user.id"
       :user="user"
-      :key="user.id"/>
-  </jo-load-more>
+    />
+  </JoLoadMore>
 </template>
 
 <script>
 import { mapState } from 'vuex'
-import UserItem from '@/components/UserItem.vue'
+import { noop } from '@/util'
+import { limit } from '@/api'
 import { findNearbyUser } from '@/api/user.js'
+import UserItem from '@/components/UserItem.vue'
 
 export default {
   name: 'FindNer',
@@ -41,7 +45,7 @@ export default {
     this.$refs.loadmore.beforeRefresh()
   },
   methods: {
-    async formateUsers (users) {
+    async formateUsers (users, callback = noop) {
       const userList = []
       for (let item of users) {
         userList.push(item.user_id)
@@ -56,15 +60,18 @@ export default {
         user && sortedUsers.push(user)
       }
       this.users = sortedUsers
+      const more = this.users.length < limit
+      callback(more)
     },
     onRefresh (callback) {
       this.page = 1
       findNearbyUser({ lat: this.lat, lng: this.lng }, this.page).then(
         ({ data = [] }) => {
           this.users = []
-          this.formateUsers(data)
+          this.formateUsers(data, more => {
+            this.$refs.loadmore.afterRefresh(more)
+          })
           this.page = 2
-          this.$refs.loadmore.afterRefresh(data.length < 15)
         }
       )
     },
@@ -72,8 +79,9 @@ export default {
       findNearbyUser({ lat: this.lat, lng: this.lng }, this.page).then(
         ({ data = [] }) => {
           this.page += 1
-          this.formateUsers(data)
-          this.$refs.loadmore.afterLoadMore(data.length < 15)
+          this.formateUsers(data, more => {
+            this.$refs.loadmore.afterLoadMore(more)
+          })
         }
       )
     },

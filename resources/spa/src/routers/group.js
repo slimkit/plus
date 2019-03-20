@@ -2,6 +2,7 @@
  * 圈子路由模块
  */
 
+import i18n from '@/i18n'
 import GroupHome from '@/page/group/GroupHome.vue'
 
 export default [
@@ -10,7 +11,7 @@ export default [
     path: '/group',
     component: GroupHome,
     meta: {
-      title: '圈子首页',
+      title: i18n.t('group.index'),
       keepAlive: true,
       requiresAuth: true,
     },

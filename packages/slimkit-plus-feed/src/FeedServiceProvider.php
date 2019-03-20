@@ -6,12 +6,12 @@ declare(strict_types=1);
  * +----------------------------------------------------------------------+
  * |                          ThinkSNS Plus                               |
  * +----------------------------------------------------------------------+
- * | Copyright (c) 2018 Chengdu ZhiYiChuangXiang Technology Co., Ltd.     |
+ * | Copyright (c) 2016-Present ZhiYiChuangXiang Technology Co., Ltd.     |
  * +----------------------------------------------------------------------+
- * | This source file is subject to version 2.0 of the Apache license,    |
- * | that is bundled with this package in the file LICENSE, and is        |
- * | available through the world-wide-web at the following url:           |
- * | http://www.apache.org/licenses/LICENSE-2.0.html                      |
+ * | This source file is subject to enterprise private license, that is   |
+ * | bundled with this package in the file LICENSE, and is available      |
+ * | through the world-wide-web at the following url:                     |
+ * | https://github.com/slimkit/plus/blob/master/LICENSE                  |
  * +----------------------------------------------------------------------+
  * | Author: Slim Kit Group <master@zhiyicx.com>                          |
  * | Homepage: www.thinksns.com                                           |
@@ -70,11 +70,16 @@ class FeedServiceProvider extends ServiceProvider
                 'namespace' => \Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\FeedPinned::class,
                 'owner_prefix' => 'target_user',
                 'wherecolumn' => function ($query) {
-                    return $query->where('expires_at', null)->where('channel', 'comment')->whereExists(function ($query) {
-                        return $query->from('feeds')->whereRaw('feed_pinneds.raw = feeds.id')->where('deleted_at', null);
-                    })->whereExists(function ($query) {
-                        return $query->from('comments')->whereRaw('feed_pinneds.target = comments.id');
-                    });
+                    return $query
+                        ->whereNull('expires_at')
+                        ->where('channel', 'comment')
+                        ->has('feed')
+                        ->has('comment');
+                // return $query->where('expires_at', null)->where('channel', 'comment')->whereExists(function ($query) {
+                    //     return $query->from('feeds')->whereRaw('feed_pinneds.raw = feeds.id')->where('deleted_at', null);
+                    // })->whereExists(function ($query) {
+                    //     return $query->from('comments')->whereRaw('feed_pinneds.target = comments.id');
+                    // });
                 },
             ];
         });

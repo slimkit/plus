@@ -6,12 +6,12 @@ declare(strict_types=1);
  * +----------------------------------------------------------------------+
  * |                          ThinkSNS Plus                               |
  * +----------------------------------------------------------------------+
- * | Copyright (c) 2018 Chengdu ZhiYiChuangXiang Technology Co., Ltd.     |
+ * | Copyright (c) 2016-Present ZhiYiChuangXiang Technology Co., Ltd.     |
  * +----------------------------------------------------------------------+
- * | This source file is subject to version 2.0 of the Apache license,    |
- * | that is bundled with this package in the file LICENSE, and is        |
- * | available through the world-wide-web at the following url:           |
- * | http://www.apache.org/licenses/LICENSE-2.0.html                      |
+ * | This source file is subject to enterprise private license, that is   |
+ * | bundled with this package in the file LICENSE, and is available      |
+ * | through the world-wide-web at the following url:                     |
+ * | https://github.com/slimkit/plus/blob/master/LICENSE                  |
  * +----------------------------------------------------------------------+
  * | Author: Slim Kit Group <master@zhiyicx.com>                          |
  * | Homepage: www.thinksns.com                                           |
@@ -21,8 +21,8 @@ declare(strict_types=1);
 namespace Zhiyi\Plus\Tests\Feature\API2;
 
 use Zhiyi\Plus\Tests\TestCase;
+use function Zhiyi\Plus\setting;
 use Zhiyi\Plus\Models\User as UserModel;
-use Zhiyi\Plus\Repository\UserWalletCashType;
 use Zhiyi\Plus\Models\WalletCash as WalletCashModel;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
@@ -42,8 +42,7 @@ class WalletCashTest extends TestCase
         factory(WalletCashModel::class)->create(['user_id' => $this->user->id]);
         factory(WalletCashModel::class)->create(['user_id' => $this->user->id]);
         factory(WalletCashModel::class)->create(['user_id' => $this->user->id]);
-        app(UserWalletCashType::class)->store(['alipay']);
-        app(UserWalletCashType::class)->flush();
+        setting('wallet')->set('cash-types', ['alipay']);
     }
 
     /**
@@ -55,18 +54,16 @@ class WalletCashTest extends TestCase
     public function testGetCashes()
     {
         $firstrResponse = $this->actingAs($this->user, 'api')->json('GET', '/api/v2/plus-pay/cashes?limit=1');
-
         $firstrResponse->assertStatus(200);
 
         $data = $firstrResponse->json()[0];
+
         $this->assertTrue(count($firstrResponse->json()) === 1);
 
         $this->assertOrderData($data);
 
         $after = $this->actingAs($this->user, 'api')->json('GET', '/api/v2/plus-pay/cashes?after='.$data['id']);
-
         $after->assertStatus(200);
-
         $afterData = $after->json()[0];
 
         $this->assertOrderData($afterData);
@@ -83,7 +80,7 @@ class WalletCashTest extends TestCase
     public function testCreateCash()
     {
         $response = $this->actingAs($this->user, 'api')->json('post', '/api/v2/plus-pay/cashes', [
-            'value' => 1234,
+            'value' => setting('wallet', 'cash-min-amount', 100),
             'type' => 'alipay',
             'account' => 'asas@aaa.com',
         ]);

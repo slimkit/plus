@@ -1,15 +1,17 @@
 <template>
   <div @touchmove.prevent>
-    <transition name="toast">
+    <Transition name="toast">
       <div
         v-if="show"
         class="m-pop-box"
-        @click="cancel"/>
-    </transition>
-    <transition name="popr">
+        @click="cancel"
+      />
+    </Transition>
+    <Transition name="popr">
       <div
         v-if="show"
-        class="m-box-model m-justify-bet m-payfor-box">
+        class="m-box-model m-justify-bet m-payfor-box"
+      >
         <h2 class="m-payfor-head">
           <slot name="title">
             <span>{{ title || "购买支付" }}</span>
@@ -24,18 +26,24 @@
         <div class="m-payfor-foot">
           <button
             class="m-payfor-btn primary"
-            @click="showPasswordConfirm">{{ confirmText || "购买" }}</button>
+            @click="showPasswordConfirm"
+          >
+            {{ confirmText || "购买" }}
+          </button>
           <button
             class="m-payfor-btn"
-            @click="handelCancel">{{ cancelText || "返回" }}</button>
+            @click="handelCancel"
+          >
+            {{ cancelText || "返回" }}
+          </button>
         </div>
 
-        <password-confirm
+        <PasswordConfirm
           ref="password"
-          @submit="handleOk" />
-
+          @submit="handleOk"
+        />
       </div>
-    </transition>
+    </Transition>
   </div>
 </template>
 <script>
@@ -186,7 +194,7 @@ export default {
     margin-bottom: 30px;
     font-size: 60px;
     color: #fca308;
-    letter-spacing: 1px;
+    letter-spacing: 1px; /* no */
   }
 }
 .m-payfor-foot {

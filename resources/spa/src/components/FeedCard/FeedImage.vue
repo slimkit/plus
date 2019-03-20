@@ -1,19 +1,17 @@
 <template>
-  <div
-    :id="`m-pics${id}`"
-    :class="['m-pics',`m-pics-${pics.length}`]">
+  <div :id="`m-pics${id}`" :class="['m-pics',`m-pics-${pics.length}`]">
     <ul class="m-pics-list">
-      <li
-        v-for="(img, index) in pics.slice(0, 9)"
-        :key="`pics-${id}-${index}`">
+      <li v-for="(img, index) in pics.slice(0, 9)" :key="`pics-${id}-${index}`">
         <div
-          :class="['m-pics-box',{ 'long': isLongImg(img) }, { 'gif': (img.mime || '').indexOf('gif') > -1 }]"
-          :style="pics.length === 1 ? longStyle(img.w, img.h) : &quot;&quot;">
+          :class="['m-pics-box',{ 'long': isLongImg(img) }, { 'gif': (img.mime || '').indexOf('gif') > -1 }, {'need-pay': img.paid === false && img.type !== 'download'}]"
+          :style="pics.length === 1 ? longStyle(img.w, img.h) : &quot;&quot;"
+        >
           <div
             v-async-image="img"
             :data-src="img.file"
             class="m-pic"
-            @click.stop="handleClick($event, index)"/>
+            @click.stop="handleClick($event, index)"
+          />
         </div>
       </li>
     </ul>
@@ -23,14 +21,8 @@
 export default {
   name: 'FeedImage',
   props: {
-    id: {
-      type: Number,
-      required: true,
-    },
-    pics: {
-      type: Array,
-      default: () => [],
-    },
+    id: { type: Number, required: true },
+    pics: { type: Array, default: () => [] },
   },
   methods: {
     handleClick ($event, index) {
@@ -77,10 +69,6 @@ export default {
   position: absolute;
   width: 100%;
   height: 100%;
-  // TODO
-  // 图片加载效果
-  &.loading {
-  }
 }
 .m-pics {
   width: 100%;
@@ -133,7 +121,7 @@ export default {
         background-image: linear-gradient(135deg, #cfac7d 50%, #c8a06c 50%);
       }
     }
-    &.gif {
+    &.gif:not(.playing) {
       .m-pic:after {
         content: "Gif";
         background-color: #5dc8ab;

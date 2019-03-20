@@ -36,7 +36,7 @@ export function getNewsList (params) {
  * @param {number}   type [类型: 0: 已发布, 1: 待审核, 2: 已驳回]
  * @returns {Promise<NewsObject[]>}
  */
-export function getMyNews ({ type = 0, limit = 15, after = 0 }) {
+export function getMyNews ({ type = 0, after = 0 }) {
   const params = { type, limit, after }
   return api.get('/user/news/contributes', {
     params,
@@ -51,8 +51,10 @@ export function getMyNews ({ type = 0, limit = 15, after = 0 }) {
  * @param {number} newsId
  * @returns {Promise<NewsObject>}
  */
-export function getNewsById (newsId) {
-  return api.get(`/news/${newsId}`, { validateStatus: s => s === 200 })
+export function getNewsById (newsId, { allow404 = false } = {}) {
+  const allowedStatus = [200]
+  if (allow404) allowedStatus.push(404)
+  return api.get(`/news/${newsId}`, { validateStatus: s => allowedStatus.includes(s) })
 }
 
 /**
@@ -115,6 +117,24 @@ export function getNewsComments (newsId, params) {
 }
 
 /**
+ * 评论一条资讯
+ *
+ * @author mutoe <mutoe@foxmail.com>
+ * @export
+ * @param {number} newsId
+ * @param {Object} payload
+ * @param {string} payload.body
+ * @param {number} [payload.reply_user=0]
+ * @returns {Promise<{CommentObject}>}
+ */
+export function postNewsComment (newsId, payload) {
+  const url = `/news/${newsId}/comments`
+  return api
+    .post(url, payload, { validateStatus: s => s === 201 })
+    .then(({ data: { comment } }) => comment)
+}
+
+/**
  * 申请置顶
  * @author mutoe <mutoe@foxmail.com>
  * @export
@@ -159,6 +179,22 @@ export function deleteNewsComment (newsId, commentId) {
   return api.delete(`/news/${newsId}/comments/${commentId}`, {
     validateStatus: s => s === 204,
   })
+}
+
+/**
+ * 获取资讯点赞列表
+ *
+ * @author mutoe <mutoe@foxmail.com>
+ * @export
+ * @param {number} newsId
+ * @param {Object} params
+ * @param {number} [params.limit]
+ * @param {number} [params.after]
+ * @returns {Promise<Object[]>}
+ */
+export function getNewsLikers (newsId, params) {
+  const url = `/news/${newsId}/likes`
+  return api.get(url, { params, validateStatus: s => s === 200 })
 }
 
 /**

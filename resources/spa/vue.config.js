@@ -1,5 +1,5 @@
 module.exports = {
-  baseUrl: process.env.BASE_URL || '/',
+  publicPath: process.env.BASE_URL || '/',
   lintOnSave: true,
 
   // compiler: false,
@@ -24,6 +24,10 @@ module.exports = {
       args[0].chunksSortMode = 'none'
       return args
     })
+    config.module
+      .rule('yaml').test(/\.ya?ml$/)
+      .use('json-loader').loader('json-loader').end()
+      .use('yaml-loader').loader('yaml-loader')
   },
 
   devServer: {
@@ -34,6 +38,10 @@ module.exports = {
         target: process.env.VUE_APP_API_HOST,
         changeOrigin: true,
       },
+      '/storage': {
+        target: process.env.VUE_APP_API_HOST,
+        changeOrigin: true,
+      },
     },
   },
 
@@ -41,5 +49,14 @@ module.exports = {
     name: process.env.VUE_APP_NAME || 'Plus (ThinkSNS+)',
     themeColor: '#59B6D7',
     msTileColor: '#59B6D7',
+  },
+
+  pluginOptions: {
+    i18n: {
+      locale: 'en',
+      fallbackLocale: 'en',
+      localeDir: 'locales',
+      enableInSFC: false,
+    },
   },
 }

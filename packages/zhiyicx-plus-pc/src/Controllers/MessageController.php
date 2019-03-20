@@ -4,12 +4,12 @@
  * +----------------------------------------------------------------------+
  * |                          ThinkSNS Plus                               |
  * +----------------------------------------------------------------------+
- * | Copyright (c) 2018 Chengdu ZhiYiChuangXiang Technology Co., Ltd.     |
+ * | Copyright (c) 2016-Present ZhiYiChuangXiang Technology Co., Ltd.     |
  * +----------------------------------------------------------------------+
- * | This source file is subject to version 2.0 of the Apache license,    |
- * | that is bundled with this package in the file LICENSE, and is        |
- * | available through the world-wide-web at the following url:           |
- * | http://www.apache.org/licenses/LICENSE-2.0.html                      |
+ * | This source file is subject to enterprise private license, that is   |
+ * | bundled with this package in the file LICENSE, and is available      |
+ * | through the world-wide-web at the following url:                     |
+ * | https://github.com/slimkit/plus/blob/master/LICENSE                  |
  * +----------------------------------------------------------------------+
  * | Author: Slim Kit Group <master@zhiyicx.com>                          |
  * | Homepage: www.thinksns.com                                           |
@@ -53,7 +53,8 @@ class MessageController extends BaseController
                         if ($v['commentable']) {
                             $v['source_url'] = Route('pc:feedread', ($v['commentable']['id'] ?? 0));
                             $v['source_content'] = $v['commentable']['feed_content'];
-                            ! empty($v['commentable']['images']) && count($v['commentable']['images']) > 0 && $v['source_img'] = $this->PlusData['routes']['storage'].$v['commentable']['images'][0]['id'].'?w=35&h=35';
+                            ! empty($v['commentable']['images']) && count($v['commentable']['images']) > 0 && $v['source_img'] = $this->PlusData['routes']['storage'].$v['commentable']['images'][0]['id'];
+                            ! empty($v['commentable']['video']) && $v['source_img'] = $this->PlusData['routes']['storage'].$v['commentable']['video']['cover_id'];
                         }
                         break;
                     case 'group-posts':
@@ -126,6 +127,7 @@ class MessageController extends BaseController
                         $v['source_url'] = Route('pc:feedread', ($v['likeable']['id'] ?? 0));
                         $v['source_content'] = $v['likeable']['feed_content'];
                         ! empty($v['likeable']['images']) && count($v['likeable']['images']) > 0 && $v['source_img'] = $this->PlusData['routes']['storage'].$v['likeable']['images'][0]['id'].'?w=35&h=35';
+                        ! empty($v['likeable']['video']) && $v['source_img'] = $this->PlusData['routes']['storage'].$v['likeable']['video']['cover_id'];
                         break;
                     case 'group-posts':
                         $v['source_type'] = '赞了你的帖子';
@@ -305,17 +307,16 @@ class MessageController extends BaseController
     public function mention(Request $request)
     {
         // 拉取 mention 列表
-        $after = $request->input('after');
-        $limit = $request->input('limit') ?: 20;
-        $data['mention'] = api('GET', '/api/v2/user/message/atme', [
-            'index' => $after,
-            'limit' => $limit,
-        ]);
+        $page = $request->input('page') ?? 1;
+        $data['mention'] = api('GET', '/api/v2/user/notifications', [
+            'type' => 'at',
+            'page' => $page,
+        ])['data'];
 
         // 获取 mention 详情
         foreach ($data['mention'] as &$mention) {
-            $id = $mention['resourceable']['id'];
-            $type = $mention['resourceable']['type'];
+            $id = $mention['data']['resource']['id'];
+            $type = $mention['data']['resource']['type'];
             switch ($type) {
                 case 'feeds':
                     $mention['feeds'] = api('GET', '/api/v2/feeds', ['id' => $id.''])['feeds'];

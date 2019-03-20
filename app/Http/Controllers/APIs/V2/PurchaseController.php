@@ -6,12 +6,12 @@ declare(strict_types=1);
  * +----------------------------------------------------------------------+
  * |                          ThinkSNS Plus                               |
  * +----------------------------------------------------------------------+
- * | Copyright (c) 2018 Chengdu ZhiYiChuangXiang Technology Co., Ltd.     |
+ * | Copyright (c) 2016-Present ZhiYiChuangXiang Technology Co., Ltd.     |
  * +----------------------------------------------------------------------+
- * | This source file is subject to version 2.0 of the Apache license,    |
- * | that is bundled with this package in the file LICENSE, and is        |
- * | available through the world-wide-web at the following url:           |
- * | http://www.apache.org/licenses/LICENSE-2.0.html                      |
+ * | This source file is subject to enterprise private license, that is   |
+ * | bundled with this package in the file LICENSE, and is available      |
+ * | through the world-wide-web at the following url:                     |
+ * | https://github.com/slimkit/plus/blob/master/LICENSE                  |
  * +----------------------------------------------------------------------+
  * | Author: Slim Kit Group <master@zhiyicx.com>                          |
  * | Homepage: www.thinksns.com                                           |
@@ -24,6 +24,7 @@ use Illuminate\Http\Request;
 use Zhiyi\Plus\Models\PaidNode as PaidNodeModel;
 use Zhiyi\Plus\Http\Middleware\VerifyUserPassword;
 use Zhiyi\Plus\Models\WalletCharge as WalletChargeModel;
+use Zhiyi\Plus\Notifications\System as SystemNotification;
 use Illuminate\Contracts\Cache\Repository as CacheContract;
 use Zhiyi\Plus\Packages\Currency\Processes\User as UserProcess;
 use Illuminate\Contracts\Routing\ResponseFactory as ResponseContract;
@@ -104,28 +105,40 @@ class PurchaseController extends Controller
             $node->users()->sync($user->id, false);
 
             // 存在发起人钱包，则插入，否则上述余额扣除后不增加到任何账户。
+            if ($nodeUser && $nodeUser->wallet) {
+                // 为发起人钱包增加
+                $nodeUser->wallet->increment('balance', $node->amount);
+
+                // 添加收款订单
+                $charge->channel = 'user';
+                $charge->account = $user->id;
+                $charge->action = 1;
+                $charge->amount = $node->amount;
+                $charge->subject = '被'.$node->subject;
+                $charge->body = $charge->subject;
+                $charge->status = 1;
+                $charge->user_id = $nodeUser->id;
+                $charge->save();
+
+                // 被购买通知
+                $nodeUser->sendNotifyMessage('paid:'.$node->channel, '被'.$user->name.$node->body, [
+                    'charge' => $charge,
+                    'user' => $user,
+                ]);
+            }
             if ($nodeUser) {
-                if ($nodeUser->wallet) {
-                    // 为发起人钱包增加
-                    $nodeUser->wallet->increment('balance', $node->amount);
-
-                    // 添加收款订单
-                    $charge->channel = 'user';
-                    $charge->account = $user->id;
-                    $charge->action = 1;
-                    $charge->amount = $node->amount;
-                    $charge->subject = '被'.$node->subject;
-                    $charge->body = $charge->subject;
-                    $charge->status = 1;
-                    $charge->user_id = $nodeUser->id;
-                    $charge->save();
-
-                    // 被购买通知
-                    $nodeUser->sendNotifyMessage('paid:'.$node->channel, '被'.$user->name.$node->body, [
-                        'charge' => $charge,
-                        'user' => $user,
-                    ]);
-                }
+                $target->notify(new SystemNotification(sprintf('%s买了你的%s', $user->name, $node->subject), [
+                    'type' => 'purchase',
+                    'sender' => [
+                        'id' => $user->id,
+                        'name' => $user->name,
+                    ],
+                    'amount' => $node->amount,
+                    'resource' => [
+                        'type' => $node->channel,
+                        'raw' => $node->raw,
+                    ],
+                ]));
             }
         });
 

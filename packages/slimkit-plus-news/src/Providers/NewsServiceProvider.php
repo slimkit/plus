@@ -6,12 +6,12 @@ declare(strict_types=1);
  * +----------------------------------------------------------------------+
  * |                          ThinkSNS Plus                               |
  * +----------------------------------------------------------------------+
- * | Copyright (c) 2018 Chengdu ZhiYiChuangXiang Technology Co., Ltd.     |
+ * | Copyright (c) 2016-Present ZhiYiChuangXiang Technology Co., Ltd.     |
  * +----------------------------------------------------------------------+
- * | This source file is subject to version 2.0 of the Apache license,    |
- * | that is bundled with this package in the file LICENSE, and is        |
- * | available through the world-wide-web at the following url:           |
- * | http://www.apache.org/licenses/LICENSE-2.0.html                      |
+ * | This source file is subject to enterprise private license, that is   |
+ * | bundled with this package in the file LICENSE, and is available      |
+ * | through the world-wide-web at the following url:                     |
+ * | https://github.com/slimkit/plus/blob/master/LICENSE                  |
  * +----------------------------------------------------------------------+
  * | Author: Slim Kit Group <master@zhiyicx.com>                          |
  * | Homepage: www.thinksns.com                                           |
@@ -21,13 +21,13 @@ declare(strict_types=1);
 namespace Zhiyi\Component\ZhiyiPlus\PlusComponentNews\Providers;
 
 use Zhiyi\Plus\Models\User;
+use function Zhiyi\Plus\setting;
 use Illuminate\Support\ServiceProvider;
 use Zhiyi\Plus\Support\ManageRepository;
 use Zhiyi\Plus\Support\BootstrapAPIsEventer;
 use Zhiyi\Plus\Support\PinnedsNotificationEventer;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentNews\Models\News;
-use Illuminate\Contracts\Config\Repository as ConfigRepository;
 
 class NewsServiceProvider extends ServiceProvider
 {
@@ -58,8 +58,13 @@ class NewsServiceProvider extends ServiceProvider
         // Register Bootstraper API event.
         $this->app->make(BootstrapAPIsEventer::class)->listen('v2', function () {
             return [
-                'news:contribute' => $this->app->make(ConfigRepository::class)->get('news.contribute'),
-                'news:pay_conyribute' => (int) $this->app->make(ConfigRepository::class)->get('news.pay_contribute'),
+                'news' => [
+                    'contribute' => setting('news', 'contribute', [
+                        'pay' => true,
+                        'verified' => true,
+                    ]),
+                    'pay_contribute' => setting('news', 'contribute-amount', 100),
+                ],
             ];
         });
 

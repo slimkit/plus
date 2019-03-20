@@ -1,24 +1,32 @@
 <template>
   <p class="m-text-box">
-    <router-link
+    <RouterLink
       :to="`/users/${user.id}`"
       tag="span"
       exact
-      class="m-comment-usr">
+      class="m-comment-usr"
+    >
       <a>{{ user.name }}</a>
-    </router-link>
+    </RouterLink>
     <span
       v-if="replyUser"
-      class="m-comment-usr">
-      回复<router-link :to="`/users/${replyUser.id}`">{{ replyUser.name }}</router-link>
+      class="m-comment-usr"
+    >
+      回复<RouterLink :to="`/users/${replyUser.id}`">{{ replyUser.name }}</RouterLink>
     </span>
     <span
       class="m-comment-body"
-      @click="handelClick">{{ body }}</span>
+      @click="handelClick"
+    >
+      {{ body }}
+    </span>
     <span
       v-if="pinned"
       class="m-art-comment-icon-top"
-      style="margin-left: 5px; height: auto">置顶</span>
+      style="margin-left: 5px; height: auto"
+    >
+      置顶
+    </span>
   </p>
 </template>
 <script>

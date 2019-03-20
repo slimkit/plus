@@ -24,7 +24,7 @@ yarn-error.log*
 
 # package mamager lock files
 package-lock.json
-yarn.lock
+!yarn.lock
 
 # ignore vscode settings for eslint auto-fix
 !/.vscode

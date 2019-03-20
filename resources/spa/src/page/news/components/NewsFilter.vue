@@ -1,43 +1,51 @@
 <template>
   <div :class="[prefixCls, {showAll}]">
     <div :class="`${prefixCls}--head`">
-      <span>点击以编辑</span>
+      <span>{{ 'tap_to_edit' | t }}</span>
       <div>
-        <button @click="onOk">{{ editing ? '完成' : '编辑' }}</button>
-        <button @click="showEditor">收起</button>
+        <button @click="onOk">{{ editing ? 'complete' : 'edit' | t }}</button>
+        <button @click="showEditor">{{ 'collapse' | t }}</button>
       </div>
     </div>
     <div :class="`${prefixCls}--list__wrap`">
       <div
         v-show="!showAll"
         :class="`${prefixCls}--switch`"
-        @click="showEditor">
+        @click="showEditor"
+      >
         <svg>
-          <use xlink:href="#icon-arrow-right"/>
+          <use xlink:href="#icon-arrow-right" />
         </svg>
       </div>
-      <span :class="`${prefixCls}--list__label`">我的订阅</span>
+      <span :class="`${prefixCls}--list__label`">{{ 'news.my_subscription' | t }}</span>
       <div :class="[`${prefixCls}--list`, { editing }]">
         <div
           :class="[`${prefixCls}--list__item`, { active: ~~(currentCate.id) === 0 }]"
-          @click="chooseCate($event, {id: 0, name:'推荐'})" >推荐</div>
+          @click="chooseCate($event, {id: 0, name: $t('recommend')})"
+        >
+          {{ 'recommend' | t }}
+        </div>
         <div
           v-for="myCate in myCates"
-          :class="[`${prefixCls}--list__item`, { active: myCate.id === currentCate.id }]"
           :key="`myCate-${myCate.id}`"
-          @click="chooseCate($event, myCate)">{{ myCate.name }}</div>
+          :class="[`${prefixCls}--list__item`, { active: myCate.id === currentCate.id }]"
+          @click="chooseCate($event, myCate)"
+        >
+          {{ myCate.name }}
+        </div>
       </div>
     </div>
-    <div
-      v-show="showAll"
-      :class="`${prefixCls}--list__wrap`">
-      <span :class="`${prefixCls}--list__label`">更多订阅</span>
+    <div v-show="showAll" :class="`${prefixCls}--list__wrap`">
+      <span :class="`${prefixCls}--list__label`">{{ 'news.more_subscription' | t }}</span>
       <div :class="`${prefixCls}--list`">
         <div
           v-for="cate in moreCates"
-          :class="[`${prefixCls}--list__item`]"
           :key="`moreCate-${cate.id}`"
-          @click="chooseCate($event, cate)">{{ cate.name }}</div>
+          :class="[`${prefixCls}--list__item`]"
+          @click="chooseCate($event, cate)"
+        >
+          {{ cate.name }}
+        </div>
       </div>
     </div>
   </div>
@@ -58,7 +66,7 @@ export default {
 
       currentCate: {
         id: 0,
-        name: '推荐',
+        name: this.$t('recommend'),
       },
     }
   },
@@ -135,10 +143,12 @@ export default {
   padding-top: 0 !important;
   min-height: 80px;
   max-height: 80px;
+  max-width: 768px;
+  margin: 0 auto;
   font-size: 28px;
   overflow: hidden;
   transform: max-height 0.3s ease;
-  border-bottom: 1px solid #ededed;
+  border-bottom: 1px solid #ededed; /* no */
   transform: translate3d(0, 0, 0);
   &--head {
     display: flex;
@@ -196,7 +206,6 @@ export default {
     }
     &__wrap {
       padding: 0 25px;
-      width: 100%;
       height: 80px;
       line-height: 80px;
     }
@@ -263,13 +272,12 @@ export default {
       }
       &__item {
         margin: 30/2px;
-        width: calc(~"25% - " 30px);
         height: 60px;
         line-height: 60px;
+        padding: 0 1em;
         text-align: center;
         border-radius: 8px;
         background-color: #f4f5f5;
-        padding: 0;
       }
       &__wrap {
         margin-top: 60px;

@@ -1,0 +1,769 @@
+
+discover: Discover
+anonymity: anonymity
+hide: hide
+image: Image
+
+newest: Newest
+hot: Hot
+fans: Fans
+all: All
+excellent: Excellent
+
+send: Send
+tips: Tips
+cancel: Cancel
+edit: Edit
+next_step: Next
+save: Save
+create: Create
+complete: Complete
+submit: Submit
+confirm: OK
+search: Search
+expand: Expand
+collapse: Collapse
+change: Change
+modify: Modify
+back: Back
+buy: Buy
+reset: Reset
+
+like: Like
+share: Share
+more: More
+pinned: Pinned
+recommend: Recommend
+nearby: Nearby
+
+tap_to_edit: Tap to edit
+comment_placeholder: Just talk about ~
+got_it: Got it
+please_select: Please choose
+
+# ariticle
+article:
+  content: Content
+  posted_at: Posted {0}
+  views_count: '{0} views'
+  like_count: '{0} likes'
+  reward_count: '{count} rewards, {amount} @:(currency.unit)'
+  comment_count: '{0} comments'
+  view_all_comments: View all comments
+  detail: '{title} detail'
+  share_wechat: '🥺 Please use WeChat built-in sharing in the upper right corner'
+  share_brownser: '🥺 Please use the browser built-in sharing'
+  link_text: Web links
+  deleted: Content has been deleted
+  uncategorized: uncategorized
+  badge:
+    excellent: E
+    top: T
+    reward: R
+    onlook: L
+
+  type:
+    feed: feed
+    news: news
+    post: post
+    question: question
+    answer: answer
+  list:
+    like: Likers list
+    reward: Rewarders list
+
+collect:
+  name: Collect
+  cancel: Cancel collection
+  success: Collection success
+  already: Already added to my collection
+delete:
+  name: Delete
+  confirm: Confirm delete?
+  success: Delete success
+report:
+  name: Report
+  success: Report success
+  reason: Fill in the reason for the report
+  content: 'Report {user}{type}'
+  s: "'s "
+top:
+  name: Topping
+  apply: Apply for topping
+  confirm: Confirm top
+  revert:
+    name: Undo top
+    confirm: Confirm to cancel the top?
+    success: Cancel the success of the top!
+  select_day: Select top days
+  amount:
+    name: Top amount
+    input: Enter the amount
+    total: Total amount
+reply:
+  name: Reply
+  success: Reply success
+comment:
+  name: Comment
+  success: Comment success
+  failed: Comment failed
+  delete:
+    name: Delete comment
+    success: Delete comment success
+  top:
+    name: Comment top
+    apply: Apply for comment tops
+  empty: Comment content cannot be empty
+reward:
+  name: Reward
+  list: Reward list
+  select: Choose to reward @:(currency.unit)
+  success: Reward success
+follow:
+  name: Follow
+  cancel: Cancel follow
+  already: Followed
+  each: Each follow
+  count: '{0} follwers'
+  friend: Friends
+
+release:
+  name: Release
+  text: Text
+  image: Image
+  news: News
+  checkin: Check-in
+  question: Question
+  post: Group post
+  feed: Release feed
+  confirm_cancel: Do you still have content posted, do you give up publishing?
+  success: Release successful
+  need_pay: Whether to charge
+  pay_tips: 'Note: More than {0} word part of the content charge'
+  add_topic: Topics
+  set_amount: Please set the charge amount
+  input_amount: Input amount
+  select_image_amount: Select image charge amount
+  custom_amount: Custom amount
+  text_limit: Insufficient body content {0} words, unable to set charges
+  image_placeholder: The combination of graphics and text is more exciting.
+  has_failed_upload: There is an image that failed to upload, please confirm
+  paid_image: At least one picture charge should be configured
+  image_amount: Amount
+  image_limit: Can only upload up to {0} images
+  image_format: Please upload the image file in the correct format
+  image_option: Picture charging option
+
+# loadmore
+loadmore:
+  top: ['Pull down to refresh', 'Release to update', 'Refreshing']
+  bottom: ['Loading...', '-- No more --', 'Touch to loadmore']
+
+date:
+  in_minute: wihtin 1 minute
+  minutes_ago: '{min} minutes ago'
+  hours_ago: '{hour} hours ago'
+  days_ago: '{day} days ago'
+  day: day
+  yesterday: yesterday {time}
+  today: today
+  month: this month
+  week: this week
+  weeks: ['Sun.', 'Mon.', 'Tues.', 'Wed.', 'Thur.', 'Fri.', 'Sat.']
+  months: ['Jan.', 'Feb.', 'Mar.', 'Apr.', 'May', 'June', 'July', 'Aug.', 'Sept.', 'Oct.', 'Nov.', 'Dec.']
+
+upload:
+  unsupported: For unsupported uploads, please contact technical staff.
+
+profile:
+  name: Me
+  anonymity: Anonymity
+  info: My profile
+  address: Address
+  bio: Introduction
+  sex: ['Srcret', 'Man', 'Woman']
+  default_bio: This guy is lazy, nothing left
+  background:
+    success: Update your personal background successfully!
+    error: Please upload the image file in the correct format
+  home:
+    name: Personal Homepage
+  news:
+    name: My contribution
+    published: Published
+    review: Under review
+    reject: Rejected
+  collect:
+    name: My collection
+    feed: Favorite feeds
+    news: Favorite news
+    post: Favorite post
+    answer: Favorite answer
+  label:
+    username: Name
+    sex: Sex
+    city: City
+    tag: Tags
+    bio: Intro.
+    avatar: Change avatar
+  placeholder:
+    username: Enter user name
+    bio: Introduction to editing
+    location: Select a location
+    sex: Choose gender
+
+checkin:
+  name: Check-in
+  already: Already check-in
+  title: Daily Check-in
+  count: Cumulative check-in {0} days
+  tips: Daily check-in to get @:(currency.unit)
+  failed: Check in failed, please try again later
+
+wallet:
+  name: Wallet
+  unit: USD
+  detail: Detail
+  balance: Account balance (@:(wallet.unit))
+  rule: Recharge withdrawal rule
+  recharge:
+    name: Recharge
+    select: Select recharge amount
+    custom: Custom amount
+    input: Input amount
+    success: Recharged successfully {0} @:(wallet.unit)!
+    type:
+      name: Please select the payment method
+      alipay: Pay with Ali-Pay
+      wxpay: Pay with Wechat-Pay
+      wallet: Wallet balance payment
+      no: No recharge method is turned on
+    pay:
+      already: I have completed the payment
+      success: Recharge successful
+      problem: Problem encountered in payment
+      contact: If you encounter problems, please contact the administrator.
+    order:
+      failed: Query order failed
+      repeat: Payment failed, please re-order
+  withdraw:
+    name: Withdraw
+    detail: Detail
+    amount: Withdrawal Amount
+    input: Amount
+    account: Account
+    account_input: Input withdrawal account
+    info: '{0} account withdrawal'
+    integer: Please enter an integer
+    type:
+      name: Choose a withdrawal method
+      alipay: Alipay
+      wxpay: Wechat Pay
+      no: Cash withdrawal is not turned on
+  income: Income
+  expenses: Expenses
+  review: Under review
+  review_failed: Audit failure
+  info:
+    name: Billing details
+    success: Transaction successful
+    failed: Transaction failed
+    desc: Description
+    account: Account
+    time: Time
+
+currency:
+  name: Credits
+  unit: credits
+  my: My @:(currency.unit)
+  current: Current @:(currency.unit)
+  detail: Detail
+  insufficient: '@:(currency.unit) is insufficient, please recharge'
+  success: Recharged successfully, get {0} @:(currency.unit)!
+  rule: Rule of @:(currency.unit)
+  recharge:
+    name: Recharge @:(currency.unit)
+    log: Log
+    ratio: Recharge ratio
+    rule: User recharge agreement
+    min: The minimum can only be recharged {0} @:(wallet.unit)
+    max: Can only recharge up to {0} @:(wallet.unit)
+  withdraw:
+    name: Withdraw @:(currency.unit)
+    log: Log
+    rule: '@:(currency.unit) withdraw rule'
+    title: Redeem balance
+    input: Enter the @:(currency.unit) to be extracted
+    desc: Extract @:(currency.unit) must submit an official review, review feedback please pay attention to system news!
+    min: Please extract at least {0} @:(currency.unit)
+    disabled: Integral extraction is not turned on
+
+certificate:
+  name: Certificate
+  apply: Apply certificate
+  info: Certification
+  data: Data
+  under_review: Your certification is awaiting review and can be published after reviewing {name}
+  reviewing: In the certification information review, we will reply to you within {0} working days.
+  need: Please authenticate first
+  go: Go to certification
+  status: ['Pending review', 'Approved', 'Was rejected', 'Not certified']
+  upload:
+    name: Upload data
+    success: Submitted successfully, please wait for review
+    need: Please upload a photo of your ID
+    front: Click to upload a positive ID photo
+    back: Click to upload photos on the back of your ID
+    fb: Please upload the front and back ID card photos
+    org: Upload a business license
+  validate:
+    number: Please check if the ID number is correct.
+    phone: Please check if the mobile number is correct.
+  user:
+    name: Basic Information
+    label:
+      name: Real name
+      number: ID number
+      phone: Phone
+      desc: Description
+    placeholder:
+      name: Enter the real name
+      number: Enter the correct ID number
+      phone: Enter 11 mobile phone number
+      desc: This description will affect the review, please fill in carefully
+  org:
+    name: Basic Information
+    label:
+      name: Person in charge
+      number: ID number
+      phone: Phone
+      desc: Description
+      org_name: Organization name
+      org_address: Institution address
+    placeholder:
+      name: Enter the person in charge of the organization
+      number: Enter the person ID number
+      phone: Enter 11 mobile phone number
+      desc: This description will affect the review, please fill in carefully
+      org_name: Enter the institution name
+      org_address: Enter the institution address
+
+setting:
+  name: Setting
+  about:
+    name: About us
+  locale:
+    name: Change Language
+  login:
+    logging: Logging in...
+    supply: Complete material
+    bind: Bind an existing account
+  logout:
+    name: Logout
+    label: Logout
+    confirm: confirm logout?
+
+tags:
+  name: Tag
+  select: Chooese Tags
+  placeholder: '{0} labels can be selected, {1} labels selected'
+  max_tips: Labels can be up to {0}
+  first_tips:
+    title: Tips
+    content: Labels are global labels, choose the right label, the system can recommend the content you are interested in, it is very convenient to find the same identity or hobby, it is very important!
+
+feed:
+  name: Feed
+  detail: Feed detail
+  delete: Delete feed
+  delete_success: Delete feed success
+  apply_top: Apply for feed topping
+  count: '{0} feeds'
+  all: All feeds
+  paid: Paid feeds
+  top: Top feeds
+  pay:
+    need_paid: 'You only need to pay {0} @:(currency.unit) to view this {1}'
+
+  topic:
+    name: Topic
+    detail: Topic detail
+    creator: 'Creator: {0}'
+    participants: Participants
+    search: Search topic
+    hot: Hot topics
+    follow:
+      success: Follow the topic successfully!
+      cancel: Unfollow the topic
+    create: Create topic
+    edit: Edit topic
+    cover:
+      upload: Upload topic cover
+      change: Replace cover
+    placeholder:
+      title: Topic title, within {0} words (required)
+      desc: Briefly introduce the topic content
+    tips: After the topic is created successfully, the title cannot be changed.
+    abort:
+      name: Give up creating
+      confirm: Confirm cancel the creation of the topic?
+
+news:
+  name: News
+  detail: News detail
+  relation: Relation news
+  need_certificate: Can a certified user create a submission and go to certification?
+  my_subscription: My subscription
+  more_subscription: More subscription
+  from: From
+  original: original
+  not_found: News does not exist or is under review
+  cover:
+    tap_to_upload: Tap to upload cover
+    placeholder: If you do not upload the cover, it defaults to the first image in the article.
+    upload_failed: Cover image upload failed, please try again
+  post:
+    title: ['Edit news', 'Improve news information', 'Upload cover']
+    label:
+      category: Select category
+      tags: Select label
+      from: Article Source
+      author: Author
+      subject: Summary
+    placeholder:
+      title: Please enter a title, within {0} characters
+      body: Please enter the body of the article
+      category: Select category
+      tags: Select up to {0} labels
+      from: If not filled, the default is original
+      author: If not filled in, the default is the username of the site.
+      subject: Please enter summary information up to {0} characters
+    select_category: Select category
+    submit: Distribute news
+    submit_with_payment: Pay and distribute news
+    draft_confirm: Do you still have unpublished content, do you give up publishing?
+    need:
+      title&content: Please enter the title and body
+      category: Please select the submission category
+      tags: Please select a tag
+    pay:
+      title: Submission payment
+      content: You need to pay {count}@:(currency.unit) for this submission. Do you want to continue contributing?
+      confirm: Confirm submission
+      cancel: Not considering
+
+group:
+  name: Group
+  avatar: Group avatar
+  index: Group
+  count: '{count} interest groups, waiting for you to join!'
+  my: I joined
+  ta: Its joined
+  all: All groups
+  view_all: View all
+  view_more: View more
+  hot: Popular recommendation
+  refresh: Change batch
+  need_certificate: Can a certified user create a group to authenticate?
+  need_review: After reviewing, you can view the group information~
+  need_join_first: You need to join the group before you can view the group information~
+  audit: Under review
+  join: Join
+  owner: owner
+  admin: admin
+  member: members
+  reward: Reward
+
+  pay:
+    name: Pay
+    apply: Apply to join the group
+    join: Pay and join
+    confirm: You only need to pay ${0}@:(currency.name) to join the group.
+
+  create:
+    name: Create group
+    no_location: Do not display location
+    location_map: ['Mercury', 'Venus', 'Mars', 'Saturn', 'Earch']
+    label:
+      avatar: Upload group avatar
+      name: Name
+      category: Category
+      tag: Tags
+      location: Location
+      bio: Introduction
+      notice: Notice
+      sync: Post sync to feed
+      private: Set as a private group
+    placeholder:
+      name: Enter the group name, within {0} words
+      category: Choose category
+      tag: Select tags
+      location: Set the location of the group
+      bio: Edit introduction
+      optional: Optional
+      paid: amount
+    agree: 'Click to create agree to {protocol}'
+    protocol: '"ThinkSNS+ Group Creation Agreement"'
+    paid: Paid
+    free: Free
+    need_review: 'Note: Users need to be approved by the group administrator to join the closed group.'
+
+  information: Information
+  report: Report group
+  black: Black list
+  black_join: Join black list
+  black_confirm: Confirm to join the blacklist?
+  transfer: Transfer group
+  exit: Quit
+  exit_confirm: Are you sure you want to leave the circle?
+  exit_success: Exit group successfully
+
+  members:
+    name: Members
+    owener: Owner
+    admin: Administrators
+    oa: Owener and administrators
+
+  post:
+    name: group posts
+    count: Number of posts {0}
+    new: Newest posts
+    new_reply: Newest reply
+    permission: Permission
+    need_permission: '"{0}" only {1} has post permission'
+    need_join_first: Need to join before you can post
+    delete:
+      name: Delete group post
+      success: Delete group post success
+    top:
+      name: Top group post
+      apply: Apply for post tops
+      success: Topping success!
+
+question:
+  name: Question
+  detail: Question information
+  qa: Questions and answers
+  q_a: Q&A
+
+  topic:
+    name: Topic
+    detail: Topic detail
+    desc: Introduction
+    all: All topics
+    follow: Following
+    expert:
+      name: Expert
+      list: Expert list
+      count: '{0} related experts'
+    apply:
+      name: Suggested to create a topic
+      success: Successful application
+      no_find: No related topics found
+      suggest: Create new topics for official advice
+      placeholder:
+        name: Enter the topic name
+        desc: Enter a description of the topic
+
+  answer:
+    name: Answers
+    detail: Answer detail
+    add: Add answer
+    view: View answer
+    count: '{0} answers'
+    invite: ['Invited Reward', 'Set Reward', 'Unset Reward']
+    sort: ['time', 'default']
+    adoption: Adopted
+    invited: Invited
+    look:
+      already: Overlooking
+      count: '{0} people are watching'
+    pay:
+      name: Pay
+      look: Onlookers
+      count: You only need to pay {0} points to watch the answer.
+      success: Payment successful!
+
+message:
+  name: Message
+  notice: Notice
+  not_exist: The resource does not exist or is deleted
+
+  system:
+    name: System messages
+    empty: No system notification
+
+    reward_user: '{user} rewards you'
+    reward_feed: '{user} rewards your feed'
+    reward_news: '{user} reward your news "{news}" {amount}'
+    group_join: ['Agree to user {user} to join the group "{group}"', 'Reject users to join the group "{group}"']
+    certificate: ['The identity you applied for has passed', 'The identity you applied for has been rejected']
+    qa_adopt: 'The answer you submitted "{answer}" was adopted'
+    reward_qa: '{user} rewards your answer'
+    qa_invitation: '{user} invites you to answer the question "{question}"'
+    pinned_feed_comment: ['Agree to the feed comment on "{comment}" top request', 'Reject the feed comment "{comment}" top request']
+    pinned_news_comment: ['Agree to the news "{news}"" comment "{comment}"', 'Reject to the news "{news}" comment "{comment}"']
+    pinned_post_comment: ['Agree to post "{post}" comment pin request', 'reject post "{post}" comment pin request']
+    pinned_post: ['Agree to the top request for the post "{post}"', 'Reject the top request for the post "{post}"']
+
+  comment:
+    name: Comments
+    reply: '{user1} Reply {user2}'
+    commented: '{0} commented me'
+    empty: No one has commented on you yet.
+    type: {'feeds': 'comment your feed', 'news': 'comment your news', 'group-posts': 'comment your group post'}
+
+
+  like:
+    name: Likes
+    liked: '{0} liked me'
+    empty: No one has ever liked you yet.
+
+  audit:
+    name: Review notification
+    review: Review
+    accept: Accept
+    reject: Reject
+    reviewed: Reviewed
+    rejected: Rejected
+    placeholder: ['You have unreviewed notification', 'No pending applications']
+    group_join: Apply to join the group "{group}" you created, please review it in time.
+    types:
+      feed_comment_top: top the moment comment
+      news_comment_top: top the news comment
+      post_comment_top: top the post comment
+      post_top: top the post
+      group_join: group application
+    top:
+      amount: '{amount} @:(currency.unit) / {day} days'
+      accept: Agree to top
+      reject: Reject to top
+
+  chat:
+    name: Chat
+
+rank:
+  name: Ranking list
+  user: User
+  balance: Wealth leader list
+  checkin: Check-in ranking list
+  checkin_count: 'Cumulative check-in: {0}'
+  expert: Q&A leader list
+  fans: Fans rankings
+  fans_count: "Fans: {0}"
+  income: Revenue leader ranking
+  question_like: Q&A like ranking
+  question_like_count: 'like: {0}'
+  feed: 'Feed ranking {0}'
+  feed_count: 'like: {0}'
+  news: 'News ranking {0}'
+  news_count: 'view: {0}'
+  answer: 'Answer ranking {0}'
+  answer_count: 'answer: {0}'
+
+find:
+  name: Find user
+  user:
+    recommend: Recommended Users
+
+location:
+  name: Position
+  city: Select city
+  hot_city: Hot city
+  current: Current position
+  empty: Not positioned
+  choose: Select targeting
+  positioning: Positioning...
+  error: Positioning failure
+
+password:
+  input: Input password
+  forgot: forget password?
+
+auth:
+  login: Login
+  register:
+    name: Register
+    success: Register success
+    protocol: Register protocol
+    agree: By clicking Register, I agree to {protocol}
+    ts_protocol: '"ThinkSNS + User Use Agreement"'
+    label:
+      phone: Register with phone
+      email: Register with email
+  label:
+    username: Username
+    email: Email
+    phone: Phone
+    code: Code
+    password: Password
+  placeholder:
+    username: Cannot be lower than 4 characters
+    email: Enter email address
+    phone: Enter {0} digits
+    account: Username / Phone / Email
+    password: Enter a login password of {0} or more
+    code: Enter {0}-{1} digit verification code
+  user: User
+  account: Account
+  password: Password
+  guest: Don't log in, just stroll around
+  one_key: Quick login
+  use_phone: Use the phone number to login
+  use_account: Use the account to login
+  get_code: Get code
+  resend: 'Resend after {0}s'
+  wechat: Wechat
+  error:
+    account: Account is incorrect
+    username_number: Username cannot start with a number
+    username_special_char: Username cannot contain special symbols
+    password: Password is incorrect
+    phone: Please enter the correct phone number
+    email: Please enter the correct email
+    password_min: Password length must be greater than {0} bit
+    password_max: Password cannot exceed {0} digits
+  forgot:
+    name: Forget password
+    find: Find password
+    type:
+      email: Use email
+      phone: Use phone
+    success: The password was successfully modified and returned to log in again.
+  change_password:
+    name: Change Password
+    label:
+      old: Old password
+      new: New password
+      confirm: Confirm
+    placeholder:
+      old: Enter the original password above {0}
+      new: Enter a new password above {0}
+      confirm: Confirm the new password
+    message:
+      length: The new password must be between {0} and {1} digits long
+      confirm: Password confirmation is inconsistent, please re-enter
+      success: The password was successfully modified and returned to log in again.
+
+network:
+  cancel: Operation cancellation
+  not_found: The page is lost, click to return to the previous page
+  error:
+    e400: Bad request
+    e401: please log in first
+    e401_expire: Login failed, please log in again
+    e403: Access Denied
+    e404: Request error, the resource was not found
+    e405: Request method not allowed
+    e408: Request timed out
+    e422: Bad request
+    e500: Network error, please contact the administrator
+    e501: Network not implemented
+    e502: Bad Gateway
+    e503: Service Unavailable
+    e504: Gateway Timeout
+    e505:  HTTP Version Not Supported
+    default: Error {0}
+    disconnect: Lost connection with the server!
+
+popup_buy_ts: 'Open source version does not have this feature, you need to use this feature, please purchase genuine licensed source code, visit www.thinksns.com, or directly consult: QQ3515923610; Tel: 17311245680.'

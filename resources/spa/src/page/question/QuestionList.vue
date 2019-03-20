@@ -1,78 +1,84 @@
 <template>
-  <div
-    class="p-question-list"
-    @click.capture.stop.prevent="popupBuyTS">
-
+  <div class="p-question-list" @click.capture.stop.prevent="popupBuyTS">
     <!-- Question navs. -->
     <nav class="nav">
-      <router-link
+      <RouterLink
         to="/question"
         replace
         exact
-        exact-active-class="active">热门</router-link>
-      <router-link
+        exact-active-class="active"
+      >
+        {{ $t('hot') }}
+      </RouterLink>
+      <RouterLink
         :to="navRouterLinkBuilder('excellent')"
         replace
         exact
-        exact-active-class="active">精选</router-link>
-      <router-link
+        exact-active-class="active"
+      >
+        {{ $t('excellent') }}
+      </RouterLink>
+      <RouterLink
         :to="navRouterLinkBuilder('reward')"
         replace
         exact
-        exact-active-class="active">悬赏</router-link>
-      <router-link
+        exact-active-class="active"
+      >
+        {{ $t('group.reward') }}
+      </RouterLink>
+      <RouterLink
         :to="navRouterLinkBuilder('new')"
         replace
         exact
-        exact-active-class="active">最新</router-link>
-      <router-link
+        exact-active-class="active"
+      >
+        {{ $t('newest') }}
+      </RouterLink>
+      <RouterLink
         :to="navRouterLinkBuilder('all')"
         replace
         exact
-        exact-active-class="active">全部</router-link>
+        exact-active-class="active"
+      >
+        {{ $t('all') }}
+      </RouterLink>
     </nav>
 
     <!-- Question main. -->
     <main class="main">
-      <div
-        v-if="loading"
-        class="main-loading">
-        <icon-loading class="main-loading_icon" />
+      <div v-if="loading" class="main-loading">
+        <IconLoading class="main-loading_icon" />
       </div>
 
-      <question-card
+      <QuestionCard
         v-for="question in questions"
         :key="question.id"
         :question="question"
-        :no-excellent="type === 'excellent'" />
+        :no-excellent="type === 'excellent'"
+      />
 
-      <div
-        v-if="questions.length && !loadmore"
-        class="main-loadmore">
-        <button
-          class="main-loadmore_button"
-          @click="fetchQuestionsMore">加载更多</button>
+      <div v-if="questions.length && !loadmore" class="main-loadmore">
+        <button class="main-loadmore_button" @click="fetchQuestionsMore">
+          {{ $t('loadmore.bottom[2]') }}
+        </button>
       </div>
 
-      <div
-        v-else-if="loadmore"
-        class="main-loadmore">
+      <div v-else-if="loadmore" class="main-loadmore">
         <button class="main-loadmore_button active">
-          <icon-loading class="main-loading_icon" />
+          <IconLoading class="main-loading_icon" />
         </button>
       </div>
     </main>
 
     <button class="create-question">
       <svg class="m-style-svg m-svg-small">
-        <use xlink:href="#icon-plus"/>
+        <use xlink:href="#icon-plus" />
       </svg>
     </button>
   </div>
 </template>
 
 <script>
-import message from 'plus-message-bundle'
 import LinearLoading from '@/icons/LinearLoading.vue'
 import QuestionCard from './components/QuestionCard.vue'
 import { list } from '@/api/questions'
@@ -138,7 +144,6 @@ export default {
         })
         .catch(({ response: { data } = {} }) => {
           this.loading = false
-          this.$Message.error(message(data, '加载失败，请刷新重试！'))
         })
     },
 
@@ -147,16 +152,12 @@ export default {
       list(this.type, this.questions.length + 1)
         .then(({ data }) => {
           this.loadmore = false
-          if (!data.length) {
-            this.$Message.error('没有更多数据了')
-            return
-          }
+          if (!data.length) return
 
           this.questions = [...this.questions, ...data]
         })
         .catch(({ response: { data } = {} }) => {
           this.loadmore = false
-          this.$Message.error(message(data, '加载失败，请刷新重试！'))
         })
     },
   },
@@ -165,7 +166,7 @@ export default {
 
 <style lang="less" scoped>
 .p-question-list {
-  padding-top: 180px !important;
+  padding-top: 180px;
   padding-bottom: 100px;
   min-height: 100vh;
 
@@ -181,7 +182,7 @@ export default {
     background: #fff;
     color: #999;
     font-size: 30px;
-    border-bottom: solid 1px #dedede;
+    border-bottom: solid 1px #dedede; /* no */
     z-index: 10;
 
     > a {
@@ -214,7 +215,7 @@ export default {
         padding: 12px 24px;
         color: #58b6d7;
         background-color: transparent;
-        border: solid 1px #58b6d7;
+        border: solid 1px #58b6d7; /* no */
         border-radius: 6px;
         outline: none;
         display: inline-flex;
@@ -238,7 +239,7 @@ export default {
     padding: 0;
     border-radius: 100%;
     background-color: @primary;
-    border: 2px solid #fff;
+    border: 2px solid #fff; /* no */
     box-shadow: 0px 0px 12px 0px rgba(89, 182, 215, 0.43);
     z-index: 1;
 

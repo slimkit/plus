@@ -4,12 +4,12 @@
  * +----------------------------------------------------------------------+
  * |                          ThinkSNS Plus                               |
  * +----------------------------------------------------------------------+
- * | Copyright (c) 2018 Chengdu ZhiYiChuangXiang Technology Co., Ltd.     |
+ * | Copyright (c) 2016-Present ZhiYiChuangXiang Technology Co., Ltd.     |
  * +----------------------------------------------------------------------+
- * | This source file is subject to version 2.0 of the Apache license,    |
- * | that is bundled with this package in the file LICENSE, and is        |
- * | available through the world-wide-web at the following url:           |
- * | http://www.apache.org/licenses/LICENSE-2.0.html                      |
+ * | This source file is subject to enterprise private license, that is   |
+ * | bundled with this package in the file LICENSE, and is available      |
+ * | through the world-wide-web at the following url:                     |
+ * | https://github.com/slimkit/plus/blob/master/LICENSE                  |
  * +----------------------------------------------------------------------+
  * | Author: Slim Kit Group <master@zhiyicx.com>                          |
  * | Homepage: www.thinksns.com                                           |
@@ -30,7 +30,7 @@ class LocationsTest extends TestCase
      */
     public function testSearchLocations()
     {
-        $response = $this->get('/api/v2/locations/search?name=北京');
+        $response = $this->json('GET', '/api/v2/locations/search?name='.urlencode('北京'));
 
         $response->assertStatus(200);
     }
@@ -43,7 +43,7 @@ class LocationsTest extends TestCase
      */
     public function testGetHotLocations()
     {
-        $response = $this->get('/api/v2/locations/hots');
+        $response = $this->json('GET', '/api/v2/locations/hots');
 
         $response->assertStatus(200);
     }

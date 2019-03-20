@@ -1,39 +1,45 @@
 <template>
-  <transition
+  <Transition
     enter-active-class="animated bounceInRight"
-    leave-active-class="animated bounceOutLeft">
+    leave-active-class="animated bounceOutLeft"
+  >
     <div class="p-signup">
-
-      <common-header>
-        {{ _$type.label }}注册
+      <CommonHeader>
+        {{ $t(`auth.register.label.${type}`) }}
         <a
           v-if="allowType === 'all'"
           slot="right"
-          @click.prevent="changeType">{{ _$type.label2 }}</a>
-      </common-header>
+          @click.prevent="changeType"
+        >
+          {{ type === 'phone' ? 'auth.label.email' : 'auth.label.phone' | t }}
+        </a>
+      </CommonHeader>
 
       <main>
         <div class="m-form-row m-main">
-          <label for="username">用户名</label>
+          <label for="username">{{ $t('auth.label.username') }}</label>
           <div class="m-input">
             <input
               id="username"
               v-model.trim="name"
               type="text"
-              placeholder="用户名不能低于2个中文或4个英文"
-              maxlength="8">
+              :placeholder="$t('auth.placeholder.username')"
+              maxlength="8"
+            >
           </div>
           <svg
             v-show="name.length > 0"
             class="m-style-svg m-svg-def"
-            @click="name = ''">
-            <use xlink:href="#icon-clean"/>
+            @click="name = ''"
+          >
+            <use xlink:href="#icon-clean" />
           </svg>
         </div>
         <div
           v-if="verifiable_type === 'sms'"
-          class="m-form-row m-main">
-          <label for="phone">手机号</label>
+          class="m-form-row m-main"
+        >
+          <label for="phone">{{ $t('auth.label.phone') }}</label>
           <div class="m-input">
             <input
               id="phone"
@@ -41,36 +47,41 @@
               type="number"
               pattern="[0-9]*"
               oninput="value=value.slice(0, 11)"
-              placeholder="输入11位手机号">
-              <!-- maxlength="11" -->
+              :placeholder="$t('auth.placeholder.phone', [11])"
+            >
+            <!-- maxlength="11" -->
           </div>
           <span
             :class="{ disabled: phone.length < 11 || countdown > 0 }"
             class="code-text"
-            @click="getCode">
+            @click="getCode"
+          >
             {{ codeText }}
           </span>
         </div>
         <div
           v-if="verifiable_type === 'mail'"
-          class="m-form-row m-main">
-          <label for="email">邮箱</label>
+          class="m-form-row m-main"
+        >
+          <label for="email">{{ $t('auth.label.email') }}</label>
           <div class="m-input">
             <input
               id="email"
               v-model.trim="email"
               type="email"
-              placeholder="输入邮箱地址">
+              :placeholder="$t('auth.placeholder.email')"
+            >
           </div>
           <span
             :class="{ disabled: email.length < 4 || countdown > 0 }"
             class="code-text"
-            @click="getCode">
+            @click="getCode"
+          >
             {{ codeText }}
           </span>
         </div>
         <div class="m-form-row m-main">
-          <label for="code">验证码</label>
+          <label for="code">{{ $t('auth.label.code') }}</label>
           <div class="m-input">
             <input
               id="code"
@@ -78,18 +89,20 @@
               type="number"
               pattern="[0-9]*"
               oninput="value=value.slice(0, 6)"
-              placeholder="输入4-6位验证码" >
+              :placeholder="$t('auth.placeholder.code', [4, 6])"
+            >
           </div>
           <svg
             v-show="verifiable_code.length > 0"
             class="m-style-svg m-svg-def"
-            @click="verifiable_code = ''">
-            <use xlink:href="#icon-clean"/>
+            @click="verifiable_code = ''"
+          >
+            <use xlink:href="#icon-clean" />
           </svg>
         </div>
 
         <div class="m-form-row m-main">
-          <label for="password">密码</label>
+          <label for="password">{{ $t('auth.label.password') }}</label>
           <div class="m-input">
             <input
               v-if="eye"
@@ -97,19 +110,22 @@
               v-model="password"
               type="text"
               maxlength="16"
-              placeholder="输入6位以上登录密码" >
+              :placeholder="$t('auth.placeholder.password', [6])"
+            >
             <input
               v-else
               id="password"
               v-model="password"
               maxlength="16"
               type="password"
-              placeholder="输入6位以上登录密码" >
+              :placeholder="$t('auth.placeholder.password', [6])"
+            >
           </div>
           <svg
             class="m-style-svg m-svg-def"
-            @click="eye = !eye">
-            <use :xlink:href="eye ? '#eye-open' : '#eye-close'"/>
+            @click="eye = !eye"
+          >
+            <use :xlink:href="eye ? '#eye-open' : '#eye-close'" />
           </svg>
         </div>
         <div class="m-box m-aln-center m-text-box m-form-err-box">
@@ -117,27 +133,30 @@
         </div>
         <div
           class="m-form-row"
-          style="border: 0">
+          style="border: 0"
+        >
           <button
             :disabled="loading||disabled"
             class="m-long-btn m-signin-btn"
-            @click="signUp">
-            <circle-loading v-if="loading" />
-            <span v-else>注册</span>
+            @click="signUp"
+          >
+            <CircleLoading v-if="loading" />
+            <span v-else>{{ $t('auth.register.name') }}</span>
           </button>
         </div>
       </main>
       <footer>
         <template v-if="showProtocol">
-          <router-link
-            to="/signup/protocol"
-            class="register-protocol">
-            点击注册即代表同意《ThinkSNS+用户使用协议》
-          </router-link>
+          <RouterLink to="/signup/protocol" class="register-protocol">
+            <!-- eslint-disable-next-line vue/component-name-in-template-casing -->
+            <i18n path="auth.register.agree">
+              <span place="protocol">{{ $t('auth.register.ts_protocol') }}</span>
+            </i18n>
+          </RouterLink>
         </template>
       </footer>
     </div>
-  </transition>
+  </Transition>
 </template>
 
 <script>
@@ -192,9 +211,12 @@ export default {
   },
   computed: {
     ...mapState(['CONFIG']),
+    settings () {
+      return this.CONFIG.registerSettings || {}
+    },
     allowType () {
       // mobile-only | mail-only | all
-      return this.CONFIG.registerSettings.method
+      return this.settings.method || 'all'
     },
     currentType: {
       get () {
@@ -206,11 +228,10 @@ export default {
       },
     },
     showProtocol () {
-      const registerSettings = this.CONFIG.registerSettings || {}
-      return registerSettings.showTerms || false
+      return this.settings.showTerms || false
     },
     codeText () {
-      return this.countdown > 0 ? `${this.countdown}s后重发` : '获取验证码'
+      return this.countdown > 0 ? this.$t('auth.resend', [this.countdown]) : this.$t('auth.get_code')
     },
     canGetCode () {
       return (
@@ -234,33 +255,14 @@ export default {
 
       if (!res) return true
 
+      if (verifiableCode.length < 4 || verifiableCode.length > 6) return true
+
       return this.verifiable_type === 'sms'
         ? phone.length !== 11
         : email.length <= 4
     },
-    _$type: {
-      get () {
-        let label = ''
-        let label2 = ''
-        switch (this.currentType) {
-          case SMS:
-            label = '手机'
-            label2 = '邮箱'
-            break
-          case EMAIL:
-            label = '邮箱'
-            label2 = '手机'
-            break
-        }
-        return {
-          value: this.currentType,
-          label,
-          label2,
-        }
-      },
-      set (val) {
-        this.currentType = val
-      },
+    type () {
+      return this.verifiable_type === SMS ? 'phone' : 'email'
     },
   },
   methods: {
@@ -301,22 +303,22 @@ export default {
       } = this.$data
 
       // 判断首字符是否为数字
-      if (!isNaN(name[0])) { return this.$Message.error({ name: '用户名不能以数字开头' }) }
+      if (!isNaN(name[0])) { return this.$Message.error({ name: this.$t('auth.error.username_number') }) }
 
       // 判断特殊字符及空格
-      if (!usernameReg.test(name)) { return this.$Message.error({ name: '用户名不能包含特殊符号以及空格' }) }
+      if (!usernameReg.test(name)) { return this.$Message.error({ name: this.$t('auth.error.username_special_char') }) }
 
       // 判断字节数
-      if (strLength(name) > 48 || strLength(name) < 4) { this.$Message.error({ name: '用户名不能少于2个中文或4个英文' }) }
+      if (strLength(name) > 48 || strLength(name) < 4) { this.$Message.error({ name: this.$t('auth.placeholder.username') }) }
 
       // 手机号
-      if (verifiableType === SMS && !phoneReg.test(phone)) { return this.$Message.error({ phone: '请输入正确的手机号码' }) }
+      if (verifiableType === SMS && !phoneReg.test(phone)) { return this.$Message.error({ phone: this.$t('auth.error.phone') }) }
 
       // 邮箱
-      if (verifiableType !== SMS && !emailReg.test(email)) { return this.$Message.error({ email: '请输入正确的邮箱号码' }) }
+      if (verifiableType !== SMS && !emailReg.test(email)) { return this.$Message.error({ email: this.$t('auth.error.email') }) }
 
       // 密码长度
-      if (password.length < 6) { return this.$Message.error({ password: '密码长度必须大于6位' }) }
+      if (password.length < 6) { return this.$Message.error({ password: this.$t('auth.error.password_min', [6]) }) }
 
       let param = {
         name,
@@ -333,7 +335,7 @@ export default {
         .post('users', param)
         .then(({ data: { token } = {} }) => {
           if (token) {
-            this.$Message.success('注册成功, 请登陆')
+            this.$Message.success(this.$t('auth.register.success'))
             this.$router.push('/signin')
           }
         })
@@ -345,10 +347,10 @@ export default {
     changeType () {
       switch (this.currentType) {
         case SMS:
-          this._$type = EMAIL
+          this.currentType = EMAIL
           break
         case EMAIL:
-          this._$type = SMS
+          this.currentType = SMS
           break
       }
     },
@@ -369,8 +371,8 @@ export default {
 
   .m-form-row {
     label {
-      flex: 0 0 30 * 4px;
-      width: 30 * 4px;
+      flex: none;
+      width: 5em;
     }
     .m-input {
       padding: 0 30px 0 0;
@@ -398,12 +400,9 @@ export default {
   }
 
   footer {
-    position: fixed;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    text-align: center;
+    margin-top: 40px;
     padding: 0.2rem;
+    text-align: center;
 
     .register-protocol {
       font-size: 0.3rem;

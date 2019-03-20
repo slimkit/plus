@@ -1,12 +1,12 @@
 <template>
   <div class="about-us">
-
-    <common-header>关于我们</common-header>
+    <CommonHeader>{{ $t('setting.about.name') }}</CommonHeader>
 
     <main>
       <div
         class="content markdown-body"
-        v-html="body"/>
+        v-html="body"
+      />
     </main>
   </div>
 </template>

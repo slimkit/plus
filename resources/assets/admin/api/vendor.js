@@ -25,4 +25,5 @@ export const easemob = new VendorRequestGenerator('setting/vendor/easemob');
 export const qq = new VendorRequestGenerator('setting/vendor/qq');
 export const wechat = new VendorRequestGenerator('setting/vendor/wechat');
 export const weibo = new VendorRequestGenerator('setting/vendor/weibo');
+export const wechatMp = new VendorRequestGenerator('setting/vendor/wechat-mp');
 

@@ -1,20 +1,20 @@
 <template>
   <div class="msgList-status">
     <section v-if="audit.comment != null">
-      <section
-        v-if="audit.expires_at != null"
-        class="gray">
-        <span class="amount-show">{{ audit.amount }}{{ currencyUnit }} / {{ audit.day }}天</span>已审核
+      <section v-if="audit.expires_at != null" class="gray">
+        <span class="amount-show">{{ $t('message.audit.top.amount', audit) }}</span>
+        {{ $t('message.audit.reviewed') }}
       </section>
       <section
         v-else
         class="green"
-        @click="showOperations(audit)">
-        <span class="audit-show">{{ audit.amount }}{{ currencyUnit }} / {{ audit.day }}天</span>
-        <span class="audit-operation">审核</span>
+        @click="showOperations(audit)"
+      >
+        <span class="audit-show">{{ $t('message.audit.top.amount', audit) }}</span>
+        <span class="audit-operation">{{ $t('message.audit.review') }}</span>
       </section>
     </section>
-    <section v-if="!audit.comment" class="red"> 该评论已被删除 </section>
+    <section v-if="!audit.comment" class="red"> {{ $t('article.deleted') }} </section>
   </div>
 </template>
 
@@ -54,7 +54,7 @@ export default {
         })
         .then(() => {
           this.audit.expires_at = 1
-          this.$Message.success('已驳回')
+          this.$Message.success(this.$t('message.audit.rejected'))
         })
     },
   },

@@ -6,12 +6,12 @@ declare(strict_types=1);
  * +----------------------------------------------------------------------+
  * |                          ThinkSNS Plus                               |
  * +----------------------------------------------------------------------+
- * | Copyright (c) 2018 Chengdu ZhiYiChuangXiang Technology Co., Ltd.     |
+ * | Copyright (c) 2016-Present ZhiYiChuangXiang Technology Co., Ltd.     |
  * +----------------------------------------------------------------------+
- * | This source file is subject to version 2.0 of the Apache license,    |
- * | that is bundled with this package in the file LICENSE, and is        |
- * | available through the world-wide-web at the following url:           |
- * | http://www.apache.org/licenses/LICENSE-2.0.html                      |
+ * | This source file is subject to enterprise private license, that is   |
+ * | bundled with this package in the file LICENSE, and is available      |
+ * | through the world-wide-web at the following url:                     |
+ * | https://github.com/slimkit/plus/blob/master/LICENSE                  |
  * +----------------------------------------------------------------------+
  * | Author: Slim Kit Group <master@zhiyicx.com>                          |
  * | Homepage: www.thinksns.com                                           |
@@ -20,10 +20,10 @@ declare(strict_types=1);
 
 namespace SlimKit\PlusCheckIn\Providers;
 
+use function Zhiyi\Plus\setting;
 use Illuminate\Support\ServiceProvider;
 use Zhiyi\Plus\Support\ManageRepository;
 use Zhiyi\Plus\Support\BootstrapAPIsEventer;
-use Illuminate\Contracts\Config\Repository as ConfigRepository;
 
 class RouteServiceProvider extends ServiceProvider
 {
@@ -41,8 +41,10 @@ class RouteServiceProvider extends ServiceProvider
         // Register Bootstraper API event.
         $this->app->make(BootstrapAPIsEventer::class)->listen('v2', function () {
             return [
-                'checkin' => (bool) $this->app->make(ConfigRepository::class)->get('checkin.open'),
-                'checkin:attach_balance' => (int) $this->app->make(ConfigRepository::class)->get('checkin.attach_balance'),
+                'checkin' => [
+                    'switch' => setting('checkin', 'switch', true),
+                    'balance' => setting('checkin', 'attach-balance', 1),
+                ],
             ];
         });
 

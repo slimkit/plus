@@ -1,13 +1,17 @@
 <template id="alert-template">
   <div
     v-show="show"
-    :class="alertClasses">
+    :class="alertClasses"
+  >
     <slot>
       <strong>Default!</strong> Hello World~
     </slot>
     <span
       class="Alert__close"
-      @click="show = false">x</span>
+      @click="show = false"
+    >
+      x
+    </span>
   </div>
 </template>
 <script>

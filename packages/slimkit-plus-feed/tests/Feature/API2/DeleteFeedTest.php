@@ -6,12 +6,12 @@ declare(strict_types=1);
  * +----------------------------------------------------------------------+
  * |                          ThinkSNS Plus                               |
  * +----------------------------------------------------------------------+
- * | Copyright (c) 2018 Chengdu ZhiYiChuangXiang Technology Co., Ltd.     |
+ * | Copyright (c) 2016-Present ZhiYiChuangXiang Technology Co., Ltd.     |
  * +----------------------------------------------------------------------+
- * | This source file is subject to version 2.0 of the Apache license,    |
- * | that is bundled with this package in the file LICENSE, and is        |
- * | available through the world-wide-web at the following url:           |
- * | http://www.apache.org/licenses/LICENSE-2.0.html                      |
+ * | This source file is subject to enterprise private license, that is   |
+ * | bundled with this package in the file LICENSE, and is available      |
+ * | through the world-wide-web at the following url:                     |
+ * | https://github.com/slimkit/plus/blob/master/LICENSE                  |
  * +----------------------------------------------------------------------+
  * | Author: Slim Kit Group <master@zhiyicx.com>                          |
  * | Homepage: www.thinksns.com                                           |
@@ -29,21 +29,6 @@ class DeleteFeedTest extends TestCase
 {
     use DatabaseTransactions;
 
-    protected $user;
-
-    protected $feed;
-
-    public function setUp()
-    {
-        parent::setUp();
-
-        $this->user = factory(UserModel::class)->create();
-
-        $this->feed = factory(Feed::class)->create([
-            'user_id' => $this->user->id,
-        ]);
-    }
-
     /**
      * 测试删除自己动态
      *
@@ -51,9 +36,13 @@ class DeleteFeedTest extends TestCase
      */
     public function testDeleteFeed()
     {
+        $user = factory(UserModel::class)->create();
+        $feed = factory(Feed::class)->create([
+            'user_id' => $user->id,
+        ]);
         $response = $this
-            ->actingAs($this->user, 'api')
-            ->json('DELETE', '/api/v2/feeds/'.$this->feed->id);
+            ->actingAs($user, 'api')
+            ->json('DELETE', '/api/v2/feeds/'.$feed->id.'/currency');
         $response
             ->assertStatus(204);
     }
@@ -65,9 +54,14 @@ class DeleteFeedTest extends TestCase
      */
     public function testDeleteOtherFeed()
     {
+        $user = factory(UserModel::class)->create();
+        $feed = factory(Feed::class)->create([
+            'user_id' => factory(UserModel::class)->create()->id,
+        ]);
+
         $response = $this
-            ->actingAs(factory(UserModel::class)->create(), 'api')
-            ->json('DELETE', '/api/v2/feeds/'.$this->feed->id);
+            ->actingAs($user, 'api')
+            ->json('DELETE', '/api/v2/feeds/'.$feed->id.'/currency');
         $response
             ->assertStatus(403);
     }
@@ -80,23 +74,9 @@ class DeleteFeedTest extends TestCase
     public function testDeleteNonExistFeed()
     {
         $response = $this
-            ->actingAs($this->user, 'api')
-            ->json('DELETE', '/api/v2/feeds/0');
+            ->actingAs(factory(UserModel::class)->create(), 'api')
+            ->json('DELETE', '/api/v2/feeds/0/currency');
         $response
             ->assertStatus(404);
-    }
-
-    /**
-     * 新版删除动态 退还积分.
-     *
-     * @return mixed
-     */
-    public function testNewDeleteFeed()
-    {
-        $response = $this
-            ->actingAs($this->user, 'api')
-            ->json('DELETE', "/api/v2/feeds/{$this->feed->id}/currency");
-        $response
-            ->assertStatus(204);
     }
 }

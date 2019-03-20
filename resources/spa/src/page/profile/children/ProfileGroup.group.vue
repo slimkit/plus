@@ -3,29 +3,33 @@
     <div class="profile-group-nav">
       <div
         v-for="({ label, type },index) in navs"
-        :class="{active: curType === type}"
         :key="`profile-group-nav-${index}`"
+        :class="{active: curType === type}"
         class="profile-group-nav-item"
-        @click="curType = type">{{ label }}</div>
+        @click="curType = type"
+      >
+        {{ label }}
+      </div>
     </div>
     <div>
-      <groupItem
+      <GroupItem
         v-for="group in dataList"
         v-if="group.id"
-        :role="true"
         :key="`profile-group-${group.id}`"
-        :group="group"/>
+        :role="true"
+        :group="group"
+      />
     </div>
   </div>
 </template>
 
 <script>
-import groupItem from '@/page/group/components/GroupItem.vue'
+import GroupItem from '@/page/group/components/GroupItem.vue'
 
 export default {
   name: 'ProfileGroupGroups',
   components: {
-    groupItem,
+    GroupItem,
   },
   data () {
     return {

@@ -6,12 +6,12 @@ declare(strict_types=1);
  * +----------------------------------------------------------------------+
  * |                          ThinkSNS Plus                               |
  * +----------------------------------------------------------------------+
- * | Copyright (c) 2018 Chengdu ZhiYiChuangXiang Technology Co., Ltd.     |
+ * | Copyright (c) 2016-Present ZhiYiChuangXiang Technology Co., Ltd.     |
  * +----------------------------------------------------------------------+
- * | This source file is subject to version 2.0 of the Apache license,    |
- * | that is bundled with this package in the file LICENSE, and is        |
- * | available through the world-wide-web at the following url:           |
- * | http://www.apache.org/licenses/LICENSE-2.0.html                      |
+ * | This source file is subject to enterprise private license, that is   |
+ * | bundled with this package in the file LICENSE, and is available      |
+ * | through the world-wide-web at the following url:                     |
+ * | https://github.com/slimkit/plus/blob/master/LICENSE                  |
  * +----------------------------------------------------------------------+
  * | Author: Slim Kit Group <master@zhiyicx.com>                          |
  * | Homepage: www.thinksns.com                                           |
@@ -21,20 +21,21 @@ declare(strict_types=1);
 namespace Zhiyi\Plus\Http\Controllers\APIs\V2;
 
 use Illuminate\Http\Request;
-use Zhiyi\Plus\Repository\WalletPingPlusPlus;
+use function Zhiyi\Plus\setting;
 use Zhiyi\Plus\Services\Wallet\Charge as ChargeService;
 use Zhiyi\Plus\Models\WalletCharge as WalletChargeModel;
 
 class PingPlusPlusChargeWebHooks
 {
-    public function webhook(Request $request, WalletPingPlusPlus $repository, ChargeService $chargeService)
+    public function webhook(Request $request, ChargeService $chargeService)
     {
         if ($request->json('type') !== 'charge.succeeded') {
             return response('不是支持的事件', 422);
         }
+        $settings = setting('wallet', 'ping++', []);
 
         $signature = $request->headers->get('x-pingplusplus-signature');
-        $pingPlusPlusPublicCertificate = $repository->get()['public_key'] ?? null;
+        $pingPlusPlusPublicCertificate = $settings['public_key'] ?? null;
 
         $signed = openssl_verify($request->getContent(), base64_decode($signature), $pingPlusPlusPublicCertificate, OPENSSL_ALGO_SHA256);
 

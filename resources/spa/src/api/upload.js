@@ -1,49 +1,61 @@
 import axios from 'axios'
 import api from './api'
+import { hashFile } from '@/util/SendImage.js'
+import i18n from '@/i18n'
 
 // 新 axios 实例用于第三方请求
 const localUploadInstance = axios.create()
 
 /**
  * 创建上传任务
- * @author mutoe <mutoe@foxmail.com>
- * @param {Object} payload
- * @param {string} payload.filename
- * @param {string} payload.hash
- * @param {number} payload.size
- * @param {string} payload.mime_type
- * @param {Object} payload.storage
- * @param {string} payload.storage.channel
+ * @param {File} file
  * @export
  */
-export function createUploadTask (payload) {
-  return api
-    .post('/storage', payload, {
-      validateStatus: s => s === 201,
-    })
-    .then(({ data }) => {
-      return data
-    })
+export async function createTask (file) {
+  return api.post('/storage', {
+    filename: file.name,
+    size: file.size,
+    mime_type: file.type,
+    storage: {
+      channel: 'public',
+    },
+    hash: await hashFile(file),
+  }, {
+    validateStatus: s => s === 201,
+  })
+}
+
+async function uploadByPut (task, file) {
+  return localUploadInstance.put(task.uri, file, {
+    headers: task.headers,
+  })
+}
+
+async function uploadByPost (task, file) {
+  return localUploadInstance.post(task.uri, file, {
+    headers: task.headers,
+  })
 }
 
 /**
- * 启动上传任务
- * @author mutoe <mutoe@foxmail.com>
+ * 启动上传
  * @export
- * @param {Object} payload
- * @param {string} payload.method
- * @param {string} payload.url
- * @param {Object} payload.headers
- * @param {Blob} payload.blob
+ * @param {File} file
  * @returns
  */
-export function uploadImage (payload) {
-  return localUploadInstance
-    .request({
-      method: payload.method,
-      url: payload.url,
-      headers: payload.headers,
-      data: payload.blob,
-    })
-    .then(res => res.data)
+export default async function (file) {
+  const { data: task } = await createTask(file)
+
+  switch (task.method) {
+    case 'PUT':
+      await uploadByPut(task, file)
+      break
+    case 'POST':
+      await uploadByPost(task, file)
+      break
+    default:
+      throw new Error(i18n.t('upload.unsupported'))
+  }
+
+  return task.node
 }

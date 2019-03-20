@@ -1,41 +1,46 @@
 <template>
-  <common-header
+  <CommonHeader
     :pinned="true"
-    class="c-switch-bar">
+    class="c-switch-bar"
+  >
     <div
       class="tab"
-      @click.capture.stop.prevent="popupBuyTS">
+      @click.capture.stop.prevent="popupBuyTS"
+    >
       <!-- Queation type link. -->
-      <router-link
+      <RouterLink
         :replace="true"
         :exact="true"
         :class="{active: $route.path === '/question'}"
         class="item"
-        to="/question" >
-        问答
-      </router-link>
+        to="/question"
+      >
+        {{ $t('question.q_a') }}
+      </RouterLink>
 
       <!-- Tags type link. -->
-      <router-link
+      <RouterLink
         :replace="true"
         :exact="true"
         :class="{active: $route.path === '/question/topics'}"
         class="item"
-        to="/question/topics" >
-        专题
-      </router-link>
+        to="/question/topics"
+      >
+        {{ $t('question.topic.name') }}
+      </RouterLink>
     </div>
 
     <div
       slot="right"
-      @click.capture.stop.prevent="popupBuyTS">
-      <router-link to="/question/search">
+      @click.capture.stop.prevent="popupBuyTS"
+    >
+      <RouterLink to="/question/search">
         <svg class="m-style-svg m-svg-def search-btn">
           <use xlink:href="#icon-search" />
         </svg>
-      </router-link>
+      </RouterLink>
     </div>
-  </common-header>
+  </CommonHeader>
 </template>
 
 <script>
@@ -63,7 +68,7 @@ export default {
       line-height: 60px;
       text-align: center;
       box-sizing: content-box;
-      border: solid 1px @primary;
+      border: solid 1px @primary; /* no */
       color: @primary;
       font-size: 32px;
 

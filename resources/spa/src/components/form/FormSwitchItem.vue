@@ -4,12 +4,14 @@
     <div class="checkbox">
       <label
         ref="label"
-        class="label">
+        class="label"
+      >
         <input
           v-model="currentValue"
           :value="value"
-          type="checkbox" >
-        <div class="box"/>
+          type="checkbox"
+        >
+        <div class="box" />
       </label>
     </div>
   </section>
@@ -80,7 +82,7 @@ export default {
     position: relative;
     width: 60px;
     height: 34px;
-    border: 1px solid #ededed;
+    border: 1px solid #ededed; /* no */
     outline: 0;
     border-radius: 34/2px;
     box-sizing: border-box;
@@ -111,7 +113,7 @@ export default {
       width: 30px;
       height: 30px;
       border-radius: 15px;
-      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4); /* no */
       /*no*/
       transition: transform 0.35s cubic-bezier(0.4, 0.4, 0.25, 1.35);
     }

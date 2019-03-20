@@ -1,15 +1,16 @@
 <template>
   <div class="c-user-item" @click="toUserHome">
-    <avatar :user="user" />
+    <Avatar :user="user" />
     <section class="user-item-body m-text-cut">
       <h2 class="m-text-box m-text-cut">{{ user.name }}</h2>
-      <p class="m-text-box m-text-cut">{{ user.bio || "这家伙很懒，什么也没留下" }}</p>
+      <p class="m-text-box m-text-cut">{{ user.bio || $t('profile.default_bio') }}</p>
     </section>
     <button
       v-if="!isMine"
       :class="{active: isFollow === 'unFollow'}"
       class="follow-btn"
-      @click.stop="followUser">
+      @click.stop="followUser"
+    >
       {{ followText }}
     </button>
   </div>
@@ -51,8 +52,8 @@ export default {
       },
     },
     followText () {
-      if (this.isFollow === 'eachFollow') return '相互关注'
-      return this.isFollow === 'follow' ? '已关注' : '+ 关注'
+      if (this.isFollow === 'eachFollow') return this.$t('follow.each')
+      return this.isFollow === 'follow' ? this.$t('follow.already') : `+ ${this.$t('follow.name')}`
     },
     isMine () {
       return this.$store.state.CURRENTUSER.id === this.user.id
@@ -88,7 +89,7 @@ export default {
   background-color: #fff;
 
   & + & {
-    border-top: 1px solid #ededed;
+    border-top: 1px solid #ededed; /* no */
   }
 
   .user-item-body {
@@ -114,11 +115,11 @@ export default {
     align-items: center;
     justify-content: center;
     flex: none;
-    width: 5em;
+    width: 6em;
     height: 1.8em;
     background: #fff;
     color: @primary;
-    border: 1px solid currentColor;
+    border: 1px solid currentColor; /* no */
     border-radius: 8px;
     white-space: nowrap;
 

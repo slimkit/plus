@@ -6,12 +6,12 @@ declare(strict_types=1);
  * +----------------------------------------------------------------------+
  * |                          ThinkSNS Plus                               |
  * +----------------------------------------------------------------------+
- * | Copyright (c) 2018 Chengdu ZhiYiChuangXiang Technology Co., Ltd.     |
+ * | Copyright (c) 2016-Present ZhiYiChuangXiang Technology Co., Ltd.     |
  * +----------------------------------------------------------------------+
- * | This source file is subject to version 2.0 of the Apache license,    |
- * | that is bundled with this package in the file LICENSE, and is        |
- * | available through the world-wide-web at the following url:           |
- * | http://www.apache.org/licenses/LICENSE-2.0.html                      |
+ * | This source file is subject to enterprise private license, that is   |
+ * | bundled with this package in the file LICENSE, and is available      |
+ * | through the world-wide-web at the following url:                     |
+ * | https://github.com/slimkit/plus/blob/master/LICENSE                  |
  * +----------------------------------------------------------------------+
  * | Author: Slim Kit Group <master@zhiyicx.com>                          |
  * | Homepage: www.thinksns.com                                           |
@@ -25,7 +25,7 @@ use Omnipay\Omnipay;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Carbon;
-use Zhiyi\Plus\Models\CommonConfig;
+use function Zhiyi\Plus\setting;
 use Zhiyi\Plus\Models\NativePayOrder;
 use Zhiyi\Plus\Http\Controllers\Controller;
 use Illuminate\Contracts\Routing\ResponseFactory;
@@ -48,11 +48,7 @@ class CurrencyPayController extends Controller
      */
     public function __construct()
     {
-        $ratio = CommonConfig::where('namespace', 'currency')
-            ->where('name', 'currency:recharge-ratio')
-            ->value('value');
-
-        $ratio && $this->ratio = $ratio;
+        $this->ratio = $ratio = setting('currency', 'settings')['recharge-ratio'] ?? 1;
     }
 
     public function entry(Request $request, ApplicationContract $app, ResponseContract $response)

@@ -1,76 +1,73 @@
 <template>
-  <transition
+  <Transition
     v-if="show"
     enter-active-class="animated slideInRight"
-    leave-active-class="animated slideOutRight">
+    leave-active-class="animated slideOutRight"
+  >
     <div class="m-box-model m-pos-f p-location">
-
-      <search-bar
-        v-model="keyword"
-        :back="goBack"/>
+      <SearchBar v-model="keyword" :back="goBack" />
 
       <main>
         <div v-if="showHot">
           <div class="m-box m-aln-center m-justify-bet m-main current-location">
-            <span>当前定位</span>
+            <span>{{ $t('location.current') }}</span>
             <p
               :class="{placeholder: currentTxt.length === 0}"
               class="m-flex-grow1 m-flex-shrink1 m-flex-base0 m-text-cut"
-              @click="goBack">{{ currentTxt || placeholder }}</p>
-            <circle-loading v-if="loading" />
+              @click="goBack"
+            >
+              {{ currentTxt || placeholder }}
+            </p>
+            <CircleLoading v-if="loading" />
             <svg
               v-else
               class="m-style-svg m-svg-def"
-              @click="getCurrentPosition">
+              @click="getCurrentPosition"
+            >
               <use xlink:href="#icon-location-arrow" />
             </svg>
           </div>
           <div class="m-box-model">
-            <span class="label">热门城市</span>
+            <span class="label">{{ $t('location.hot_city') }}</span>
             <ul class="hot-list m-main">
               <li
                 v-for="(city, index) in hotCities"
                 :key="`${city}&${index}`"
                 class="m-text-cut m-text-c"
-                @click="selectedHot(city)">
+                @click="selectedHot(city)"
+              >
                 <span>{{ city.slice(city.lastIndexOf(' ')) }}</span>
               </li>
             </ul>
           </div>
         </div>
-        <div
-          v-else
-          class="m-box-model">
+        <div v-else class="m-box-model">
           <div
             v-for="(city, index) in cities"
             :key="`search-${city}-${index}`"
             class="m-box m-aln-center m-bb1 m-main city-item"
-            @click="selectedSearchItem(index)">
+            @click="selectedSearchItem(index)"
+          >
             <span class="m-text-cut">{{ city }}</span>
           </div>
         </div>
       </main>
     </div>
-  </transition>
+  </Transition>
 </template>
 
 <script>
-import SearchBar from '@/components/common/SearchBar.vue'
-import _ from 'lodash'
+import i18n from '@/i18n'
+import { parseSearchTree } from '@/util/location'
 import * as api from '@/api/bootstrappers.js'
+import SearchBar from '@/components/common/SearchBar.vue'
 
 export default {
   name: 'Location',
   components: { SearchBar },
   props: {
-    show: {
-      type: Boolean,
-      default: true,
-    },
-    isComponent: {
-      type: Boolean,
-      default: false,
-    },
+    show: { type: Boolean, default: true },
+    isComponent: { type: Boolean, default: false },
   },
   data () {
     return {
@@ -80,7 +77,7 @@ export default {
       autoPos: {},
       hotPos: {},
       isFocus: false,
-      placeholder: '未定位',
+      placeholder: i18n.t('location.empty'),
       cities: [],
       originCities: [],
     }
@@ -134,6 +131,7 @@ export default {
   },
   methods: {
     goBack () {
+      this.keyword = ''
       this.isComponent
         ? this.$emit('close', this.currentPos)
         : this.$router.go(-1)
@@ -157,17 +155,17 @@ export default {
         })
         : []
     },
-    searchCityByName: _.debounce(function () {
+    searchCityByName () {
       api.searchCityByName(this.keyword).then(({ data = [] }) => {
         this.originCities = data
         this.cities = this.formatCities(data)
       })
-    }, 450),
+    },
     getCurrentPosition () {
       this.loading = true
       this.hotPos = null
       this.autoPos = null
-      this.placeholder = '定位中...'
+      this.placeholder = i18n.t('location.positioning')
       api.getCurrentPosition().then(
         data => {
           this.currentPos = data
@@ -176,7 +174,7 @@ export default {
         err => {
           this.loading = false
           this.currentPos = {}
-          this.placeholder = '定位失败'
+          this.placeholder = i18n.t('location.error')
           this.$Message.error(err.message)
         }
       )
@@ -196,7 +194,9 @@ export default {
       const city = this.cities[index].split('，').pop()
       api.getGeo(city.replace(/[\s\uFEFF\xA0]+/g, '')).then(data => {
         this.loading = false
-        data.label = this.originCities[index].tree.name
+        let label = parseSearchTree(this.originCities[index].tree, 3).split(' ')
+        if (label[0] === '中国') label.shift()
+        data.label = label.slice(0, 2).join(' ')
         this.currentPos = data
         this.$nextTick(this.goBack)
       })

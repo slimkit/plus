@@ -1,14 +1,13 @@
 import AboutUs from '@/page/AboutUs.vue'
 
-import SiteUpgrade from '@/page/SiteUpgrade.vue'
-
 /* TODO */
 import Settings from '@/page/Settings.vue'
 
-import Profile from '@/page/Profile.vue'
+import ProfileHome from '@/page/profile/ProfileHome.vue'
 import UserInfo from '@/page/UserInfo.vue'
 import UserHome from '@/page/UserHome.vue'
 import UserFans from '@/page/UserFans.vue'
+import UserFriends from '@/page/profile/UserFriends.vue'
 /* TODO END */
 
 import Discover from '@/page/Discover.vue'
@@ -29,12 +28,14 @@ import Location from '@/page/Location.vue'
 
 import $lstore from '@/plugins/lstore'
 
+import i18n from '@/i18n'
+
 export default [
   {
     path: '/discover',
     component: Discover,
     meta: {
-      title: '发现',
+      title: i18n.t('discover'),
     },
   },
   {
@@ -43,7 +44,7 @@ export default [
     redirect: '/find/pop',
     component: Find,
     meta: {
-      title: '找人',
+      title: i18n.t('find'),
       requiresAuth: false,
     },
     children: [
@@ -84,7 +85,7 @@ export default [
     path: '/search/user',
     component: SearchUser,
     meta: {
-      title: '找人',
+      title: i18n.t('find'),
       keepAlive: true,
     },
   },
@@ -94,18 +95,27 @@ export default [
   },
   {
     path: '/profile',
-    component: Profile,
+    component: ProfileHome,
     meta: {
-      title: '我',
+      title: i18n.t('profile.name'),
       requiresAuth: true,
     },
   },
   {
-    name: 'userDetail',
+    name: 'UserFriends',
+    path: '/users/friends',
+    component: UserFriends,
+    meta: {
+      title: i18n.t('follow.friend'),
+      requiresAuth: true,
+    },
+  },
+  {
+    name: 'UserDetail',
     path: '/users/:userId(\\d+)',
     component: UserHome,
     meta: {
-      title: '个人主页',
+      title: i18n.t('profile.home.name'),
       keepAlive: true,
       requiresAuth: true,
     },
@@ -113,9 +123,9 @@ export default [
   {
     name: 'userfans',
     component: UserFans,
-    path: '/users/:userID(\\d+)/:type(followers|followings)',
+    path: '/users/:userId(\\d+)/:type(followers|followings)',
     meta: {
-      title: '粉丝',
+      title: i18n.t('fans'),
       keepAlive: true,
       requiresAuth: true,
     },
@@ -124,7 +134,7 @@ export default [
     path: '/info',
     component: UserInfo,
     meta: {
-      title: '个人资料',
+      title: i18n.t('profile.info'),
       requiresAuth: true,
     },
   },
@@ -132,7 +142,7 @@ export default [
     path: '/setting',
     component: Settings,
     meta: {
-      title: '设置',
+      title: i18n.t('setting.name'),
       requiresAuth: true,
     },
   },
@@ -140,14 +150,14 @@ export default [
     path: '/about',
     component: AboutUs,
     meta: {
-      title: '关于我们',
+      title: i18n.t('setting.about.name'),
     },
   },
   {
     path: '/wechat',
     component: WechatSignin,
     meta: {
-      title: '登录中...',
+      title: i18n.t('setting.login.logging'),
       forGuest: true,
     },
     beforeEnter (to, from, next) {
@@ -162,7 +172,7 @@ export default [
     path: '/wechat/signup',
     component: WechatSignup,
     meta: {
-      title: '完善资料',
+      title: i18n.t('setting.login.supply'),
       forGuest: true,
     },
     beforeEnter (to, from, next) {
@@ -175,19 +185,12 @@ export default [
     path: '/wechat/bind',
     component: WechatBindUser,
     meta: {
-      title: '绑定已有账号',
+      title: i18n.t('setting.login.bind'),
       forGuest: true,
     },
     beforeEnter (to, from, next) {
       const accessToken = window.$lstore.getData('H5_WECHAT_MP_ASTOKEN')
       accessToken ? next() : next('/wechat')
-    },
-  },
-  {
-    path: '/upgrade',
-    component: SiteUpgrade,
-    meta: {
-      title: '功能开发中...',
     },
   },
 ]

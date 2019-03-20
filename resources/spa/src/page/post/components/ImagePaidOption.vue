@@ -1,15 +1,17 @@
 <template>
   <div @touchmove.prevent>
-    <transition name="toast">
+    <Transition name="toast">
       <div
         v-if="isShow"
         class="m-pop-box"
-        @click="cancel"/>
-    </transition>
-    <transition name="fade">
+        @click="cancel"
+      />
+    </Transition>
+    <Transition name="fade">
       <div
         v-if="isShow"
-        class="m-box-model m-image-paid-option-box">
+        class="m-box-model m-image-paid-option-box"
+      >
         <h2 class="m-image-paid-option-head">
           <slot name="title">
             <span>{{ title }}</span>
@@ -24,15 +26,22 @@
               :style="{ width: `${1 / items.length * 100}%` }"
               :class="{ active: ~~amount === ~~item }"
               class="m-box m-aln-center m-justify-center m-flex-grow1 m-flex-shrink1 m-pinned-amount-btn"
-              @click="chooseDefaultAmount(item)">{{ (~~item) }}</button>
+              @click="chooseDefaultAmount(item)"
+            >
+              {{ (~~item) }}
+            </button>
           </div>
         </div>
         <div
           class="m-image-paid-option-row m-bt1 m-box"
-          style="overflow: hidden;">
+          style="overflow: hidden;"
+        >
           <p
             class="m-image-paid-option-label m-flex-grow0 m-flex-shrink0"
-            style="margin-bottom: 0">自定义金额</p>
+            style="margin-bottom: 0"
+          >
+            自定义金额
+          </p>
           <div class="m-box m-aln-center m-flex-grow1 m-flex-shrink1 m-justify-end m-lim-width m-pinned-amount-customize">
             <input
               v-model="customAmount"
@@ -40,17 +49,21 @@
               pattern="[0-9]*"
               placeholder="输入自定义金额"
               oninput="value=value.slice(0, 8)"
-              class="m-text-r m-flex-grow1 m-flex-shrink1">
+              class="m-text-r m-flex-grow1 m-flex-shrink1"
+            >
             <span class="m-flex-grow0 m-flex-shrink0">{{ currencyUnit }}</span>
           </div>
         </div>
         <div class="m-image-paid-option-row m-bt1">
           <button
             class="m-long-btn"
-            @click="handleOk">确定</button>
+            @click="handleOk"
+          >
+            确定
+          </button>
         </div>
       </div>
-    </transition>
+    </Transition>
   </div>
 </template>
 <script>

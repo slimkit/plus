@@ -6,12 +6,12 @@ declare(strict_types=1);
  * +----------------------------------------------------------------------+
  * |                          ThinkSNS Plus                               |
  * +----------------------------------------------------------------------+
- * | Copyright (c) 2018 Chengdu ZhiYiChuangXiang Technology Co., Ltd.     |
+ * | Copyright (c) 2016-Present ZhiYiChuangXiang Technology Co., Ltd.     |
  * +----------------------------------------------------------------------+
- * | This source file is subject to version 2.0 of the Apache license,    |
- * | that is bundled with this package in the file LICENSE, and is        |
- * | available through the world-wide-web at the following url:           |
- * | http://www.apache.org/licenses/LICENSE-2.0.html                      |
+ * | This source file is subject to enterprise private license, that is   |
+ * | bundled with this package in the file LICENSE, and is available      |
+ * | through the world-wide-web at the following url:                     |
+ * | https://github.com/slimkit/plus/blob/master/LICENSE                  |
  * +----------------------------------------------------------------------+
  * | Author: Slim Kit Group <master@zhiyicx.com>                          |
  * | Homepage: www.thinksns.com                                           |
@@ -25,24 +25,15 @@ use Zhiyi\Plus\Models\User;
 use Illuminate\Http\Request;
 use Zhiyi\Plus\Models\Currency;
 use function Zhiyi\Plus\setting;
-use Zhiyi\Plus\Repository\CurrencyConfig;
 use Zhiyi\Plus\Http\Controllers\Controller;
 use Zhiyi\Plus\Models\CurrencyOrder as OrderModel;
 use Zhiyi\Plus\Packages\Currency\Processes\Common;
 
 class CurrencyController extends Controller
 {
-    protected $rep;
-
-    public function __construct(CurrencyConfig $config)
-    {
-        $this->rep = $config;
-    }
-
     /**
      * 获取积分配置项.
      *
-     * @param  CurrencyConfig $config
      * @return mixed
      */
     public function showConfig()
@@ -59,11 +50,18 @@ class CurrencyController extends Controller
             'basic_conf' => [
                 'rule' => setting('currency', 'rule', '我是积分规则'),
                 'cash.rule' => $cash['rule'],
-                'cash,status' => $cash['status'],
+                'cash.status' => $cash['status'],
                 'recharge.rule' => $recharge['rule'],
                 'recharge.status' => $recharge['status'],
             ],
-            'detail_conf' => $this->rep->get(),
+            'detail_conf' => setting('currency', 'settings', [
+                'recharge-ratio' => 1,
+                'recharge-options' => '100,500,1000,2000,5000,10000',
+                'recharge-max' => 10000000,
+                'recharge-min' => 100,
+                'cash-max' => 10000000,
+                'cash-min' => 100,
+            ]),
         ];
 
         return response()->json($config, 200);
@@ -81,7 +79,7 @@ class CurrencyController extends Controller
         if ($type == 'detail') {
             setting('currency')->set('settings', [
                 'recharge-ratio' => (int) $request->input('recharge-ratio'),
-                'recharge-options' => $request->input('recharge-options'),
+                'recharge-options' => $request->input('recharge-option'),
                 'recharge-max' => $request->input('recharge-max'),
                 'recharge-min' => $request->input('recharge-min'),
                 'cash-max' => $request->input('cash-max'),

@@ -1,30 +1,29 @@
 <template>
   <div class="p-news-search">
+    <SearchBar v-model="keyword" />
 
-    <search-bar v-model="keywordOrigin" />
-
-    <jo-load-more
+    <JoLoadMore
       ref="loadmore"
       :auto-load="false"
       :show-bottom="list.length > 0"
-      @onLoadMore="onLoadMore">
-      <news-card
+      @onRefresh="onRefresh"
+      @onLoadMore="onLoadMore"
+    >
+      <NewsCard
         v-for="news in list"
         v-if="news.id"
         :key="news.id"
-        :news="news" />
-    </jo-load-more>
-    <p
-      v-show="loading"
-      class="load-more-ph m-text-c mt10">正在搜索...</p>
+        :news="news"
+      />
+    </JoLoadMore>
     <div
       v-show="noResult && !loading && keyword && !list.length"
-      class="placeholder m-no-find"/>
+      class="placeholder m-no-find"
+    />
   </div>
 </template>
 
 <script>
-import _ from 'lodash'
 import SearchBar from '@/components/common/SearchBar.vue'
 import NewsCard from './components/NewsCard.vue'
 import { searchNewsByKey } from '@/api/news.js'
@@ -38,7 +37,7 @@ export default {
   },
   data () {
     return {
-      keywordOrigin: '',
+      keyword: '',
       list: [],
       loading: false,
       noResult: false,
@@ -49,23 +48,15 @@ export default {
       const len = this.list.length
       return len > 0 ? this.list[len - 1].id : 0
     },
-    keyword () {
-      return this.keywordOrigin.trim()
-    },
   },
   watch: {
     keyword () {
-      this.searchNewsByKey()
+      this.$refs.loadmore.beforeRefresh()
     },
   },
   methods: {
-    /**
-     * 使用 lodash.debounce 防抖，每输入 600ms 后执行
-     * 不要使用箭头函数，会导致 this 作用域丢失
-     * @author mutoe <mutoe@foxmail.com>
-     */
-    searchNewsByKey: _.debounce(function () {
-      if (!this.keyword) return
+    onRefresh () {
+      if (!this.keyword) return (this.list = [])
       this.loading = true
       searchNewsByKey(this.keyword).then(({ data: list }) => {
         this.loading = false
@@ -73,7 +64,7 @@ export default {
         this.$refs.loadmore.afterRefresh(list.length < limit)
         if (!list.length) this.noResult = true
       })
-    }, 600),
+    },
     onLoadMore () {
       searchNewsByKey(this.keyword, limit, this.after).then(
         ({ data: list }) => {

@@ -1,3 +1,4 @@
+import i18n from '@/i18n'
 import ProfileNews from '@/page/profile/children/ProfileNews'
 import ProfileCollections from '@/page/profile/ProfileCollection.vue'
 import ProfileCollectionNews from '@/page/profile/collection/ProfileCollection.news.vue'
@@ -11,34 +12,34 @@ export default [
   {
     path: '/profile/news/:type(released|auditing|rejected)',
     component: ProfileNews,
-    meta: { title: '我的投稿', keepAlive: true },
+    meta: { title: i18n.t('profile.news.name'), keepAlive: true },
   },
   {
     path: '/profile/collection',
     component: ProfileCollections,
     name: 'profileCollection',
-    meta: { title: '我的收藏', keepAlive: true },
+    meta: { title: i18n.t('profile.collect.name'), keepAlive: true },
     redirect: '/profile/collection/feeds',
     children: [
       {
         path: 'feeds',
         component: ProfileCollectionFeeds,
-        meta: { title: '收藏的动态' },
+        meta: { title: i18n.t('profile.collect.feed') },
       },
       {
         path: 'news',
         component: ProfileCollectionNews,
-        meta: { title: '收藏的资讯' },
+        meta: { title: i18n.t('profile.collect.news') },
       },
       {
         path: 'answers',
         component: ProfileCollectionAnswers,
-        meta: { title: '收藏的回答' },
+        meta: { title: i18n.t('profile.collect.answer') },
       },
       {
         path: 'posts',
         component: ProfileCollectionPosts,
-        meta: { title: '收藏的帖子' },
+        meta: { title: i18n.t('profile.collect.post') },
       },
     ],
   },
@@ -46,12 +47,12 @@ export default [
     name: 'ProfileCertificate',
     path: '/profile/certificate',
     component: ProfileCertificate,
-    meta: { title: '申请认证' },
+    meta: { title: i18n.t('certificate.apply') },
   },
   {
     name: 'ProfileCertification',
     path: '/profile/certification',
     component: ProfileCertification,
-    meta: { title: '认证信息' },
+    meta: { title: i18n.t('certificate.info') },
   },
 ]

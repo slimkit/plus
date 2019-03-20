@@ -11,33 +11,38 @@
     @touchmove.stop="onDrag"
     @mouseup="stopDrag"
     @touchend="stopDrag"
-    @mouseleave="stopDrag" >
-    <!-- 顶部 -->
+    @mouseleave="stopDrag"
+  >
+    <!-- header -->
     <div
       ref="head"
       :style="{transform: `translateY(${ tY - topBarHeight }px)`, transitionDuration}"
-      class="jo-loadmore-head jo-loadmore-head-box">
+      class="jo-loadmore-head jo-loadmore-head-box"
+    >
       <slot name="head">
-        <circle-loading v-if="refreshing"/>
+        <CircleLoading v-if="refreshing" />
         <i
           v-else
           :style="{ transform: `rotate(${topStatus ? '180deg' : '0'})` }"
-          class="jo-loadmore-icon">↓</i>
+          class="jo-loadmore-icon"
+        />
         <span>{{ topTxt }}</span>
       </slot>
     </div>
-    <!-- 内容 -->
+    <!-- body -->
     <div
       :style="{transform: `translateY(${tY}px)`, transitionDuration }"
-      class="jo-loadmore-main">
-      <slot/>
-      <!-- 底部 -->
+      class="jo-loadmore-main"
+    >
+      <slot />
+      <!-- footer -->
       <div
         v-if="bottomStatus > 0 && showBottom"
         :class="`jo-loadmore-foot status-${bottomStatus}`"
-        @click="beforeLoadMore">
+        @click="beforeLoadMore"
+      >
         <slot name="foot">
-          <circle-loading v-if="bottomStatus === 1"/>
+          <CircleLoading v-if="bottomStatus === 1" />
           <span>{{ bottomTxt }}</span>
         </slot>
       </div>
@@ -71,22 +76,10 @@ function getScrollTarget (el) {
 export default {
   name: 'JoLoadMore',
   props: {
-    topDistance: {
-      type: Number,
-      default: 0,
-    },
-    noAnimation: {
-      type: Boolean,
-      default: false,
-    },
-    autoLoad: {
-      type: Boolean,
-      default: true,
-    },
-    showBottom: {
-      type: Boolean,
-      default: true,
-    },
+    topDistance: { type: Number, default: 0 },
+    noAnimation: { type: Boolean, default: false },
+    autoLoad: { type: Boolean, default: true },
+    showBottom: { type: Boolean, default: true },
   },
   data () {
     return {
@@ -105,8 +98,8 @@ export default {
       topBarHeight: 0,
 
       isTop: true,
-      topTxt: '下拉刷新',
-      bottomTxt: '点击加载更多',
+      topTxt: this.$t('loadmore.top[0]'), // '下拉刷新'
+      bottomTxt: this.$t('loadmore.bottom[2]'), // '点击加载更多'
     }
   },
   computed: {
@@ -128,10 +121,12 @@ export default {
   },
   watch: {
     topStatus (val) {
-      this.topTxt = ['下拉刷新', '释放更新', '正在刷新'][val]
+      const text = this.$t('loadmore.top') // ['下拉刷新', '释放更新', '正在刷新']
+      this.topTxt = text[val]
     },
     bottomStatus (val) {
-      this.bottomTxt = ['', '加载中...', '-- 没有更多 --', '点击加载更多'][val]
+      const text = this.$t('loadmore.bottom') // ['加载中...', '-- 没有更多 --', '点击加载更多']
+      this.bottomTxt = ['', ...text][val]
     },
   },
   mounted () {
@@ -243,6 +238,10 @@ export default {
   .jo-loadmore-head {
     position: fixed;
     z-index: 0;
+
+    .jo-loadmore-icon::after {
+      content: '↓';
+    }
   }
   .jo-loadmore-head-box {
     height: 45px; /*no*/

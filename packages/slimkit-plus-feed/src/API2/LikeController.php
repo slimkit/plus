@@ -6,12 +6,12 @@ declare(strict_types=1);
  * +----------------------------------------------------------------------+
  * |                          ThinkSNS Plus                               |
  * +----------------------------------------------------------------------+
- * | Copyright (c) 2018 Chengdu ZhiYiChuangXiang Technology Co., Ltd.     |
+ * | Copyright (c) 2016-Present ZhiYiChuangXiang Technology Co., Ltd.     |
  * +----------------------------------------------------------------------+
- * | This source file is subject to version 2.0 of the Apache license,    |
- * | that is bundled with this package in the file LICENSE, and is        |
- * | available through the world-wide-web at the following url:           |
- * | http://www.apache.org/licenses/LICENSE-2.0.html                      |
+ * | This source file is subject to enterprise private license, that is   |
+ * | bundled with this package in the file LICENSE, and is available      |
+ * | through the world-wide-web at the following url:                     |
+ * | https://github.com/slimkit/plus/blob/master/LICENSE                  |
  * +----------------------------------------------------------------------+
  * | Author: Slim Kit Group <master@zhiyicx.com>                          |
  * | Homepage: www.thinksns.com                                           |
@@ -21,9 +21,8 @@ declare(strict_types=1);
 namespace Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\API2;
 
 use Illuminate\Http\Request;
-use Zhiyi\Plus\Services\Push;
 use Zhiyi\Plus\Http\Controllers\Controller;
-use Zhiyi\Plus\Models\UserCount as UserCountModel;
+use Zhiyi\Plus\Notifications\Like as LikeNotification;
 use Illuminate\Contracts\Routing\ResponseFactory as ResponseContract;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\Feed as FeedModel;
 
@@ -88,26 +87,13 @@ class LikeController extends Controller
     public function store(Request $request, ResponseContract $response, FeedModel $feed)
     {
         $user = $request->user();
-
         if ($feed->liked($user)) {
             return $response->json(['message' => '操作成功'])->setStatusCode(201);
         }
 
-        $feed->like($user);
-
-        if ($feed->user_id !== $user->id) {
-            // 添加被赞的未读数
-            $feed->user->unreadCount()->firstOrCreate([])->increment('unread_likes_count', 1);
-            // 新未读统计 1.8启用
-            $userLikedCount = UserCountModel::firstOrNew([
-                'type' => 'user-liked',
-                'user_id' => $feed->user->id,
-            ]);
-
-            $userLikedCount->total += 1;
-            $userLikedCount->save();
-
-            app(Push::class)->push(sprintf('%s 点赞了你的动态', $user->name), (string) $feed->user->id, ['channel' => 'feed:digg']);
+        $like = $feed->like($user);
+        if ($feed->user_id !== $user->id && $feed->user) {
+            $feed->user->notify(new LikeNotification('动态', $like, $user));
         }
 
         return $response->json(['message' => '操作成功'])->setStatusCode(201);

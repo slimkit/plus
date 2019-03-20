@@ -1,4 +1,7 @@
 import plueMessageBundle from 'plus-message-bundle'
+import { transTime } from '@/util'
+import i18n from '@/i18n'
+import xss from 'xss'
 
 /**
  * ThinkSNS Plus 消息解析器，获取顶部消息.
@@ -10,6 +13,19 @@ import plueMessageBundle from 'plus-message-bundle'
  */
 export function plusMessageFirst (message, defaultMessage) {
   return plueMessageBundle(message, defaultMessage).getMessage()
+}
+
+/**
+ * 过滤 XSS
+ *
+ * @author mutoe <mutoe@foxmail.com>
+ * @export
+ * @param {string} value
+ * @returns {string}
+ */
+export function escapeHTML (value) {
+  const options = {}
+  return xss(value, options)
 }
 
 /**
@@ -60,32 +76,6 @@ export function formatDate (date, fmt = 'yyyy/MM/dd hh:mm') {
 }
 
 /**
- * 时间转提示
- * 用于显示在我的动态时间轴
- * @author jsonleex <jsonlseex@163.com>
- * @param  {String} str
- * @return {String}
- */
-export const time2txt = str => {
-  if (!str) return ''
-  if (typeof str === 'string') str = str.replace(/-/g, '/') // 兼容 IOS 保证传入数据格式 YYYY/MM/dd HH:mm:ss
-  let date = new Date(str)
-
-  // 时间差 = 当前时间 - date (单位: 毫秒)
-  let time = new Date() - date
-
-  if (time < 0) {
-    return ''
-  } else if (time / 3600000 < 24) {
-    return '今天'
-  } else {
-    const M = (date.getMonth() + 1 + '').padStart(2, '0')
-    const D = (date.getDate() + '').padStart(2, '0')
-    return M + '月' + D
-  }
-}
-
-/**
  * 祖鲁时间和本地时间之间的时差 (单位:毫秒)
  * @returns {number} timezone offset
  */
@@ -97,18 +87,13 @@ export const addTimeOffset = date => {
 
 export const time2tips = date => {
   if (typeof date === 'string') {
-    date = date.replace(/-/g, '/') // for safari
-    // match 2018/10/17 01:48:52"
-    if (date.match(/^\d{4}\/\d{2}\/\d{2} \d{2}:\d{2}:\d{2}$/)) {
-      // 如果匹配到服务器返回的时间是非标准格式的祖鲁时间，需要进行本地化
-      date = +new Date(date) - timeOffset
-    }
+    date = transTime(date)
   }
   const time = new Date(date)
   const offset = (new Date().getTime() - time) / 1000
-  if (offset < 60) return '1分钟内'
-  if (offset < 3600) return `${~~(offset / 60)}分钟前`
-  if (offset < 3600 * 24) return `${~~(offset / 3600)}小时前`
+  if (offset < 60) return i18n.t('date.in_minute')
+  if (offset < 3600) return i18n.t('date.minutes_ago', { min: ~~(offset / 60) })
+  if (offset < 3600 * 24) return i18n.t('date.hours_ago', { hour: ~~(offset / 3600) })
   // 根据 time 获取到 "16:57"
   let timeStr, dateStr
   try {
@@ -117,11 +102,12 @@ export const time2tips = date => {
       .toLocaleDateString() // > "2018/10/19"
       .replace(/^\d{4}\/(\d{2})\/(\d{2})/, '$1-$2') // > 10-19
   } catch (e) {
-    return offset
+    console.warn('time2tips error: ', { date, time }) // eslint-disable-line no-console
+    return ''
   }
-  if (offset < 3600 * 24 * 2) return `昨天 ${timeStr}`
-  if (offset < 3600 * 24 * 9) return `${~~(offset / 3600 / 24)}天前`
-  // 根据 time 06-19
+  if (offset < 3600 * 24 * 2) return i18n.t('date.yesterday', { time: timeStr })
+  if (offset < 3600 * 24 * 9) return i18n.t('date.days_ago', { day: ~~(offset / 3600 / 24) })
+
   return dateStr
 }
 
@@ -151,4 +137,55 @@ export const formatNum = (a = 0) => {
  */
 export function markdownText (markdown) {
   return require('./util/markdown').syntaxTextAndImage(markdown).text
+}
+
+/**
+ * Internationization label
+ *
+ * @author mutoe <mutoe@foxmail.com>
+ * @export
+ * @param {String|String[]} params
+ * @param {string} keypath
+ * @returns
+ */
+export function t (params, keypath) {
+  if (!keypath) return i18n.t(params)
+  if (['string', 'number'].includes(typeof params)) params = [params]
+  if (!(params instanceof Array)) return ''
+  return i18n.t(keypath, params)
+}
+
+/**
+ * 系统消息提示文字解析
+ * @param {Object} data
+ */
+export function getNotificationDisplay (data) {
+  switch (data.type) {
+    case 'reward':
+      return i18n.t('message.system.reward_user', { user: data.sender.name })
+    case 'reward:feeds':
+      return i18n.t('message.system.reward_feed', { user: data.sender.name })
+    case 'reward:news':
+      return i18n.t('message.system.reward_news', { news: data.news.title, user: data.sender.name, amount: data.amount + data.unit })
+    case 'group:join':
+      return i18n.t(`message.system.group_join[${data.state !== 'reject' ? 1 : 0}]`, { group: data.group.name, user: (data.user || {}).name })
+    case 'user-certification':
+      return i18n.t(`message.system.certificate[${data.state !== 'reject' ? 1 : 0}]`, { reason: data.contents })
+    case 'qa:answer-adoption':
+    case 'question:answer':
+      return i18n.t('message.system.qa_adopt', { answer: data.answer.body })
+    case 'qa:reward':
+      return i18n.t('message.system.reward_qa', { user: data.sender.name })
+    case 'qa:invitation':
+      return i18n.t('message.system.qa_invitation', { user: data.sender.name, question: data.question.subject })
+    case 'pinned:feed/comment':
+      return i18n.t(`message.system.pinned_feed_comment[${data.state !== 'reject' ? 1 : 0}]`, { comment: data.comment.contents })
+    case 'pinned:news/comment':
+      return i18n.t(`message.system.pinned_news_comment[${data.state !== 'reject' ? 1 : 0}]`, { news: data.news.title, comment: data.comment.contents })
+    case 'group:comment-pinned':
+    case 'group:send-comment-pinned':
+      return i18n.t(`message.system.pinned_post_comment[${data.state !== 'reject' ? 1 : 0}]`, { post: data.post.title })
+    case 'group:post-pinned':
+      return i18n.t(`message.system.pinned_post[${data.state !== 'reject' ? 1 : 0}]`, { post: data.post.title })
+  }
 }

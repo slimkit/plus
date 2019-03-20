@@ -6,12 +6,12 @@ declare(strict_types=1);
  * +----------------------------------------------------------------------+
  * |                          ThinkSNS Plus                               |
  * +----------------------------------------------------------------------+
- * | Copyright (c) 2018 Chengdu ZhiYiChuangXiang Technology Co., Ltd.     |
+ * | Copyright (c) 2016-Present ZhiYiChuangXiang Technology Co., Ltd.     |
  * +----------------------------------------------------------------------+
- * | This source file is subject to version 2.0 of the Apache license,    |
- * | that is bundled with this package in the file LICENSE, and is        |
- * | available through the world-wide-web at the following url:           |
- * | http://www.apache.org/licenses/LICENSE-2.0.html                      |
+ * | This source file is subject to enterprise private license, that is   |
+ * | bundled with this package in the file LICENSE, and is available      |
+ * | through the world-wide-web at the following url:                     |
+ * | https://github.com/slimkit/plus/blob/master/LICENSE                  |
  * +----------------------------------------------------------------------+
  * | Author: Slim Kit Group <master@zhiyicx.com>                          |
  * | Homepage: www.thinksns.com                                           |
@@ -20,9 +20,9 @@ declare(strict_types=1);
 
 namespace Zhiyi\Plus\Services\Wallet;
 
+use function Zhiyi\Plus\setting;
 use Pingpp\Pingpp as PingppInit;
 use Pingpp\Charge as PingppCharge;
-use Zhiyi\Plus\Repository\WalletPingPlusPlus;
 use Zhiyi\Plus\Models\WalletOrder as WalletOrderModel;
 use Zhiyi\Plus\Models\WalletCharge as WalletChargeModel;
 
@@ -74,12 +74,11 @@ class Charge
     /**
      * Create the service instance.
      *
-     * @param \Zhiyi\Plus\Repository\WalletPingPlusPlus $repository
      * @author Seven Du <shiweidu@outlook.com>
      */
-    public function __construct(WalletPingPlusPlus $repository)
+    public function __construct()
     {
-        $config = $repository->get();
+        $config = setting('wallet', 'ping++', []);
 
         $this->appId = $config['app_id'] ?? null;
         $this->secretkey = $config['secret_key'] ?? null;

@@ -1,18 +1,17 @@
 <template>
   <div :class="[`${prefixCls}-wrap`]">
-    <span
-      :class="[`${prefixCls}-text`]"
-      @click="onClick">
-      <slot/>
+    <span :class="[`${prefixCls}-text`]" @click="onClick">
+      <slot />
     </span>
     <div :class="[`${prefixCls}-append`]">
-      <slot name="append"/>
+      <slot name="append" />
     </div>
     <div :class="[`${prefixCls}`]">
       <label
         ref="label"
         :for="id"
-        :class="[`${prefixCls}-label`]">
+        :class="[`${prefixCls}-label`]"
+      >
         <input
           v-if="type===&quot;radio&quot;"
           :id="id"
@@ -20,41 +19,32 @@
           :value="dataValue"
           :class="[`${prefixCls}-input`]"
           type="radio"
-          @change="setValue">
+          @change="setValue"
+        >
         <input
           v-else
           :id="id"
           v-model="cur_value"
           :class="[`${prefixCls}-input`]"
           :type="type"
-          @change="setValue">
-        <div :class="[`${prefixCls}-box`]"/>
+          @change="setValue"
+        >
+        <div :class="[`${prefixCls}-box`]" />
       </label>
     </div>
   </div>
 </template>
+
 <script>
 const prefixCls = 'v-switch'
 
 export default {
   name: 'VSwitch',
   props: {
-    type: {
-      type: String,
-      default: 'checkbox',
-      requried: true,
-      validator (val) {
-        return ['checkbox', 'radio'].includes(val)
-      },
-    },
-    value: { type: Boolean, default: false },
+    type: { type: String, default: 'checkbox', validator: val => ['checkbox', 'radio'].includes(val) },
+    value: { type: [Boolean, Number], default: false },
     dataValue: { type: Object, default: () => {} },
-    id: {
-      type: String,
-      default: function () {
-        return 'v-switch-' + this._uid
-      },
-    },
+    id: { type: String, default () { return 'v-switch-' + this._uid } },
   },
   data () {
     return {
@@ -79,12 +69,8 @@ export default {
 </script>
 
 <style lang="less" scoped>
-@switch-prefix: v-switch;
-@switch-prefix-radio: v-switch-radio;
-@switch-prefix-checkbox: v-switch-checkbox;
-
-.@{switch-prefix-radio},
-.@{switch-prefix-checkbox} {
+.v-switch-radio,
+.v-switch-checkbox {
   &-append {
     order: 2;
     font-size: 30px;
@@ -104,8 +90,7 @@ export default {
     align-items: center;
     justify-content: space-between;
     & + & {
-      border-top: 1px solid #ededed;
-      /*no*/
+      border-top: 1px solid #ededed; /*no*/
     }
   }
   &-text {
@@ -126,13 +111,12 @@ export default {
   }
 }
 
-.@{switch-prefix-checkbox} {
+.v-switch-checkbox {
   &-box {
     position: relative;
     width: 60px;
     height: 34px;
-    border: 1px solid #ededed;
-    /*no*/
+    border: 1px solid #ededed; /*no*/
     outline: 0;
     border-radius: 34/2px;
     box-sizing: border-box;
@@ -163,13 +147,12 @@ export default {
       width: 30px;
       height: 30px;
       border-radius: 15px;
-      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
-      /*no*/
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4); /*no*/
       transition: transform 0.35s cubic-bezier(0.4, 0.4, 0.25, 1.35);
     }
   }
   &-input {
-    &:checked ~ .@{switch-prefix-checkbox}-box {
+    &:checked ~ .v-switch-checkbox-box {
       border-color: #44db5e;
       background-color: #44db5e;
       &:after {
@@ -183,7 +166,7 @@ export default {
   }
 }
 
-.@{switch-prefix}-radio {
+.v-switch-radio {
   &-wrap {
     justify-content: flex-start;
   }
@@ -196,14 +179,13 @@ export default {
     /*overflow: hidden;*/
     width: 30px;
     height: 30px;
-    border: 1px solid #ccc;
-    /*no*/
+    border: 1px solid #ccc; /*no*/
     background-color: #fff;
     position: relative;
   }
 
   &-input {
-    &:checked ~ .@{switch-prefix-radio}-box {
+    &:checked ~ .v-switch-radio-box {
       &:after {
         position: absolute;
         top: 0;

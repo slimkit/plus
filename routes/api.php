@@ -4,12 +4,12 @@
  * +----------------------------------------------------------------------+
  * |                          ThinkSNS Plus                               |
  * +----------------------------------------------------------------------+
- * | Copyright (c) 2018 Chengdu ZhiYiChuangXiang Technology Co., Ltd.     |
+ * | Copyright (c) 2016-Present ZhiYiChuangXiang Technology Co., Ltd.     |
  * +----------------------------------------------------------------------+
- * | This source file is subject to version 2.0 of the Apache license,    |
- * | that is bundled with this package in the file LICENSE, and is        |
- * | available through the world-wide-web at the following url:           |
- * | http://www.apache.org/licenses/LICENSE-2.0.html                      |
+ * | This source file is subject to enterprise private license, that is   |
+ * | bundled with this package in the file LICENSE, and is available      |
+ * | through the world-wide-web at the following url:                     |
+ * | https://github.com/slimkit/plus/blob/master/LICENSE                  |
  * +----------------------------------------------------------------------+
  * | Author: Slim Kit Group <master@zhiyicx.com>                          |
  * | Homepage: www.thinksns.com                                           |
@@ -280,36 +280,6 @@ Route::group(['prefix' => 'v2'], function (RouteContract $api) {
                 $api->get('/', API2\UserCertificationController::class.'@show');
             });
 
-            /*
-            | 用户通知相关
-             */
-
-            $api->group(['prefix' => 'notifications'], function (RouteContract $api) {
-
-                /*
-                | 用户通知列表
-                 */
-
-                $api->get('/', API2\UserNotificationController::class.'@index');
-
-                /*
-                | 通知详情
-                 */
-
-                $api->get('/{notification}', API2\UserNotificationController::class.'@show');
-
-                /*
-                | 阅读通知，可以使用资源模型阅读单条，也可以使用资源组形式，阅读标注多条.
-                 */
-
-                $api->patch('/{notification?}', API2\UserNotificationController::class.'@markAsRead');
-
-                /*
-                    标记所有未读消息为已读
-                 */
-                $api->put('/all', API2\UserNotificationController::class.'@markAllAsRead');
-            });
-
             // send a feedback.
             $api->post('/feedback', API2\SystemController::class.'@createFeedback');
 
@@ -416,13 +386,6 @@ Route::group(['prefix' => 'v2'], function (RouteContract $api) {
         */
 
         $api->group(['prefix' => 'wallet'], function (RouteContract $api) {
-
-            /*
-            | 获取钱包配置信息
-             */
-
-            $api->get('/', API2\WalletConfigController::class.'@show');
-
             /*
             | 获取提现记录
              */
@@ -609,10 +572,6 @@ Route::group(['prefix' => 'v2'], function (RouteContract $api) {
 
         // 积分部分
         $api->group(['prefix' => 'currency'], function (RouteContract $api) {
-
-            // 获取积分配置
-            $api->get('/', API2\CurrencyConfigController::class.'@show');
-
             // 积分流水
             $api->get('/orders', API2\CurrencyRechargeController::class.'@index');
 
@@ -829,4 +788,13 @@ Route::group(['prefix' => 'v2'], function (RouteContract $api) {
 
     // List all authed user abilities
     $api->get('user/abilities', \Zhiyi\Plus\API2\Controllers\User\AbilityController::class);
+
+    // User Notifications
+    $api->get('user/notifications', \Zhiyi\Plus\API2\Controllers\NotificationController::class.'@index');
+    $api->patch('user/notifications', \Zhiyi\Plus\API2\Controllers\NotificationController::class.'@update');
+    $api->get('user/notification-statistics', \Zhiyi\Plus\API2\Controllers\NotificationController::class.'@statistics');
+    $api->patch('user/clear-follow-notification', \Zhiyi\Plus\API2\Controllers\NotificationController::class.'@clearFollowNotifications');
+
+    // News Posts
+    $api->delete('news/posts/{post}', \Zhiyi\Plus\API2\Controllers\NewsPostController::class.'@destroy');
 });

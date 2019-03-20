@@ -1,16 +1,15 @@
 <template>
   <div @touchmove.prevent>
-    <transition name="toast">
+    <Transition name="toast">
       <div
         v-if="show"
         class="m-pop-box"
-        @click="cancel"/>
-    </transition>
+        @click="cancel"
+      />
+    </Transition>
 
-    <transition name="pop">
-      <div
-        v-if="show"
-        class="m-acbtn-box">
+    <Transition name="pop">
+      <div v-if="show" class="m-acbtn-box">
         <header v-if="tips">
           <h2 class="m-acbtn-title">{{ title }}</h2>
           <p class="m-acbtn-tips">{{ tips }}</p>
@@ -22,19 +21,18 @@
             :key="btn.text"
             :style="btn.style"
             class="m-acbtn"
-            @click="btn.methods(btn, index)">
+            @click="btn.methods(btn, index)"
+          >
             <a href="javascript:;">{{ btn.text }}</a>
           </li>
         </ul>
         <ul class="m-acbtn-list">
-          <li
-            class="m-acbtn"
-            @click="cancel">
+          <li class="m-acbtn" @click="cancel">
             <a href="javascript:;">{{ cancelBtn }}</a>
           </li>
         </ul>
       </div>
-    </transition>
+    </Transition>
   </div>
 </template>
 
@@ -52,11 +50,16 @@ export default {
     return {
       lists: [],
       tips: '',
-      title: '提示',
+      title: this.$t('tips'),
       show: false,
       scrollTop: 0,
-      cancelBtn: '取消',
+      cancelBtn: this.$t('cancel'),
     }
+  },
+  watch: {
+    $route () {
+      this.cancel()
+    },
   },
   created: function () {
     /**
@@ -135,7 +138,7 @@ export default {
     height: 90px;
     line-height: 90px;
     text-align: center;
-    border-bottom: 1px solid @border-color;
+    border-bottom: 1px solid @border-color; /*no*/
   }
 
   a {

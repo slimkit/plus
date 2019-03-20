@@ -6,12 +6,12 @@ declare(strict_types=1);
  * +----------------------------------------------------------------------+
  * |                          ThinkSNS Plus                               |
  * +----------------------------------------------------------------------+
- * | Copyright (c) 2018 Chengdu ZhiYiChuangXiang Technology Co., Ltd.     |
+ * | Copyright (c) 2016-Present ZhiYiChuangXiang Technology Co., Ltd.     |
  * +----------------------------------------------------------------------+
- * | This source file is subject to version 2.0 of the Apache license,    |
- * | that is bundled with this package in the file LICENSE, and is        |
- * | available through the world-wide-web at the following url:           |
- * | http://www.apache.org/licenses/LICENSE-2.0.html                      |
+ * | This source file is subject to enterprise private license, that is   |
+ * | bundled with this package in the file LICENSE, and is available      |
+ * | through the world-wide-web at the following url:                     |
+ * | https://github.com/slimkit/plus/blob/master/LICENSE                  |
  * +----------------------------------------------------------------------+
  * | Author: Slim Kit Group <master@zhiyicx.com>                          |
  * | Homepage: www.thinksns.com                                           |
@@ -23,7 +23,7 @@ namespace Zhiyi\Component\ZhiyiPlus\PlusComponentNews\API2\Controllers;
 use Illuminate\Http\Request;
 use Zhiyi\Plus\Models\GoldType;
 use Zhiyi\Plus\Http\Middleware\VerifyUserPassword;
-use Zhiyi\Plus\Models\UserCount as UserCountModel;
+use Zhiyi\Plus\Notifications\System as SystemNotification;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentNews\Models\News;
 use Zhiyi\Plus\Packages\Currency\Processes\User as UserProcess;
 
@@ -73,22 +73,20 @@ class NewRewardController extends Controller
         $paid = $processer->receivables($target->id, $amount, $user->id, sprintf('“%s”打赏了你的资讯', $target->name), sprintf('“%s”打赏了你的的资讯“%s”，%s扣除%s', $user->name, $news->title, $goldName, $amount));
 
         if ($pay && $paid) {
-            $target->sendNotifyMessage('news:reward', sprintf('“%s”打赏了你的资讯', $user->name), [
-                'feed' => $news,
-                'user' => $user,
-            ]);
-            // 增加被打赏未读数
-            $userUnreadCount = $target->unreadNotifications()
-                ->count();
-            $userCount = UserCountModel::firstOrNew([
-                'type' => 'user-system',
-                'user_id' => $target->id,
-            ]);
-
-            $userCount->total = $userUnreadCount;
-            $userCount->save();
-            // 打赏记录
             $news->reward($user, $amount);
+            $target->notify(new SystemNotification(sprintf('%s打赏了你的资讯文章', $user->name), [
+                'type' => 'reward:news',
+                'sender' => [
+                    'id' => $user->id,
+                    'name' => $user->name,
+                ],
+                'amount' => $amount,
+                'unit' => $goldName,
+                'news' => [
+                    'id' => $news->id,
+                    'title' => $news->title,
+                ],
+            ]));
 
             return response()->json(['message' => '打赏成功'], 201);
         } else {

@@ -6,12 +6,12 @@ declare(strict_types=1);
  * +----------------------------------------------------------------------+
  * |                          ThinkSNS Plus                               |
  * +----------------------------------------------------------------------+
- * | Copyright (c) 2018 Chengdu ZhiYiChuangXiang Technology Co., Ltd.     |
+ * | Copyright (c) 2016-Present ZhiYiChuangXiang Technology Co., Ltd.     |
  * +----------------------------------------------------------------------+
- * | This source file is subject to version 2.0 of the Apache license,    |
- * | that is bundled with this package in the file LICENSE, and is        |
- * | available through the world-wide-web at the following url:           |
- * | http://www.apache.org/licenses/LICENSE-2.0.html                      |
+ * | This source file is subject to enterprise private license, that is   |
+ * | bundled with this package in the file LICENSE, and is available      |
+ * | through the world-wide-web at the following url:                     |
+ * | https://github.com/slimkit/plus/blob/master/LICENSE                  |
  * +----------------------------------------------------------------------+
  * | Author: Slim Kit Group <master@zhiyicx.com>                          |
  * | Homepage: www.thinksns.com                                           |
@@ -38,7 +38,10 @@ Route::group(['prefix' => 'api/v2'], function (RouteRegisterContract $api) {
     // Socialite.
     // @Route /api/v2/socialite
     $api->group(['prefix' => 'socialite'], function (RouteRegisterContract $api) {
-
+        $api->get('/getAccess/{code}', API\WechatController::class.'@getAccess')->name('wechat://mp:access');
+        $api->post('/getWechatUser', API\WechatController::class.'@getUser')->name('wechat://mp:userInfo');
+        $api->post('/getOriginUrl', API\WechatController::class.'@getOauthUrl')->name('wechat://mp:redirectUrl');
+        $api->post('/wxconfig', API\WechatController::class.'@calculateConfig')->name('wechat://mp:share');
         // Check bind and get user auth token.
         // @POST /api/v2/socialite/:provider
         $api->post('/{provider}', API\SocialiteController::class.'@checkAuth');

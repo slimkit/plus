@@ -6,12 +6,12 @@ declare(strict_types=1);
  * +----------------------------------------------------------------------+
  * |                          ThinkSNS Plus                               |
  * +----------------------------------------------------------------------+
- * | Copyright (c) 2018 Chengdu ZhiYiChuangXiang Technology Co., Ltd.     |
+ * | Copyright (c) 2016-Present ZhiYiChuangXiang Technology Co., Ltd.     |
  * +----------------------------------------------------------------------+
- * | This source file is subject to version 2.0 of the Apache license,    |
- * | that is bundled with this package in the file LICENSE, and is        |
- * | available through the world-wide-web at the following url:           |
- * | http://www.apache.org/licenses/LICENSE-2.0.html                      |
+ * | This source file is subject to enterprise private license, that is   |
+ * | bundled with this package in the file LICENSE, and is available      |
+ * | through the world-wide-web at the following url:                     |
+ * | https://github.com/slimkit/plus/blob/master/LICENSE                  |
  * +----------------------------------------------------------------------+
  * | Author: Slim Kit Group <master@zhiyicx.com>                          |
  * | Homepage: www.thinksns.com                                           |
@@ -21,8 +21,8 @@ declare(strict_types=1);
 namespace Zhiyi\Plus\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
+use function Zhiyi\Plus\setting;
 use Zhiyi\Plus\Http\Controllers\Controller;
-use Zhiyi\Plus\Repository\WalletPingPlusPlus;
 use Illuminate\Contracts\Routing\ResponseFactory as ContractResponse;
 
 class WalletPingPlusPlusController extends Controller
@@ -30,15 +30,14 @@ class WalletPingPlusPlusController extends Controller
     /**
      * Get the Ping++ config.
      *
-     * @param \Zhiyi\Plus\Repository\WalletPingPlusPlus $repository
      * @param \Illuminate\Contracts\Routing\ResponseFactory $response
      * @return mixed
      * @author Seven Du <shiweidu@outlook.com>
      */
-    public function show(WalletPingPlusPlus $repository, ContractResponse $response)
+    public function show(ContractResponse $response)
     {
         return $response
-            ->json($repository->get())
+            ->json(setting('wallet', 'ping++', []))
             ->setStatusCode(200);
     }
 
@@ -46,18 +45,15 @@ class WalletPingPlusPlusController extends Controller
      * Update Ping++ config.
      *
      * @param \Illuminate\Http\Request $request
-     * @param \Zhiyi\Plus\Repository\WalletPingPlusPlus $repository
      * @param \Illuminate\Contracts\Routing\ResponseFactory $response
      * @return mixed
      * @author Seven Du <shiweidu@outlook.com>
      */
-    public function update(Request $request, WalletPingPlusPlus $repository, ContractResponse $response)
+    public function update(Request $request, ContractResponse $response)
     {
         $this->validate($request, $this->rules(), $this->validateErrorMessages());
 
-        $repository->store(
-            $request->only(['app_id', 'secret_key', 'public_key', 'private_key'])
-        );
+        setting('wallet')->set('ping++', $request->only(['app_id', 'secret_key', 'public_key', 'private_key']));
 
         return $response
             ->json(['message' => ['更新成功!']])

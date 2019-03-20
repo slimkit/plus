@@ -1,44 +1,42 @@
 <template>
-  <transition
-    enter-active-class="animated slideInRight"
-    leave-active-class="animated slideOutLeft">
-    <div class="m-box-model m-pos-f p-search-user">
+  <div class="m-box-model m-pos-f p-search-user">
+    <SearchBar v-model="keyword" />
 
-      <search-bar v-model="keyword"/>
-
-      <main class="m-flex-grow1 m-flex-shrink1 p-search-user-body">
-        <jo-load-more
-          v-show="showRec"
-          ref="loadmoreRecs"
-          :show-bottom="false"
-          :no-animation="true"
-          @onRefresh="fetchRecs">
-          <user-item
-            v-for="user in recs"
-            :user="user"
-            :key="user.id" />
-        </jo-load-more>
-        <jo-load-more
-          v-show="users.length > 0"
-          ref="loadmore"
-          @onRefresh="onRefresh"
-          @onLoadMore="onLoadMore">
-          <user-item
+    <main class="m-flex-grow1 m-flex-shrink1 p-search-user-body">
+      <JoLoadMore
+        ref="loadmore"
+        :show-bottom="!!keyword"
+        @onRefresh="onRefresh"
+        @onLoadMore="onLoadMore"
+      >
+        <template v-if="keyword">
+          <UserItem
             v-for="user in users"
+            :key="user.id"
             :user="user"
-            :key="user.id" />
-        </jo-load-more>
-        <div v-if="noData" class="placeholder m-no-find"/>
-      </main>
-    </div>
-  </transition>
+          />
+        </template>
+        <template v-else>
+          <p class="recommend">{{ $t('find.user.recommend') }}</p>
+          <UserItem
+            v-for="user in recommendUsers"
+            :key="user.id"
+            :user="user"
+          />
+        </template>
+      </JoLoadMore>
+      <div v-if="noData" class="placeholder m-no-find" />
+    </main>
+  </div>
 </template>
 
 <script>
+import { mapState } from 'vuex'
 import _ from 'lodash'
+import { limit } from '@/api'
+import * as api from '@/api/user.js'
 import SearchBar from '@/components/common/SearchBar.vue'
 import UserItem from '@/components/UserItem.vue'
-import * as api from '@/api/user.js'
 
 export default {
   name: 'SearchUser',
@@ -48,23 +46,26 @@ export default {
   },
   data () {
     return {
-      show: true,
-      users: [],
-      recs: [],
-      isFocus: false,
-      noData: false,
       keyword: '',
+      users: [],
+      noData: false,
     }
   },
   computed: {
-    showRec () {
-      return this.keyword.length === 0 && !this.isFocus
-    },
+    ...mapState('user', {
+      recommendUsers: 'recommend',
+    }),
   },
   watch: {
     keyword () {
-      this.searchUserByKey()
+      this.$refs.loadmore.beforeRefresh()
     },
+  },
+  mounted () {
+    this.$store.dispatch('user/getRecommendUsers')
+  },
+  deactivated () {
+    this.keyword = ''
   },
   methods: {
     goBack () {
@@ -86,13 +87,13 @@ export default {
     onRefresh (callback) {
       api.searchUserByKey(this.keyword).then(({ data }) => {
         this.users = data
-        this.$refs.loadmore.afterRefresh(data.length < 15)
+        this.$refs.loadmore.afterRefresh(data.length < limit)
       })
     },
     onLoadMore (callback) {
       api.searchUserByKey(this.keyword, this.users.length).then(({ data }) => {
         this.users = [...this.users, ...data]
-        this.$refs.loadmore.afterLoadMore(data.length < 15)
+        this.$refs.loadmore.afterLoadMore(data.length < limit)
       })
     },
     onFocus () {
@@ -105,7 +106,7 @@ export default {
     fetchRecs (callback) {
       api.findUserByType('recommends').then(({ data }) => {
         this.recs = data
-        this.$refs.loadmoreRecs.afterRefresh(data.length < 15)
+        this.$refs.loadmoreRecs.afterRefresh(data.length < limit)
       })
     },
   },
@@ -117,16 +118,27 @@ export default {
   z-index: 100;
   background-color: #f4f5f6;
   animation-duration: 0.3s;
+
   header {
     padding: 20px 30px;
     bottom: initial;
   }
+
+  .recommend {
+    padding: 15px 15px 0;
+    background-color: #fff;
+    color: #999;
+    font-size: 28px;
+  }
+
   .m-search-box {
     margin-right: 30px;
   }
+
   .p-search-user-body {
     overflow-y: auto;
   }
+
   .m-no-find {
     width: 100vw;
     height: 100vh;

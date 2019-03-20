@@ -1,44 +1,47 @@
 <template>
-  <div
-    class="c-password-confirm"
-    @touchmove.prevent>
+  <div class="c-password-confirm" @touchmove.prevent>
     <!-- 遮罩层 -->
-    <transition name="toast">
+    <Transition name="toast">
       <div
         v-if="visible"
         class="m-pop-box"
-        @click="cancel"/>
-    </transition>
+        @click="cancel"
+      />
+    </Transition>
 
-    <transition name="pop">
-      <div
-        v-if="visible"
-        class="wrap">
-        <common-header class="common-header">
-          输入密码
-          <a
-            slot="left"
-            @click="cancel">取消</a>
-        </common-header>
+    <Transition name="pop">
+      <div v-if="visible" class="wrap">
+        <CommonHeader class="common-header">
+          {{ $t('password.input') }}
+          <a slot="left" @click="cancel">
+            {{ $t('cancel') }}
+          </a>
+        </CommonHeader>
         <main>
           <form onsubmit="return false">
-            <input
-              ref="content"
-              v-model="password"
-              type="password"
-              minlength="6"
-              maxlength="16">
+            <label class="input-wrap">
+              <input
+                ref="content"
+                v-model="password"
+                type="password"
+                minlength="6"
+                maxlength="16"
+              >
+            </label>
             <button
               :disabled="disabled"
               type="submit"
-              @click="submit" >确认</button>
+              @click="submit"
+            >
+              {{ $t('confirm') }}
+            </button>
           </form>
-          <a
-            :class="{disabled}"
-            @click="onForgotClick">忘记密码?</a>
+          <a :class="{disabled}" @click="onForgotClick">
+            {{ $t('password.forgot') }}
+          </a>
         </main>
       </div>
-    </transition>
+    </Transition>
   </div>
 </template>
 
@@ -98,7 +101,7 @@ export default {
   }
 
   .common-header {
-    margin-bottom: -1px;
+    margin-bottom: -1px;/*no*/
     font-size: 30px;
   }
 
@@ -113,18 +116,24 @@ export default {
       margin-bottom: 20px;
       height: 60px;
 
-      input[type="password"] {
+      .input-wrap {
         flex: auto;
-        border: 1px solid @border-color;
+        border: 1px solid @border-color;/*no*/
         border-radius: 16px 0 0 16px;
+
+        input[type="password"] {
+          margin: 0;
+          box-shadow: none;
+        }
       }
 
       button[type="submit"] {
         flex: none;
         width: 6em;
+        margin: 0;
+        border-radius: 0 16px 16px 0;
         background-color: @primary;
         color: #fff;
-        border-radius: 0 16px 16px 0;
 
         &:disabled {
           background-color: #999;

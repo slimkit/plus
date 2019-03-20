@@ -1,24 +1,20 @@
 <template>
-  <section
-    class="c-form-item c-form-tags-item"
-    @click="switchTags">
+  <section class="c-form-item c-form-tags-item" @click="switchTags">
     <label>{{ label }}</label>
     <div class="input-wrap">
-      <span
-        v-if="value.length === 0"
-        class="placeholder">选择标签</span>
-      <div
-        v-else
-        class="m-tag-list m-tags">
+      <span v-if="value.length === 0" class="placeholder">
+        {{ placeholder }}
+      </span>
+      <div v-else class="m-tag-list m-tags">
         <span
           v-for="tag in value"
           :key="tag.id"
-          class="m-tag">{{ tag.name }}</span>
+          class="m-tag"
+          v-text="tag.name"
+        />
       </div>
-      <svg
-        v-if="!readonly"
-        class="m-style-svg m-svg-def m-entry-append">
-        <use xlink:href="#icon-arrow-right"/>
+      <svg v-if="!readonly" class="m-style-svg m-svg-def m-entry-append">
+        <use xlink:href="#icon-arrow-right" />
       </svg>
     </div>
   </section>
@@ -31,6 +27,7 @@ export default {
     value: { type: Array, default: () => [] },
     label: { type: String, default: '标签' },
     readonly: { type: Boolean, default: false },
+    placeholder: { type: String, default: '选择标签' },
   },
   methods: {
     switchTags () {

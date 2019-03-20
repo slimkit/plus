@@ -1,7 +1,7 @@
 <template>
   <div class="full-spin">
-    <span/>
-    <span/>
+    <span />
+    <span />
   </div>
 </template>
 <script>

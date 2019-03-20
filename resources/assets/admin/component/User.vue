@@ -47,6 +47,9 @@
                 <router-link tag="li" active-class="active" :to="{ name: 'user:vendor/weibo' }">
                   <a href="#">微博登录</a>
                 </router-link>
+                <router-link tag="li" active-class="active" :to="{ name: 'user:vendor/wechat-mp' }">
+                  <a href="#">微信公众平台</a>
+                </router-link>
                 <li class="divider"></li>
                 <router-link tag="li" active-class="active" :to="{ name: 'user:vendor/easemob' }">
                   <a href="#">环信即时聊天</a>

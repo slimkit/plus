@@ -1,155 +1,135 @@
 <template>
-  <div
-    class="p-user-home"
-    @mousedown="startDrag"
-    @touchstart="startDrag"
-    @mousemove.stop="onDrag"
-    @touchmove.stop="onDrag"
-    @mouseup="stopDrag"
-    @touchend="stopDrag"
-    @mouseleave="stopDrag">
-    <header
-      ref="head"
-      :class="{ 'show-title': scrollTop > 1 / 2 * bannerHeight }"
-      class="m-box m-lim-width m-pos-f m-head-top bg-transp">
-      <div class="m-box m-flex-grow1 m-aln-center m-flex-base0">
-        <svg class="m-style-svg m-svg-def white" @click="beforeBack">
-          <use xlink:href="#icon-back"/>
-        </svg>
-        <circle-loading v-if="updating" />
-      </div>
-      <div class="m-box m-flex-grow1 m-aln-center m-flex-base0 m-justify-center m-trans-y">
-        <span class="m-text-cut">{{ user.name }}</span>
-      </div>
-      <div class="m-box m-flex-grow1 m-aln-center m-flex-base0 m-justify-end">
-        <svg class="m-style-svg m-svg-def" @click="onMoreClick">
-          <use xlink:href="#icon-more"/>
-        </svg>
-      </div>
-    </header>
-    <div v-if="loading" class="m-pos-f m-spinner">
-      <div/>
-      <div/>
-    </div>
-    <!-- style="overflow-x: hidden; overflow-y:auto; min-height: 100vh" -->
-    <main>
-      <div
-        ref="banner"
-        :style="bannerStyle"
-        class="m-urh-banner">
-        <div class="m-box-model m-aln-center m-justify-end m-pos-f m-urh-bg-mask">
-          <label v-if="isMine" class="banner-click-area">
-            <input
-              ref="imagefile"
-              :accept="accept"
-              type="file"
-              class="m-rfile"
-              @change="onBannerChange" >
-          </label>
-          <avatar :user="user" size="big" />
-          <h3>{{ user.name }}</h3>
-          <p>
-            <router-link
-              append
-              to="followers"
-              tag="span">粉丝<i>{{ followersCount | formatNum }}</i></router-link>
-            <router-link
-              append
-              to="followings"
-              tag="span">关注<i>{{ followingsCount | formatNum }}</i></router-link>
-          </p>
-        </div>
-      </div>
-      <div class="m-text-box m-urh-info">
-        <p v-if="verified" class="m-cf94">
-          认证：<span>{{ verified.description }}</span>
+  <div class="p-user-home">
+    <PortalPanel
+      ref="portal"
+      :title="user.name"
+      :cover="userBackground"
+      :loading="loading"
+      :show-footer="!isMine"
+      :back="beforeBack"
+      @update="updateData"
+      @more="onMoreClick"
+      @loadmore="fetchUserFeed(true)"
+    >
+      <div slot="head" class="banner-content">
+        <label v-if="isMine" class="banner-click-area">
+          <input
+            ref="imagefile"
+            :accept="accept"
+            type="file"
+            class="m-rfile"
+            @change="onBannerChange"
+          >
+        </label>
+        <Avatar :user="user" size="big" />
+        <h3>{{ user.name }}</h3>
+        <p>
+          <RouterLink
+            append
+            to="followers"
+            tag="span"
+          >
+            {{ $t('fans') }} <span>{{ followersCount | formatNum }}</span>
+          </RouterLink>
+          <RouterLink
+            append
+            to="followings"
+            tag="span"
+          >
+            {{ $t('follow.name') }} <span>{{ followingsCount | formatNum }}</span>
+          </RouterLink>
         </p>
-        <p v-if="user.location">地址：<span>{{ user.location }}</span></p>
-        <p>简介：<span>{{ bio }}</span></p>
-        <p style="margin-top: 0; margin-left: -0.1rem">
-          <i
+      </div>
+
+      <div slot="info" class="user-info">
+        <p v-if="verified" class="verified">
+          {{ $t('certificate.name') }}: <span>{{ verified.description }}</span>
+        </p>
+        <p v-if="user.location">
+          {{ $t('profile.address') }}: <span>{{ user.location }}</span>
+        </p>
+        <p>
+          {{ $t('profile.bio') }}: <span>{{ bio }}</span>
+        </p>
+        <p v-if="tags.length" class="user-tags">
+          <span
             v-for="tag in tags"
-            v-if="tag.id"
             :key="`tag-${tag.id}`"
-            class="m-urh-tag">
-            {{ tag.name }}
-          </i>
+            :show="tag.id"
+            class="tag-item"
+            v-text="tag.name"
+          />
         </p>
       </div>
+
       <div
+        slot="sticky"
         v-clickoutside="hidenFilter"
-        class="m-box m-aln-center m-justify-bet m-urh-filter-box"
-        @click="popupBuyTS">
-        <span>{{ feedsCount }}条动态</span>
-        <div v-if="isMine" class="m-box m-aln-center m-urh-filter">
+        class="filter-bar"
+        @click="popupBuyTS"
+      >
+        <span>{{ feedsCount | t('feed.count') }}</span>
+        <div v-if="isMine">
           <span>{{ feedTypes[screen] }}</span>
           <svg class="m-style-svg m-svg-small">
-            <use xlink:href="#icon-list"/>
+            <use xlink:href="#icon-list" />
           </svg>
         </div>
       </div>
-      <ul class="m-urh-feeds">
-        <li
-          v-for="feed in feeds"
-          v-if="feed.id"
-          :key="`ush-${userID}-feed${feed.id}`">
-          <feed-card
-            :feed="feed"
-            :time-line="true"
-            @afterDelete="fetchUserInfo()" />
-        </li>
-      </ul>
-      <div class="m-box m-aln-center m-justify-center load-more-box">
-        <span v-if="noMoreData" class="load-more-ph">---没有更多---</span>
-        <span
-          v-else
-          class="load-more-btn"
-          @click.stop="fetchUserFeed(true)">
-          {{ fetchFeeding ? "加载中..." : "点击加载更多" }}
-        </span>
-      </div>
-    </main>
-    <footer
-      v-if="!isMine"
-      ref="foot"
-      class="m-box m-pos-f m-main m-bt1 m-user-home-foot">
-      <div class="m-flex-grow0 m-flex-shrink0 m-box m-aln-center m-justify-center" @click="rewardUser">
-        <svg class="m-style-svg m-svg-def">
-          <use xlink:href="#icon-profile-integral"/>
-        </svg>
-        <span>打赏</span>
-      </div>
-      <div
-        :class="{ primary: relation.status !== 'unFollow' }"
-        class="m-flex-grow0 m-flex-shrink0 m-box m-aln-center m-justify-center"
-        @click="followUserByStatus(relation.status)">
-        <svg class="m-style-svg m-svg-def">
-          <use :xlink:href="relation.icon"/>
-        </svg>
-        <span>{{ relation.text }}</span>
-      </div>
-      <!-- `/chats/${user.id}` -->
-      <div class="m-flex-grow0 m-flex-shrink0 m-box m-aln-center m-justify-center" @click="startSingleChat">
-        <svg class="m-style-svg m-svg-def">
-          <use xlink:href="#icon-comment"/>
-        </svg>
-        <span>聊天</span>
-      </div>
-    </footer>
+
+      <template slot="main">
+        <ul class="user-feeds">
+          <li
+            v-for="feed in feeds"
+            :key="`ush-${userId}-feed${feed.id}`"
+          >
+            <FeedCard
+              v-if="feed.id"
+              :feed="feed"
+              :time-line="true"
+              @afterDelete="fetchUserInfo()"
+            />
+          </li>
+        </ul>
+      </template>
+
+      <template slot="foot">
+        <div class="m-flex-grow0 m-flex-shrink0 m-box m-aln-center m-justify-center" @click="rewardUser">
+          <svg class="m-style-svg m-svg-def">
+            <use xlink:href="#icon-profile-integral" />
+          </svg>
+          <span>{{ $t('reward.name') }}</span>
+        </div>
+        <div
+          :class="{ primary: relation.status !== 'unFollow' }"
+          class="m-flex-grow0 m-flex-shrink0 m-box m-aln-center m-justify-center"
+          @click="followUserByStatus(relation.status)"
+        >
+          <svg class="m-style-svg m-svg-def">
+            <use :xlink:href="relation.icon" />
+          </svg>
+          <span>{{ relation.text }}</span>
+        </div>
+        <div class="m-flex-grow0 m-flex-shrink0 m-box m-aln-center m-justify-center" @click="startSingleChat">
+          <svg class="m-style-svg m-svg-def">
+            <use xlink:href="#icon-comment" />
+          </svg>
+          <span>{{ $t('message.chat.name') }}</span>
+        </div>
+      </template>
+    </PortalPanel>
   </div>
 </template>
 
 <script>
-import _ from 'lodash'
-import * as uploadApi from '@/api/upload'
-import { hashFile } from '@/util/SendImage.js'
-import FeedCard from '@/components/FeedCard/FeedCard.vue'
-import HeadRoom from 'headroom.js'
-import wechatShare from '@/util/wechatShare.js'
-
+import { limit } from '@/api'
+import uploadApi from '@/api/upload'
+import * as userApi from '@/api/user'
+import wechatShare from '@/util/wechatShare'
+import { checkImageType } from '@/util/imageCheck'
 import { startSingleChat } from '@/vendor/easemob'
-import { checkImageType } from '@/util/imageCheck.js'
-import * as api from '@/api/user.js'
+import FeedCard from '@/components/FeedCard/FeedCard.vue'
+import PortalPanel from '@/components/PortalPanel.vue'
 
 export default {
   name: 'UserHome',
@@ -175,31 +155,14 @@ export default {
   },
   components: {
     FeedCard,
+    PortalPanel,
   },
   data () {
     return {
       preUID: 0,
-      scrollTop: 0,
-      bannerHeight: 0,
-      loading: true,
-      dY: 0,
-      startY: 0,
-      dragging: false,
-      updating: false,
+      loading: false,
 
-      accept: {
-        type: [Array, String],
-        default () {
-          return [
-            'image/gif',
-            'image/jpeg',
-            'image/webp',
-            'image/jpg',
-            'image/png',
-            'image/bmp',
-          ]
-        },
-      },
+      accept: { type: [Array, String], default: 'image/*' },
 
       typeFilter: null,
       showFilter: false,
@@ -207,11 +170,10 @@ export default {
 
       feeds: [],
       feedTypes: {
-        all: '全部动态',
-        paid: '付费动态',
-        pinned: '置顶动态',
+        all: this.$t('feed.all'),
+        paid: this.$t('feed.paid'),
+        pinned: this.$t('feed.top'),
       },
-      noMoreData: false,
       fetchFeeding: false,
 
       tags: [],
@@ -227,8 +189,6 @@ export default {
         timestamp: '',
         noncestr: '',
       },
-      footroom: null,
-
       fetchFollow: false,
     }
   },
@@ -239,25 +199,25 @@ export default {
     currentUser () {
       return this.$store.state.CURRENTUSER
     },
-    userID () {
+    userId () {
       return ~~this.$route.params.userId
     },
     user: {
       get () {
-        return this.$store.getters.getUserById(this.userID, true) || {}
+        return this.$store.getters.getUserById(this.userId, true) || {}
       },
       set (val) {
         this.$store.commit('SAVE_USER', Object.assign(this.user, val))
       },
     },
     bio () {
-      return this.user.bio || '这家伙很懒,什么也没留下'
+      return this.user.bio || this.$t('profile.default_bio')
     },
     extra () {
       return this.user.extra || {}
     },
     isMine () {
-      return this.userID === this.currentUser.id
+      return this.userId === this.currentUser.id
     },
     followersCount () {
       return this.extra.followers_count || 0
@@ -268,30 +228,12 @@ export default {
     feedsCount () {
       return this.extra.feeds_count || 0
     },
-    bannerStyle () {
-      return [
-        this.userBackGround,
-        this.paddingTop,
-        { transitionDuration: this.dragging ? '0s' : '300ms' },
-      ]
-    },
-    userBackGround () {
-      let ubg = this.user.bg && this.user.bg.url
-      return ubg ? { 'background-image': `url("${ubg}")` } : {}
+    userBackground () {
+      const { url } = this.user.bg || {}
+      return url || require('@/images/user_home_default_cover.png')
     },
     verified () {
       return this.user.verified
-    },
-
-    // banner 相关
-    paddingTop () {
-      return {
-        paddingTop:
-          ((this.bannerHeight + 80 * Math.atan(this.dY / 200)) /
-            (this.bannerHeight * 2)) *
-            100 +
-          '%',
-      }
     },
     after () {
       const len = this.feeds.length
@@ -301,17 +243,17 @@ export default {
       get () {
         const relations = {
           unFollow: {
-            text: '关注',
+            text: this.$t('follow.name'),
             status: 'unFollow',
             icon: `#icon-unFollow`,
           },
           follow: {
-            text: '已关注',
+            text: this.$t('follow.already'),
             status: 'follow',
             icon: `#icon-follow`,
           },
           eachFollow: {
-            text: '互相关注',
+            text: this.$t('follow.each'),
             status: 'eachFollow',
             icon: `#icon-eachFollow`,
           },
@@ -336,24 +278,8 @@ export default {
       this.reload(this.$router)
     }
   },
-  mounted () {
-    this.typeFilter = this.$refs.typeFilter
-    this.bannerHeight = this.$refs.banner.getBoundingClientRect().height
-    if (!this.isMine) {
-      this.footroom = new HeadRoom(this.$refs.foot, {
-        tolerance: 5,
-        offset: 50,
-        classes: {
-          initial: 'headroom-foot',
-          pinned: 'headroom--footShow',
-          unpinned: 'headroom--footHide',
-        },
-      })
-      this.footroom.init()
-    }
-  },
   activated () {
-    if (this.preUID !== this.userID) {
+    if (this.preUID !== this.userId) {
       this.loading = true
       this.feeds = []
       this.tags = []
@@ -363,8 +289,6 @@ export default {
         this.loading = false
       }, 300)
     }
-
-    window.addEventListener('scroll', this.onScroll)
 
     if (this.isWechat) {
       // 微信分享
@@ -383,28 +307,21 @@ export default {
       })
     }
 
-    this.preUID = this.userID
+    this.preUID = this.userId
   },
   deactivated () {
     this.loading = true
     this.showFilter = false
-    window.removeEventListener('scroll', this.onScroll)
-  },
-  destroyed () {
-    window.removeEventListener('scroll', this.onScroll)
   },
   methods: {
     beforeBack () {
       if (this.$route.query.from === 'checkin') this.$bus.$emit('check-in')
       this.goBack()
     },
-    /**
-     * 发起单聊
-     */
     startSingleChat () {
-      startSingleChat(this.user).then(res => {
+      startSingleChat(this.user).then(chatId => {
         this.$nextTick(() => {
-          this.$router.push(`/chats/${res}`)
+          this.$router.push({ name: 'ChatRoom', params: { chatId } })
         })
       })
     },
@@ -415,7 +332,7 @@ export default {
       if (!status || this.fetchFollow) return
       this.fetchFollow = true
 
-      api
+      userApi
         .followUserByStatus({
           id: this.user.id,
           status,
@@ -429,23 +346,27 @@ export default {
       this.showFilter = false
     },
     fetchUserInfo () {
-      api.getUserInfoById(this.userID, true).then(user => {
-        this.user = Object.assign(this.user, user)
-        this.loading = false
-      })
+      userApi.getUserInfoById(this.userId, true)
+        .then(user => {
+          this.user = Object.assign(this.user, user)
+        })
+        .finally(() => {
+          this.loading = false
+        })
     },
     fetchUserTags () {
-      this.$http.get(`/users/${this.userID}/tags`).then(({ data = [] }) => {
-        this.tags = data
-      })
+      userApi.getUserTags(this.userId)
+        .then(({ data }) => {
+          this.tags = data
+        })
     },
     fetchUserFeed (loadmore) {
       if (this.fetchFeeding) return
       this.fetchFeeding = true
       const params = {
-        limit: 15,
+        limit,
         type: 'users',
-        user: this.userID,
+        user: this.userId,
       }
 
       loadmore && (params.after = this.after)
@@ -457,14 +378,13 @@ export default {
         })
         .then(({ data: { feeds = [] } }) => {
           this.feeds = loadmore ? [...this.feeds, ...feeds] : feeds
-          this.updating = false
-          this.fetchFeeding = false
-          this.noMoreData = feeds.length < params.limit
+          this.$refs.portal.afterLoadMore(feeds.length < params.limit)
+        })
+        .finally(() => {
+          this.$refs.portal.afterUpdate()
         })
     },
     updateData () {
-      this.updating = true
-      this.dY = 0
       this.fetchUserInfo()
       this.fetchUserFeed()
       this.fetchUserTags()
@@ -474,82 +394,27 @@ export default {
       const file = $input.files[0]
 
       checkImageType([file])
-        .then(() => {
-          this.uploadFile(file)
-            .then(async node => {
-              await this.$http.patch('/user', { bg: node })
-              this.$Message.success('更新个人背景成功！')
-              this.fetchUserInfo()
-            })
-            .catch(({ response: { data } = {} }) => {
-              this.$Message.error(data.message)
-            })
+        .then(async () => {
+          // 上传图片
+          const node = await uploadApi(file)
+          // 修改用户信息（背景图片）
+          await this.$http.patch('/user', { bg: node })
+          this.$Message.success(this.$t('profile.background.success'))
+          this.fetchUserInfo()
         })
         .catch(() => {
-          this.$Message.info('请上传正确格式的图片文件')
+          this.$Message.error(this.$t('profile.background.error'))
           $input.value = ''
         })
-    },
-    async uploadFile (file) {
-      // 如果需要新文件存储方式上传
-      const hash = await hashFile(file)
-      const params = {
-        filename: file.name,
-        hash,
-        size: file.size,
-        mime_type: file.type || 'image/png',
-        storage: { channel: 'public' },
-      }
-      const result = await uploadApi.createUploadTask(params)
-      return uploadApi
-        .uploadImage({
-          method: result.method,
-          url: result.uri,
-          headers: result.headers,
-          blob: file,
-        })
-        .then(data => {
-          return Promise.resolve(data.node)
-        })
-        .catch(err => {
-          this.$Message.error('文件上传失败，请检查文件系统配置')
-          return Promise.reject(err)
-        })
-    },
-    onScroll: _.debounce(function () {
-      this.scrollTop = Math.max(
-        0,
-        document.body.scrollTop,
-        document.documentElement.scrollTop
-      )
-    }, 1000 / 60),
-    startDrag (e) {
-      e = e.changedTouches ? e.changedTouches[0] : e
-      if (this.scrollTop <= 0 && !this.updating) {
-        this.startY = e.pageY
-        this.dragging = true
-      }
-    },
-    onDrag (e) {
-      const $e = e.changedTouches ? e.changedTouches[0] : e
-      if (this.dragging && $e.pageY - this.startY > 0 && window.scrollY <= 0) {
-        // 阻止 原生滚动 事件
-        e.preventDefault()
-        this.dY = $e.pageY - this.startY
-      }
-    },
-    stopDrag () {
-      this.dragging = false
-      this.dY > 300 && this.scrollTop <= 0 ? this.updateData() : (this.dY = 0)
     },
     onMoreClick () {
       const actions = []
       actions.push({
-        text: '举报',
+        text: this.$t('report.name'),
         method: () => {
           this.$bus.$emit('report', {
             type: 'user',
-            payload: this.userID,
+            payload: this.userId,
             username: this.user.name,
             reference: this.user.bio,
           })
@@ -562,14 +427,115 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.white {
-  color: #fff;
+.p-user-home {
+  .banner-content {
+    position: fixed;
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: center;
+    max-width: 768px;
+    margin: 0 auto;
+    z-index: 10;
+
+    h3 {
+      font-size: 34px;
+      margin-top: 20px;
+    }
+
+    p {
+      margin: 20px 0 30px;
+      span + span {
+        margin-left: 20px;
+      }
+    }
+
+    &::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      right: 0;
+      z-index: -1;
+      margin: auto;
+      opacity: 0.7;
+      background-image: linear-gradient(
+        to bottom,
+        rgba(0, 0, 0, 0.95),
+        rgba(0, 0, 0, 0) 40%,
+        rgba(0, 0, 0, 0) 50%,
+        rgba(0, 0, 0, 0.95)
+      );
+    }
+
+    .banner-click-area {
+      display: block;
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      z-index: 1;
+    }
+  }
+
+  .user-info {
+    padding: 30px 20px;
+    line-height: 36px;
+    background-color: #fff;
+    font-size: 26px;
+    color: @text-color3;
+    text-shadow: 0 1px 1px rgba(0, 0, 0, 0.1); /*no*/
+    word-wrap: break-word;
+    word-break: break-all;
+
+    p + p {
+      margin-top: 10px;
+    }
+
+    .verified {
+      color: @warning;
+    }
+
+    .user-tags {
+      margin-top: 10px;
+
+      .tag-item {
+        margin-top: 10px;
+        margin-right: 10px;
+        display: inline-block;
+        padding: 5px 20px;
+        font-size: 24px;
+        background-color: rgba(102, 102, 102, 0.1);
+        border-radius: 100px;
+        color: #666;
+      }
+    }
+  }
+
+  .user-feeds {
+    li + li {
+      margin-top: 10px;
+    }
+  }
+
+  .filter-bar {
+    display: flex;
+    justify-content: space-between;
+    padding: 20px 30px;
+
+    .m-style-svg {
+      margin-left: 20px;
+    }
+  }
 }
+
 .m-user-home-foot {
-  height: 90px;
-  top: initial;
-  bottom: 0;
-  font-size: 30px;
   > div {
     width: 1/3 * 100%;
     + div {
@@ -580,111 +546,6 @@ export default {
     width: 32px;
     height: 32px;
     margin: 0 10px;
-  }
-}
-.m-urh-banner {
-  padding-top: 320/640 * 100%;
-  width: 100%;
-  transform: translate3d(0, 0, 0);
-  background-size: cover;
-  background-position: center;
-  background-image: url("../images/user_home_default_cover.png");
-  font-size: 28px;
-  color: #fff;
-  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.5);
-  h3 {
-    margin: 20px 0;
-    font-size: 32px;
-  }
-  p {
-    margin: 0 0 30px 0;
-    span + span {
-      margin-left: 40px;
-    }
-    i {
-      margin: 0 5px;
-    }
-  }
-}
-.m-urh-info {
-  background-color: #fff;
-  padding: 30px 20px;
-  font-size: 26px;
-  line-height: 36px;
-  color: @text-color3;
-  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.1); /*no*/
-  p + p {
-    margin-top: 10px;
-  }
-}
-
-.m-urh-tag {
-  margin-top: 20px;
-  margin-left: 10px;
-  display: inline-block;
-  padding: 5px 20px;
-  font-size: 24px;
-  background-color: rgba(102, 102, 102, 0.1);
-  border-radius: 18px;
-}
-.m-urh-filter {
-  position: relative;
-  &-box {
-    padding: 25px 20px;
-    color: @text-color3;
-    font-size: 26px;
-    position: sticky;
-    top: 88px;
-    z-index: 9;
-    background-color: #f4f5f6;
-    .m-style-svg {
-      margin-left: 20px;
-    }
-  }
-  &-options {
-    overflow: hidden;
-    position: absolute;
-    top: 100%;
-    right: 0;
-    z-index: 9;
-    min-width: 200px;
-    border-radius: 8px;
-    background-color: #fff;
-    transform: translate3d(0, 25px, 0);
-    box-shadow: 0 0 10px 0 rgba(221, 221, 221, 0.6); /*no*/
-    li {
-      padding: 25px 20px;
-      font-size: 24px;
-      color: @text-color3;
-      & + li {
-        border-top: 1px solid @border-color; /*no*/
-      }
-    }
-  }
-}
-
-.m-urh-bg-mask:after {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  right: 0;
-  z-index: -1;
-  margin: auto;
-  opacity: 0.7;
-  background-image: linear-gradient(
-    180deg,
-    rgba(0, 0, 0, 0.95),
-    rgba(0, 0, 0, 0) 40%,
-    rgba(0, 0, 0, 0) 50%,
-    rgba(0, 0, 0, 0.95)
-  );
-}
-
-.m-urh-feeds {
-  li + li {
-    margin-top: 10px;
   }
 }
 
@@ -712,13 +573,4 @@ export default {
   }
 }
 
-.banner-click-area {
-  display: block;
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  z-index: 1;
-}
 </style>

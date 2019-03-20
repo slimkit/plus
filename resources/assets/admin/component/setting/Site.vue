@@ -71,7 +71,7 @@
                 <span class="help-block">站点是否开启匿名，开启后用户可以选择匿名操作部分内容</span>
               </div>
             </div>
-            <div class="form-group" v-if="site.anonymous.status">
+            <!-- <div class="form-group" v-if="site.anonymous.status">
               <label class="control-label col-md-2">匿名规则说明</label>
               <div class="col-md-6">
                 <textarea class="form-control" v-model="site.anonymous.rule"></textarea>
@@ -79,7 +79,7 @@
               <div class="col-md-4">
                 <span class="help-block">用于开启匿名时，给用户说明匿名规则</span>
               </div>
-            </div>
+            </div> -->
             <div class="form-group">
               <label class="control-label col-md-2">预留呢称</label>
               <div class="col-md-6">
@@ -108,7 +108,7 @@
                 <span class="help-block">用户邀请模版</span>
               </div>
             </div>
-            <div class="form-group">
+            <!-- <div class="form-group">
               <label class="control-label col-md-2">关于我们</label>
               <div class="col-md-6">
                 <input type="text" class="form-control" v-model="site.about_url" placeholder="例如: http://www.about.com" />
@@ -116,7 +116,7 @@
               <div class="col-md-4">
                 <span class="help-block">关于我们链接地址</span>
               </div>
-            </div>
+            </div> -->
             <div class="form-group">
               <label class="control-label col-md-2"></label>
               <div class="col-md-6">

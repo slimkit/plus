@@ -6,12 +6,12 @@ declare(strict_types=1);
  * +----------------------------------------------------------------------+
  * |                          ThinkSNS Plus                               |
  * +----------------------------------------------------------------------+
- * | Copyright (c) 2018 Chengdu ZhiYiChuangXiang Technology Co., Ltd.     |
+ * | Copyright (c) 2016-Present ZhiYiChuangXiang Technology Co., Ltd.     |
  * +----------------------------------------------------------------------+
- * | This source file is subject to version 2.0 of the Apache license,    |
- * | that is bundled with this package in the file LICENSE, and is        |
- * | available through the world-wide-web at the following url:           |
- * | http://www.apache.org/licenses/LICENSE-2.0.html                      |
+ * | This source file is subject to enterprise private license, that is   |
+ * | bundled with this package in the file LICENSE, and is available      |
+ * | through the world-wide-web at the following url:                     |
+ * | https://github.com/slimkit/plus/blob/master/LICENSE                  |
  * +----------------------------------------------------------------------+
  * | Author: Slim Kit Group <master@zhiyicx.com>                          |
  * | Homepage: www.thinksns.com                                           |
@@ -27,7 +27,6 @@ use Zhiyi\Plus\Models\Tag as TagModel;
 use Zhiyi\Plus\Concerns\FindMarkdownFileTrait;
 use Zhiyi\Plus\Models\FileWith as FileWithModel;
 use Zhiyi\Plus\Http\Middleware\VerifyUserPassword;
-use Zhiyi\Plus\Models\WalletCharge as WalletChargeModel;
 use Zhiyi\Plus\Packages\Currency\Processes\User as UserProcess;
 use Illuminate\Contracts\Foundation\Application as ApplicationContract;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentNews\Models\News as NewsModel;
@@ -107,110 +106,6 @@ class ContributeController extends Controller
                 unset($data->pinned);
             });
         }))->setStatusCode(200);
-    }
-
-    /**
-     * 提交资讯投稿申请.
-     *
-     * @param \Zhiyi\Component\ZhiyiPlus\PlusComponentNews\API2\Requests\StoreContribute $request
-     * @param \Illuminate\Contracts\Routing\ResponseFactory                              $response
-     * @param \Zhiyi\Component\ZhiyiPlus\PlusComponentNews\Models\News                   $news
-     * @param WalletChargeModel                                                          $charge
-     * @param \Zhiyi\Component\ZhiyiPlus\PlusComponentNews\Models\NewsCate               $category
-     * @param TagModel                                                                   $tagModel
-     * @return mixed
-     * @throws \Throwable
-     * @author Seven Du <shiweidu@outlook.com>
-     */
-    public function store(
-        StoreContributeRequest $request,
-        ResponseFactoryContract $response,
-        NewsModel $news,
-        WalletChargeModel $charge,
-        NewsCateModel $category,
-        TagModel $tagModel
-    ) {
-        $user = $request->user();
-        $config = setting('news', 'contribute', [
-            'pay' => true,
-            'verified' => true,
-        ]);
-        $payAmount = setting('news', 'contribute-amount', 100);
-
-        if ($config['pay'] && $user->wallet->balance < $payAmount) {
-            return $response->json(['message' => '账户余额不足'], 422);
-        }
-
-        if ($config['verified'] && $user->verified === null) {
-            return $response->json(['message' => '未认证用户不可投稿'], 422);
-        }
-
-        $map = $request->only(['title', 'content', 'subject', 'text_content']);
-        $map['content'] = $this->app->make(Markdown::class)->safetyMarkdown($map['content']);
-        $map['from'] = $request->input('from') ?: '原创';
-        $map['author'] = $request->input('author') ?: $user->name;
-        $map['storage'] = $request->input('image');
-
-        $images = $this->findMarkdownImageNotWithModels($map['content'] ?: '');
-        $images[] = $this->app->call(function (FileWithModel $fileWith) use ($map) {
-            return $fileWith->where('id', $map['storage'])
-                ->where('channel', null)
-                ->where('raw', null)
-                ->first();
-        });
-        $images = $images->filter();
-
-        $tags = $tagModel->whereIn('id', is_array($request->input('tags')) ? $request->input('tags') : explode(',', $request->input('tags')))->get();
-        if (! $tags) {
-            return $response->json(['message' => '填写的标签不存在或已删除'], 422);
-        }
-
-        foreach ($map as $key => $value) {
-            $news->$key = $value;
-        }
-        $news->digg_count = 0;
-        $news->comment_count = 0;
-        $news->hits = 0;
-        $news->is_recommend = 0;
-        $news->audit_status = 1;
-        $news->audit_count = 0;
-        $news->user_id = $user->id;
-        $news->contribute_amount = $config['pay'] ? $payAmount : 0;
-
-        if (! $category->news()->save($news)) {
-            return $response->json(['message' => '投稿失败'])->setStatusCode(500);
-        }
-
-        $charge->user_id = $user->id;
-        $charge->channel = 'system';
-        $charge->action = 0;
-        $charge->amount = $payAmount;
-        $charge->subject = '支付资讯投稿费用';
-        $charge->body = sprintf('支付资讯《%s》投稿费用', $news->title);
-        $charge->status = 1;
-
-        try {
-            $category->getConnection()->transaction(function () use ($news, $images, $user, $charge, $config, $tags) {
-                $images->each(function (FileWithModel $fileWith) use ($news) {
-                    $fileWith->channel = 'news:image';
-                    $fileWith->raw = $news->id;
-
-                    $fileWith->save();
-                });
-
-                if ($config['pay']) {
-                    $user->wallet()->decrement('balance', $charge->amount);
-                    $charge->save();
-                }
-
-                $news->tags()->attach($tags);
-            });
-
-            return $response->json(['message' => '投稿成功'], 201);
-        } catch (Exception $exception) {
-            $news->delete();
-            throw new $exception;
-        }
     }
 
     /**

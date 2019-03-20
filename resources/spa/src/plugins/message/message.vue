@@ -1,15 +1,16 @@
 <template>
-  <transition
+  <Transition
     :name="transitionName"
     @enter="handleEnter"
-    @leave="handleLeave">
+    @leave="handleLeave"
+  >
     <div :class="classes">
       <svg :class="[`${prefixCls}-icon`]">
-        <use :xlink:href="`#icon-message-${icon}`"/>
+        <use :xlink:href="`#icon-message-${icon}`" />
       </svg>
       <span class="ellipsis">{{ content | plusMessageAnalyze(defaultMessage) }}</span>
     </div>
-  </transition>
+  </Transition>
 </template>
 <script>
 const prefixCls = 'v-msg'

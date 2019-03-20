@@ -1,18 +1,23 @@
 <template>
-  <jo-load-more
+  <JoLoadMore
     key="find-pop"
     ref="loadmore"
     @onRefresh="onRefresh"
-    @onLoadMore="onLoadMore">
-    <user-item
+    @onLoadMore="onLoadMore"
+  >
+    <UserItem
       v-for="user in users"
+      :key="user.id"
       :user="user"
-      :key="user.id"/>
-  </jo-load-more>
+    />
+  </JoLoadMore>
 </template>
+
 <script>
+import { limit } from '@/api'
+import * as api from '@/api/user.js'
 import UserItem from '@/components/UserItem.vue'
-import { findUserByType } from '@/api/user.js'
+
 export default {
   name: 'FindPop',
   components: {
@@ -28,17 +33,17 @@ export default {
   },
   methods: {
     onRefresh (callback) {
-      findUserByType('populars').then(({ data: users } = {}) => {
+      api.findUserByType('populars').then(({ data: users } = {}) => {
         users && (this.users = users)
-        this.$refs.loadmore.afterRefresh(users.length < 15)
+        this.$refs.loadmore.afterRefresh(users.length < limit)
       })
     },
     onLoadMore (callback) {
-      findUserByType('populars', {
+      api.findUserByType('populars', {
         offset: this.users.length,
       }).then(({ data: users }) => {
         this.users = [...this.users, ...users]
-        this.$refs.loadmore.afterLoadMore(users.length < 15)
+        this.$refs.loadmore.afterLoadMore(users.length < limit)
       })
     },
   },

@@ -25,31 +25,53 @@ export async function getHotCities () {
  */
 export async function getCurrentPosition () {
   let data = await location.getCurrentPosition()
-  let { city, province, formatted_address: address } = data.addressComponent || {}
+  console.log(data) // eslint-disable-line no-console
+  let { city, province } = data.addressComponent || {}
+  const [lng, lat] = [data.position.getLng(), data.position.getLat()]
+
+  // 保存位置信息 (异步，无需 await)
+  saveCurrentPosition(lng, lat)
+
+  let label = ''
+  if (city) label = `${province} ${city}`
+  else if (province) label = `中国 ${province}`
+  else label = '定位失败'
 
   return {
-    lng: data.position.getLng(),
-    lat: data.position.getLat(),
-    label: city || province || address || '定位失败',
+    lng,
+    lat,
+    label,
+  }
+}
+
+/**
+ * 保存当前位置信息
+ *
+ * @author mutoe <mutoe@foxmail.com>
+ * @export
+ * @param {number} longitude 经度
+ * @param {number} latitude 纬度
+ * @returns
+ */
+export async function saveCurrentPosition (longitude, latitude) {
+  try {
+    await api.post(`/around-amap`, { longitude, latitude })
+  } catch (error) {
+    // eslint-disable-next-line no-console
+    console.warn('保存位置信息失败: ', error)
   }
 }
 
 export function getGeo (address) {
-  const res = {}
-  return api.get(`around-amap/geo?address=${address}`).then(
-    ({
-      data: {
-        geocodes: [ { location, formatted_address: label } ],
-      } = {},
-    }) => {
+  return api.get(`around-amap/geo?address=${address}`)
+    .then(({ data }) => {
+      const { geocodes = [] } = data || {}
+      const { location, formatted_address: label } = geocodes[0] || {}
       // city, district, province, location, formatted_address;
       const [lng, lat] = location.split(',')
-      return Object.assign(res, { lng, lat, label })
-    },
-    () => {
-      return res
-    }
-  )
+      return { lng, lat, label }
+    })
+    .catch(() => ({}))
 }
 
 /**

@@ -6,12 +6,12 @@ declare(strict_types=1);
  * +----------------------------------------------------------------------+
  * |                          ThinkSNS Plus                               |
  * +----------------------------------------------------------------------+
- * | Copyright (c) 2018 Chengdu ZhiYiChuangXiang Technology Co., Ltd.     |
+ * | Copyright (c) 2016-Present ZhiYiChuangXiang Technology Co., Ltd.     |
  * +----------------------------------------------------------------------+
- * | This source file is subject to version 2.0 of the Apache license,    |
- * | that is bundled with this package in the file LICENSE, and is        |
- * | available through the world-wide-web at the following url:           |
- * | http://www.apache.org/licenses/LICENSE-2.0.html                      |
+ * | This source file is subject to enterprise private license, that is   |
+ * | bundled with this package in the file LICENSE, and is available      |
+ * | through the world-wide-web at the following url:                     |
+ * | https://github.com/slimkit/plus/blob/master/LICENSE                  |
  * +----------------------------------------------------------------------+
  * | Author: Slim Kit Group <master@zhiyicx.com>                          |
  * | Homepage: www.thinksns.com                                           |
@@ -24,8 +24,8 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Zhiyi\Plus\Http\Controllers\Controller;
 use Zhiyi\Plus\Models\Comment as CommentModel;
-use Zhiyi\Plus\Models\UserCount as UserCountModel;
 use Zhiyi\Plus\Models\WalletCharge as WalletChargeModel;
+use Zhiyi\Plus\Notifications\System as SystemNotification;
 use Illuminate\Contracts\Routing\ResponseFactory as ResponseContract;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\Feed as FeedModel;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Repository\Feed as FeedRepository;
@@ -138,43 +138,26 @@ class CommentPinnedController extends Controller
         $charge->body = sprintf('置顶评论《%s》', str_limit($comment->body, 100, '...'));
         $charge->status = 1;
 
-        // 申请内容置顶的用户的未读系统通知
-        $userUnreadCount = $pinned->user
-            ->unreadNotifications()
-            ->count();
-        $userCount = UserCountModel::firstOrNew([
-            'user_id' => $pinned->user_id,
-            'type' => 'user-system',
-        ]);
-        $userCount->total = $userUnreadCount + 1;
-
-        return $feed->getConnection()->transaction(function () use ($response, $pinned, $comment, $user, $charge, $userCount) {
+        $feed->getConnection()->transaction(function () use ($response, $pinned, $comment, $user, $charge) {
             $pinned->save();
             $comment->save();
             $user->wallet()->increment('balance', $charge->amount);
             $user->walletCharges()->save($charge);
-
-            $pinned->user->sendNotifyMessage('feed-comment:pass', '你申请置顶的动态评论已被通过', [
-                'comment' => $comment,
-                'pinned' => $pinned,
-            ]);
-            $userCount->save();
-
-            // 更新动态所有者的动态评论置顶审核未读数
-            $userUnreadCount = $pinned->newQuery()
-                ->where('target_user', $user->id)
-                ->where('channel', 'feed')
-                ->whereNull('expires_at')
-                ->count();
-            $userCount = UserCountModel::firstOrNew([
-                'user_id' => $user->id,
-                'type' => 'feed-comment-pinned',
-            ]);
-            $userCount->total = $userUnreadCount + 1;
-            $userCount->save();
-
-            return $response->json(['message' => '置顶成功'], 201);
         });
+
+        $pinned->user->notify(new SystemNotification('你申请的动态评论置顶已通过', [
+            'type' => 'pinned:feed/comment',
+            'state' => 'passed',
+            'comment' => [
+                'id' => $comment->id,
+                'contents' => $comment->body,
+            ],
+            'feed' => [
+                'id' => $pinned->raw,
+            ],
+        ]));
+
+        return $response->json(['message' => '置顶成功'], 201);
     }
 
     public function reject(
@@ -204,42 +187,26 @@ class CommentPinnedController extends Controller
         $charge->body = sprintf('被拒动态评论《%s》申请，退还申请金额', str_limit($pinned->comment->body ?? 'null', 100, '...'));
         $charge->status = 1;
 
-        // 申请内容置顶的用户的未读系统通知
-        $userUnreadCount = $pinned->user
-            ->unreadNotifications()
-            ->count();
-        $userCount = UserCountModel::firstOrNew([
-            'user_id' => $pinned->user_id,
-            'type' => 'user-system',
-        ]);
-        $userCount->total = $userUnreadCount + 1;
-
-        return $pinned->getConnection()->transaction(function () use ($response, $charge, $pinned, $dateTime, $userCount) {
+        $pinned->getConnection()->transaction(function () use ($response, $charge, $pinned, $dateTime) {
             $charge->save();
             $pinned->user->wallet()->increment('balance', $pinned->amount);
             $pinned->expires_at = $dateTime;
             $pinned->save();
-            $userCount->save();
-            // 更新动态所有者的动态评论置顶审核未读数
-            $userUnreadCount = $pinned->newQuery()
-                ->where('target_user', $user->id)
-                ->where('channel', 'feed')
-                ->whereNull('expires_at')
-                ->count();
-            $userCount = UserCountModel::firstOrNew([
-                'user_id' => $user->id,
-                'type' => 'feed-comment-pinned',
-            ]);
-            $userCount->total = $userUnreadCount;
-            $userCount->save();
-
-            $pinned->user->sendNotifyMessage('feed-comment:reject', '你申请置顶的动态评论已被驳回', [
-                'comment' => $pinned->comment,
-                'pinned' => $pinned,
-            ]);
-
-            return $response->json(null, 204);
         });
+
+        $pinned->user->notify(new SystemNotification('你申请的动态评论置顶已通过', [
+            'type' => 'pinned:feed/comment',
+            'state' => 'rejected',
+            'comment' => [
+                'id' => $pinned->comment->id,
+                'contents' => $pinned->comment->body,
+            ],
+            'feed' => [
+                'id' => $pinned->raw,
+            ],
+        ]));
+
+        return $response->json(null, 204);
     }
 
     /**

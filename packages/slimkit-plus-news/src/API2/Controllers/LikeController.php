@@ -6,12 +6,12 @@ declare(strict_types=1);
  * +----------------------------------------------------------------------+
  * |                          ThinkSNS Plus                               |
  * +----------------------------------------------------------------------+
- * | Copyright (c) 2018 Chengdu ZhiYiChuangXiang Technology Co., Ltd.     |
+ * | Copyright (c) 2016-Present ZhiYiChuangXiang Technology Co., Ltd.     |
  * +----------------------------------------------------------------------+
- * | This source file is subject to version 2.0 of the Apache license,    |
- * | that is bundled with this package in the file LICENSE, and is        |
- * | available through the world-wide-web at the following url:           |
- * | http://www.apache.org/licenses/LICENSE-2.0.html                      |
+ * | This source file is subject to enterprise private license, that is   |
+ * | bundled with this package in the file LICENSE, and is available      |
+ * | through the world-wide-web at the following url:                     |
+ * | https://github.com/slimkit/plus/blob/master/LICENSE                  |
  * +----------------------------------------------------------------------+
  * | Author: Slim Kit Group <master@zhiyicx.com>                          |
  * | Homepage: www.thinksns.com                                           |
@@ -21,9 +21,8 @@ declare(strict_types=1);
 namespace Zhiyi\Component\ZhiyiPlus\PlusComponentNews\API2\Controllers;
 
 use Illuminate\Http\Request;
-use Zhiyi\Plus\Services\Push;
 use Zhiyi\Plus\Http\Controllers\Controller;
-use Zhiyi\Plus\Models\UserCount as UserCountModel;
+use Zhiyi\Plus\Notifications\Like as LikeNotification;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentNews\Models\News;
 
 class LikeController extends Controller
@@ -45,20 +44,10 @@ class LikeController extends Controller
             ])->setStatusCode(400);
         }
 
-        $news->like($user);
+        $like = $news->like($user);
         $news->user->extra()->firstOrCreate([])->increment('likes_count', 1);
-        if ($news->user_id !== $user->id) {
-            $news->user->unreadCount()->firstOrCreate([])->increment('unread_likes_count', 1);
-            // 新未读统计 1.8启用
-            $userLikedCount = UserCountModel::firstOrNew([
-                'type' => 'user-liked',
-                'user_id' => $news->user->id,
-            ]);
-
-            $userLikedCount->total += 1;
-            $userLikedCount->save();
-
-            app(Push::class)->push(sprintf('%s点赞了你的资讯', $user->name), (string) $news->user->id, ['channel' => 'news:like']);
+        if ($news->user) {
+            $news->user->notify(new LikeNotification('资讯文章', $like, $user));
         }
 
         return response()->json()->setStatusCode(201);

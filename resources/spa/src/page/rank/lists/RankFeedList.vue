@@ -1,48 +1,49 @@
 <template>
   <div :class="prefixCls">
+    <CommonHeader>{{ title | t('rank.feed') }}</CommonHeader>
 
-    <common-header>{{ title }}动态排行榜</common-header>
-
-    <load-more
+    <JoLoadMore
       ref="loadmore"
-      :on-refresh="onRefresh"
-      :on-load-more="onLoadMore">
+      @onRefresh="onRefresh"
+      @onLoadMore="onLoadMore"
+    >
       <div :class="`${prefixCls}-list`">
-        <rank-list-item
+        <RankListItem
           v-for="(user, index) in users"
-          :prefix-cls="prefixCls"
           :key="user.id"
+          :prefix-cls="prefixCls"
           :user="user"
-          :index="index">
-          <p>点赞量：{{ user.extra.count || 0 }}</p>
-        </rank-list-item>
+          :index="index"
+        >
+          <p>{{ user.extra.count || 0 | t('rank.feed_count') }}</p>
+        </RankListItem>
       </div>
-    </load-more>
+    </JoLoadMore>
   </div>
 </template>
 
 <script>
-import HeadTop from '@/components/HeadTop'
 import RankListItem from '../components/RankListItem.vue'
 import { getRankUsers } from '@/api/ranks.js'
 import { limit } from '@/api'
+import i18n from '@/i18n'
 
 const prefixCls = 'rankItem'
 const api = '/feeds/ranks'
 const config = {
   week: {
     vuex: 'rankFeedsWeek',
-    title: '本周',
+    title: i18n.t('date.week'),
     query: 'week',
   },
   today: {
     vuex: 'rankFeedsToday',
-    title: '今日',
+    title: i18n.t('date.today'),
     query: 'day',
   },
   month: {
     vuex: 'rankFeedsMonth',
-    title: '本月',
+    title: i18n.t('date.month'),
     query: 'month',
   },
 }
@@ -50,7 +51,6 @@ const config = {
 export default {
   name: 'FeedsList',
   components: {
-    HeadTop,
     RankListItem,
   },
   data () {
@@ -91,7 +91,8 @@ export default {
     onRefresh () {
       getRankUsers(api, { type: this.query }).then(data => {
         this.$store.commit('SAVE_RANK_DATA', { name: this.vuex, data })
-        this.$refs.loadmore.topEnd(false)
+        this.$refs.loadmore.afterRefresh(data.length <
+ limit)
       })
     },
     onLoadMore () {
@@ -103,7 +104,7 @@ export default {
           name: this.vuex,
           data: [...this.users, ...data],
         })
-        this.$refs.loadmore.bottomEnd(data.length < limit)
+        this.$refs.loadmore.afterLoadMore(data.length < limit)
       })
     },
   },

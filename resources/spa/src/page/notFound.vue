@@ -1,7 +1,8 @@
 <template>
   <div
     class="not_found"
-    @click="$router.go(-1)">
+    @click="$router.go(-1)"
+  >
     <svg viewBox="0 0 600 300">
       <!-- Symbol -->
       <symbol id="s-text">
@@ -9,28 +10,39 @@
           text-anchor="middle"
           x="50%"
           y="50%"
-          dy=".35em"> 404 </text>
+          dy=".35em"
+        >
+          404
+        </text>
       </symbol>
       <!-- Duplicate symbols -->
       <use
         xlink:href="#s-text"
-        class="text"/>
+        class="text"
+      />
       <use
         xlink:href="#s-text"
-        class="text"/>
+        class="text"
+      />
       <use
         xlink:href="#s-text"
-        class="text"/>
+        class="text"
+      />
       <use
         xlink:href="#s-text"
-        class="text"/>
+        class="text"
+      />
       <use
         xlink:href="#s-text"
-        class="text"/>
+        class="text"
+      />
       <text
         x="50%"
         y="290"
-        class="tips_text">页面走丢了, 点击返回上一页</text>
+        class="tips_text"
+      >
+        {{ $t('network.not_found') }}
+      </text>
     </svg>
   </div>
 </template>

@@ -1,22 +1,21 @@
 <template>
   <div class="p-profile-collection-feeds">
-    <jo-load-more
+    <JoLoadMore
       ref="loadmore"
       :auto-load="false"
-      style="padding-top: .9rem"
       @onRefresh="onRefresh"
-      @onLoadMore="onLoadMore">
+      @onLoadMore="onLoadMore"
+    >
       <ul>
         <li
           v-for="feed in feedList"
           :key="`clet-${feed.id}`"
-          class="p-profile-collection-feeds-item">
-          <feed-card
-            :feed="feed"
-            :show-footer="false"/>
+          class="p-profile-collection-feeds-item"
+        >
+          <FeedCard :feed="feed" :show-footer="false" />
         </li>
       </ul>
-    </jo-load-more>
+    </JoLoadMore>
   </div>
 </template>
 
@@ -39,20 +38,16 @@ export default {
     this.$refs.loadmore.beforeRefresh()
   },
   methods: {
-    onRefresh () {
-      // TODO: refactor there with vuex action.
-      api.getCollectedFeed().then(({ data = [] }) => {
-        this.feedList = data
-        this.$refs.loadmore.afterRefresh(data.length < limit)
-      })
+    async onRefresh () {
+      const { data } = await api.getCollectedFeed()
+      this.feedList = data
+      this.$refs.loadmore.afterRefresh(data.length < limit)
     },
-    onLoadMore () {
+    async onLoadMore () {
       const offset = this.feedList.length
-      // TODO: refactor there with vuex action.
-      api.getCollectedFeed({ offset }).then(({ data = [] }) => {
-        this.feedList = [...this.feedList, ...data]
-        this.$refs.loadmore.afterLoadMore(data.length < limit)
-      })
+      const { data } = await api.getCollectedFeed({ offset })
+      this.feedList = [...this.feedList, ...data]
+      this.$refs.loadmore.afterLoadMore(data.length < limit)
     },
   },
 }
@@ -61,6 +56,9 @@ export default {
 <style lang="less" scoped>
 .p-profile-collection-feeds {
   &-item {
+    background-color: #fff;
+    padding-bottom: 20px;
+
     .m-card-main {
       padding-bottom: 30px;
     }

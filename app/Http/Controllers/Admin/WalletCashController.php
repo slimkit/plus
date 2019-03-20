@@ -6,12 +6,12 @@ declare(strict_types=1);
  * +----------------------------------------------------------------------+
  * |                          ThinkSNS Plus                               |
  * +----------------------------------------------------------------------+
- * | Copyright (c) 2018 Chengdu ZhiYiChuangXiang Technology Co., Ltd.     |
+ * | Copyright (c) 2016-Present ZhiYiChuangXiang Technology Co., Ltd.     |
  * +----------------------------------------------------------------------+
- * | This source file is subject to version 2.0 of the Apache license,    |
- * | that is bundled with this package in the file LICENSE, and is        |
- * | available through the world-wide-web at the following url:           |
- * | http://www.apache.org/licenses/LICENSE-2.0.html                      |
+ * | This source file is subject to enterprise private license, that is   |
+ * | bundled with this package in the file LICENSE, and is available      |
+ * | through the world-wide-web at the following url:                     |
+ * | https://github.com/slimkit/plus/blob/master/LICENSE                  |
  * +----------------------------------------------------------------------+
  * | Author: Slim Kit Group <master@zhiyicx.com>                          |
  * | Homepage: www.thinksns.com                                           |
@@ -21,11 +21,12 @@ declare(strict_types=1);
 namespace Zhiyi\Plus\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
+use function Zhiyi\Plus\setting;
 use Zhiyi\Plus\Models\WalletCash;
 use Illuminate\Support\Facades\DB;
 use Zhiyi\Plus\Models\WalletCharge;
-use Zhiyi\Plus\Repository\WalletRatio;
 use Zhiyi\Plus\Http\Controllers\Controller;
+use Zhiyi\Plus\Notifications\System as SystemNotification;
 
 class WalletCashController extends Controller
 {
@@ -36,7 +37,7 @@ class WalletCashController extends Controller
      * @return mixed
      * @author Seven Du <shiweidu@outlook.com>
      */
-    public function show(Request $request, WalletRatio $repository)
+    public function show(Request $request)
     {
         $user = $request->query('user');
         $status = $request->query('status');
@@ -69,7 +70,7 @@ class WalletCashController extends Controller
                 'current_page' => $paginate->currentPage(),
                 'first_page' => 1,
                 'cashes' => $items,
-                'ratio' => $repository->get(),
+                'ratio' => setting('wallet', 'ratio', 100),
             ])
             ->setStatusCode(200);
     }
@@ -110,12 +111,12 @@ class WalletCashController extends Controller
         DB::transaction(function () use ($cash, $charge) {
             $charge->save();
             $cash->save();
-
-            $cash->user->sendNotifyMessage('user-cash:passed', '你的提现申请已通过', [
-                'charge' => $charge,
-                'cash' => $cash,
-            ]);
         });
+
+        $cash->user->notify(new SystemNotification('你的提现申请已通过', [
+            'type' => 'user-cash',
+            'state' => 'passed',
+        ]));
 
         return response()
             ->json(['message' => ['操作成功']])
@@ -155,16 +156,17 @@ class WalletCashController extends Controller
         $charge->status = 2;
         $charge->user_id = $user->id;
 
-        DB::transaction(function () use ($cash, $charge, $remark) {
+        DB::transaction(function () use ($cash, $charge) {
             $cash->user->wallet()->increment('balance', $cash->value);
             $charge->save();
             $cash->save();
-
-            $cash->user->sendNotifyMessage('user-cash:refuse', sprintf('你的提现申请已被拒绝，原因为：%s', $remark), [
-                'charge' => $charge,
-                'cash' => $cash,
-            ]);
         });
+
+        $cash->user->notify(new SystemNotification('你的提现申请已通过', [
+            'type' => 'user-cash',
+            'state' => 'rejected',
+            'contents' => $remark,
+        ]));
 
         return response()
             ->json(['message' => ['操作成功']])

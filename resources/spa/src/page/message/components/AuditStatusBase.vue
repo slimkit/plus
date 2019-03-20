@@ -11,12 +11,12 @@ export default {
     reject () {},
     showOperations (audit) {
       if (audit.feed === null) {
-        this.$Message.error('动态已被删除,无法设置该评论置顶')
+        this.$Message.error(this.$t('article.deleted'))
         return false
       }
       const actions = [
-        { text: '同意置顶', method: () => this.accept },
-        { text: '拒绝置顶', method: () => this.reject },
+        { text: this.$t('message.audit.top.accept'), method: () => this.accept },
+        { text: this.$t('message.audit.top.reject'), method: () => this.reject },
       ]
       this.$bus.$emit('actionSheet', actions)
     },

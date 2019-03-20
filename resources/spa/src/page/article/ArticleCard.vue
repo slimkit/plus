@@ -1,89 +1,76 @@
 <template>
-  <transition>
+  <Transition>
     <div class="c-article-card">
       <div class="m-box-model m-art-card">
-        <header
-          ref="head"
-          class="m-box-model m-pos-f m-head-top">
+        <header ref="head" class="m-box-model m-pos-f m-head-top">
           <slot name="head">
-            <common-header>资讯详情</common-header>
+            <CommonHeader>{{ title }}</CommonHeader>
           </slot>
         </header>
 
-        <div
-          v-if="loading"
-          class="m-spinner pos-f">
-          <div/>
-          <div/>
-        </div>
+        <div v-if="loading" class="m-spinner m-pos-f" />
 
         <main class="m-box-model">
-          <slot/>
+          <slot name="main" />
         </main>
 
         <footer
           v-if="canOprate"
           ref="foot"
-          class="m-pos-f">
+          class="m-pos-f"
+        >
           <slot name="foot">
-            <a
-              class="m-box-model m-aln-center"
-              @click.prevent="handelLike">
+            <a class="m-box-model m-aln-center" @click.prevent="handelLike">
               <svg class="m-style-svg m-svg-def">
-                <use :xlink:href="liked ? '#icon-like' :'#icon-unlike'"/>
+                <use :xlink:href="liked ? '#icon-like' :'#icon-unlike'" />
               </svg>
-              <span>喜欢</span>
+              <span :class="{liked}">{{ $t('like') }}</span>
             </a>
-            <a
-              class="m-box-model m-aln-center"
-              @click.prevent="handelComment">
+            <a class="m-box-model m-aln-center" @click.prevent="handelComment">
               <svg class="m-style-svg m-svg-def">
-                <use xlink:href="#icon-comment"/>
+                <use xlink:href="#icon-comment" />
               </svg>
-              <span>评论</span>
+              <span>{{ $t('comment.name') }}</span>
             </a>
-            <a
-              class="m-box-model m-aln-center"
-              @click.prevent="handelShare">
+            <a class="m-box-model m-aln-center" @click.prevent="handelShare">
               <svg class="m-style-svg m-svg-def">
-                <use xlink:href="#icon-share"/>
+                <use xlink:href="#icon-share" />
               </svg>
-              <span>分享</span>
+              <span>{{ $t('share') }}</span>
             </a>
-            <a
-              class="m-box-model m-aln-center"
-              @click.prevent="handelMore">
+            <a class="m-box-model m-aln-center" @click.prevent="handelMore">
               <svg class="m-style-svg m-svg-def">
-                <use xlink:href="#icon-more"/>
+                <use xlink:href="#icon-more" />
               </svg>
-              <span>更多</span>
+              <span>{{ $t('more') }}</span>
             </a>
           </slot>
         </footer>
-
       </div>
     </div>
-  </transition>
+  </Transition>
 </template>
 
 <script>
 import HeadRoom from 'headroom.js'
+import { mapState } from 'vuex'
+import i18n from '@/i18n'
+
+const typeMap = {
+  feed: { title: i18n.t('feed.name') },
+  news: { title: i18n.t('news.name') },
+  post: { title: i18n.t('group.post.name') },
+  answer: { title: i18n.t('question.answer.name') },
+}
 
 export default {
   name: 'ArticleCard',
   props: {
-    loading: {
-      type: Boolean,
-      default: true,
-    },
-    liked: {
-      type: Boolean,
-      default: false,
-    },
-    canOprate: {
-      type: Boolean,
-      default: true,
-    },
+    type: { type: String, required: true, validator: type => Object.keys(typeMap).includes(type) },
+    article: { type: Number, required: true }, // 文章 ID
+    loading: { type: Boolean, default: true }, // 加载中
+    liked: { type: Boolean, default: false }, // 已点赞
+    canOprate: { type: Boolean, default: true },
   },
   data () {
     return {
@@ -92,8 +79,17 @@ export default {
     }
   },
   computed: {
+    ...mapState({
+      CURRENTUSER: 'CURRENTUSER',
+    }),
+    factory () {
+      return typeMap[this.type]
+    },
     isWechat () {
       return this.$store.state.BROWSER.isWechat
+    },
+    title () {
+      return this.$t('article.detail', { title: this.factory.title })
     },
   },
   watch: {
@@ -144,19 +140,17 @@ export default {
   },
   methods: {
     handelLike () {
-      this.$emit('on-like')
+      this.$emit('like')
     },
     handelComment () {
-      this.$emit('on-comment')
+      this.$emit('comment')
     },
     handelShare () {
-      this.$emit('on-share')
+      if (this.isWechat) this.$Message.info(this.$t('article.share_wechat'))
+      else this.$Message.info(this.$t('article.share_brownser'))
     },
     handelMore () {
-      this.$emit('on-more')
-    },
-    goback () {
-      this.$router.go(-1)
+      this.$emit('more')
     },
   },
 }
@@ -190,7 +184,7 @@ export default {
       height: 95px;
       font-size: 24px;
       background-color: #fff;
-      border-top: 1px solid @border-color;
+      border-top: 1px solid @border-color; /* no */
 
       a {
         color: #b3b3b3;
@@ -198,6 +192,10 @@ export default {
 
       span {
         margin-top: 4px;
+      }
+
+      .liked {
+        color: @error;
       }
     }
   }

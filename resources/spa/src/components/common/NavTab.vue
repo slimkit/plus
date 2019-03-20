@@ -1,15 +1,15 @@
 <template>
-
-  <nav class="c-nav-tab">
+  <nav v-if="nav.length" class="c-nav-tab">
     <ul>
-      <router-link
-        v-for="(label, name) in nav"
-        :key="name"
-        :to="{name: route.name, query: {[route.query]: name }}"
+      <RouterLink
+        v-for="item in nav"
+        :key="item.name"
+        :to="item.route"
         tag="li"
-        replace>
-        {{ label }}
-      </router-link>
+        replace
+      >
+        {{ item.label || item.name }}
+      </RouterLink>
     </ul>
   </nav>
 </template>
@@ -18,20 +18,19 @@
 export default {
   name: 'NavTab',
   props: {
-    nav: { type: Object, required: true },
-    route: { type: Object, required: true },
-    default: { type: String, default: '' },
+    nav: { type: Array, default: () => [] },
   },
 }
 </script>
 
 <style lang="less" scoped>
 .c-nav-tab {
+  position: relative;
   display: flex;
   align-items: center;
   height: 90px;
   width: 100%;
-  border-bottom: 1px solid @border-color;
+  border-bottom: 1px solid @border-color; /* no */
   background-color: #fff;
   z-index: 10;
 
@@ -45,6 +44,7 @@ export default {
       display: flex;
       align-items: center;
       height: 100%;
+      padding: 0 0.5em;
 
       &.router-link-exact-active {
         border-bottom: 4px solid @primary;

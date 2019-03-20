@@ -6,12 +6,12 @@ declare(strict_types=1);
  * +----------------------------------------------------------------------+
  * |                          ThinkSNS Plus                               |
  * +----------------------------------------------------------------------+
- * | Copyright (c) 2018 Chengdu ZhiYiChuangXiang Technology Co., Ltd.     |
+ * | Copyright (c) 2016-Present ZhiYiChuangXiang Technology Co., Ltd.     |
  * +----------------------------------------------------------------------+
- * | This source file is subject to version 2.0 of the Apache license,    |
- * | that is bundled with this package in the file LICENSE, and is        |
- * | available through the world-wide-web at the following url:           |
- * | http://www.apache.org/licenses/LICENSE-2.0.html                      |
+ * | This source file is subject to enterprise private license, that is   |
+ * | bundled with this package in the file LICENSE, and is available      |
+ * | through the world-wide-web at the following url:                     |
+ * | https://github.com/slimkit/plus/blob/master/LICENSE                  |
  * +----------------------------------------------------------------------+
  * | Author: Slim Kit Group <master@zhiyicx.com>                          |
  * | Homepage: www.thinksns.com                                           |
@@ -648,8 +648,8 @@ class FeedController extends Controller
     protected function saveFeedFilePaidNode($nodes, FeedModel $feed)
     {
         foreach ($nodes as $node) {
-            $node->subject = '购买动态附件';
-            $node->body = sprintf('购买动态《%s》的图片', str_limit($feed->feed_content, 100, '...'));
+            $node->subject = '动态图片';
+            $node->body = '动态的图片';
             $node->user_id = $feed->user_id;
             $node->save();
         }
@@ -673,9 +673,9 @@ class FeedController extends Controller
 
         $paidNode = new PaidNodeModel();
         $paidNode->amount = $amount;
-        $paidNode->channel = 'feed';
+        $paidNode->channel = 'feeds';
         $paidNode->raw = $feed->id;
-        $paidNode->subject = sprintf('购买动态《%s》', str_limit($feed->feed_content, 100, '...'));
+        $paidNode->subject = '动态';
         $paidNode->body = $paidNode->subject;
         $paidNode->user_id = $feed->user_id;
         $paidNode->save();
@@ -720,6 +720,7 @@ class FeedController extends Controller
         FeedModel $feed
     ) {
         $user = $feed->user;
+        $authUser = request()->user();
         if (! $user) {
             // 删除话题关联
             $feed->topics->each(function ($topic) {
@@ -731,7 +732,7 @@ class FeedController extends Controller
             $feed->delete();
 
             return $response->json(null, 204);
-        } elseif ($user->id !== $feed->user_id && ! $user->ability('[feed] Delete Feed')) {
+        } elseif ($authUser->id !== $user->id && ! $authUser->ability('[feed] Delete Feed')) {
             return $response->json(['message' => '你没有权限删除动态'])->setStatusCode(403);
         }
 

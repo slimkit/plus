@@ -4,12 +4,12 @@
  * +----------------------------------------------------------------------+
  * |                          ThinkSNS Plus                               |
  * +----------------------------------------------------------------------+
- * | Copyright (c) 2018 Chengdu ZhiYiChuangXiang Technology Co., Ltd.     |
+ * | Copyright (c) 2016-Present ZhiYiChuangXiang Technology Co., Ltd.     |
  * +----------------------------------------------------------------------+
- * | This source file is subject to version 2.0 of the Apache license,    |
- * | that is bundled with this package in the file LICENSE, and is        |
- * | available through the world-wide-web at the following url:           |
- * | http://www.apache.org/licenses/LICENSE-2.0.html                      |
+ * | This source file is subject to enterprise private license, that is   |
+ * | bundled with this package in the file LICENSE, and is available      |
+ * | through the world-wide-web at the following url:                     |
+ * | https://github.com/slimkit/plus/blob/master/LICENSE                  |
  * +----------------------------------------------------------------------+
  * | Author: Slim Kit Group <master@zhiyicx.com>                          |
  * | Homepage: www.thinksns.com                                           |
@@ -34,7 +34,7 @@ class CreateFileWithsTable extends Migration
             $table->integer('file_id')->unsigned()->comment('文件ID');
             $table->integer('user_id')->unsigned()->comment('用户ID');
             $table->string('channel', 100)->nullable()->default(null)->comment('记录频道');
-            $table->string('raw', 100)->nullable()->default(null)->comment('原始频道关联信息');
+            $table->integer('raw')->nullable()->comment('原始频道关联信息');
             $table->string('size', 50)->nullable()->default(null)->comment('图片尺寸，目标文件如果是图片的话则存在。便于客户端提前预设盒子');
             $table->timestamps();
             $table->softDeletes();

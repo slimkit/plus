@@ -1,15 +1,20 @@
 <template>
   <div class="page-location">
-    <head-top
+    <HeadTop
       :append="true"
-      title="选择定位">
+      :title="$t('location.choose')"
+    >
       <div
         slot="append"
         class="head-top-cancel"
-        @click="$router.go(-1)">取消</div>
+        @click="$router.go(-1)"
+      >
+        {{ $t('cancel') }}
+      </div>
       <div
         slot="title"
-        class="head-top-search">
+        class="head-top-search"
+      >
         <svg class="m-style-svg m-svg-def head-top-search-icon">
           <use xlink:href="#icon-search" />
         </svg>
@@ -17,33 +22,39 @@
           v-model="keyword"
           class="head-top-search-input"
           type="text"
-          placeholder="搜索"
-          @input="search">
+          :placeholder="$t('search')"
+          @input="search"
+        >
       </div>
-    </head-top>
+    </HeadTop>
     <!-- 保留此空 div -->
-    <div/>
+    <div />
     <template v-if="isShowHot">
       <div class="location-current">
-        <span>当前定位</span>
+        <span>{{ $t('location.current') }}</span>
         <span
           :class="{c999: !cur_txt }"
-          class="location-current-txt">{{ cur_txt || "未定位" }}</span>
+          class="location-current-txt"
+        >
+          {{ cur_txt || $t('location.empty') }}
+        </span>
         <svg
           class="m-style-svg m-svg-def location-current-append"
-          @click.native.stop="updateLocation">
+          @click.native.stop="updateLocation"
+        >
           <use xlink:href="#cur-icon" />
         </svg>
       </div>
       <div class="location-hot">
-        <label>热门城市</label>
+        <label>{{ $t('location.choose') }}</label>
         <div class="location-hot-list">
           <div
             v-for="hotCity in hot_citys"
             v-if="hotCity.length > 0"
             :key="hotCity"
             class="location-hot-item"
-            @click="chooseHotCity(hotCity)">
+            @click="chooseHotCity(hotCity)"
+          >
             {{ hotCity.slice(hotCity.lastIndexOf(' ')) }}
           </div>
         </div>
@@ -56,7 +67,8 @@
           v-if="item"
           :key="item"
           class="location-search-list-item"
-          @click="chooseHotCity(item)">
+          @click="chooseHotCity(item)"
+        >
           {{ item }}
         </li>
       </ul>
@@ -116,9 +128,7 @@ export default {
     },
     chooseHotCity(cityTxt) {
       this.$http
-        .get(
-          `around-amap/geo?address=${cityTxt.replace(/[\s\uFEFF\xA0]+/g, "")}`
-        )
+        .get(`around-amap/geo?address=${cityTxt.replace(/[\s\uFEFF\xA0]+/g, "")}`)
         .then(res => {
           const {
             data: { geocodes: [{ city, district, province, location }] } = {}
@@ -162,7 +172,7 @@ export default {
         sources.forEach(function(item) {
           if (item !== null && item.source !== null && item.status === 1) {
             item.status = 0;
-            item.source.cancel("取消上一个");
+            item.source.cancel();
           }
         });
 
@@ -192,13 +202,6 @@ export default {
                 return name.substr(0, name.length - 1);
               });
             })
-            .catch(
-              ({ response: { data = { message: "搜索失败" } } = {} } = {}) => {
-                // 置空请求canceltoken
-                sc.source = null;
-                that.$Message.error(data);
-              }
-            );
         }
       },
       500 // 空闲时间间隔设置500ms
@@ -229,8 +232,7 @@ export default {
     background-color: #fff;
     padding: 0 30px;
     &-item {
-      border-bottom: 1px solid #ededed;
-      /*no*/
+      border-bottom: 1px solid #ededed; /*no*/
       width: 100%;
       height: 100px;
       line-height: 98px;

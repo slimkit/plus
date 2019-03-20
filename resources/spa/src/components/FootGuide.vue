@@ -3,49 +3,54 @@
     <section
       :class="{active: isCurPath('/feed')}"
       class="guide-item"
-      @click="to('/feeds?type=hot')">
+      @click="to('/feeds?type=hot')"
+    >
       <svg class="m-style-svg m-svg-def">
-        <use xlink:href="#icon-foot-home"/>
+        <use xlink:href="#icon-foot-home" />
       </svg>
-      <span>动态</span>
+      <span>{{ $t('feed.name') }}</span>
     </section>
     <section
       :class="{active: isCurPath('/discover')}"
       class="guide-item"
-      @click="to('/discover')">
+      @click="to('/discover')"
+    >
       <svg class="m-style-svg m-svg-def">
-        <use xlink:href="#icon-foot-discover"/>
+        <use xlink:href="#icon-foot-discover" />
       </svg>
-      <span>发现</span>
+      <span>{{ $t('discover') }}</span>
     </section>
     <section
       class="guide-item plus"
-      @click="showPostMenu">
+      @click="showPostMenu"
+    >
       <svg class="m-style-svg m-svg-def plus">
-        <use xlink:href="#icon-plus"/>
+        <use xlink:href="#icon-plus" />
       </svg>
     </section>
     <section
       :class="{active: isCurPath('/message')}"
       class="guide-item"
-      @click="to('/message/info')">
-      <v-badge :dot="hasMsg">
+      @click="to({name: 'MessageHome'})"
+    >
+      <BadgeIcon :dot="notification">
         <svg class="m-style-svg m-svg-def">
-          <use xlink:href="#icon-foot-message"/>
+          <use xlink:href="#icon-foot-message" />
         </svg>
-      </v-badge>
-      <span>消息</span>
+      </BadgeIcon>
+      <span>{{ $t('message.name') }}</span>
     </section>
     <section
       :class="{active: isCurPath('profile')}"
       class="guide-item"
-      @click="to('/profile')">
-      <v-badge :dot="profile">
+      @click="to('/profile')"
+    >
+      <BadgeIcon :dot="profile">
         <svg class="m-style-svg m-svg-def">
-          <use xlink:href="#icon-foot-profile"/>
+          <use xlink:href="#icon-foot-profile" />
         </svg>
-      </v-badge>
-      <span>我</span>
+      </BadgeIcon>
+      <span>{{ $t('profile.name') }}</span>
     </section>
   </footer>
 </template>
@@ -57,37 +62,23 @@ export default {
   name: 'FootGuide',
   data () {
     return {
-      has_fans: false,
+      // has_fans: false,
     }
   },
   computed: {
-    ...mapState({
-      has_msg: state =>
-        state.MESSAGE.NEW_UNREAD_COUNT.commented +
-          state.MESSAGE.NEW_UNREAD_COUNT['feed-comment-pinned'] +
-          state.MESSAGE.NEW_UNREAD_COUNT['group-join-pinned'] +
-          state.MESSAGE.NEW_UNREAD_COUNT.liked +
-          state.MESSAGE.NEW_UNREAD_COUNT['news-comment-pinned'] +
-          state.MESSAGE.NEW_UNREAD_COUNT['post-comment-pinned'] +
-          state.MESSAGE.NEW_UNREAD_COUNT['post-pinned'] +
-          state.MESSAGE.NEW_UNREAD_COUNT.system >
-        0,
-      profile: state =>
-        state.MESSAGE.NEW_UNREAD_COUNT.following +
-          state.MESSAGE.NEW_UNREAD_COUNT.mutual >
-        0,
+    ...mapState('message', {
+      profile: state => state.user.following + state.user.mutual > 0,
     }),
-    ...mapGetters(['hasUnreadChat']),
-    hasMsg () {
-      return this.has_msg || this.hasUnreadChat > 0
-    },
+    ...mapGetters('message', {
+      notification: 'unreadMessage',
+    }),
   },
   mounted () {
     this.$el.parentNode.style.paddingBottom = '1rem'
   },
   methods: {
     to (path) {
-      this.$router.push({ path })
+      this.$router.push(path)
     },
     isCurPath (path) {
       return this.$route.fullPath.indexOf(path) > -1

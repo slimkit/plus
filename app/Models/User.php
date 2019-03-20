@@ -6,12 +6,12 @@ declare(strict_types=1);
  * +----------------------------------------------------------------------+
  * |                          ThinkSNS Plus                               |
  * +----------------------------------------------------------------------+
- * | Copyright (c) 2018 Chengdu ZhiYiChuangXiang Technology Co., Ltd.     |
+ * | Copyright (c) 2016-Present ZhiYiChuangXiang Technology Co., Ltd.     |
  * +----------------------------------------------------------------------+
- * | This source file is subject to version 2.0 of the Apache license,    |
- * | that is bundled with this package in the file LICENSE, and is        |
- * | available through the world-wide-web at the following url:           |
- * | http://www.apache.org/licenses/LICENSE-2.0.html                      |
+ * | This source file is subject to enterprise private license, that is   |
+ * | bundled with this package in the file LICENSE, and is available      |
+ * | through the world-wide-web at the following url:                     |
+ * | https://github.com/slimkit/plus/blob/master/LICENSE                  |
  * +----------------------------------------------------------------------+
  * | Author: Slim Kit Group <master@zhiyicx.com>                          |
  * | Homepage: www.thinksns.com                                           |
@@ -58,7 +58,7 @@ class User extends Authenticatable implements JWTSubject
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'phone', 'password',
+        'name', 'email', 'phone', 'password', 'last_login_ip', 'register_ip',
     ];
 
     /**
@@ -83,6 +83,20 @@ class User extends Authenticatable implements JWTSubject
      * @var array
      */
     protected $with = ['extra'];
+
+    /**
+     * Get Notification for JPush sender.
+     * @return \Medz\Laravel\Notifications\JPush\Sender
+     */
+    protected function routeNotificationForJpush()
+    {
+        return new \Medz\Laravel\Notifications\JPush\Sender([
+            'platform' => 'all',
+            'audience' => [
+                'alias' => sprintf('user_%d', $this->id),
+            ],
+        ]);
+    }
 
     /**
      * Get the identifier that will be stored in the subject claim of the JWT.
@@ -141,7 +155,7 @@ class User extends Authenticatable implements JWTSubject
         return [
             'type' => $certification->certification_name,
             'icon' => $certification->icon,
-            'description' => $certification->data['desc'],
+            'description' => $certification->data['desc'] ?? '',
         ];
     }
 

@@ -22,14 +22,14 @@
                     <div class="form-group">
                         <label>状态：</label>
                         <select class="form-control" v-model="filter.status">
-                            <option :value="item.value" v-for="item in statuss.data">{{ item.status }}</option>
+                            <option :value="item.value" :key="item.value" v-for="item in statuss.data">{{ item.status }}</option>
                         </select>
                     </div>
                     <div class="form-group">
                         <label>类型：</label>
                         <select class="form-control" v-model="filter.certification_name">
                            <option value="">全部</option>
-                           <option :value="item.name" v-for="item in categories.data">{{ item.display_name }}</option>
+                           <option :value="item.name" :key="item.name" v-for="item in categories.data">{{ item.display_name }}</option>
                         </select>
                     </div>
                     <div class="form-group">
@@ -42,7 +42,7 @@
             </div>
             <div class="panel-heading">
               <b>统计：</b>
-              <span class="text-primary" v-for="(count, index) in counts">{{ `${index}${count}` }} </span>  
+              <span class="text-primary" :key="index" v-for="(count, index) in counts">{{ `${index}${count}` }} </span>  
             </div>
             <div class="panel-body">
                 <!-- 认证列表 -->
@@ -67,7 +67,7 @@
                         <!-- 加载 -->
                         <table-loading :loadding="loadding" :colspan-num="12"></table-loading>
                         <template v-if="certifications.length">
-                          <tr v-for="(certification, index) in certifications">
+                          <tr v-for="(certification, index) in certifications" :key="certification.id">
                               <td>{{ certification.user.name }}</td>
                               <td>{{ certification.data.name }}</td>
                               <td>{{ certification.data.org_name }}</td>
@@ -79,7 +79,7 @@
                               <td>
                                 <a :href="attachmentPath+file" 
                                 target="__blank" 
-                                v-for="(file,index) in certification.data.files"> 附件[{{ index+1 }}]</a>
+                                v-for="(file,index) in certification.data.files" :key="file"> 附件[{{ index+1 }}]</a>
                               </td>
                               <td>{{ statuss.display[certification.status] }}</td>
                               <td>{{ certification.updated_at | localDate }}</td>
@@ -170,7 +170,7 @@ const certificationComponent = {
   data: () => ({
     loadding: true,
     total: 0,
-    counts: [],
+    counts: {},
     categories: [],
     certifications: [],
     attachmentPath: "/api/v2/files/",
@@ -280,7 +280,7 @@ const certificationComponent = {
           this.loadding = false;
           this.total = parseInt(total);
           this.certifications = data.items;
-          this.counts = data.counts[0];
+          this.counts = data.counts;
         })
         .catch(
           ({ response: { data: { errors = ["加载失败"] } = {} } = {} }) => {

@@ -37,29 +37,31 @@
 /* base spinner */
 .m-spinner {
   position: fixed;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  right: 0;
-  background-color: #fff;
-  pointer-events: none;
-  > div {
-    overflow: hidden;
+  top: -100%;
+  left: -100%;
+  bottom: -100%;
+  right: -100%;
+  background-color: rgba(255,255,255, 0.9);
+
+  &::before,
+  &::after {
+    content: '';
     position: absolute;
     top: 0;
     left: 0;
     bottom: 0;
     right: 0;
     margin: auto;
-    width: 50px; /*no*/
-    height: 50px; /*no*/
+    width: 100px;
+    height: 100px;
     opacity: 0.5;
     border-radius: 100%;
     background-color: @primary;
     animation: scale1 2s infinite ease-in-out;
-    &:nth-child(2) {
-      animation-delay: -1s;
-    }
+  }
+
+  &::after {
+    animation-delay: -1s;
   }
 }
 
@@ -136,8 +138,6 @@
   height: 90px;
   &-item {
     .m-text-cut();
-    flex: 1 1 auto;
-    margin: 0 40px;
     padding: 0 10px;
     color: @text-color3;
     border-bottom: 2px solid transparent; /*no*/
@@ -150,11 +150,11 @@
 .m-avatar-box {
   display: inline-block;
   position: relative;
-  margin: 0 auto;
+  // margin: 0 auto;
   flex: none;
   width: 76px;
   height: 76px;
-  background: #999 center / cover no-repeat;
+  background: transparent center / cover no-repeat;
   border-radius: 50%;
   color: #fff;
   text-align: center;
@@ -191,7 +191,7 @@
     right: 0;
     bottom: 0;
     left: 0;
-    border: 1px solid rgba(230, 230, 230, 0.5);
+    border: 1px solid rgba(230, 230, 230, 0.5); /* no */
     border-radius: 50%;
   }
   &.def,
@@ -255,45 +255,6 @@
     margin: 5px 0;
     color: @primary;
   }
-  &-head {
-    padding: 0 20px;
-    h1 {
-      margin: 36px 0;
-      color: @primary;
-      font-size: 50px;
-      letter-spacing: 1px; /*no*/
-    }
-    p {
-      font-size: 24px;
-      color: @text-color4;
-    }
-  }
-  &-cate {
-    padding: 4px;
-    font-style: normal;
-    display: inline-block;
-    font-size: 20px;
-    height: 30/0.95px;
-    color: @primary;
-    line-height: 30/0.95-8px;
-    border: 1px solid currentColor; /*no*/
-    -webkit-transform-origin-x: 0;
-    -webkit-transform: scale(0.95);
-    transform: scale(0.95);
-  }
-  &-subject {
-    margin: 50px 20px 20px;
-    padding: 30px;
-    font-size: 26px;
-    line-height: 36px;
-    background-color: #f4f5f6;
-    color: #999;
-    border-left: 5px solid #e3e3e3;
-    &:before {
-      content: "[摘要]";
-      color: #666;
-    }
-  }
   &-body {
     margin: 0;
     padding: 20px;
@@ -306,50 +267,6 @@
     img {
       margin-left: -20px;
       width: calc(~"100% + 40px");
-    }
-  }
-  &-foot {
-    padding: 50px 20px;
-    font-size: 24px;
-    color: #ccc;
-  }
-  &-info {
-    line-height: 30px;
-  }
-  &-like-list {
-    color: @primary;
-    .m-avatar-box {
-      border: 2px solid #fff; /*no*/
-      &:not(:first-child) {
-        margin-left: -20px;
-      }
-    }
-  }
-  &-reward {
-    margin-bottom: 40px;
-  }
-  &-rew-label {
-    font-size: 24px;
-    color: @text-color1;
-    margin: 15px 0;
-    a {
-      color: #f76c69;
-    }
-  }
-  &-rew-btn {
-    display: flex;
-    width: 160px;
-    height: 60px;
-    color: #fff;
-    font-size: 28px;
-    border-radius: 6px;
-    background-color: #f76c69;
-    align-items: center;
-    justify-content: center;
-  }
-  &-rew {
-    & + & {
-      margin-left: 10px;
     }
   }
   &-comments {
@@ -635,10 +552,12 @@
 
 /* 占位图 */
 .m-no-find {
-  background-size: 400px;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-image: url("../images/img_default_search@2x.png");
+  background: url("../images/img_default_search@2x.png") center / 400px no-repeat;
+}
+.m-no-content {
+  width: 100%;
+  height: 600px;
+  background: @gray-bg url('../images/img_default_nothing@2x.png') center / 400px no-repeat;
 }
 .c_59b6d7 {
   color: @primary;
@@ -707,7 +626,7 @@
     line-height: 88px;
     font-size: 30px;
     color: @text-color3;
-    border-bottom: 1px solid transparent;
+    border-bottom: 1px solid transparent; /* no */
     &.active {
       color: @text-color1;
     }
@@ -747,4 +666,38 @@
   animation-duration: 1.4s;
   animation-timing-function: linear;
   animation-iteration-count: infinite;
+}
+
+// header switch-bar
+.type-switch-bar {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 90px;
+
+  > span {
+    position: relative;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 3em;
+    margin: 0 1em;
+    color: #999;
+    transition: 0.3s;
+
+    &.active {
+      color: #333;
+
+      &::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        display: block;
+        height: 3px;/*no*/
+        width: 100%;
+        background-color: @primary;
+      }
+    }
+  }
 }

@@ -850,7 +850,7 @@ var comment = {
         formData.body = formData.body.replace(/(@[^\r\n\t\v\f@ ]+)(\s?)/g, '\u00ad$1\u00ad$2');
 
         // 保留原始回复内容, at 用户替换为链接
-        var original_body = formData.body.replace(/\u00ad@([^\/]+?)\u00ad/gi, function(matches, username) {
+        var body = formData.body.replace(/\u00ad@([^\/]+?)\u00ad/gi, function(matches, username) {
             var url = TS.SITE_URL + '/users/' + username;
             return '<a href="' + url + '">@' + username + '</a>'
         });
@@ -918,7 +918,7 @@ var comment = {
                     html += '                    </ul>'
                     html += '                </div>'
                     html += '            </div>';
-                    html += '            <div class="reply_body">'+original_body+'</div>';
+                    html += '            <div class="reply_body">'+body+'</div>';
                     html += '        </dd>';
                     html += '    </dl>';
                     html += '</div>';
@@ -963,8 +963,8 @@ var comment = {
                 url = '/api/v2/questions/' + source_id + '/comments/' + id;
                 break;
         }
-        _this.lockStatus = 1;
         layer.confirm(confirmTxt + '确定删除这条评论？', {}, function() {
+            _this.lockStatus = 1;
             axios.delete(url)
                 .then(function (response) {
                     $('#comment' + id).fadeOut();
@@ -1840,6 +1840,59 @@ var repostable = {
     },
 }
 
+function handleFile(blob, callback) {
+    var reader = new FileReader()
+    reader.onload = function(event) {
+        var arrayBuffer = reader.result
+        var gifInfo = gify.getInfo(arrayBuffer)
+        callback(gifInfo)
+    }
+    reader.readAsArrayBuffer(blob)
+}
+
+// 播放 GIF 图
+if ('getContext' in document.createElement('canvas')) {
+    HTMLImageElement.prototype.play = function() {
+        var that = this
+        that.parentElement.classList.add('playing')
+        if (that.dataset.blobUrl) {
+            that.src = that.dataset.blobUrl
+            gifInfo.timer = setTimeout(function() {
+                that.stop()
+                gifInfo.currentIndex++
+            }, that.dataset.gifDuration)
+            return
+        }
+        // 从远程获取 GIF blob 对象
+        axios.get(that.dataset.originalGif, {
+            responseType: 'blob'
+        }).then(function(res) {
+            var blob = res.data
+
+            // 加载图片
+            var blobUrl = window.URL.createObjectURL(blob);
+            that.src = blobUrl
+            that.dataset.blobUrl = blobUrl
+
+            // 解析 GIF 信息 （via gify）
+            handleFile(blob, function (info) {
+                // 读取 GIF 持续时间
+                that.dataset.gifDuration = info.durationChrome
+                // 停止播放
+                gifInfo.timer = setTimeout(function() {
+                    that.stop()
+                    gifInfo.currentIndex++ // 触发索引变更 播放下一个 GIF
+                }, that.dataset.gifDuration)
+            })
+        })
+    };
+    HTMLImageElement.prototype.stop = function() {
+        clearTimeout(gifInfo.timer)
+        this.parentElement.classList.remove('playing')
+        this.src = this.dataset.original
+    };
+}
+
 $(function() {
 
     // 获取我的好友 用于全局at弹框显示默认内容
@@ -2105,7 +2158,7 @@ $(function() {
       var name = $(this).data('user-name')
       $el = $('.ev-ipt-repostable-content');
 
-      $el.val($el.val() + "@" + name + " ")
+      $el.html($el.html() + "@" + name + " ")
       repostable.showMention(false);
     })
 

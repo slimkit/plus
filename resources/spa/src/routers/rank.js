@@ -1,4 +1,7 @@
 /* 排行榜 */
+
+import i18n from '@/i18n'
+
 const RankIndex = () =>
   import(/* webpackChunkName: 'rank' */ '../page/rank/RankIndex.vue')
 const RankUsers = () =>
@@ -16,7 +19,7 @@ export default [
   {
     path: '/rank',
     component: RankIndex,
-    meta: { title: '排行' },
+    meta: { title: i18n.t('rank.name') },
     redirect: '/rank/users',
     children: [
       {
@@ -34,29 +37,17 @@ export default [
         },
       },
     ],
-  } /* 排行 */,
+  },
   {
     path: '/rank/users/followers',
     component: RankFollowers,
-    meta: {
-      title: '全站粉丝排行榜',
-      keepAlive: true,
-    },
   },
   {
     path: '/rank/users/checkin',
     component: RankCheckinLikes,
-    meta: {
-      title: '社区签到排行榜',
-      keepAlive: true,
-    },
   },
   {
     path: '/rank/f/:time',
     component: RankFeedList,
-    meta: {
-      // keepAlive: true,
-      title: '动态排行榜',
-    },
   },
 ]

@@ -1,157 +1,113 @@
 <template>
-  <article-card
+  <ArticleCard
+    ref="article"
+    type="news"
+    :article="newsId"
     :liked="liked"
     :loading="loading"
     :can-oprate="news.audit_status===0"
-    @on-like="likeNews"
-    @on-share="shareNews"
-    @on-more="moreAction"
-    @on-comment="commentNews">
-
-    <common-header slot="head">资讯详情</common-header>
-
-    <jo-load-more
+    @like="likeNews"
+    @more="moreAction"
+    @comment="$refs.comments.open()"
+  >
+    <JoLoadMore
+      slot="main"
       ref="loadmore"
       :auto-load="false"
       :show-bottom="false"
-      @onRefresh="onRefresh">
+      @onRefresh="onRefresh"
+    >
       <div class="m-flex-shrink1 m-flex-grow1 m-art m-main">
         <section class="m-art-head">
           <h1>{{ news.title }}</h1>
           <p>
             <i class="m-art-cate">{{ cate }}</i>
-            <span>来自 {{ news.from || '原创' }}</span>
+            <span class="from">{{ $t('news.from') }} {{ news.from || $t('news.original') }}</span>
           </p>
         </section>
-        <p v-if="news.subject" class="m-art-subject">{{ news.subject }}</p>
-        <div class="m-art-body markdown-body" v-html="body"/>
-        <div class="m-box m-aln-center m-justify-bet m-art-foot">
-          <div class="m-flex-grow1 m-flex-shrink1 m-box m-aln-center m-art-like-list">
-            <template v-if="likeCount > 0 && news.audit_status===0">
-              <ul class="m-box m-flex-grow0 m-flex-shrink0">
-                <li
-                  v-for="({user, id}, index) in likes.slice(0, 5)"
-                  :key="id"
-                  :style="{ zIndex: 5-index }"
-                  class="m-avatar-box tiny">
-                  <img :src="getAvatar(user.avatar)">
-                </li>
-              </ul>
-              <span>{{ likeCount | formatNum }}人点赞</span>
-            </template>
-          </div>
-          <div class="m-box-model m-aln-end m-art-info">
-            <span>发布于{{ time | time2tips }}</span>
-            <span>{{ news.hits || 0 | formatNum }}浏览</span>
-          </div>
-        </div>
-        <div class="m-box-model m-box-center m-box-center-a m-art-reward">
-          <button class="m-art-rew-btn" @click="rewardNews">打 赏</button>
-          <p class="m-art-rew-label">
-            <a href="javascript:;">{{ reward.count | formatNum }}</a>人打赏，共
-            <a href="javascript:;">{{ ~~reward.amount | formatNum }}</a>{{ currencyUnit }}
-          </p>
-          <router-link
-            tag="ul"
-            to="rewarders"
-            append
-            class="m-box m-aln-center m-art-rew-list">
-            <li
-              v-for="rew in rewardList"
-              :key="rew.id"
-              :class="`m-avatar-box-${rew.user.sex}`"
-              class="m-flex-grow0 m-flex-shrink0 m-art-rew m-avatar-box tiny">
-              <img :src="getAvatar(rew.user.avatar)">
-            </li>
-            <li v-if="rewardList.length > 0" class="m-box m-aln-center">
-              <svg class="m-style-svg m-svg-def" style="fill:#bfbfbf">
-                <use xlink:href="#icon-arrow-right"/>
-              </svg>
-            </li>
-          </router-link>
-        </div>
+        <p v-if="news.subject" class="m-art-subject">
+          <span>[{{ $t('news.post.label.subject') }}]</span>
+          {{ news.subject }}
+        </p>
+        <div class="m-art-body markdown-body" v-html="body" />
+
+        <!-- 点赞组件 -->
+        <ArticleLike
+          :likers="likes"
+          :like-count="likeCount"
+          :time="time"
+          :view-count="news.hits"
+        />
+
+        <!-- 打赏组件 -->
+        <ArticleReward
+          v-if="allowReward && !isMine"
+          v-bind="reward"
+          :article="newsId"
+          :is-mine="isMine"
+          type="news"
+          @success="fetchNewsRewards"
+        />
       </div>
 
-      <div v-if="relationNews.length" class="m-box-model m-art-comments">
+      <div v-if="relationNews.length && isPublic" class="m-box-model m-art-comments">
         <ul class="m-box m-aln-center m-art-comments-tabs">
-          <li>相关资讯</li>
+          <li>{{ $t('news.relation') }}</li>
         </ul>
-        <news-card
-          v-for="news in relationNews"
-          :key="`relation-${news.id}`"
-          :news="news"/>
+        <NewsCard
+          v-for="newsItem in relationNews"
+          :key="`relation-${newsItem.id}`"
+          :news="newsItem"
+        />
       </div>
 
-      <div class="m-box-model m-art-comments">
-        <ul class="m-box m-aln-center m-art-comments-tabs">
-          <li>{{ commentCount | formatNum }}条评论</li>
-        </ul>
-        <template v-if="news.audit_status === 0">
-          <comment-item
-            v-for="(comment) in pinnedCom"
-            :key="`pinned-${comment.id}`"
-            :comment="comment"
-            :pinned="true"
-            @click="replyComment(comment)" />
-          <comment-item
-            v-for="(comment) in comments"
-            :key="`comment-${comment.id}`"
-            :comment="comment"
-            @click="replyComment(comment)" />
-          <div class="m-box m-aln-center m-justify-center load-more-box">
-            <span v-if="noMoreCom" class="load-more-ph">---没有更多---</span>
-            <span
-              v-else
-              class="load-more-btn"
-              @click.stop="fetchNewsComments(maxComId)">
-              {{ fetchComing ? "加载中..." : "点击加载更多" }}
-            </span>
-          </div>
-        </template>
-      </div>
-
-    </jo-load-more>
-  </article-card>
+      <!-- 评论列表 -->
+      <ArticleComments
+        ref="comments"
+        type="news"
+        :article="newsId"
+        :total.sync="commentCount"
+        :fetching="fetchComing"
+        @reply="replyComment"
+      />
+    </JoLoadMore>
+  </ArticleCard>
 </template>
 
 <script>
 import { mapState } from 'vuex'
-import ArticleCard from '@/page/article/ArticleCard.vue'
-import NewsCard from '@/page/news/components/NewsCard.vue'
-import CommentItem from '@/page/article/ArticleComment.vue'
 import wechatShare from '@/util/wechatShare.js'
 import md from '@/util/markdown.js'
-import { limit } from '@/api'
 import * as api from '@/api/news.js'
-import { noop } from '@/util'
+import ArticleCard from '@/page/article/ArticleCard'
+import NewsCard from '@/page/news/components/NewsCard'
+import ArticleLike from '@/page/article/components/ArticleLike'
+import ArticleReward from '@/page/article/components/ArticleReward'
+import ArticleComments from '@/page/article/components/ArticleComments'
 
 export default {
   name: 'NewsDetail',
   components: {
     ArticleCard,
-    CommentItem,
     NewsCard,
+    ArticleReward,
+    ArticleComments,
+    ArticleLike,
   },
   data () {
     return {
-      oldID: 0,
+      oldId: 0,
       news: {},
       loading: true,
       fetching: false,
 
       relationNews: [],
       likes: [],
-      comments: [],
+      rewardCount: 0,
+      rewardAmount: 0,
       rewardList: [],
-      reward: {
-        count: 0,
-        amount: 0,
-      },
-      pinnedCom: [],
 
       fetchComing: false,
-      noMoreCom: false,
-      maxComId: 0,
       config: {
         appid: '',
         signature: '',
@@ -172,7 +128,19 @@ export default {
     }
   },
   computed: {
-    ...mapState(['CURRENTUSER']),
+    ...mapState({
+      currentUser: 'CURRENTUSER',
+    }),
+    allowReward () {
+      return this.$store.state.CONFIG.site.reward.status
+    },
+    reward () {
+      return {
+        count: this.rewardCount,
+        amount: this.rewardAmount,
+        list: this.rewardList,
+      }
+    },
     firstImage () {
       let images = this.news.image
       if (!Object.keys(images).length) {
@@ -183,13 +151,16 @@ export default {
       )
     },
     newsId () {
-      return this.$route.params.newsId
+      return Number(this.$route.params.newsId)
     },
-    userID () {
+    userId () {
       return this.news.user_id || 0
     },
     isMine () {
-      return this.news.user_id === this.CURRENTUSER.id
+      return this.news.user_id === this.currentUser.id
+    },
+    isPublic () {
+      return this.news.audit_status === 0
     },
     liked: {
       get () {
@@ -204,7 +175,7 @@ export default {
         return this.news.digg_count || 0
       },
       set (val) {
-        val && (this.news.digg_count = val)
+        this.news.digg_count = val
       },
     },
     commentCount: {
@@ -212,14 +183,14 @@ export default {
         return this.news.comment_count || 0
       },
       set (val) {
-        this.news.comment_count = val
+        this.news.comment_count += val
       },
     },
     time () {
       return this.news.created_at || ''
     },
     cate () {
-      const { category: { name = '未分类' } = {} } = this.news
+      const { category: { name = this.$t('article.uncategorized') } = {} } = this.news
       return name
     },
     body () {
@@ -237,6 +208,15 @@ export default {
       },
     },
   },
+  watch: {
+    newsId (newId, oldId) {
+      if (newId && newId !== oldId) {
+        this.loading = true
+        document.scrollingElement.scrollTop = 0
+        this.fetchNews()
+      }
+    },
+  },
   beforeMount () {
     if (this.isIosWechat) {
       this.$Message.info('reload')
@@ -245,7 +225,7 @@ export default {
   },
   activated () {
     if (this.newsId) {
-      if (this.newsId !== this.oldID) {
+      if (this.newsId !== this.oldId) {
         this.fetchNews()
       } else {
         setTimeout(() => {
@@ -258,31 +238,28 @@ export default {
     this.loading = true
   },
   methods: {
-    shareSuccess () {
-      this.$Message.success('分享成功')
-    },
-    shareCancel () {
-      this.$Message.success('取消分享')
-    },
-    fetchNews (callback = noop) {
+    fetchNews () {
       if (this.fetching) return
       this.fetching = true
       this.relationNews = []
       api
         .getNewsById(this.newsId)
         .then(({ data = {} }) => {
+          this.news = data
+          if (!this.isMine && !this.isPublic) {
+            this.$Message.error(this.$t('news.not_found'))
+            return this.goBack()
+          }
           this.loading = false
           this.fetching = false
-          this.news = data
-          this.oldID = this.newsId
+          this.$refs.loadmore.afterRefresh()
+          this.oldId = this.newsId
           this.share.title = data.title
           this.share.desc = data.subject
           this.getCorrelations()
           this.fetchNewsComments()
           this.fetchNewsLikes()
-          this.fetchRewardInfo()
-          this.fetchRewards()
-          callback()
+          this.fetchNewsRewards()
           if (this.isWechat) {
             const shareUrl =
               window.location.origin +
@@ -300,63 +277,34 @@ export default {
             })
           }
         })
-        .catch(() => {
-          this.$router.back()
-        })
+    },
+    fetchNewsComments () {
+      this.$refs.comments.fetch()
     },
     getCorrelations () {
       api.getCorrelations(this.newsId).then(({ data }) => {
         this.relationNews = data
       })
     },
-    fetchNewsLikes () {
-      // GET /news/{news}/likes
-      this.$http.get(`/news/${this.newsId}/likes`).then(({ data = [] }) => {
-        if (data.length) this.likes = data
-      })
+    async fetchNewsLikes () {
+      const { data: list } = await api.getNewsLikers(this.newsId)
+      this.likes = list
+      this.$store.commit('SAVE_ARTICLE', { type: 'likers', list })
     },
-    fetchNewsComments (after = 0) {
-      if (this.fetchComing) return
-      this.fetchComing = true
-
-      api
-        .getNewsComments(this.newsId, { after })
-        .then(({ data: { pinneds = [], comments = [] } }) => {
-          if (!after) {
-            this.pinnedCom = pinneds
-            // 过滤第一页中的置顶评论
-            const pinnedIds = pinneds.map(p => p.id)
-            this.comments = comments.filter(c => pinnedIds.indexOf(c.id) < 0)
-          } else {
-            this.comments = [...this.comments, ...comments]
-          }
-
-          if (comments.length) {
-            this.maxComId = comments[comments.length - 1].id
-          }
-
-          this.noMoreCom = comments.lenght !== limit
-          this.fetchComing = false
+    fetchNewsRewards () {
+      // 获取总金额
+      api.getRewardInfo(this.newsId)
+        .then(({ data: { count = 0, amount = 0 } }) => {
+          this.rewardCount = Number(count)
+          this.rewardAmount = Number(amount)
         })
-        .catch(() => {
-          this.fetchComing = false
+      // 获取打赏者
+      api.getNewsRewards(this.newsId, { limit: 10 })
+        .then(({ data: list = [] }) => {
+          this.rewardList = list
+          // 保存部分信息用于预加载打赏列表
+          this.$store.commit('SAVE_ARTICLE', { type: 'rewarders', list })
         })
-    },
-    fetchRewards () {
-      api.getNewsRewards(this.newsId, { limit: 10 }).then(({ data = {} }) => {
-        this.rewardList = data
-      })
-    },
-    fetchRewardInfo () {
-      api.getRewardInfo(this.newsId).then(({ data = {} }) => {
-        this.reward = {
-          count: ~~data.count || 0,
-          amount: ~~data.amount || 0,
-        }
-      })
-    },
-    rewardNews () {
-      this.popupBuyTS()
     },
     likeNews () {
       // DELETE /news/{news}/likes
@@ -376,40 +324,30 @@ export default {
             this.liked = false
             this.likeCount -= 1
           }
+          this.fetchNewsLikes()
         })
         .finally(() => {
           this.fetching = false
         })
     },
-    commentNews () {
-      this.$bus.$emit('commentInput', {
-        onOk: text => {
-          this.sendComment({ body: text })
-        },
-      })
-    },
-    shareNews () {
-      if (this.isWechat) this.$Message.success('请点击右上角微信分享😳')
-      else this.$Message.success('请使用浏览器的分享功能😳')
-    },
     moreAction () {
       const defaultActions = []
       if (this.has_collect) {
         defaultActions.push({
-          text: '取消收藏',
+          text: this.$t('collect.cancel'),
           method: () => {
             api.uncollectNews(this.newsId).then(() => {
-              this.$Message.success('取消成功')
+              this.$Message.success(this.$t('collect.cancel'))
               this.has_collect = false
             })
           },
         })
       } else {
         defaultActions.push({
-          text: '收藏',
+          text: this.$t('collect.name'),
           method: () => {
             api.collectionNews(this.newsId).then(() => {
-              this.$Message.success('收藏成功')
+              this.$Message.success(this.$t('collect.success'))
               this.has_collect = true
             })
           },
@@ -419,7 +357,7 @@ export default {
       const actions = this.isMine
         ? [
           {
-            text: '申请文章置顶',
+            text: this.$t('top.apply'),
             method: () => {
               this.$bus.$emit('applyTop', {
                 type: 'news',
@@ -428,64 +366,51 @@ export default {
               })
             },
           },
-          {
-            text: '删除',
-            method: () => {
-              this.$Message.info('资讯删除功能开发中，敬请期待')
-            },
-          },
         ]
         : [
           {
-            text: '举报',
+            text: this.$t('report.name'),
             method: () => {
               this.$bus.$emit('report', {
                 type: 'news',
-                payload: this.newsID,
+                payload: this.newsId,
                 username: this.news.user.name,
                 reference: this.news.title,
               })
             },
           },
         ]
-      this.$bus.$emit('actionSheet', [...defaultActions, ...actions], '取消')
+      this.$bus.$emit('actionSheet', [...defaultActions, ...actions])
     },
     replyComment (comment) {
       const actions = []
       // 是否是自己的评论
-      if (comment.user_id === this.CURRENTUSER.id) {
+      if (comment.user_id === this.currentUser.id) {
         // 是否是自己文章的评论
-        const isOwner = comment.user_id === this.userID
+        const isOwner = comment.user_id === this.userId
         actions.push({
-          text: isOwner ? '评论置顶' : '申请评论置顶',
+          text: isOwner ? this.$t('comment.top.name') : this.$t('comment.top.apply'),
           method: () => {
             this.$bus.$emit('applyTop', {
               isOwner,
               type: 'newsComment',
               api: api.applyTopNewsComment,
-              payload: { newsId: this.newsID, commentId: comment.id },
+              payload: { newsId: this.newsId, commentId: comment.id },
               callback: this.fetchNewsComments,
             })
           },
         })
         actions.push({
-          text: '删除评论',
-          method: () => this.deleteComment(comment.id),
+          text: this.$t('comment.delete.name'),
+          method: () => this.$refs.comments.delete(comment.id),
         })
       } else {
         actions.push({
-          text: '回复',
-          method: () => {
-            this.$bus.$emit('commentInput', {
-              placeholder: `回复： ${comment.user.name}`,
-              onOk: text => {
-                this.sendComment({ reply_user: comment.user_id, body: text })
-              },
-            })
-          },
+          text: this.$t('reply.name'),
+          method: () => this.$refs.comments.open(comment.user),
         })
         actions.push({
-          text: '举报',
+          text: this.$t('report.name'),
           method: () => {
             this.$bus.$emit('report', {
               type: 'comment',
@@ -498,40 +423,9 @@ export default {
       }
       this.$bus.$emit('actionSheet', actions)
     },
-    sendComment ({ reply_user: replyUser, body }) {
-      const params = {}
-      if (body && body.length > 0) {
-        params.body = body
-        replyUser && (params['reply_user'] = replyUser)
-        this.$http
-          .post(`/news/${this.newsId}/comments`, params, {
-            validateStatus: s => s === 201,
-          })
-          .then(() => {
-            this.$Message.success('评论成功')
-            this.fetchNewsComments()
-            this.commentCount += 1
-            this.$bus.$emit('commentInput:close', true)
-          })
-          .catch(() => {
-            this.$Message.error('评论失败')
-            this.$bus.$emit('commentInput:close', true)
-          })
-      } else {
-        this.$Message.error('评论内容不能为空')
-      }
-    },
-    deleteComment (commentId) {
-      api.deleteNewsComment(this.newsId, commentId).then(() => {
-        this.fetchNewsComments()
-        this.commentCount -= 1
-        this.$Message.success('删除评论成功')
-      })
-    },
     onRefresh () {
-      this.fetchNews(() => {
-        this.$refs.loadmore.afterRefresh(true)
-      })
+      this.$refs.loadmore.beforeRefresh()
+      this.fetchNews()
     },
     getAvatar (avatar) {
       avatar = avatar || {}
@@ -543,14 +437,47 @@ export default {
 
 <style lang="less" scoped>
 .m-art-head {
-  padding-top: 36px;
+  padding: 36px 20px 0;
 
-  > h1 {
-    margin-top: 0;
+  h1 {
+    margin-bottom: 36px;
+    color: @primary;
+    font-size: 50px;
+    letter-spacing: 1px; /*no*/
+  }
+  p {
+    font-size: 24px;
+    color: @text-color4;
   }
 }
 
-.m-main {
-  padding-bottom: 36px;
+.m-art-cate {
+  @scale: 0.95;
+
+  padding: 4px;
+  font-style: normal;
+  display: inline-block;
+  font-size: 20px;
+  height: 30px/@scale;
+  margin-right: 10px;
+  color: @primary;
+  line-height: (30px / @scale - 8);
+  border: 1px solid currentColor; /*no*/
+  -webkit-transform-origin-x: 0;
+  -webkit-transform: scale(@scale);
+  transform: scale(@scale);
+}
+
+.m-art-subject {
+  margin: 50px 20px 20px;
+  padding: 30px;
+  font-size: 26px;
+  line-height: 36px;
+  background-color: #f4f5f6;
+  color: #999;
+  border-left: 5px solid #e3e3e3;
+  span {
+    color: #666;
+  }
 }
 </style>

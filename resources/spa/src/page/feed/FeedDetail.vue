@@ -1,29 +1,39 @@
 <template>
-  <article-card
+  <ArticleCard
+    ref="article"
+    type="feed"
+    :article="feedId"
     :liked="liked"
     :loading="loading"
-    @on-like="likeFeed"
-    @on-share="shareFeed"
-    @on-more="moreAction"
-    @on-comment="commentFeed">
-
-    <common-header slot="head">
-      <avatar :user="user" size="tiny" />
+    @like="likeFeed"
+    @comment="$refs.comments.open()"
+    @more="moreAction"
+    @reward="afterReward"
+  >
+    <CommonHeader slot="head">
+      <Avatar :user="user" size="tiny" />
       <span class="m-text-cut m-flex-none username">
         {{ user.name }}
       </span>
       <template
         v-if="!isMine"
         slot="right"
-        :class="{ primary: relation.status !== 'unFollow' }" >
+        :class="{ primary: relation.status !== 'unFollow' }"
+      >
         <svg class="m-style-svg m-svg-def" @click="followUserByStatus(relation.status)">
-          <use :xlink:href="relation.icon"/>
+          <use :xlink:href="relation.icon" />
         </svg>
       </template>
-    </common-header>
+    </CommonHeader>
 
     <!-- 内容 -->
-    <load-more ref="loadmore" :on-refresh="onRefresh">
+    <JoLoadMore
+      slot="main"
+      ref="loadmore"
+      :auto-load="false"
+      :show-bottom="false"
+      @onRefresh="onRefresh"
+    >
       <main class="m-flex-shrink1 m-flex-grow1 m-art m-main">
         <div class="m-art-body">
           <h2 v-if="title">{{ title }}</h2>
@@ -32,126 +42,95 @@
             :poster="cover_file"
             class="feed-detail-video"
             controls
-            autoplay>
-            <source :src="video_file" type="video/mp4" >
+            autoplay
+          >
+            <source :src="video_file" type="video/mp4">
           </video>
-          <async-file
+          <AsyncFile
             v-for="img in images"
             v-if="img.file"
             :key="img.file"
-            :file="img.file">
+            :file="img.file"
+          >
             <img
               v-if="props.src"
               slot-scope="props"
               :src="props.src"
-              @click="onFileClick(img)">
-          </async-file>
-          <p class="m-text-box" v-html="formatBody(feedContent)" />
-        </div>
-        <div class="m-box m-aln-center m-justify-bet m-art-foot">
-          <div class="m-flex-grow1 m-flex-shrink1 m-art-like-list">
-            <router-link
-              v-if="likeCount > 0"
-              tag="div"
-              class="m-box m-aln-center"
-              to="likers"
-              append>
-              <ul class="m-box m-flex-grow0 m-flex-shrink0">
-                <li
-                  v-for="({user = {}, id}, index) in likes.slice(0, 5)"
-                  :key="id"
-                  :style="{ zIndex: 5-index }"
-                  :class="`m-avatar-box-${user.sex}`"
-                  class="m-avatar-box tiny">
-                  <img :src="getAvatar(user.avatar)">
-                </li>
-              </ul>
-              <span>{{ likeCount | formatNum }}人点赞</span>
-            </router-link>
-          </div>
-          <div class="m-box-model m-aln-end m-art-info">
-            <span v-if="time">发布于{{ time | time2tips }}</span>
-            <span>{{ feed.feed_view_count || 0 | formatNum }}浏览</span>
-          </div>
-        </div>
-        <div class="m-box-model m-box-center m-box-center-a m-art-reward">
-          <button class="m-art-rew-btn" @click="rewardFeed">打 赏</button>
-          <p class="m-art-rew-label"><a href="javascript:;">{{ reward.count | formatNum }}</a>人打赏，共<a href="javascript:;">{{ ~~reward.amount }}</a>{{ currencyUnit }}</p>
-          <router-link
-            tag="ul"
-            to="rewarders"
-            append
-            class="m-box m-aln-center m-art-rew-list">
+              @click="onFileClick(img)"
+            >
+          </AsyncFile>
+          <p class="m-text-box m-text-pre" v-html="formatBody(feedContent)" />
+          <ul v-if="topics.length" class="topics">
             <li
-              v-for="rew in rewardList"
-              :key="rew.id"
-              :class="`m-avatar-box-${rew.user.sex}`"
-              class="m-flex-grow0 m-flex-shrink0 m-art-rew m-avatar-box tiny">
-              <img :src="getAvatar(rew.user.avatar)">
-            </li>
-            <li v-if="rewardList.length > 0" class="m-box m-aln-center">
-              <svg class="m-style-svg m-svg-def" style="fill: #bfbfbf">
-                <use xlink:href="#icon-arrow-right"/>
-              </svg>
-            </li>
-          </router-link>
+              v-for="topic in topics"
+              :key="topic.id"
+              class="topic-item"
+              @click.capture.stop="viewTopic(topic.id)"
+              v-text="topic.name"
+            />
+          </ul>
         </div>
+
+        <!-- 点赞组件 -->
+        <ArticleLike
+          :likers="likes"
+          :like-count="likeCount"
+          :time="time"
+          :view-count="feed.feed_view_count || 0"
+        />
+
+        <!-- 打赏组件 -->
+        <ArticleReward
+          v-if="allowReward"
+          type="feed"
+          :article="feedId"
+          :is-mine="isMine"
+          v-bind="reward"
+          @success="amount => fetchFeedRewards(amount)"
+        />
       </main>
 
       <!-- 评论列表 -->
-      <div id="comment_list" class="m-box-model m-art-comments">
-        <ul class="m-box m-aln-center m-art-comments-tabs">
-          <li>{{ commentCount | formatNum }}条评论</li>
-        </ul>
-        <comment-item
-          v-for="(comment) in pinnedCom"
-          :pinned="true"
-          :key="`pinned-comment-${comment.id}`"
-          :comment="comment"
-          @click="replyComment(comment)"/>
-        <comment-item
-          v-for="(comment) in comments"
-          :key="comment.id"
-          :comment="comment"
-          @click="replyComment(comment)"/>
-        <div class="m-box m-aln-center m-justify-center load-more-box">
-          <div v-if="!pinnedCom.length && !comments.length" class="m-no-find"/>
-          <span v-else-if="noMoreCom" class="load-more-ph">---没有更多---</span>
-          <span
-            v-else
-            class="load-more-btn"
-            @click.stop="fetchFeedComments(maxComId)">
-            {{ fetchComing ? "加载中..." : "点击加载更多" }}
-          </span>
-        </div>
-      </div>
-    </load-more>
-  </article-card>
+      <ArticleComments
+        ref="comments"
+        type="feed"
+        :article="feedId"
+        :total.sync="commentCount"
+        :fetching="fetchComing"
+        @reply="replyComment"
+      />
+    </JoLoadMore>
+  </ArticleCard>
 </template>
 
 <script>
 import { mapState } from 'vuex'
-import ArticleCard from '@/page/article/ArticleCard.vue'
-import CommentItem from '@/page/article/ArticleComment.vue'
+import { escapeHTML } from '@/filters'
 import wechatShare from '@/util/wechatShare.js'
-import { limit } from '@/api'
-import { followUserByStatus, getUserInfoById } from '@/api/user.js'
+import * as userApi from '@/api/user.js'
 import * as api from '@/api/feeds.js'
+import ArticleCard from '@/page/article/ArticleCard'
+import ArticleLike from '@/page/article/components/ArticleLike'
+import ArticleReward from '@/page/article/components/ArticleReward'
+import ArticleComments from '@/page/article/components/ArticleComments'
 
 export default {
   name: 'FeedDetail',
   components: {
     ArticleCard,
-    CommentItem,
+    ArticleLike,
+    ArticleReward,
+    ArticleComments,
   },
   data () {
     return {
       feed: {},
+      oldId: NaN,
       loading: true,
       fetching: false,
 
-      comments: [],
-      pinnedCom: [],
+      rewardCount: 0,
+      rewardAmount: 0,
       rewardList: [],
 
       fetchComing: false,
@@ -162,8 +141,18 @@ export default {
   },
   computed: {
     ...mapState(['CURRENTUSER']),
-    feedID () {
-      return this.$route.params.feedID
+    allowReward () {
+      return this.$store.state.CONFIG.site.reward.status
+    },
+    reward () {
+      return {
+        count: this.rewardCount,
+        amount: this.rewardAmount,
+        list: this.rewardList,
+      }
+    },
+    feedId () {
+      return Number(this.$route.params.feedId)
     },
     video () {
       return this.feed.video
@@ -183,6 +172,9 @@ export default {
     },
     isMine () {
       return this.feed.user_id === this.CURRENTUSER.id
+    },
+    topics () {
+      return this.feed.topics || []
     },
     likes: {
       get () {
@@ -213,11 +205,8 @@ export default {
         return this.feed.feed_comment_count || 0
       },
       set (val) {
-        this.feed.feed_comment_count = val
+        this.feed.feed_comment_count += val
       },
-    },
-    reward () {
-      return this.feed.reward || {}
     },
     images () {
       return this.feed.images || []
@@ -243,17 +232,17 @@ export default {
       get () {
         const relations = {
           unFollow: {
-            text: '关注',
+            text: this.$t('follow.name'),
             status: 'unFollow',
             icon: `#icon-unFollow`,
           },
           follow: {
-            text: '已关注',
+            text: this.$t('follow.already'),
             status: 'follow',
             icon: `#icon-follow`,
           },
           eachFollow: {
-            text: '互相关注',
+            text: this.$t('follow.each'),
             status: 'eachFollow',
             icon: `#icon-eachFollow`,
           },
@@ -278,10 +267,8 @@ export default {
     }
   },
   activated () {
-    if (this.feedID) {
-      this.comments = []
+    if (this.feedId) {
       this.feed = {}
-      this.rewardList = []
       this.fetchFeed()
     }
   },
@@ -301,25 +288,22 @@ export default {
   },
   methods: {
     formatBody (str) {
-      // 脚本内容以纯文本方式显示
-      const scriptRegex = /<\s*script\s*>(.*?)<\s*\/\s*script\s*>/i
-      str = str.replace(scriptRegex, '&lt;script&gt;$1&lt;/script&gt;')
-
-      // 换行符转换
-      str = str.replace(/\n/g, '<br>')
+      // XSS filter
+      str = escapeHTML(str)
 
       const reg = /(https?|http|ftp|file):\/\/[-A-Za-z0-9+&@#/%?=~_|!:,.;]+[-A-Za-z0-9+&@#/%=~_|]/g
       return str
         ? str.replace(
           reg,
           link =>
-            `<a class="m-art-links" href="${link}" target="__blank">#网页链接#</a>`
+            `<a class="m-art-links" href="${link}" target="__blank">#${this.$t('article.link_text')}#</a>`
         )
         : ''
     },
-    fetchFeed (callback) {
+    fetchFeed () {
       if (this.fetching) return
       this.fetching = true
+      this.loading = false
       const shareUrl =
         window.location.origin +
         process.env.BASE_URL.substr(0, process.env.BASE_URL.length - 1) +
@@ -327,13 +311,15 @@ export default {
       const signUrl =
         this.$store.state.BROWSER.OS === 'IOS' ? window.initUrl : shareUrl
       this.$http
-        .get(`/feeds/${this.feedID}`)
+        .get(`/feeds/${this.feedId}`)
         .then(({ data = {} }) => {
           this.feed = data
           this.fetching = false
+          this.$refs.loadmore.afterRefresh()
           this.fetchUserInfo()
           this.fetchFeedComments()
-          this.fetchRewards()
+          this.fetchFeedRewards()
+          this.fetchFeedLikers()
           this.isWechat &&
             wechatShare(signUrl, {
               title: `${data.user.name}的动态`,
@@ -346,70 +332,50 @@ export default {
                   }`
                   : '',
             })
-          if (callback && typeof callback === 'function') {
-            callback()
-          }
-        })
-        .catch(() => {
-          this.goBack()
-          if (callback && typeof callback === 'function') {
-            callback()
-          }
         })
     },
     fetchUserInfo () {
-      getUserInfoById(this.feed.user_id, true).then(user => {
-        this.user = Object.assign({}, this.user, user)
-        this.loading = false
-      })
-    },
-    fetchFeedComments (after = 0) {
-      if (this.fetchComing) return
-      this.fetchComing = true
-      api
-        .getFeedComments(this.feedID, { after })
-        .then(({ data: { pinneds = [], comments = [] } }) => {
-          if (!after) {
-            this.pinnedCom = pinneds
-            // 过滤第一页中的置顶评论
-            const pinnedIds = pinneds.map(p => p.id)
-            this.comments = comments.filter(c => pinnedIds.indexOf(c.id) < 0)
-          } else {
-            this.comments = [...this.comments, ...comments]
-          }
-
-          if (comments.length) {
-            this.maxComId = comments[comments.length - 1].id
-          }
-
-          this.noMoreCom = comments.length !== limit
-          this.$nextTick(() => {
-            this.fetchComing = false
-            this.loading = false
-          })
-        })
-        .catch(() => {
-          this.loading = false
-          this.fetchComing = false
+      userApi.getUserInfoById(this.feed.user_id, true)
+        .then(user => {
+          this.user = Object.assign({}, this.user, user)
         })
     },
-    fetchRewards () {
-      api.getRewards(this.feedID, { limit: 10 }).then(({ data = [] }) => {
-        this.rewardList = data
-      })
+    fetchFeedComments () {
+      this.$refs.comments.fetch()
     },
-    getAvatar (avatar) {
-      if (!avatar) return null
-      return avatar.url || null
+    fetchFeedRewards (inc) {
+      if (inc) {
+        this.rewardCount += 1
+        this.rewardAmount += inc
+      } else {
+        const { count = 0, amount = 0 } = this.feed.reward
+        this.rewardCount = Number(count)
+        this.rewardAmount = Number(amount)
+      }
+      api.getFeedRewards(this.feedId, { limit: 10 })
+        .then(({ data: list }) => {
+          this.rewardList = list
+          this.$store.commit('SAVE_ARTICLE', { type: 'rewarders', list })
+        })
     },
-    rewardFeed () {
-      this.popupBuyTS()
+    async fetchFeedLikers () {
+      const { data: list } = await api.getFeedLikers(this.feedId, { limit: 5 })
+      this.feed.likes = list
+      this.$store.commit('SAVE_ARTICLE', { type: 'likers', list })
+    },
+    viewTopic (topicId) {
+      this.$router.push({ name: 'TopicDetail', params: { topicId } })
+    },
+    afterReward (amount) {
+      this.fetchRewards()
+      this.rewardCount += 1
+      this.rewardAmount += amount
     },
     likeFeed () {
       const method = this.liked ? 'delete' : 'post'
       const url = this.liked
-        ? `/feeds/${this.feedID}/unlike`
-        : `/feeds/${this.feedID}/like`
+        ? `/feeds/${this.feedId}/unlike`
+        : `/feeds/${this.feedId}/like`
       if (this.fetching) return
       this.fetching = true
       this.$http({
@@ -440,21 +406,10 @@ export default {
           this.fetching = false
         })
     },
-    commentFeed () {
-      this.$bus.$emit('commentInput', {
-        onOk: text => {
-          this.sendComment({ body: text })
-        },
-      })
-    },
-    shareFeed () {
-      if (this.isWechat) this.$Message.success('请点击右上角微信分享😳')
-      else this.$Message.success('请使用浏览器的分享功能😳')
-    },
     moreAction () {
       const defaultActions = [
         {
-          text: this.has_collect ? '取消收藏' : '收藏',
+          text: this.$t(this.has_collect ? 'collect.cancel' : 'collect.name'),
           method: () => {
             // POST /feeds/:feed/collections
             // DELETE /feeds/:feed/uncollect
@@ -462,13 +417,13 @@ export default {
             let txt
             let method
             if (this.has_collect) {
-              txt = '取消收藏'
+              txt = this.$t('collect.name')
               method = 'delete'
-              url = `/feeds/${this.feedID}/uncollect`
+              url = `/feeds/${this.feedId}/uncollect`
             } else {
-              txt = '已加入我的收藏'
+              txt = this.$t('collect.already')
               method = 'post'
-              url = `/feeds/${this.feedID}/collections`
+              url = `/feeds/${this.feedId}/collections`
             }
 
             this.$http({
@@ -486,55 +441,50 @@ export default {
       const actions = this.isMine
         ? [
           {
-            text: '申请动态置顶',
+            text: this.$t('feed.apply_top'),
             method: () => {
               this.$bus.$emit('applyTop', {
                 type: 'feed',
                 api: api.applyTopFeed,
-                payload: this.feedID,
+                payload: this.feedId,
               })
             },
           },
           {
-            text: '删除动态',
+            text: this.$t('feed.delete'),
             method: () => {
               setTimeout(() => {
                 const actionSheet = [
                   {
-                    text: '删除',
+                    text: this.$t('delete.name'),
                     style: { color: '#f4504d' },
                     method: () => {
-                      api.deleteFeed(this.feedID).then(() => {
-                        this.$Message.success('删除动态成功')
+                      api.deleteFeed(this.feedId).then(() => {
+                        this.$Message.success(this.$t('feed.delete_success'))
                         this.goBack()
                       })
                     },
                   },
                 ]
-                this.$bus.$emit(
-                  'actionSheet',
-                  actionSheet,
-                  '取消',
-                  '确认删除?'
-                )
+                this.$bus.$emit('actionSheet', actionSheet, this.$t('cancel'), this.$t('delete.confirm'))
               }, 200)
             },
           },
         ]
         : [
           {
-            text: '举报',
+            text: this.$t('report.name'),
             method: () => {
               this.$bus.$emit('report', {
                 type: 'feed',
-                payload: this.feedID,
+                payload: this.feedId,
                 username: this.user.name,
                 reference: this.feed.feed_content,
               })
             },
           },
         ]
-      this.$bus.$emit('actionSheet', [...defaultActions, ...actions], '取消')
+      this.$bus.$emit('actionSheet', [...defaultActions, ...actions])
     },
     replyComment (comment) {
       const actions = []
@@ -543,35 +493,28 @@ export default {
         // 是否是自己文章的评论
         const isOwner = comment.user_id === this.user.id
         actions.push({
-          text: isOwner ? '评论置顶' : '申请评论置顶',
+          text: this.$t(isOwner ? 'comment.top.name' : 'comment.top.apply'),
           method: () => {
             this.$bus.$emit('applyTop', {
               isOwner,
               type: 'feedComment',
               api: api.applyTopFeedComment,
-              payload: { feedId: this.feedID, commentId: comment.id },
+              payload: { feedId: this.feedId, commentId: comment.id },
               callback: this.fetchFeedComments,
             })
           },
         })
         actions.push({
-          text: '删除评论',
-          method: () => this.deleteComment(comment.id),
+          text: this.$t('comment.delete.name'),
+          method: () => this.$refs.comments.delete(comment.id),
         })
       } else {
         actions.push({
-          text: '回复',
-          method: () => {
-            this.$bus.$emit('commentInput', {
-              placeholder: `回复： ${comment.user.name}`,
-              onOk: text => {
-                this.sendComment({ reply_user: comment.user_id, body: text })
-              },
-            })
-          },
+          text: this.$t('reply.name'),
+          method: () => this.$refs.comments.open(comment.user),
         })
         actions.push({
-          text: '举报',
+          text: this.$t('report.name'),
           method: () => {
             this.$bus.$emit('report', {
               type: 'comment',
@@ -584,41 +527,11 @@ export default {
       }
       this.$bus.$emit('actionSheet', actions)
     },
-    sendComment ({ reply_user: replyUser, body }) {
-      const params = {}
-      if (body && body.length > 0) {
-        params.body = body
-        replyUser && (params['reply_user'] = replyUser)
-        this.$http
-          .post(`/feeds/${this.feedID}/comments`, params, {
-            validateStatus: s => s === 201,
-          })
-          .then(({ data: { comment } = { comment: {} } }) => {
-            this.$Message.success('评论成功')
-            this.comments.unshift(comment)
-            this.commentCount += 1
-            this.$bus.$emit('commentInput:close', true)
-          })
-          .catch(() => {
-            this.$Message.error('评论失败')
-            this.$bus.$emit('commentInput:close', true)
-          })
-      } else {
-        this.$Message.error('评论内容不能为空')
-      }
-    },
-    deleteComment (commentId) {
-      api.deleteFeedComment(this.feedID, commentId).then(() => {
-        this.fetchFeedComments()
-        this.commentCount -= 1
-        this.$Message.success('删除评论成功')
-      })
-    },
     followUserByStatus (status) {
       if (!status || this.fetchFollow) return
       this.fetchFollow = true
 
-      followUserByStatus({
+      userApi.followUserByStatus({
         id: this.user.id,
         status,
       }).then(follower => {
@@ -627,16 +540,15 @@ export default {
       })
     },
     onRefresh () {
-      this.fetchFeed(() => {
-        this.$refs.loadmore.topEnd()
-      })
+      this.$refs.loadmore.beforeRefresh()
+      this.fetchFeed()
     },
     onFileClick (paidNode) {
-      if (!paidNode || paidNode.paid !== false) return
+      if (!paidNode || paidNode.paid !== false || paidNode.type === 'download') return
 
       if (this.$lstore.hasData('H5_ACCESS_TOKEN')) {
         this.$bus.$emit('payfor', {
-          nodeType: '内容',
+          nodeType: this.$t('article.content'),
           node: paidNode.paid_node,
           amount: paidNode.amount,
           onSuccess: data => {
@@ -663,7 +575,6 @@ export default {
 .feed-detail-video {
   height: 100vw;
   width: 100vw;
-  // object-fit: cover;
   margin-left: -20px;
   background: #000;
 }
@@ -671,29 +582,26 @@ export default {
   padding-top: 0.1rem;
   padding-bottom: 0.1rem;
 }
-.m-art-head {
-  .m-avatar-box-def {
-    width: 52px;
-    height: 52px;
-  }
-}
 .username {
   font-size: 0.32rem;
   margin-left: 0.1rem;
   text-align: center;
 }
 
-.load-more-box {
-  height: auto;
+.topics {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 20px 0 0;
 
-  .load-more-ph {
-    height: 100px;
-    line-height: 100px;
-  }
-
-  .m-no-find {
-    height: 600px;
-    width: 100%;
+  .topic-item {
+    padding: 0 16px;
+    border-radius: 6px;
+    background-color: rgba(145, 209, 232, 0.12);
+    font-size: 24px;
+    color: @primary;
+    margin-right: 12px;
+    margin-bottom: 12px;
+    cursor: pointer;
   }
 }
 </style>

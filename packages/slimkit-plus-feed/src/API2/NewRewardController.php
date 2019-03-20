@@ -6,12 +6,12 @@ declare(strict_types=1);
  * +----------------------------------------------------------------------+
  * |                          ThinkSNS Plus                               |
  * +----------------------------------------------------------------------+
- * | Copyright (c) 2018 Chengdu ZhiYiChuangXiang Technology Co., Ltd.     |
+ * | Copyright (c) 2016-Present ZhiYiChuangXiang Technology Co., Ltd.     |
  * +----------------------------------------------------------------------+
- * | This source file is subject to version 2.0 of the Apache license,    |
- * | that is bundled with this package in the file LICENSE, and is        |
- * | available through the world-wide-web at the following url:           |
- * | http://www.apache.org/licenses/LICENSE-2.0.html                      |
+ * | This source file is subject to enterprise private license, that is   |
+ * | bundled with this package in the file LICENSE, and is available      |
+ * | through the world-wide-web at the following url:                     |
+ * | https://github.com/slimkit/plus/blob/master/LICENSE                  |
  * +----------------------------------------------------------------------+
  * | Author: Slim Kit Group <master@zhiyicx.com>                          |
  * | Homepage: www.thinksns.com                                           |
@@ -24,7 +24,7 @@ use Illuminate\Http\Request;
 use Zhiyi\Plus\Models\GoldType;
 use Zhiyi\Plus\Http\Controllers\Controller;
 use Zhiyi\Plus\Http\Middleware\VerifyUserPassword;
-use Zhiyi\Plus\Models\UserCount as UserCountModel;
+use Zhiyi\Plus\Notifications\System as SystemNotification;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\Feed;
 use Zhiyi\Plus\Packages\Currency\Processes\User as UserProcess;
 
@@ -52,7 +52,7 @@ class NewRewardController extends Controller
     public function reward(Request $request, Feed $feed, UserProcess $process, GoldType $goldModel)
     {
         $goldName = $goldModel->where('status', 1)->select('name', 'unit')->value('name') ?? '积分';
-        $this->goldName = $goldModel->where('status', 1)->select('name', 'unit')->value('name') ?? '积分';
+        $goldName = $goldModel->where('status', 1)->select('name', 'unit')->value('name') ?? '积分';
         $amount = (int) $request->input('amount');
         if (! $amount || $amount < 0) {
             return response()->json([
@@ -79,20 +79,18 @@ class NewRewardController extends Controller
         $pay = $process->prepayment($user->id, $amount, $target->id, sprintf('打赏“%s”的动态', $target->name, $feedTitle, $amount), sprintf('打赏“%s”的动态，%s扣除%s', $target->name, $goldName, $amount));
         $paid = $process->receivables($target->id, $amount, $user->id, sprintf('“%s”打赏了你的动态', $user->name), sprintf('“%s”打赏了你的动态，%s增加%s', $user->name, $goldName, $amount));
         if ($pay && $paid) {
-            $target->sendNotifyMessage('feed:reward', sprintf('“%s”打赏了你的动态', $target->name), [
-                'feed' => $feed,
-                'user' => $user,
-            ]);
-            // 增加被打赏未读数
-            $userCount = UserCountModel::firstOrNew([
-                'user_id' => $target->id,
-                'type' => 'user-system',
-            ]);
-
-            $userCount->total += 1;
-            $userCount->save();
             // 打赏记录
             $feed->reward($user, $amount);
+            $feed->user->notify(new SystemNotification(sprintf('%s打赏了你的动态', $user->name), [
+                'type' => 'reward:feeds',
+                'sender' => [
+                    'id' => $user->id,
+                    'name' => $user->name,
+                ],
+                'amount' => $amount,
+                'unit' => $goldName,
+                'feed_id' => $feed->id,
+            ]));
 
             return response()->json(['message' => '打赏成功'], 201);
         } else {

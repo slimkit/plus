@@ -22,8 +22,7 @@ isLogged &&
   AppDB.init(currentUser.id) &&
   vuex.dispatch('initChatRooms') &&
   process.env.NODE_ENV === 'development' &&
-  // eslint-disable-next-line
-  console.log("初始化 indexedDB");
+  console.log("初始化 indexedDB") // eslint-disable-line no-console
 
 export function openWebIM () {
   const CURUSER = vuex.state.CURRENTUSER
@@ -125,6 +124,10 @@ export function getGroupInfo (gid) {
         resolve({})
       })
   })
+}
+
+export function clearUnread(id) {
+  AppDB.upDateChatRoom({ id }, { unreadCount: 0 })
 }
 
 export function sendTextMessage ({ to, from, body, type }) {

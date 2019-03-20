@@ -1,26 +1,29 @@
 <template>
-  <jo-load-more
+  <JoLoadMore
     key="find-rec"
     ref="loadmore"
     @onRefresh="onRefresh"
-    @onLoadMore="onLoadMore">
-    <user-item
+    @onLoadMore="onLoadMore"
+  >
+    <UserItem
       v-for="user in users"
+      :key="`${user.id}-from-${user.searchFrom}`"
       :user="user"
-      :key="`${user.id}-from-${user.searchFrom}`"/>
-  </jo-load-more>
+    />
+  </JoLoadMore>
 </template>
 
 <script>
-import UserItem from '@/components/UserItem.vue'
+import { limit } from '@/api'
 import * as userApi from '@/api/user'
+import UserItem from '@/components/UserItem.vue'
 
 export default {
   name: 'FindRec',
   components: { UserItem },
   data () {
     return {
-      users: [],
+      users: this.$store.state.user.recommend || [],
     }
   },
   activated () {
@@ -41,7 +44,7 @@ export default {
         .findUserByType('find-by-tags')
         .then(({ data: users }) => {
           this.users = users
-          this.$refs.loadmore.afterRefresh(users.length < 15)
+          this.$refs.loadmore.afterRefresh(users.length < limit)
           return users.map(u => {
             u.searchFrom = 'tags'
             return u
@@ -62,7 +65,7 @@ export default {
         offset: this.users.length,
       })
       this.users = [...this.users, ...users]
-      this.$refs.loadmore.afterLoadMore(users.length < 15)
+      this.$refs.loadmore.afterLoadMore(users.length < limit)
     },
   },
 }

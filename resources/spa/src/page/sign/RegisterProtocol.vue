@@ -1,19 +1,19 @@
 <template>
-  <transition
+  <Transition
     enter-active-class="animated bounceInRight"
-    leave-active-class="animated bounceOutRight">
+    leave-active-class="animated bounceOutRight"
+  >
     <div class="protocol">
-
-      <common-header>用户注册协议</common-header>
+      <CommonHeader>用户注册协议</CommonHeader>
 
       <main>
         <div
           class="content"
-          v-html="content"/>
+          v-html="content"
+        />
       </main>
-
     </div>
-  </transition>
+  </Transition>
 </template>
 
 <script>

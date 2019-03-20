@@ -1,51 +1,38 @@
 <template>
   <div class="p-user-fans">
+    <CommonHeader :pinned="true" class="header">
+      <nav class="type-switch-bar">
+        <span :class="{active: type === 'followers'}" @click="type = 'followers'">
+          {{ $t('fans') }}
+        </span>
+        <span :class="{active: type === 'followings'}" @click="type = 'followings'">
+          {{ $t('follow.name') }}
+        </span>
+      </nav>
+    </CommonHeader>
 
-    <nav class="m-box m-head-top m-lim-width m-pos-f m-main m-bb1" style="padding: 0 10px;">
-      <div class="m-box m-aln-center m-flex-shrink0 ">
-        <svg class="m-style-svg m-svg-def" @click="goBack">
-          <use xlink:href="#icon-back"/>
-        </svg>
-      </div>
-      <ul class="m-box m-flex-grow1 m-aln-center m-justify-center m-flex-base0 m-head-nav">
-        <router-link
-          :to="`/users/${userID}/followers`"
-          tag="li"
-          active-class="active"
-          exact
-          replace>
-          <a>粉丝</a>
-        </router-link>
-        <router-link
-          :to="`/users/${userID}/followings`"
-          tag="li"
-          active-class="active"
-          exact
-          replace>
-          <a>关注</a>
-        </router-link>
-      </ul>
-      <div class="m-box m-justify-end"/>
-    </nav>
-
-    <main style="padding-top: 0.9rem">
-      <jo-load-more
+    <main>
+      <JoLoadMore
         ref="loadmore"
+        :auto-load="false"
         @onRefresh="onRefresh"
-        @onLoadMore="onLoadMore">
-        <user-item
+        @onLoadMore="onLoadMore"
+      >
+        <UserItem
           v-for="user in users"
           v-if="user.id"
+          :key="`user-item-${user.id}`"
           :user="user"
-          :key="`user-item-${user.id}`" />
-      </jo-load-more>
+        />
+      </JoLoadMore>
     </main>
   </div>
 </template>
 
 <script>
-import UserItem from '@/components/UserItem'
+import { limit } from '@/api'
 import { getUserFansByType } from '@/api/user.js'
+import UserItem from '@/components/UserItem'
 
 const typeMap = ['followers', 'followings']
 export default {
@@ -62,17 +49,23 @@ export default {
     }
   },
   computed: {
-    userID () {
-      return ~~this.$route.params.userID
+    userId () {
+      return Number(this.$route.params.userId)
     },
-    type () {
-      return this.$route.params.type
+    type: {
+      get () {
+        const { path } = this.$route
+        return path.match(/\/(\w+)$/)[1]
+      },
+      set (val) {
+        this.$router.replace({ path: `/users/${this.userId}/${val}` })
+      },
     },
     param () {
       return {
-        limit: 15,
+        limit,
         type: this.type,
-        uid: this.userID,
+        uid: this.userId,
       }
     },
     users: {
@@ -90,21 +83,19 @@ export default {
     },
     users (val) {
       if (val && val.length > 0) {
-        val.forEach(user => {
-          this.$store.commit('SAVE_USER', user)
-        })
+        this.$store.commit('SAVE_USER', val)
       }
     },
   },
   activated () {
     // 判断是否清空上一次的数据
-    if (this.userID !== this.preUID) {
+    if (this.userId !== this.preUID) {
       this.followers = []
       this.followings = []
     }
 
     this.$refs.loadmore.beforeRefresh()
-    this.preUID = this.userID
+    this.preUID = this.userId
   },
   methods: {
     onRefresh () {

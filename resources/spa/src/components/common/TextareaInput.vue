@@ -1,10 +1,8 @@
 <template>
-  <div
-    :class="{'auto-height': !rows}"
-    class="textarea-wrap">
-    <div
-      v-if="!rows"
-      class="textarea-shadow c-textarea-input">{{ value }}</div> <!-- 用于撑起文本框自适应高度 -->
+  <div :class="{'auto-height': !rows}" class="c-textarea-input">
+    <div v-if="!rows" class="textarea-shadow textarea">
+      {{ value }}
+    </div> <!-- 用于撑起文本框自适应高度 -->
     <textarea
       ref="textarea"
       :value="value"
@@ -12,11 +10,12 @@
       :maxlength="maxlength"
       :readonly="readonly"
       :rows="rows ? rows : 1"
-      class="c-textarea-input"
-      @input="$emit('input', $event.target.value)" />
-    <span
-      v-show="maxlength && value.length > warnlength"
-      class="word-length">{{ value.length }} / {{ maxlength }}</span>
+      class="textarea"
+      @input="onInput"
+    />
+    <span v-show="maxlength && value.length > warnlength" class="word-length">
+      {{ value.length }} / {{ maxlength }}
+    </span>
   </div>
 </template>
 
@@ -31,39 +30,51 @@ export default {
     placeholder: { type: String, default: '' },
     rows: { type: [Number, String], default: 0 },
   },
+  methods: {
+    onInput ($event) {
+      let content = $event.target.value
+      // 解决 emoji 字符被用于 maxlength 时被算作1个字符的问题（而'😫'.length => 2）
+      this.maxlength && (content = content.substr(0, Number(this.maxlength)))
+      this.$emit('input', content)
+    },
+    focus () {
+      this.$refs.textarea.focus()
+    },
+  },
 }
 </script>
 
 <style lang="less" scoped>
-.textarea-wrap {
+.c-textarea-input {
   position: relative;
   width: 100%;
+  margin-bottom: 40px;
   height: calc(~"100% + 40px");
-  padding-right: 20px;
   align-self: flex-start;
 
-  .textarea-shadow {
-    opacity: 0;
+  .textarea {
+    width: 100%;
     min-height: 100px;
     word-wrap: break-word;
     word-break: break-all;
+    font-size: inherit;
+    text-align: inherit;
+    line-height: inherit;
+  }
+
+  .textarea-shadow {
+    opacity: 0;
   }
 
   textarea {
     position: absolute;
     top: 0;
     display: block;
-    font-size: 30px;
-    padding-bottom: 28px;
-    width: calc(~"100% - 20px");
     height: 100%;
     overflow: hidden;
     resize: none;
     outline: none;
-    min-height: 100px;
     background-color: transparent;
-    word-wrap: break-word;
-    word-break: break-all;
 
     &[readonly] {
       color: #999;
@@ -72,6 +83,9 @@ export default {
   }
 
   .word-length {
+    position: absolute;
+    bottom: -34px;
+    right: 10px;
     display: block;
     font-size: 22px;
     text-align: right;

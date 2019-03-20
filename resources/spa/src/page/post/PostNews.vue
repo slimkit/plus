@@ -1,15 +1,15 @@
 <template>
   <div class="m-box-model p-post-news">
-
-    <common-header>
+    <CommonHeader>
       {{ title }}
       <template slot="left">
-        <a v-if="step === 1" @click.prevent="cancel">取消</a>
+        <a v-if="step === 1" @click.prevent="cancel">{{ $t('cancel') }}</a>
         <svg
           v-else
           class="m-style-svg m-svg-def"
-          @click="preStep">
-          <use xlink:href="#icon-back"/>
+          @click="preStep"
+        >
+          <use xlink:href="#icon-back" />
         </svg>
       </template>
       <template slot="right">
@@ -17,93 +17,104 @@
           v-if="step != 3"
           :class="{ disabled }"
           class="m-send-btn"
-          @click.prevent="nextStep">下一步</a>
+          @click.prevent="nextStep"
+        >
+          {{ $t('next_step') }}
+        </a>
       </template>
-    </common-header>
+    </CommonHeader>
 
-    <transition-group
+    <TransitionGroup
       :enter-active-class="animated.enterClass"
       :leave-active-class="animated.leaveClass"
       tag="main"
-      class="m-box-model m-flex-grow1 m-flex-shrink1 p-post-news-main">
+      class="m-box-model m-flex-grow1 m-flex-shrink1 p-post-news-main"
+    >
       <template v-if="step === 1">
         <div
           key="step1"
           class="m-pos-f m-box-model m-flex-grow1 m-flex-shrink1 m-justify-center m-aln-center m-main"
-          style="padding-left: 0.3rem; padding-right: 0.3rem">
+          style="padding-left: 0.3rem; padding-right: 0.3rem"
+        >
           <div class="m-box m-flex-grow0 m-shrink0 m-bb1 m-lim-width m-post-news-title">
             <input
               v-model.trim="news.title"
               class="m-lim-width"
               maxlength="20"
               type="text"
-              placeholder="输入标题，20字以内">
+              :placeholder="$t('news.post.placeholder.title', [20])"
+            >
           </div>
           <div class="m-box-model m-flex-grow1 m-flex-shrink1 m-lim-width m-post-news-content">
             <textarea
               ref="textarea"
               v-model.trim="contentText"
-              placeholder="编辑文章正文"/>
+              :placeholder="$t('news.post.placeholder.body')"
+            />
           </div>
         </div>
       </template>
       <template v-if="step === 2">
         <div key="step2" class="m-pos-f m-box-model m-flex-grow1 m-flex-shrink1">
           <div class="m-box m-aln-center m-lim-width m-post-news-row m-main m-bb1" @click="switchCate">
-            <span class="m-post-news-row-label">选择栏目</span>
+            <span class="m-post-news-row-label">{{ $t('news.post.label.category') }}</span>
             <div :class="{placeholder: !(category.id > 0)}" class="m-box m-flex-grow1 m-flex-shrink1 m-aln-center m-justify-end">
-              <span>{{ category.name || "选择栏目" }}</span>
+              <span>{{ category.name || $t('news.post.placeholder.category') }}</span>
               <svg class="m-style-svg m-svg-def m-entry-append">
-                <use xlink:href="#icon-arrow-right"/>
+                <use xlink:href="#icon-arrow-right" />
               </svg>
             </div>
           </div>
           <div class="m-box m-aln-center m-lim-width m-post-news-row m-main m-bb1" @click="switchTags">
-            <span class="m-post-news-row-label">选择标签</span>
+            <span class="m-post-news-row-label">{{ $t('news.post.label.tags') }}</span>
             <div class="m-flex-grow1 m-flex-shrink1 m-text-r">
               <div v-if="tags.length > 0" class="m-tags">
                 <span
                   v-for="tag in tags"
                   :key="tag.id"
-                  class="m-tag">{{ tag.name }}</span>
+                  class="m-tag"
+                  v-text="tag.name"
+                />
               </div>
               <div v-else class="m-box m-justify-end placeholder">
-                <span>最多选择5个标签</span>
+                <span>{{ $t('news.post.placeholder.tags', [5]) }}</span>
               </div>
             </div>
             <svg class="m-flex-grow0 m-flex-shrink0 m-style-svg m-svg-def m-entry-append">
-              <use xlink:href="#icon-arrow-right"/>
+              <use xlink:href="#icon-arrow-right" />
             </svg>
           </div>
           <div class="m-box m-aln-center m-lim-width m-post-news-row m-main m-bb1">
-            <span class="m-post-news-row-label">文章来源</span>
+            <span class="m-post-news-row-label">{{ $t('news.post.label.from') }}</span>
             <div class="m-box m-flex-grow1 m-flex-shrink1 m-aln-center m-justify-end">
               <input
                 v-model.trim="news.from"
                 type="text"
                 dir="rtl"
-                placeholder="不填写则默认为原创">
+                :placeholder="$t('news.post.placeholder.from')"
+              >
             </div>
           </div>
           <div class="m-box m-aln-center m-lim-width m-post-news-row m-main m-bb1">
-            <span class="m-post-news-row-label">作者</span>
+            <span class="m-post-news-row-label">{{ $t('news.post.label.author') }}</span>
             <div class="m-box m-flex-grow1 m-flex-shrink1 m-aln-center m-justify-end">
               <input
                 v-model.trim="news.author"
                 type="text"
                 dir="rtl"
-                placeholder="不填写则默认为本站用户名">
+                :placeholder="$t('news.post.placeholder.author')"
+              >
             </div>
           </div>
           <div class="m-box m-aln-center m-lim-width m-post-news-row m-main">
-            <span class="m-post-news-row-label">摘要</span>
+            <span class="m-post-news-row-label">{{ $t('news.post.label.subject') }}</span>
             <div class="m-box m-flex-grow1 m-flex-shrink1 m-aln-center m-justify-end">
-              <textarea-input
+              <TextareaInput
                 v-model="news.subject"
-                class="textarea-input"
                 maxlength="200"
                 warnlength="150"
-                placeholder="请输入摘要信息，最多200字" />
+                :placeholder="$t('news.post.placeholder.subject', [200])"
+              />
             </div>
           </div>
         </div>
@@ -113,18 +124,20 @@
           <div
             :class="{ loading: poster.loading, error: poster.error }"
             class="m-box m-aln-center m-justify-center m-poster-box"
-            @click="addPoster">
+            @click="addPoster"
+          >
             <img
               v-if="poster.src"
               :src="poster.src"
               class="m-poster"
               @load.stop="loadedPoster(poster)"
-              @error="posterError">
+              @error="posterError"
+            >
             <div v-else class="m-box-model m-aln-center m-justify-center m-lim-width m-poster-placeholder">
               <svg class="m-style-svg m-svg-big">
-                <use xlink:href="#icon-camera"/>
+                <use xlink:href="#icon-camera" />
               </svg>
-              <span>点击上传封面</span>
+              <span>{{ $t('news.cover.tap_to_upload') }}</span>
             </div>
             <div v-if="!poster.error && poster.loading" class="fixed-loading">
               <div class="u-loading" style="height: 58px;width: 58px">
@@ -132,7 +145,8 @@
                   class="loading"
                   width="100%"
                   height="100%"
-                  viewBox="0 0 29 29">
+                  viewBox="0 0 29 29"
+                >
                   <circle
                     class="c1"
                     cx="14.5"
@@ -140,7 +154,8 @@
                     r="12.5"
                     fill="none"
                     stroke-width="4"
-                    stroke="#b1b1b1" />
+                    stroke="#b1b1b1"
+                  />
                   <circle
                     class="c2"
                     cx="14.5"
@@ -148,7 +163,8 @@
                     r="12.5"
                     fill="none"
                     stroke-width="4"
-                    stroke="#c7c7c7" />
+                    stroke="#c7c7c7"
+                  />
                 </svg>
               </div>
             </div>
@@ -158,23 +174,25 @@
               ref="imagefile"
               type="file"
               class="m-rfile"
-              @change="selectPhoto">
+              @change="selectPhoto"
+            >
           </div>
-          <p>不上传封面则默认为文章内第一张图</p>
-          <button class="m-long-btn m-signin-btn" @click="handleOk">{{ newsPay ? '支付并发布资讯' : '发布资讯' }}</button>
+          <p>{{ $t('news.cover.placeholder') }}</p>
+          <button class="m-long-btn m-signin-btn" @click="handleOk">
+            {{ newsPay ? 'news.post.submit_with_payment' : 'news.post.submit' | t }}
+          </button>
 
-          <password-confirm ref="password" @submit="handlePostNews" />
-
+          <PasswordConfirm ref="password" @submit="handlePostNews" />
         </div>
       </template>
-    </transition-group>
-    <choose-cate />
+    </TransitionGroup>
+    <ChooseCate />
   </div>
 </template>
 
 <script>
 import { mapState } from 'vuex'
-import chooseCate from '@/page/chooseCate.vue'
+import ChooseCate from '@/page/ChooseCate.vue'
 import PasswordConfirm from '@/components/common/PasswordConfirm.vue'
 import TextareaInput from '@/components/common/TextareaInput.vue'
 import sendImage from '@/util/SendImage.js'
@@ -183,7 +201,7 @@ import * as api from '@/api/news.js'
 export default {
   name: 'PostNews',
   components: {
-    chooseCate,
+    ChooseCate,
     PasswordConfirm,
     TextareaInput,
   },
@@ -211,9 +229,9 @@ export default {
   },
   computed: {
     ...mapState({
-      newsPay: state => state.CONFIG['news:contribute'].pay,
-      newCurrency: state => state.CONFIG['news:pay_conyribute'],
-      newsVerified: state => state.CONFIG['news:contribute'].verified,
+      newsConfig: state => state.CONFIG.news || {},
+      newsPay: state => state.CONFIG.news.contribute.pay,
+      newCurrency: state => state.CONFIG.news.pay_contribute,
       verified: state => state.CURRENTUSER.verified,
     }),
     currentCurrency () {
@@ -221,7 +239,8 @@ export default {
       return user.currency.sum || 0
     },
     canPostNews () {
-      return !this.newsVerified || (this.newsVerified && this.verified)
+      const { verified } = this.newsConfig.contribute || {}
+      return !verified || (verified && this.verified)
     },
     contentText: {
       get () {
@@ -235,31 +254,29 @@ export default {
       return 'blank' + this.contentText
     },
     title () {
-      switch (this.step) {
-        case 1:
-          return '编辑文章'
-        case 2:
-          return '完善文章信息'
-        case 3:
-          return '上传封面'
-        default:
-          return '编辑文章'
-      }
+      const title = this.$t('news.post.title') // ['编辑文章', '完善文章信息', '上传封面']
+      if (!this.step) return title[0]
+      return title[this.step - 1]
     },
     disabled () {
+      let result
       switch (this.step) {
         case 1:
-          return !(this.news.title && this.news.content)
+          result = !(this.news.title && this.news.content)
+          break
         case 2:
-          return !(this.category.id > 0 && this.tags.length > 0)
+          result = !(this.category.id > 0 && this.tags.length > 0)
+          break
         case 3:
-          return !(this.news.image > 0)
+          result = !(this.news.image > 0)
+          break
       }
+      return result
     },
   },
   created () {
     if (!this.canPostNews) {
-      this.$Message.error('请先进行身份认证')
+      this.$Message.error(this.$t('certificate.need'))
       this.$router.go(-1)
     }
   },
@@ -274,17 +291,8 @@ export default {
     },
     switchTags () {
       const chooseTags = this.tags.map(t => t.id)
-      /**
-       * 打开选择标签页面 (钩子 -> "choose-tags")
-       * @author jsonleex <jsonlseex@163.com>
-       * @param  {Object} { nextStep, chooseTags }
-       *                   nextStep     {Function}     点击下一步的回调, 注入已选择的 tags
-       *                   chooseTags   {Object}       初始选择值, 只需传 [tag.id], eg: [1, 2, 3,...]
-       */
       this.$bus.$emit('choose-tags', {
-        nextStep: tags => {
-          this.tags = tags
-        },
+        nextStep: tags => void (this.tags = tags),
         chooseTags,
       })
     },
@@ -332,7 +340,7 @@ export default {
           })
     },
     posterError () {
-      this.$Message.error('封面图上传失败, 请重试')
+      this.$Message.error(this.$t('news.cover.upload_failed'))
     },
     handlePostNews (password) {
       const { title, content } = this.news
@@ -359,7 +367,7 @@ export default {
     },
     showPasswordConfirm () {
       if (this.currentCurrency < this.amount) {
-        this.$Message.error(`${this.currencyUnit}不足，请充值`)
+        this.$Message.error(this.$t('currency.insufficient'))
         this.cancel()
         return this.$router.push({ name: 'currencyRecharge' })
       }
@@ -367,19 +375,17 @@ export default {
     },
     handleOk () {
       const { title, content } = this.news
-      if (!(title && content)) return (this.step = 1) && this.$Message.error('请输入标题和正文')
-      if (!this.category.id) return (this.step = 2) && this.$Message.error('请选择投稿栏目')
-      if (this.tags.length === 0) return (this.step = 2) && this.$Message.error('请选择标签')
+      if (!(title && content)) return (this.step = 1) && this.$Message.error(this.$t('news.post.need.title&content'))
+      if (!this.category.id) return (this.step = 2) && this.$Message.error(this.$t('news.post.need.category'))
+      if (this.tags.length === 0) return (this.step = 2) && this.$Message.error(this.$t('news.post.need.tags'))
 
       this.newsPay
         ? this.$bus.$emit('payfor', {
-          title: '投稿支付',
+          title: this.$t('news.post.pay.title'),
           amount: this.newCurrency,
-          content: `本次投稿你需要支付${this.newCurrency}${
-            this.currencyUnit
-          },是否继续投稿？`,
-          confirmText: '确认投稿',
-          cancelText: '暂不考虑',
+          content: this.$t('news.post.pay.title', { count: this.newCurrency, currencyUnit: this.currencyUnit }),
+          confirmText: this.$t('news.post.pay.confirm'),
+          cancelText: this.$t('news.post.pay.cancel'),
           onOk: () => {
             this.showPasswordConfirm()
           },
@@ -392,8 +398,8 @@ export default {
           enterClass: 'animated slideInLeft',
           leaveClass: 'animated slideOutRight',
         }
-        this.step -= 1
       }
+      this.step -= 1
     },
     nextStep () {
       if (this.disabled) return
@@ -406,11 +412,14 @@ export default {
       }
     },
     cancel () {
+      const actions = [
+        { text: this.$t('confirm'), method: this.goBack },
+      ]
       this.$bus.$emit(
         'actionSheet',
-        [{ text: '确定', method: this.goBack }],
-        '取消',
-        '你还有未发布的内容，是否放弃发布？'
+        actions,
+        this.$t('cancel'),
+        this.$t('news.post.draft_confirm')
       )
     },
   },
@@ -496,11 +505,13 @@ export default {
   .m-post-news-row {
     font-size: 30px;
     padding: 40px 30px;
+
     .m-entry-append {
       margin-left: 10px;
     }
     &-label {
-      flex: 0 0 auto;
+      flex: none;
+      align-self: flex-start;
       width: 150px;
     }
     input {
@@ -509,23 +520,14 @@ export default {
       line-height: 30px;
       font-size: 28px;
     }
+
+    .c-textarea-input {
+      text-align: right;
+    }
   }
 
   .placeholder {
     color: #ccc;
-  }
-}
-</style>
-
-<style lang="less">
-.p-post-news {
-  .textarea-input {
-    padding-right: 0;
-
-    textarea {
-      text-align: right;
-      width: 100%;
-    }
   }
 }
 </style>

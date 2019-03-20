@@ -3,6 +3,7 @@ import { baseURL } from './index'
 import router from '@/routers'
 import Message from '@/plugins/message-box'
 import lstore from '@/plugins/lstore/lstore.js'
+import i18n from '@/i18n'
 
 let cancel
 let pending = {}
@@ -17,9 +18,13 @@ const instance = axios.create({
 // 请求拦截器
 instance.interceptors.request.use(
   config => {
+    // 开发环境静态资源重定向
+    if (process.env.NODE_ENV === 'development') {
+      config.url = config.url.replace(/^http:\/\/test-plus\.zhibocloud\.cn\/storage/, 'http://localhost:8080/storage')
+    }
     // 发起请求时，取消掉当前正在进行的相同请求
     if (pending[config.url]) {
-      pending[config.url]('操作取消')
+      pending[config.url](i18n.t('network.cancel'))
       pending[config.url] = cancel
     } else {
       pending[config.url] = cancel
@@ -51,55 +56,59 @@ instance.interceptors.response.use(
       if (err && err.response) {
         switch (err.response.status) {
           case 400:
-            err.tips = '错误请求'
+            err.tips = i18n.t('network.error.e400')
             break
           case 401:
             err.tips = lstore.hasData('H5_CUR_USER')
-              ? '登陆失效，请重新登录'
-              : '请登录'
+              ? i18n.t('network.error.e401_expire')
+              : i18n.t('network.error.e401')
             lstore.clearData()
             requireAuth()
             break
           case 403:
-            err.tips = '拒绝访问'
+            err.tips = i18n.t('network.error.e403')
             break
           case 404:
-            err.tips = '请求错误,未找到该资源'
+            err.tips = i18n.t('network.error.e404')
             break
           case 405:
-            err.tips = '请求方法未允许'
+            err.tips = i18n.t('network.error.e405')
             break
           case 408:
-            err.tips = '请求超时'
+            err.tips = i18n.t('network.error.e408')
             break
           case 422: {
             const { data } = err.response
-            err.tips = data || { message: '错误请求' }
+            try {
+              err.tips = Object.values(data.errors)[0][0]
+            } catch (error) {
+              err.tips = data || { message: i18n.t('network.error.e422') }
+            }
             break
           }
           case 500:
-            err.tips = '服务器端出错'
+            err.tips = i18n.t('network.error.e500')
             break
           case 501:
-            err.tips = '网络未实现'
+            err.tips = i18n.t('network.error.e501')
             break
           case 502:
-            err.tips = '网络错误'
+            err.tips = i18n.t('network.error.e502')
             break
           case 503:
-            err.tips = '服务不可用'
+            err.tips = i18n.t('network.error.e503')
             break
           case 504:
-            err.tips = '网络超时'
+            err.tips = i18n.t('network.error.e504')
             break
           case 505:
-            err.tips = 'http版本不支持该请求'
+            err.tips = i18n.t('network.error.e505')
             break
           default:
-            err.tips = `连接错误${err.response.status}`
+            err.tips = i18n.t('network.error.default', [err.response.status])
         }
       } else {
-        err.tips = '网络不可用，请检查！'
+        err.tips = i18n.t('network.error.disconnect')
       }
       Message.error(err.tips)
     }

@@ -1,20 +1,23 @@
 <template>
   <div class="p-profile-certificate">
-
-    <common-header :pinned="true" :back="back">
+    <CommonHeader :pinned="true" :back="back">
       {{ title }}
       <span
         v-show="step === 2"
         slot="right"
         :class="['btn-submit', disabled]"
-        @click="validate(onSubmit)">提交</span>
-    </common-header>
+        @click="validate(onSubmit)"
+      >
+        {{ $t('submit') }}
+      </span>
+    </CommonHeader>
 
-    <transition-group
+    <TransitionGroup
       :enter-active-class="animated.enter"
       :leave-active-class="animated.leave"
       tag="main"
-      class="m-box-model m-flex-grow1 m-flex-shrink1 main">
+      class="m-box-model m-flex-grow1 m-flex-shrink1 main"
+    >
       <template v-if="step === 1">
         <div key="step1" class="step1">
           <template v-if="type ==='org'">
@@ -27,13 +30,15 @@
                   v-model.trim="orgFields.org_name"
                   :placeholder="formInfo[type].orgName.placeholder"
                   type="text"
-                  maxlength="20">
+                  maxlength="20"
+                >
               </div>
               <svg
-                v-show="orgFields.org_name.length > 0"
+                v-show="(orgFields.org_name || '').length > 0"
                 class="m-style-svg m-svg-def"
-                @click="orgFields.org_name = ''">
-                <use xlink:href="#icon-clean"/>
+                @click="orgFields.org_name = ''"
+              >
+                <use xlink:href="#icon-clean" />
               </svg>
             </div>
             <!-- 机构地址 -->
@@ -45,13 +50,15 @@
                   v-model.trim="orgFields.org_address"
                   :placeholder="formInfo[type].orgAddress.placeholder"
                   type="text"
-                  maxlength="20">
+                  maxlength="20"
+                >
               </div>
               <svg
-                v-show="orgFields.org_address.length > 0"
+                v-show="(orgFields.org_address || '').length > 0"
                 class="m-style-svg m-svg-def"
-                @click="orgFields.org_address = ''">
-                <use xlink:href="#icon-clean"/>
+                @click="orgFields.org_address = ''"
+              >
+                <use xlink:href="#icon-clean" />
               </svg>
             </div>
           </template>
@@ -65,7 +72,8 @@
                 v-model.trim="fields.name"
                 :placeholder="formInfo[type].name.placeholder"
                 maxlength="8"
-                type="text">
+                type="text"
+              >
             </div>
           </div>
           <!-- 证件号码 -->
@@ -78,7 +86,8 @@
                 :placeholder="formInfo[type].number.placeholder"
                 maxlength="18"
                 type="text"
-                pattern="[0-9x]*">
+                pattern="[0-9x]*"
+              >
             </div>
           </div>
           <!-- 手机号码 -->
@@ -91,19 +100,21 @@
                 :placeholder="formInfo[type].phone.placeholder"
                 type="number"
                 pattern="[0-9]*"
-                oninput="value=value.slice(0, 11)">
+                oninput="value=value.slice(0, 11)"
+              >
             </div>
           </div>
           <!-- 认证描述 -->
           <div class="m-form-row m-main auto-height">
             <label for="desc">{{ formInfo[type].desc.label }}</label>
             <div class="m-input">
-              <textarea-input
+              <TextareaInput
                 id="desc"
                 v-model="fields.desc"
                 :maxlength="200"
                 :warnlength="150"
-                :placeholder="formInfo[type].desc.placeholder"/>
+                :placeholder="formInfo[type].desc.placeholder"
+              />
             </div>
           </div>
           <div class="m-box m-aln-center m-text-box m-form-err-box">
@@ -113,39 +124,30 @@
             <button
               :disabled="loading||disabled"
               class="m-long-btn m-signin-btn"
-              @click="validate(() => {step = 2})">
-              <circle-loading v-if="loading" />
-              <span v-else>下一步</span>
+              @click="validate(() => {step = 2})"
+            >
+              <CircleLoading v-if="loading" />
+              <span v-else>{{ $t('next_step') }}</span>
             </button>
           </div>
         </div>
       </template>
 
       <template v-if="step === 2">
-        <div
-          key="step2"
-          class="step2">
-          <p
-            v-if="type === 'user'"
-            class="poster-tips">请上传正反面身份证照片</p>
-          <p
-            v-else
-            class="poster-tips">上传企业机构营业执照</p>
-          <image-poster
-            :poster="poster1"
-            @uploaded="uploaded1">
-            <span>点击上传正面身份证照片</span>
-          </image-poster>
+        <div key="step2" class="step2">
+          <p v-if="type === 'user'" class="poster-tips"> {{ $t('certificate.upload.fb') }} </p>
+          <p v-else class="poster-tips"> {{ $t('certificate.upload.org') }} </p>
+          <ImagePoster :poster="poster1" @uploaded="uploaded1">
+            <span>{{ $t('certificate.upload.front') }}</span>
+          </ImagePoster>
           <template v-if="type=='user' && files.length > 0">
-            <image-poster
-              :poster="poster2"
-              @uploaded="uploaded2">
-              <span>点击上传反面身份证照片</span>
-            </image-poster>
+            <ImagePoster :poster="poster2" @uploaded="uploaded2">
+              <span>{{ $t('certificate.upload.back') }}</span>
+            </ImagePoster>
           </template>
         </div>
       </template>
-    </transition-group>
+    </TransitionGroup>
   </div>
 </template>
 
@@ -158,21 +160,22 @@ import ImagePoster from '@/components/ImagePoster.vue'
 import TextareaInput from '@/components/common/TextareaInput.vue'
 import * as api from '@/api/user.js'
 import { noop } from '@/util'
+import i18n from '@/i18n'
 
 const formInfo = {
   user: {
-    name: { label: '真实姓名', placeholder: '输入真实姓名' },
-    number: { label: '身份证号码', placeholder: '输入正确的身份证号码' },
-    phone: { label: '手机号码', placeholder: '输入11位手机号码' },
-    desc: { label: '认证描述', placeholder: '该描述会影响审核，请慎重填写' },
+    name: { label: i18n.t('certificate.user.label.name'), placeholder: i18n.t('certificate.user.placeholder.name') },
+    number: { label: i18n.t('certificate.user.label.number'), placeholder: i18n.t('certificate.user.placeholder.number') },
+    phone: { label: i18n.t('certificate.user.label.phone'), placeholder: i18n.t('certificate.user.placeholder.phone') },
+    desc: { label: i18n.t('certificate.user.label.desc'), placeholder: i18n.t('certificate.user.placeholder.desc') },
   },
   org: {
-    name: { label: '负责人', placeholder: '输入机构负责人' },
-    number: { label: '身份证号码', placeholder: '输入负责人身份证号码' },
-    phone: { label: '手机号码', placeholder: '输入11位手机号码' },
-    desc: { label: '认证描述', placeholder: '该描述会影响审核，请慎重填写' },
-    orgName: { label: '机构名称', placeholder: '输入机构名称' },
-    orgAddress: { label: '机构地址', placeholder: '输入机构地址' },
+    name: { label: i18n.t('certificate.org.label.name'), placeholder: i18n.t('certificate.org.placeholder.name') },
+    number: { label: i18n.t('certificate.org.label.number'), placeholder: i18n.t('certificate.org.placeholder.number') },
+    phone: { label: i18n.t('certificate.org.label.phone'), placeholder: i18n.t('certificate.org.placeholder.phone') },
+    desc: { label: i18n.t('certificate.org.label.desc'), placeholder: i18n.t('certificate.org.placeholder.desc') },
+    orgName: { label: i18n.t('certificate.org.label.org_name'), placeholder: i18n.t('certificate.org.placeholder.org_name') },
+    orgAddress: { label: i18n.t('certificate.org.label.org_address'), placeholder: i18n.t('certificate.org.placeholder.org_address') },
   },
 }
 
@@ -207,11 +210,8 @@ export default {
   },
   computed: {
     title () {
-      return this.step === 1
-        ? this.type === 'user'
-          ? '个人认证'
-          : '企业认证'
-        : '上传资料'
+      if (this.step !== 1) return i18n.t('certificate.upload.name')
+      return i18n.t(`certificate.${this.type}.name`)
     },
     /**
      * 认证类型. 必须是 (user|org)
@@ -312,12 +312,12 @@ export default {
       const postData = Object.assign({ files: this.files }, this.formData)
       if (this.status === 0) {
         api.postCertification(postData).then(() => {
-          this.$Message.success('提交成功，请等待审核')
+          this.$Message.success(this.$t('certificate.upload.success'))
           this.goBack()
         })
       } else {
         api.patchCertification(postData).then(() => {
-          this.$Message.success('提交成功，请等待审核')
+          this.$Message.success(this.$t('certificate.upload.success'))
           this.goBack()
         })
       }
@@ -340,15 +340,15 @@ export default {
       }
       switch (this.step) {
         case 1: {
-          if (!this.fields.number.match(match.number)) { failed = '请检查身份证号码是否正确' }
-          if (!this.fields.phone.match(match.phone)) { failed = '请检查手机号码是否正确' }
+          if (!this.fields.number.match(match.number)) { failed = i18n.t('certificate.validate.number') }
+          if (!this.fields.phone.match(match.phone)) { failed = i18n.t('certificate.validate.phone') }
           break
         }
         case 2:
           if (
             (this.type === 'user' && this.files.length !== 2) ||
             (this.type === 'org' && this.files.length !== 1)
-          ) { failed = '请上传证件照片' }
+          ) { failed = i18n.t('certificate.upload.need') }
           break
       }
       if (!failed) next()
@@ -376,7 +376,7 @@ export default {
 
     .m-form-row {
       label {
-        width: 6em;
+        width: 6.5em;
         flex: none;
 
         &::before {
@@ -385,8 +385,12 @@ export default {
         }
       }
 
-      .m-input input {
-        text-align: right;
+      .m-input {
+        padding: 0;
+
+        input {
+          text-align: right;
+        }
       }
 
       &.auto-height {
@@ -396,10 +400,10 @@ export default {
         padding-top: 0.4rem;
         padding-bottom: 0.4rem;
 
-        textarea {
-          width: 100%;
+        .c-textarea-input {
+          text-align: right;
+          font-size: 28px;
           line-height: 1.4;
-          font-size: 0.28rem;
         }
       }
     }
@@ -411,20 +415,6 @@ export default {
     .poster-tips {
       color: #666;
       font-size: 80%;
-    }
-  }
-}
-</style>
-
-<style lang="less">
-.p-profile-certificate {
-  .textarea-wrap {
-    padding-right: 0;
-
-    .c-textarea-input {
-      text-align: right;
-      width: 100%;
-      font-size: 28px;
     }
   }
 }

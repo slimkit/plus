@@ -65,7 +65,7 @@
  * @property {Object} [style] - 按钮的样式
  */
 const actions = [
-  { text: '确定', method: () => { console.log('button clicked!') }, style: { color: 'green' } }
+  { text: this.$t('confirm'), method: () => { console.log('button clicked!') }, style: { color: 'green' } }
 ]
 /**
  * Call actionSheet
@@ -99,7 +99,7 @@ const cb = amount => { console.log(amount); }
 this.$bus.$emit("reward", {
   type: "feed",
   api,
-  payload: { feedID },
+  payload: { feedId },
   callback：cb
 });
 ```
@@ -124,7 +124,7 @@ const cb = () => { console.log("success"); }
 this.$bus.$emit("applyTop", {
   type: "",
   api,
-  payload: { feedID },
+  payload: { feedId },
   isOwner: true,
   callback: cb
 })
@@ -334,45 +334,6 @@ export default {
 
 隐藏 dialog，缓慢下移淡出的动画
 
-### 图片上传组件 ImagePoster
-
-`@/components/ImagePoster.vue`
-
-用于各页面中图片上传相关内容，使用方法详见 `@/pages/profile/Certificate.vue`
-
-``` vue
-<template>
-  <image-poster @uploaded="uploaded">
-    <span>点击上传反面身份证照片</span>
-  </image-poster>
-</template>
-<script>
-import ImagePoster from "@/components/ImagePoster.vue";
-export default {
-  components: { ImagePoster }
-  methods: {
-    uploaded(poster) {
-      console.log(poster);
-    }
-  }
-}
-</script>
-```
-
-#### `Slot`
-
-含有一个匿名 slot，支持任何 html 标签，显示在上传组件的 icon 下方
-
-#### `Event`
-
-##### `uploaded`
-
-图片上传成功后的回调方法，接受一个参数，值为已上传的图片信息。
-
-##### `error`
-
-图片上传失败的回调方法
-
 ### banner 轮播广告位 BannerAd
 
 `@/components/advertisement/BannerAd.vue`
@@ -440,6 +401,38 @@ export default {
 - `group:post` 圈子帖子详情页
 
 用于获取对应页面广告具体数据
+
+
+### 文件上传 ImageUploader
+
+`@/components/common/ImageUploader.vue`
+
+用于新版本、老版本兼容的文件上传组件，参考话题封面上传
+
+#### `Props`
+
+##### `type` {string} [id]
+
+- `id`
+- `storage`
+- `blob`
+- `url`
+
+##### `value` {*}
+
+该属性的指取决于 `type` 的值
+- 为 `id` 时是老版本返回的文件 id
+- 为 `storage` 时是新版本返回的 file node 节点
+- 为 `blob` 时是临时的blob对象
+- 为 `url` 时是临时的 url 地址
+
+#### `Events`
+
+##### `@update:src`
+
+该属性返回的是一个图片临时地址，用于前端展示
+
+`@update:src="src = $event"`
 
 ## 表单组件 FormItem
 

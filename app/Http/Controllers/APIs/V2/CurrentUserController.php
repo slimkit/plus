@@ -6,12 +6,12 @@ declare(strict_types=1);
  * +----------------------------------------------------------------------+
  * |                          ThinkSNS Plus                               |
  * +----------------------------------------------------------------------+
- * | Copyright (c) 2018 Chengdu ZhiYiChuangXiang Technology Co., Ltd.     |
+ * | Copyright (c) 2016-Present ZhiYiChuangXiang Technology Co., Ltd.     |
  * +----------------------------------------------------------------------+
- * | This source file is subject to version 2.0 of the Apache license,    |
- * | that is bundled with this package in the file LICENSE, and is        |
- * | available through the world-wide-web at the following url:           |
- * | http://www.apache.org/licenses/LICENSE-2.0.html                      |
+ * | This source file is subject to enterprise private license, that is   |
+ * | bundled with this package in the file LICENSE, and is available      |
+ * | through the world-wide-web at the following url:                     |
+ * | https://github.com/slimkit/plus/blob/master/LICENSE                  |
  * +----------------------------------------------------------------------+
  * | Author: Slim Kit Group <master@zhiyicx.com>                          |
  * | Homepage: www.thinksns.com                                           |
@@ -22,8 +22,7 @@ namespace Zhiyi\Plus\Http\Controllers\APIs\V2;
 
 use Illuminate\Http\Request;
 use Zhiyi\Plus\Models\User as UserModel;
-use Zhiyi\Plus\Models\UserCount as UserCountModel;
-use Zhiyi\Plus\Models\UserFollow as UserFollowModel;
+use Zhiyi\Plus\Notifications\Follow as FollowNotification;
 use Zhiyi\Plus\Models\VerificationCode as VerificationCodeModel;
 use Illuminate\Contracts\Routing\ResponseFactory as ResponseFactoryContract;
 
@@ -88,10 +87,10 @@ class CurrentUserController extends Controller
         if ($target) {
             return $response->json(['name' => ['用户名已被使用']], 422);
         }
-
-        foreach ($request->only(['name', 'bio', 'sex', 'location', 'avatar', 'bg']) as $key => $value) {
-            if (! is_null($value)) {
-                $user->$key = $value;
+        $fields = ['name', 'bio', 'sex', 'location', 'avatar', 'bg'];
+        foreach ($fields as $field) {
+            if ($request->request->has($field)) {
+                $user->{$field} = $request->input($field);
             }
         }
 
@@ -232,31 +231,16 @@ class CurrentUserController extends Controller
         } elseif ($user->hasFollwing($target)) {
             return response()->json(['message' => ['非法的操作']], 422);
         }
-        $userFollowingCount = UserCountModel::firstOrNew([
-            'type' => 'user-following',
-            'user_id' => $target->id,
-        ]);
 
-        return $user
-            ->getConnection()
-            ->transaction(function () use ($user, $target, $userFollowingCount) {
-                $user->followings()->attach($target);
-                $user->extra()->firstOrCreate([])->increment('followings_count', 1);
-                $target->extra()->firstOrCreate([])->increment('followers_count', 1);
+        $user->getConnection()->transaction(function () use ($user, $target) {
+            $user->followings()->attach($target);
+            $user->extra()->firstOrCreate([])->increment('followings_count', 1);
+            $target->extra()->firstOrCreate([])->increment('followers_count', 1);
+        });
 
-                if ($target->hasFollwing($user)) {
-                    $userMutualCount = UserCountModel::firstOrNew([
-                        'type' => 'user-mutual',
-                        'user_id' => $target->id,
-                    ]);
-                    $userMutualCount->total += 1;
-                    $userMutualCount->save();
-                }
-                $userFollowingCount->total += 1;
-                $userFollowingCount->save();
+        $target->notify(new FollowNotification($user));
 
-                return response('', 204);
-            });
+        return response('', 204);
     }
 
     /**
@@ -270,33 +254,13 @@ class CurrentUserController extends Controller
     public function detachFollowingUser(Request $request, UserModel $target)
     {
         $user = $request->user();
+        $user->getConnection()->transaction(function () use ($user, $target) {
+            $user->followings()->detach($target);
+            $user->extra()->decrement('followings_count', 1);
+            $target->extra()->decrement('followers_count', 1);
+        });
 
-        $userFollowingCount = UserCountModel::firstOrNew([
-            'type' => 'user-following',
-            'user_id' => $target->id,
-        ]);
-
-        $userFollowing = UserFollowModel::where('user_id', $user->id)
-            ->where('target', $target->id)
-            ->first();
-
-        return $user
-            ->getConnection()
-            ->transaction(function () use ($user, $target, $userFollowingCount, $userFollowing) {
-                $user->followings()->detach($target);
-                $user->extra()->decrement('followings_count', 1);
-                $target->extra()->decrement('followers_count', 1);
-
-                if ($userFollowing &&
-                    $userFollowingCount->total &&
-                    $userFollowing->updated_at->gte($userFollowingCount->read_at)
-                ) {
-                    $userFollowingCount->total -= 1;
-                    $userFollowingCount->save();
-                }
-
-                return response('', 204);
-            });
+        return response('', 204);
     }
 
     /**

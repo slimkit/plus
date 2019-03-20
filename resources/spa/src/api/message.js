@@ -1,24 +1,35 @@
 import api from './api'
-import { limit } from './index'
 
 // 获取系统通知
-export function getNotifications (offset = 0) {
-  return api.get(`/user/notifications`, {
-    params: {
-      offset,
-      limit,
-    },
-  })
+export function getNotificationStatistics () {
+  return api.get(`/user/notification-statistics`)
+}
+
+// 获取未读审核通知数量
+export function getUnreadCounts () {
+  return api.get('/user/counts')
 }
 
 /**
- * 清除未读提示
- * @Author   Wayne
- * @DateTime 2018-05-05
- * @Email    qiaobin@zhiyicx.com
- * @param    {String}            type [清除的消息类型]
- * @return   {[type]}                 [description]
+ * 获取通知列表
+ * @author mutoe <mutoe@foxmail.com>
+ * @export
+ * @param {Object} params
+ * @param {string} params.type
+ * @param {number} [params.page=1]
+ * @returns
  */
-export function resetUserCount (type = '') {
-  api.patch('/user/counts', { type })
+export function getNotification (params) {
+  return api.get('/user/notifications', { params })
+}
+
+/**
+ * 标记通知已读
+ * @author mutoe <mutoe@foxmail.com>
+ * @export
+ * @param {string} type
+ * @returns
+ */
+export function resetNotificationCount (type) {
+  return api.patch('/user/notifications', {}, { params: { type } })
 }

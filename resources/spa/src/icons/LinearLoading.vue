@@ -5,11 +5,13 @@
     width="120"
     height="30"
     viewBox="0 0 120 30"
-    xmlns="http://www.w3.org/2000/svg">
+    xmlns="http://www.w3.org/2000/svg"
+  >
     <circle
       cx="15"
       cy="15"
-      r="15">
+      r="15"
+    >
       <animate
         attributeName="r"
         from="15"
@@ -18,7 +20,8 @@
         dur="0.8s"
         values="15;9;15"
         calcMode="linear"
-        repeatCount="indefinite" />
+        repeatCount="indefinite"
+      />
       <animate
         attributeName="fill-opacity"
         from="1"
@@ -27,13 +30,15 @@
         dur="0.8s"
         values="1;.5;1"
         calcMode="linear"
-        repeatCount="indefinite" />
+        repeatCount="indefinite"
+      />
     </circle>
     <circle
       cx="60"
       cy="15"
       r="9"
-      fill-opacity="0.3">
+      fill-opacity="0.3"
+    >
       <animate
         attributeName="r"
         from="9"
@@ -42,7 +47,8 @@
         dur="0.8s"
         values="9;15;9"
         calcMode="linear"
-        repeatCount="indefinite" />
+        repeatCount="indefinite"
+      />
       <animate
         attributeName="fill-opacity"
         from="0.5"
@@ -51,12 +57,14 @@
         dur="0.8s"
         values=".5;1;.5"
         calcMode="linear"
-        repeatCount="indefinite" />
+        repeatCount="indefinite"
+      />
     </circle>
     <circle
       cx="105"
       cy="15"
-      r="15">
+      r="15"
+    >
       <animate
         attributeName="r"
         from="15"
@@ -65,7 +73,8 @@
         dur="0.8s"
         values="15;9;15"
         calcMode="linear"
-        repeatCount="indefinite" />
+        repeatCount="indefinite"
+      />
       <animate
         attributeName="fill-opacity"
         from="1"
@@ -74,7 +83,8 @@
         dur="0.8s"
         values="1;.5;1"
         calcMode="linear"
-        repeatCount="indefinite" />
+        repeatCount="indefinite"
+      />
     </circle>
   </svg>
 </template>

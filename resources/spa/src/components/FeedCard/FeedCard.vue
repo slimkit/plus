@@ -1,16 +1,19 @@
 <template>
-  <div class="m-box-model m-card" @click="handleView('')">
-    <div class="m-box">
-      <div
-        v-if="timeLine"
-        class="m-box-model m-aln-center m-flex-grow0 m-flex-shrink0 m-card-time-line"
-        v-html="timeLineText"/>
-      <avatar v-else :user="user" />
-      <section class="m-box-model m-flex-grow1 m-flex-shrink1 m-card-main">
+  <div class="m-box-model m-card c-feed-card" @click="handleView('')">
+    <div class="m-box main">
+      <template v-if="timeLine">
+        <div v-if="isToday">{{ $t('date.today') }}</div>
+        <div v-else class="timeline-text">
+          <span>{{ time.getDate() }}</span>
+          <span class="month">{{ $t(`date.months[${time.getMonth()}]`) }}</span>
+        </div>
+      </template>
+      <Avatar v-else :user="user" />
+      <section class="m-box-model m-card-main">
         <header v-if="!timeLine" class="m-box m-aln-center m-justify-bet m-card-usr">
           <h4 class="m-flex-grow1 m-flex-shrink1">{{ user.name }}</h4>
           <div class="m-box m-aln-center">
-            <span v-if="pinned" class="m-art-comment-icon-top">置顶</span>
+            <span v-if="pinned" class="m-art-comment-icon-top">{{ $t('pinned') }}</span>
             <span>{{ time | time2tips }}</span>
           </div>
         </header>
@@ -19,47 +22,61 @@
           <div v-if="body.length > 0" class="m-card-con">
             <p
               :class="{needPay}"
-              class="m-text-box m-text-cut-3"
-              v-html="replaceURI(body)"/>
+              class="m-text-box m-text-cut-3 feed-body m-text-pre"
+              v-html="replaceURI(body)"
+            />
           </div>
-          <feed-image
+          <FeedImage
             v-if="images.length > 0"
-            :id="feedID"
-            :pics="images" />
-          <feed-video
+            :id="feedId"
+            :pics="images"
+          />
+          <FeedVideo
             v-if="video"
-            :id="feedID"
-            :video="video" />
+            :id="feedId"
+            :video="video"
+          />
+          <ul v-if="topics.length" class="topics">
+            <li
+              v-for="topic in topics"
+              v-if="topic.id !== currentTopic"
+              :key="topic.id"
+              class="topic-item"
+              @click.capture.stop="viewTopic(topic.id)"
+              v-text="topic.name"
+            />
+          </ul>
         </article>
       </section>
     </div>
     <footer
       v-if="showFooter"
       class="m-box-model m-card-foot m-bt1"
-      @click.stop>
+      @click.stop
+    >
       <div class="m-box m-aln-center m-card-tools m-lim-width">
         <a class="m-box m-aln-center" @click.prevent="handleLike">
           <svg class="m-style-svg m-svg-def">
-            <use :xlink:href="liked ? '#icon-like' :'#icon-unlike'"/>
+            <use :xlink:href="liked ? '#icon-like' :'#icon-unlike'" />
           </svg>
-          <span>{{ likeCount | formatNum }}</span>
+          <span :class="{liked}">{{ likeCount | formatNum }}</span>
         </a>
         <a class="m-box m-aln-center" @click.prevent="handleComment">
           <svg class="m-style-svg m-svg-def">
-            <use xlink:href="#icon-comment"/>
+            <use xlink:href="#icon-comment" />
           </svg>
           <span>{{ commentCount | formatNum }}</span>
         </a>
         <a class="m-box m-aln-center" @click.prevent="handleView('')">
           <svg class="m-style-svg m-svg-def">
-            <use xlink:href="#icon-eye"/>
+            <use xlink:href="#icon-eye" />
           </svg>
           <span>{{ viewCount | formatNum }}</span>
         </a>
         <div class="m-box m-justify-end m-flex-grow1 m-flex-shrink1">
           <a class="m-box m-aln-center" @click.prevent="handleMore">
             <svg class="m-style-svg m-svg-def">
-              <use xlink:href="#icon-more"/>
+              <use xlink:href="#icon-more" />
             </svg>
           </a>
         </div>
@@ -68,15 +85,17 @@
         <li
           v-for="com in comments"
           v-if="com.id"
-          :key="com.id">
-          <comment-item :comment="com" @click="commentAction"/>
+          :key="com.id"
+        >
+          <CommentItem :comment="com" @click="commentAction" />
         </li>
       </ul>
       <div
         v-if="commentCount > 5"
         class="m-router-link"
-        @click="handleView('comment_list')">
-        <a>查看全部评论</a>
+        @click="handleView('comment_list')"
+      >
+        <a>{{ $t('article.view_all_comments') }}</a>
       </div>
     </footer>
   </div>
@@ -84,11 +103,12 @@
 
 <script>
 import { mapState } from 'vuex'
+import { escapeHTML } from '@/filters.js'
+import { transTime } from '@/util'
+import * as api from '@/api/feeds.js'
 import FeedImage from './FeedImage.vue'
 import FeedVideo from './FeedVideo.vue'
 import CommentItem from './CommentItem.vue'
-import { time2txt } from '@/filters.js'
-import * as api from '@/api/feeds.js'
 
 export default {
   name: 'FeedCard',
@@ -98,29 +118,18 @@ export default {
     FeedVideo,
   },
   props: {
-    timeLine: {
-      type: Boolean,
-      default: false,
-    },
-    pinned: {
-      type: Boolean,
-      default: false,
-    },
-    feed: {
-      type: Object,
-      required: true,
-    },
-    showFooter: {
-      type: Boolean,
-      default: true,
-    },
+    timeLine: { type: Boolean, default: false },
+    pinned: { type: Boolean, default: false },
+    feed: { type: Object, required: true },
+    showFooter: { type: Boolean, default: true },
+    currentTopic: { type: Number, default: 0 },
   },
   computed: {
     ...mapState(['CURRENTUSER']),
     isMine () {
       return this.feed.user_id === this.CURRENTUSER.id
     },
-    feedID () {
+    feedId () {
       return this.feed.id
     },
     comments: {
@@ -159,7 +168,14 @@ export default {
       return this.feed.feed_view_count || 0
     },
     time () {
-      return this.feed.created_at
+      let str = this.feed.created_at
+      return transTime(str)
+    },
+    isToday () {
+      // 时间差 = 当前时间 - date (单位: 秒)
+      let offset = (new Date() - this.time) / 1000
+      if (offset / 3600 < 24) return true
+      return false
     },
     user () {
       const user = this.feed.user
@@ -175,6 +191,9 @@ export default {
     video () {
       return this.feed.video || false
     },
+    topics () {
+      return this.feed.topics || []
+    },
     body () {
       return this.feed.feed_content || ''
     },
@@ -186,16 +205,6 @@ export default {
         this.feed.has_collect = val
       },
     },
-    timeLineText () {
-      const text = time2txt(this.time)
-      const len = text.length
-      return len > 4
-        ? `<span>${text.substr(0, len - 2)}</span><span>${text.substr(
-          -2,
-          2
-        )}</span>`
-        : `<span>${text}</span>`
-    },
     title () {
       return this.feed.title || ''
     },
@@ -204,27 +213,27 @@ export default {
     this.user && this.$store.commit('SAVE_USER', this.user)
   },
   methods: {
+    viewTopic (topicId) {
+      this.$router.push({ name: 'TopicDetail', params: { topicId } })
+    },
     replaceURI (str) {
-      // 脚本内容以纯文本方式显示
-      const scriptRegex = /<\s*script\s*>(.*?)<\s*\/\s*script\s*>/i
-      str = str.replace(scriptRegex, '&lt;script&gt;$1&lt;/script&gt;')
-
-      // 换行符转换
-      str = str.replace(/\n/g, '<br>')
+      // XSS filter
+      str = escapeHTML(str)
 
       const reg = /(https?|http|ftp|file):\/\/[-A-Za-z0-9+&@#/%?=~_|!:,.;]+[-A-Za-z0-9+&@#/%=~_|]/g
+      const linkText = this.$t('article.link_text')
       return str
         ? str.replace(
           reg,
           link =>
-            `<a class="m-art-links" href="${link}" onclick='event.stopPropagation()' target="__blank">#网页链接#</a>`
+            `<a class="m-art-links" href="${link}" onclick='event.stopPropagation()' target="__blank">#${linkText}#</a>`
         )
         : ''
     },
     handleView (hash) {
       const path = hash
-        ? `/feeds/${this.feedID}#${hash}`
-        : `/feeds/${this.feedID}`
+        ? `/feeds/${this.feedId}#${hash}`
+        : `/feeds/${this.feedId}`
       const { paid_node: node } = this.feed
       node && !node.paid
         ? this.$lstore.hasData('H5_ACCESS_TOKEN')
@@ -234,7 +243,7 @@ export default {
               this.$Message.success(data)
               this.$router.push(path)
             },
-            nodeType: '内容',
+            nodeType: this.$t('article.content'),
             node: node.node,
             amount: node.amount,
           })
@@ -250,8 +259,8 @@ export default {
     handleLike () {
       const method = this.liked ? 'delete' : 'post'
       const url = this.liked
-        ? `/feeds/${this.feedID}/unlike`
-        : `/feeds/${this.feedID}/like`
+        ? `/feeds/${this.feedId}/unlike`
+        : `/feeds/${this.feedId}/like`
       if (this.fetching) return
       this.fetching = true
       this.$http({
@@ -284,20 +293,20 @@ export default {
       const actions = []
       if (this.has_collect) {
         actions.push({
-          text: '取消收藏',
+          text: this.$t('collect.cancel'),
           method: () => {
-            api.uncollectFeed(this.feedID).then(() => {
-              this.$Message.success('取消收藏')
+            api.uncollectFeed(this.feedId).then(() => {
+              this.$Message.success(this.$t('collect.cancel'))
               this.has_collect = false
             })
           },
         })
       } else {
         actions.push({
-          text: '收藏',
+          text: this.$t('collect.name'),
           method: () => {
-            api.collectionFeed(this.feedID).then(() => {
-              this.$Message.success('收藏成功')
+            api.collectionFeed(this.feedId).then(() => {
+              this.$Message.success(this.$t('collect.success'))
               this.has_collect = true
             })
           },
@@ -306,22 +315,22 @@ export default {
       if (this.isMine) {
         // 是否是自己文章的评论
         actions.push({
-          text: '申请动态置顶',
+          text: this.$t('feed.apply_top'),
           method: () => {
             this.popupBuyTS()
           },
         })
         actions.push({
-          text: '删除动态',
+          text: this.$t('feed.delete'),
           method: () => {
             setTimeout(() => {
               const actionSheet = [
                 {
-                  text: '删除',
+                  text: this.$t('delete.name'),
                   style: { color: '#f4504d' },
                   method: () => {
-                    api.deleteFeed(this.feedID).then(() => {
-                      this.$Message.success('删除动态成功')
+                    api.deleteFeed(this.feedId).then(() => {
+                      this.$Message.success(this.$t('delete.success'))
                       this.$nextTick(() => {
                         this.$el.remove()
                         this.$emit('afterDelete')
@@ -330,17 +339,17 @@ export default {
                   },
                 },
               ]
-              this.$bus.$emit('actionSheet', actionSheet, '取消', '确认删除?')
+              this.$bus.$emit('actionSheet', actionSheet, this.$t('cancel'), this.$t('delete.confirm'))
             }, 200)
           },
         })
       } else {
         actions.push({
-          text: '举报',
+          text: this.$t('report.name'),
           method: () => {
             this.$bus.$emit('report', {
               type: 'feed',
-              payload: this.feedID,
+              payload: this.feedId,
               username: this.user.name,
               reference: this.body,
             })
@@ -348,30 +357,30 @@ export default {
         })
       }
 
-      this.$bus.$emit('actionSheet', actions, '取消')
+      this.$bus.$emit('actionSheet', actions)
     },
     commentAction ({ isMine = false, placeholder, reply_user: user, comment }) {
       const actions = []
       if (isMine) {
         const isOwner = this.feed.user.id === this.CURRENTUSER.id
         actions.push({
-          text: isOwner ? '评论置顶' : '申请评论置顶',
+          text: this.$t(isOwner ? 'comment.top.name' : 'comment.top.apply'),
           method: () => {
             this.$bus.$emit('applyTop', {
               isOwner,
               type: 'feedComment',
               api: api.applyTopFeedComment,
-              payload: { feedId: this.feedID, commentId: comment.id },
+              payload: { feedId: this.feedId, commentId: comment.id },
             })
           },
         })
         actions.push({
-          text: '删除评论',
+          text: this.$t('comment.delete.name'),
           method: () => this.deleteComment(comment.id),
         })
       } else {
         actions.push({
-          text: '回复',
+          text: this.$t('reply.name'),
           method: () => {
             this.handleComment({
               placeholder,
@@ -380,7 +389,7 @@ export default {
           },
         })
         actions.push({
-          text: '举报',
+          text: this.$t('report.name'),
           method: () => {
             this.$bus.$emit('report', {
               type: 'comment',
@@ -394,19 +403,20 @@ export default {
       this.$bus.$emit('actionSheet', actions)
     },
     sendComment ({ reply_user: replyUser, body }) {
-      if (body && body.length === 0) { return this.$Message.error('评论内容不能为空') }
+      if (body && body.length === 0) { return this.$Message.error(this.$t('comment.empty')) }
 
       const params = {
         body,
         reply_user: replyUser,
       }
       api
-        .postComment(this.feedID, params)
+        .postFeedComment(this.feedId, params)
         .then(comment => {
           this.commentCount += 1
+          comment.user = this.$store.state.CURRENTUSER
           this.comments.unshift(comment)
           if (this.comments.length > 5) this.comments.pop()
-          this.$Message.success('评论成功')
+          this.$Message.success(this.$t('comment.success'))
           this.$bus.$emit('commentInput:close', true)
         })
         .catch(() => {
@@ -414,10 +424,10 @@ export default {
         })
     },
     deleteComment (commentId) {
-      api.deleteFeedComment(this.feedID, commentId).then(() => {
+      api.deleteFeedComment(this.feedId, commentId).then(() => {
         this.feed.comments = this.feed.comments.filter(c => c.id !== commentId)
         this.commentCount -= 1
-        this.$Message.success('删除评论成功')
+        this.$Message.success(this.$t('comment.delete.success'))
       })
     },
   },
@@ -425,20 +435,49 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.m-card {
+.c-feed-card {
   padding: 30px 20px 0;
   box-sizing: border-box;
   background-color: #fff;
 
-  &-time-line {
+  .main {
+    padding-bottom: 20px;
+  }
+
+  .timeline-text {
+    flex: none;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
     width: 60px;
-    font-size: 24px;
-    text-align: center;
-    span:last-child {
-      order: -1;
-      font-size: 44px;
+    font-size: 44px;
+
+    .month {
+      font-size: 24px;
+      letter-spacing: 1px;/* no */
     }
   }
+
+  .topics {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 20px 0 0;
+
+    .topic-item {
+      padding: 6px 16px;
+      border-radius: 6px;
+      background-color: rgba(145, 209, 232, 0.12);
+      font-size: 24px;
+      color: @primary;
+      margin-right: 12px;
+      margin-bottom: 12px;
+      cursor: pointer;
+    }
+  }
+}
+
+.m-card {
   &-usr {
     font-size: 24px;
     color: #ccc;
@@ -452,6 +491,7 @@ export default {
     }
   }
   &-main {
+    flex: auto;
     margin-left: 20px;
   }
   &-con {
@@ -476,12 +516,19 @@ export default {
       font-weight: bold;
       margin-bottom: 20px;
     }
+
+    .feed-body {
+      width: 100%;
+    }
   }
   &-foot {
-    margin-top: 20px;
     margin-left: -20px;
     margin-right: -20px;
     padding: 0 20px 0 120px;
+
+    .liked {
+      color: @error;
+    }
   }
   &-tools {
     padding: 30px 0;

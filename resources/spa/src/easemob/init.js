@@ -27,13 +27,11 @@ export const connect = token => {
   conn.listen({
     onOpened: message => {
       process.env.NODE_ENV !== 'production' &&
-        // eslint-disable-next-line
-        console.log("连接打开=>", message);
+        console.log("连接打开=>", message) // eslint-disable-line no-console
     },
     onClosed: message => {
       process.env.NODE_ENV !== 'production' &&
-        // eslint-disable-next-line
-        console.log(message);
+        console.log(message) // eslint-disable-line no-console
     },
     // 收到文本消息
     onTextMessage: message => {
@@ -50,19 +48,16 @@ export const connect = token => {
     },
     onEmojiMessage: message => {
       process.env.NODE_ENV !== 'production' &&
-        // eslint-disable-next-line
-        console.log("Emoji");
+        console.log("Emoji") // eslint-disable-line no-console
       var data = message.data
       for (var i = 0, l = data.length; i < l; i++) {
         process.env.NODE_ENV !== 'production' &&
-          // eslint-disable-next-line
-          console.log(data[i]);
+          console.log(data[i]) // eslint-disable-line no-console
       }
     },
     onPictureMessage: message => {
       process.env.NODE_ENV !== 'production' &&
-        // eslint-disable-next-line
-        console.log("Location of Picture is ", message.url);
+        console.log("Location of Picture is ", message.url) // eslint-disable-line no-console
     },
     onReceivedMessage: message => {
       // 收到消息送达服务器回执
@@ -82,18 +77,15 @@ export const connect = token => {
     onDeliveredMessage: message => {
       // 收到消息送达客户端回执
       process.env.NODE_ENV !== 'production' &&
-        // eslint-disable-next-line
-        console.log("Delivered", message);
+        console.log("Delivered", message) // eslint-disable-line no-console
     },
     onInviteMessage: message => {
       process.env.NODE_ENV !== 'production' &&
-        // eslint-disable-next-line
-        console.log("onInviteMessage", message);
+        console.log("onInviteMessage", message) // eslint-disable-line no-console
     },
     onLocationMessage: message => {
       process.env.NODE_ENV !== 'production' &&
-        // eslint-disable-next-line
-        console.log("onLocationMessage", message);
+        console.log("onLocationMessage", message) // eslint-disable-line no-console
     },
   })
   // let localToken = WebIM.utils.getCookie("webim_" + uid);
@@ -108,8 +100,7 @@ export const connect = token => {
       webim.utils.setCookie('webim_' + mid, tokenAccess, 1)
     },
     error: function (msg) {
-      // eslint-disable-next-line
-      console.log(msg);
+      console.log(msg) // eslint-disable-line no-console
     },
   }
   conn.open(options)

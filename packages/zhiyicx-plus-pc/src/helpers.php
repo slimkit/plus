@@ -4,12 +4,12 @@
  * +----------------------------------------------------------------------+
  * |                          ThinkSNS Plus                               |
  * +----------------------------------------------------------------------+
- * | Copyright (c) 2018 Chengdu ZhiYiChuangXiang Technology Co., Ltd.     |
+ * | Copyright (c) 2016-Present ZhiYiChuangXiang Technology Co., Ltd.     |
  * +----------------------------------------------------------------------+
- * | This source file is subject to version 2.0 of the Apache license,    |
- * | that is bundled with this package in the file LICENSE, and is        |
- * | available through the world-wide-web at the following url:           |
- * | http://www.apache.org/licenses/LICENSE-2.0.html                      |
+ * | This source file is subject to enterprise private license, that is   |
+ * | bundled with this package in the file LICENSE, and is available      |
+ * | through the world-wide-web at the following url:                     |
+ * | https://github.com/slimkit/plus/blob/master/LICENSE                  |
  * +----------------------------------------------------------------------+
  * | Author: Slim Kit Group <master@zhiyicx.com>                          |
  * | Homepage: www.thinksns.com                                           |
@@ -39,7 +39,7 @@ function formatContent($content)
 {
     // 链接替换
     $content = preg_replace_callback('/((?:https?|mailto|ftp):\/\/([^\x{2e80}-\x{9fff}\s<\'\"“”‘’，。}]*)?)/u', function ($url) {
-        return '<a href="'.$url[0].'">访问链接+</a>';
+        return '<a class="mcolor" href="'.$url[0].'">访问链接+</a>';
     }, $content);
 
     // 回车替换
@@ -49,7 +49,7 @@ function formatContent($content)
 
     // 过滤xss
     $config = HTMLPurifier_Config::createDefault();
-    $config->set('HTML.Allowed', 'br,a[href]');
+    $config->set('HTML.Allowed', 'br,a[href|class]');
     $purifier = new HTMLPurifier($config);
     $content = $purifier->purify($content);
 
@@ -217,14 +217,16 @@ function cacheClear()
 function getAvatar($user, $width = 0)
 {
     if (empty($user['avatar']) || ! $user['avatar']) {
-        switch ($user['sex']) {
+        switch ($user['sex'] ?? false) {
             case 1:
                 return asset('assets/pc/images/pic_default_man.png');
             case 2:
                 return asset('assets/pc/images/pic_default_woman.png');
+            case 0:
+                return asset('assets/pc/images/pic_default_secret.png');
+            default:
+                $user = api('GET', '/api/v2/users/'.$user['id']);
         }
-
-        return asset('assets/pc/images/pic_default_secret.png');
     }
 
     $avatar = $user['avatar'];

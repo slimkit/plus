@@ -1,35 +1,35 @@
 <template>
   <div class="p-news">
-
-    <common-header class="common-header">
-      资讯
+    <CommonHeader class="common-header">
+      {{ $t('news.name') }}
       <template slot="right">
         <svg class="m-style-svg m-svg-def" @click="$router.push({path: '/news/search'})">
-          <use xlink:href="#icon-search"/>
+          <use xlink:href="#icon-search" />
         </svg>
         <svg class="m-style-svg m-svg-def" @click="beforeCreatePost">
-          <use xlink:href="#icon-news-draft"/>
+          <use xlink:href="#icon-news-draft" />
         </svg>
       </template>
-    </common-header>
+    </CommonHeader>
 
-    <news-filter v-if="isLogin" @change="onCateChange"/>
+    <NewsFilter v-if="isLogin" @change="onCateChange" />
 
-    <jo-load-more
+    <JoLoadMore
       ref="loadmore"
       :class="{guest: !isLogin}"
       class="loadmore"
       @onRefresh="onRefresh"
-      @onLoadMore="onLoadMore">
-
-      <template v-for="card in newsList" >
-        <news-card
+      @onLoadMore="onLoadMore"
+    >
+      <template v-for="card in newsList">
+        <NewsCard
           v-if="card.author"
           :key="`news${card.id}`"
           :current-cate="currentCate"
-          :news="card" />
+          :news="card"
+        />
       </template>
-    </jo-load-more>
+    </JoLoadMore>
   </div>
 </template>
 
@@ -53,7 +53,7 @@ export default {
   },
   computed: {
     ...mapState({
-      newsVerified: state => state.CONFIG['news:contribute'].verified,
+      newsVerified: state => state.CONFIG.news.contribute.verified,
       userVerify: state => state.USER_VERIFY || {},
     }),
     after () {
@@ -102,15 +102,15 @@ export default {
     beforeCreatePost () {
       // 如果后台设置了不需要验证 或 用户已经认证就直接跳转
       const noNeedVerify =
-        !this.$store.state.CONFIG['news:contribute'].verified ||
+        !this.$store.state.CONFIG.news.contribute.verified ||
         !_.isEmpty(this.$store.state.CURRENTUSER.verified)
       if (noNeedVerify) return this.$router.push({ path: '/post/release' })
       else if (this.userVerify.status === 0) {
-        this.$Message.error('您的认证正在等待审核，通过审核后可发布帖子')
+        this.$Message.error(this.$t('certificate.under_review', { name: this.$t('news.name') }))
       } else {
         const actions = [
           {
-            text: '个人认证',
+            text: this.$t('certificate.user.name'),
             method: () =>
               this.$router.push({
                 path: '/profile/certificate',
@@ -118,7 +118,7 @@ export default {
               }),
           },
           {
-            text: '企业认证',
+            text: this.$t('certificate.org.name'),
             method: () =>
               this.$router.push({
                 path: '/profile/certificate',
@@ -129,8 +129,8 @@ export default {
         this.$bus.$emit(
           'actionSheet',
           actions,
-          '取消',
-          '认证用户才能创建投稿，去认证？'
+          this.$t('cancel'),
+          this.$t('news.need_certificate')
         )
       }
     },

@@ -1,86 +1,94 @@
 <template>
   <div @touchmove.prevent>
-    <transition name="toast">
+    <Transition name="toast">
       <div
         v-if="show"
         class="m-pop-box"
-        @click="cancel">
-        <div class="logo"/>
+        @click="cancel"
+      >
+        <div class="logo" />
       </div>
-    </transition>
-    <transition @after-enter="transitionComplete">
+    </Transition>
+    <Transition @after-enter="transitionComplete">
       <div v-if="show" class="m-box-model m-post-menu-con">
-        <transition-group
+        <TransitionGroup
           tag="div"
           enter-active-class="animated bounceIn"
-          class="m-box m-aln-center m-post-menu-list">
+          class="m-box m-aln-center m-post-menu-list"
+        >
           <template v-if="open">
             <div
               key="ico_word"
               class="m-box-model m-aln-center m-post-menu-item"
-              @click="to('/post/text')">
+              @click="to('/post/text')"
+            >
               <svg class="m-style-svg m-svg-def menu-svg">
-                <use xlink:href="#icon-release-text"/>
+                <use xlink:href="#icon-release-text" />
               </svg>
-              <span>文字</span>
+              <span>{{ $t('release.text') }}</span>
             </div>
             <div
               key="ico_potoablum"
               class="m-box-model m-aln-center m-post-menu-item"
-              @click="to('/post/pic')">
+              @click="to('/post/pic')"
+            >
               <svg class="m-style-svg m-svg-def menu-svg">
-                <use xlink:href="#icon-release-pic"/>
+                <use xlink:href="#icon-release-pic" />
               </svg>
-              <span>图片</span>
+              <span>{{ $t('release.image') }}</span>
             </div>
             <div
               key="ico_contribute"
               class="m-box-model m-aln-center m-post-menu-item"
-              @click="beforePostNews">
+              @click="beforePostNews"
+            >
               <svg class="m-style-svg m-svg-def menu-svg">
-                <use xlink:href="#icon-release-news"/>
+                <use xlink:href="#icon-release-news" />
               </svg>
-              <span>投稿</span>
+              <span>{{ $t('release.news') }}</span>
             </div>
             <div
-              v-if="checkin"
+              v-if="checkinEnable"
               key="ico_attendance"
               class="m-box-model m-aln-center m-post-menu-item"
-              @click="showCheckIn">
+              @click="showCheckIn"
+            >
               <svg class="m-style-svg m-svg-def menu-svg">
-                <use xlink:href="#icon-release-attendance"/>
+                <use xlink:href="#icon-release-attendance" />
               </svg>
-              <span>签到</span>
+              <span>{{ $t('release.checkin') }}</span>
             </div>
             <div
               key="ico_question"
               class="m-box-model m-aln-center m-post-menu-item"
-              @click="popupBuyTS()">
+              @click="popupBuyTS()"
+            >
               <svg class="m-style-svg m-svg-def menu-svg">
-                <use xlink:href="#icon-release-question"/>
+                <use xlink:href="#icon-release-question" />
               </svg>
-              <span>提问</span>
+              <span>{{ $t('release.question') }}</span>
             </div>
             <div
               key="ico_fatie"
               class="m-box-model m-aln-center m-post-menu-item"
-              @click="popupBuyTS()">
+              @click="popupBuyTS()"
+            >
               <svg class="m-style-svg m-svg-def menu-svg">
-                <use xlink:href="#icon-release-post"/>
+                <use xlink:href="#icon-release-post" />
               </svg>
-              <span>发帖</span>
+              <span>{{ $t('release.post') }}</span>
             </div>
           </template>
-        </transition-group>
-        <transition name="pop">
+        </TransitionGroup>
+        <Transition name="pop">
           <button class="m-post-menu-btn" @click="cancel">
             <svg class="m-style-svg m-svg-def">
-              <use xlink:href="#icon-foot-close"/>
+              <use xlink:href="#icon-foot-close" />
             </svg>
           </button>
-        </transition>
+        </Transition>
       </div>
-    </transition>
+    </Transition>
   </div>
 </template>
 
@@ -97,19 +105,19 @@ export default {
   },
   computed: {
     ...mapState({
+      checkin: state => state.CONFIG.checkin || { switch: false },
       verified: state => state.USER_VERIFY,
-      newsVerified: state => state.CONFIG['news:contribute'].verified,
+      newsVerified: state => state.CONFIG.news.contribute.verified,
     }),
     login () {
       return !!this.$store.state.CURRENTUSER.id
     },
     /**
      * 检查后台是否开启签到功能
-     * @author jsonleex <jsonlseex@163.com>
      * @return {Boolean}
      */
-    checkin () {
-      return this.$store.state.CONFIG.checkin || true
+    checkinEnable () {
+      return this.checkin.switch
     },
   },
   created () {
@@ -185,11 +193,11 @@ export default {
 .m-post-menu-list {
   padding: 6%;
   flex-wrap: wrap;
-  justify-content: space-between;
+  justify-content: flex-start;
 }
 .m-post-menu-item {
-  margin: 3% 6%;
-  width: 1/3 * 100 - 12%;
+  margin: 3% 0;
+  width: 1/3 * 100%;
   font-size: 28px;
   img {
     width: 100%;
@@ -208,7 +216,7 @@ export default {
   height: 100px;
   width: 100%;
   background-color: #fff;
-  box-shadow: 0 -1px 3px rgba(26, 26, 26, 0.1);
+  box-shadow: 0 -1px 3px rgba(26, 26, 26, 0.1); /* no */
 }
 
 .fadeIn-enter-active,

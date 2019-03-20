@@ -1,21 +1,22 @@
 <template>
-  <transition name="toast">
-
+  <Transition name="toast">
     <div
       v-if="show"
-      class="c-popup-dialog">
+      class="c-popup-dialog"
+    >
       <div class="panel">
         <header
           v-if="title"
-          v-text="title"/>
-        <main v-html="content"/>
+          v-text="title"
+        />
+        <main v-html="content" />
         <footer
           @click="onConfirm"
-          v-text="confirmText"/>
+          v-text="confirmText"
+        />
       </div>
     </div>
-
-  </transition>
+  </Transition>
 </template>
 
 <script>
@@ -29,7 +30,7 @@ export default {
 
       title: '',
       content: '',
-      confirmText: '知道了',
+      confirmText: this.$t('got_it'),
       onClose: noop,
     }
   },
@@ -85,8 +86,8 @@ export default {
   main {
     flex: auto;
     overflow: auto;
-    border: 1px solid #ededed;
-    border-width: 1px 0;
+    border: 1px solid #ededed; /* no */
+    border-width: 1px 0; /* no */
     padding: 20px 0;
   }
 

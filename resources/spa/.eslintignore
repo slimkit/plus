@@ -2,3 +2,5 @@ dist
 node_modules
 /src/icons/iconfont.js
 /src/vendor
+!/src/vendor/index.js
+*.min.js

@@ -6,12 +6,12 @@ declare(strict_types=1);
  * +----------------------------------------------------------------------+
  * |                          ThinkSNS Plus                               |
  * +----------------------------------------------------------------------+
- * | Copyright (c) 2018 Chengdu ZhiYiChuangXiang Technology Co., Ltd.     |
+ * | Copyright (c) 2016-Present ZhiYiChuangXiang Technology Co., Ltd.     |
  * +----------------------------------------------------------------------+
- * | This source file is subject to version 2.0 of the Apache license,    |
- * | that is bundled with this package in the file LICENSE, and is        |
- * | available through the world-wide-web at the following url:           |
- * | http://www.apache.org/licenses/LICENSE-2.0.html                      |
+ * | This source file is subject to enterprise private license, that is   |
+ * | bundled with this package in the file LICENSE, and is available      |
+ * | through the world-wide-web at the following url:                     |
+ * | https://github.com/slimkit/plus/blob/master/LICENSE                  |
  * +----------------------------------------------------------------------+
  * | Author: Slim Kit Group <master@zhiyicx.com>                          |
  * | Homepage: www.thinksns.com                                           |
@@ -60,18 +60,52 @@ class BootstrappersController extends Controller
             'reward' => setting('site', 'reward', []),
             'user_invite_template' => setting('user', 'invite-template'),
         ];
-        $bootstrappers['registerSettings'] = config('registerSettings', null);
+        $bootstrappers['registerSettings'] = setting('user', 'register-setting', [
+            'showTerms' => true,
+            'method' => 'all',
+            'content' => '# 服务条款及隐私政策',
+            'fixed' => 'need',
+            'type' => 'all',
+        ]);
 
-        $bootstrappers['wallet:cash'] = ['open' => config('wallet.cash.status', true)];
-        $bootstrappers['wallet:recharge'] = ['open' => config('wallet.recharge.status', true)];
-        $bootstrappers['wallet:transform'] = ['open' => config('wallet.transform.status', true)];
-
-        $bootstrappers['currency:cash'] = [
-            'open' => setting('currency', 'cash')['status'] ?? true,
+        $bootstrappers['currency'] = [
+            'IAP' => [
+                'only' => config('currency.recharge.IAP.only', true),
+                'rule' => config('currency.recharge.IAP.rule', ''),
+            ],
+            'cash' => setting('currency', 'cash', [
+                'rule' => '我是提现规则',
+                'status' => true, // 提现开关
+            ]),
+            'recharge' => setting('currency', 'recharge', [
+                'rule' => '我是积分充值规则',
+                'status' => true, // 充值开关
+            ]),
+            'rule' => setting('currency', 'rule', '我是积分规则'),
+            'settings' => setting('currency', 'settings', [
+                'recharge-ratio' => 1,
+                'recharge-options' => '100,500,1000,2000,5000,10000',
+                'recharge-max' => 10000000,
+                'recharge-min' => 100,
+                'cash-max' => 10000000,
+                'cash-min' => 100,
+            ]),
         ];
-        $bootstrappers['currency:recharge'] = [
-            'open' => setting('currency', 'recharge')['status'],
-            'IAP_only' => config('currency.recharge.IAP.only', true),
+
+        $bootstrappers['wallet'] = [
+            'rule' => setting('wallet', 'rule'),
+            'labels' => setting('wallet', 'labels', []),
+            'ratio' => setting('wallet', 'ratio', 100),
+            'cash' => [
+                'min-amount' => setting('wallet', 'cash-min-amount', 100),
+                'types' => setting('wallet', 'cash-types', []),
+                'status' => setting('wallet', 'cash-status', true),
+            ],
+            'recharge' => [
+                'types' => setting('wallet', 'recharge-types', []),
+                'status' => setting('wallet', 'recharge-status', true),
+            ],
+            'transform-currency' => setting('wallet', 'transform-status', true),
         ];
 
         $goldSetting = $goldType->where('status', 1)->select('name', 'unit')->first() ?? collect(['name' => '金币', 'unit' => '个']);

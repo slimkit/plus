@@ -1,22 +1,24 @@
 <template>
-  <div :id="id" >
-    <v-tabs
+  <div :id="id">
+    <VTabs
       v-if="navs.length > 0"
       :class="{fixed}"
       :value="curTab"
-      @change="handleTabChange">
-      <v-tab
+      @change="handleTabChange"
+    >
+      <VTab
         v-for="({ path, title }, index) in navs"
         v-if="path"
         :key="index"
         :title="title"
-        :value="path"/>
-    </v-tabs>
-    <transition :name="transitionName">
-      <keep-alive>
-        <router-view/>
-      </keep-alive>
-    </transition>
+        :value="path"
+      />
+    </VTabs>
+    <Transition :name="transitionName">
+      <KeepAlive>
+        <RouterView />
+      </KeepAlive>
+    </Transition>
   </div>
 </template>
 

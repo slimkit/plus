@@ -1,98 +1,102 @@
 /**
  * 消息页面组件
- * @Author   Wayne
- * @DateTime 2018-01-29
- * @Email    qiaobin@zhiyicx.com
- * @return   {[type]}            [description]
  */
 
-const notification = () =>
-  import(/* webpackChunkName: 'message' */ '@/page/message/list/MyNotifications.vue')
-const msgComments = () =>
-  import(/* webpackChunkName: 'message' */ '@/page/message/list/MyComments.vue')
-const msgLikes = () =>
-  import(/* webpackChunkName: 'message' */ '@/page/message/list/MyLikes.vue')
+import i18n from '@/i18n'
+
+const MessageBase = () =>
+  import(/* webpackChunkName: 'message' */ '@/page/message/MessageBase.vue')
+const MessageHome = () =>
+  import(/* webpackChunkName: 'message' */ '@/page/message/MessageHome.vue')
+
+// 消息
+const MessageSystem = () =>
+  import(/* webpackChunkName: 'message' */ '@/page/message/MessageSystem.vue')
+const MessageComments = () =>
+  import(/* webpackChunkName: 'message' */ '@/page/message/MessageComments.vue')
+const MessageLikes = () =>
+  import(/* webpackChunkName: 'message' */ '@/page/message/MessageLikes.vue')
 const AuditList = () =>
   import(/* webpackChunkName: 'message' */ '@/page/message/list/AuditList')
 const feedCommentAudit = () =>
   import(/* webpackChunkName: 'message' */ '@/page/message/children/audits/feedCommentAudit')
 
-const chatList = () =>
-  import(/* webpackChunkName: 'message' */ '@/page/message2/chat/chat-list.vue')
-const chatRoom = () =>
-  import(/* webpackChunkName: 'message' */ '@/page/message2/chat/chat-room.vue')
-
-// 通知
-const MessageIndex = () =>
-  import(/* webpackChunkName: 'message' */ '@/page/message2/index.vue')
-const info = () =>
-  import(/* webpackChunkName: 'message' */ '@/page/message2/info/index.vue')
+// 聊天
+const ChatList = () =>
+  import(/* webpackChunkName: 'message' */ '@/page/message/ChatList.vue')
+const ChatRoom = () =>
+  import(/* webpackChunkName: 'message' */ '@/page/message/ChatRoom.vue')
 
 export default [
   {
     path: '/message',
-    component: MessageIndex,
-    redirect: '/message/info',
+    component: MessageBase,
+    redirect: '/message/list',
     meta: {
-      title: '消息',
       requiresAuth: true,
     },
     children: [
       {
-        path: 'info',
-        component: info,
+        path: 'list',
+        name: 'MessageHome',
+        component: MessageHome,
         meta: {
-          title: '消息',
-          requiresAuth: true,
+          title: i18n.t('message.notice'),
+          keepAlive: true,
         },
       },
       {
         path: 'chats',
-        component: chatList,
+        name: 'ChatList',
+        component: ChatList,
         meta: {
-          title: '聊天',
-          requiresAuth: true,
+          title: i18n.t('message.chat.name'),
         },
       },
     ],
   },
   {
-    path: '/chats/:chatID(\\d+)',
-    component: chatRoom,
+    path: '/message/chats/:chatId(\\d+)',
+    name: 'ChatRoom',
+    component: ChatRoom,
     meta: {
-      title: '对话',
-      requiresAuth: true,
+      title: i18n.t('message.chat.name'),
     },
   },
   {
-    path: '/message/notification',
-    component: notification,
+    path: '/message/system',
+    component: MessageSystem,
     meta: {
-      title: '通知',
+      title: i18n.t('message.system.name'),
       requiresAuth: true,
+      keepAlive: true,
     },
   },
   {
     path: '/message/comments',
-    component: msgComments,
+    name: 'MessageComments',
+    component: MessageComments,
     meta: {
-      title: '评论我的',
+      title: i18n.t('message.comment.name'),
       requiresAuth: true,
+      keepAlive: true,
     },
   },
   {
     path: '/message/likes',
-    component: msgLikes,
+    name: 'MessageLikes',
+    component: MessageLikes,
     meta: {
-      title: '赞过我的',
+      title: i18n.t('message.like.name'),
       requiresAuth: true,
+      keepAlive: true,
     },
   },
   {
     path: '/message/audits',
     component: AuditList,
     meta: {
-      title: '审核列表',
+      title: i18n.t('message.audit.name'),
       requiresAuth: true,
     },
   },
@@ -101,7 +105,7 @@ export default [
     component: AuditList,
     redirect: '/message/audits/feedcomments',
     meta: {
-      title: '审核列表',
+      title: i18n.t('message.audit.name'),
       requiresAuth: true,
     },
     children: [
@@ -109,9 +113,6 @@ export default [
         name: 'auditFeedComments',
         path: 'feedcomments',
         component: feedCommentAudit,
-        meta: {
-          title: '动态评论置顶',
-        },
       },
     ],
   },

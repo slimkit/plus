@@ -1,4 +1,5 @@
 import reload from '@/util/wechatShareForIOS.js'
+import directives from '@/directives'
 
 export default {
   data () {
@@ -8,7 +9,11 @@ export default {
       isCurrentView: false,
     }
   },
+  directives,
   computed: {
+    currentUser () {
+      return this.$store.state.CURRENTUSER || {}
+    },
     currencyUnit () {
       return this.$store.state.currency.unit
     },
@@ -36,18 +41,32 @@ export default {
     },
   },
   methods: {
-    goBack (num = -1) {
+    goBack () {
       const fallIndex = this.isIosWechat ? 2 : 1
       window.history.length <= fallIndex
         ? this.$router.replace('/')
-        : this.$router.back(num)
+        : this.$router.back()
+    },
+    /**
+     * 定位到锚点
+     * @param {string} selector
+     */
+    goAnchor (selector) {
+      const anchor = this.$el.querySelector(selector)
+      try {
+        const rect = anchor.getBoundingClientRect()
+        const scrollTop = document.documentElement.scrollTop
+        document.scrollingElement.scrollTop = rect.top + scrollTop
+      } catch (error) {
+        // eslint-disable-next-line no-console
+        console.warn('锚点定位失败: ', { selector, anchor, error })
+      }
     },
     reload: reload,
     popupBuyTS () {
       this.$bus.$emit('popupDialog', {
-        title: '温馨提示',
-        content:
-          '开源版无此功能，需要使用此功能，请购买正版授权源码，详情访问www.thinksns.com，也可直接咨询：QQ3515923610；电话：17311245680。',
+        title: this.$t('tips'),
+        content: this.$t('popup_buy_ts'),
       })
     },
   },

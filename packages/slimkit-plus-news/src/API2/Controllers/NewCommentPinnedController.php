@@ -6,12 +6,12 @@ declare(strict_types=1);
  * +----------------------------------------------------------------------+
  * |                          ThinkSNS Plus                               |
  * +----------------------------------------------------------------------+
- * | Copyright (c) 2018 Chengdu ZhiYiChuangXiang Technology Co., Ltd.     |
+ * | Copyright (c) 2016-Present ZhiYiChuangXiang Technology Co., Ltd.     |
  * +----------------------------------------------------------------------+
- * | This source file is subject to version 2.0 of the Apache license,    |
- * | that is bundled with this package in the file LICENSE, and is        |
- * | available through the world-wide-web at the following url:           |
- * | http://www.apache.org/licenses/LICENSE-2.0.html                      |
+ * | This source file is subject to enterprise private license, that is   |
+ * | bundled with this package in the file LICENSE, and is available      |
+ * | through the world-wide-web at the following url:                     |
+ * | https://github.com/slimkit/plus/blob/master/LICENSE                  |
  * +----------------------------------------------------------------------+
  * | Author: Slim Kit Group <master@zhiyicx.com>                          |
  * | Homepage: www.thinksns.com                                           |
@@ -24,7 +24,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Zhiyi\Plus\Http\Controllers\Controller;
 use Zhiyi\Plus\Models\Comment as CommentModel;
-use Zhiyi\Plus\Models\UserCount as UserCountModel;
+use Zhiyi\Plus\Notifications\System as SystemNotification;
 use Zhiyi\Plus\Packages\Currency\Processes\User as UserProcess;
 use Illuminate\Contracts\Routing\ResponseFactory as ResponseContract;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentNews\Models\News as NewsModel;
@@ -68,40 +68,18 @@ class NewCommentPinnedController extends Controller
 
         if ($order) {
             $pinned->save();
-
-            $message = sprintf('你在资讯《%s》中申请的评论置顶已被通过', $news->title);
-            $comment->user->sendNotifyMessage('news:pinned-comment', $message, [
-                'news' => $news,
-                'user' => $user,
-                'comment' => $comment,
-                'pinned' => $pinned,
-            ]);
-
-            // 获取发起置顶申请的用户未读系统通知数量
-            $unreadCount = $comment->user
-                ->unreadNotifications()
-                ->count();
-            $userCount = UserCountModel::firstOrNew([
-                'user_id' => $pinned->user_id,
-                'type' => 'user-system',
-            ]);
-            $userCount->total = $unreadCount;
-            $userCount->save();
-
-            // 资讯所有者的资讯评论置顶申请未读数更新
-            $unreadCount = $pinned->newQuery()
-                ->where('channel', 'news:comment')
-                ->where('target_user', $user->id)
-                ->whereNull('expires_at')
-                ->count();
-
-            $userCount = $userCount->newQuery()
-                ->firstOrNew([
-                    'user_id' => $user->id,
-                    'type' => 'user-news-comment-pinned',
-                ]);
-            $userCount->total = $unreadCount;
-            $userCount->save();
+            $comment->user->notify(new SystemNotification('你申请的资讯评论置顶已通过', [
+                'type' => 'pinned:news/comment',
+                'state' => 'passed',
+                'news' => [
+                    'id' => $news->id,
+                    'title' => $news->title,
+                ],
+                'comment' => [
+                    'id' => $comment->id,
+                    'contents' => $comment->body,
+                ],
+            ]));
 
             return $response->json(['message' => '置顶成功'], 201);
         }
@@ -146,38 +124,18 @@ class NewCommentPinnedController extends Controller
             $pinned->state = 2;
             $pinned->save();
 
-            $message = sprintf('你在资讯《%s》中申请的评论置顶已被驳回', $news->title);
-            $comment->user->sendNotifyMessage('news:pinned-comment', $message, [
-                'news' => $news,
-                'user' => $user,
-                'comment' => $comment,
-                'pinned' => $pinned,
-            ]);
-
-            // 获取发起置顶申请的用户未读系统通知数量
-            $unreadCount = $comment->user
-                ->unreadNotifications()
-                ->count();
-            $userCount = UserCountModel::firstOrNew([
-                'user_id' => $pinned->user_id,
-                'type' => 'user-system',
-            ]);
-            $userCount->total = $unreadCount;
-            $userCount->save();
-
-            // 资讯所有者的资讯评论置顶申请未读数更新
-            $unreadCount = $pinned->newQuery()
-                ->where('channel', 'news:comment')
-                ->where('target_user', $user->id)
-                ->whereNull('expires_at')
-                ->count();
-            $userCount = $userCount->newQuery()
-                ->firstOrNew([
-                    'user_id' => $user->id,
-                    'type' => 'user-news-comment-pinned',
-                ]);
-            $userCount->total = $unreadCount;
-            $userCount->save();
+            $comment->user->notify(new SystemNotification('你申请的资讯评论置顶未通过', [
+                'type' => 'pinned:news/comment',
+                'state' => 'rejected',
+                'news' => [
+                    'id' => $news->id,
+                    'title' => $news->title,
+                ],
+                'comment' => [
+                    'id' => $comment->id,
+                    'contents' => $comment->body,
+                ],
+            ]));
 
             return $response->json(null, 204);
         }

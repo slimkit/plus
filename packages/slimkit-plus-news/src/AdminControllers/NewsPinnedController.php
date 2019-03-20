@@ -6,12 +6,12 @@ declare(strict_types=1);
  * +----------------------------------------------------------------------+
  * |                          ThinkSNS Plus                               |
  * +----------------------------------------------------------------------+
- * | Copyright (c) 2018 Chengdu ZhiYiChuangXiang Technology Co., Ltd.     |
+ * | Copyright (c) 2016-Present ZhiYiChuangXiang Technology Co., Ltd.     |
  * +----------------------------------------------------------------------+
- * | This source file is subject to version 2.0 of the Apache license,    |
- * | that is bundled with this package in the file LICENSE, and is        |
- * | available through the world-wide-web at the following url:           |
- * | http://www.apache.org/licenses/LICENSE-2.0.html                      |
+ * | This source file is subject to enterprise private license, that is   |
+ * | bundled with this package in the file LICENSE, and is available      |
+ * | through the world-wide-web at the following url:                     |
+ * | https://github.com/slimkit/plus/blob/master/LICENSE                  |
  * +----------------------------------------------------------------------+
  * | Author: Slim Kit Group <master@zhiyicx.com>                          |
  * | Homepage: www.thinksns.com                                           |
@@ -44,6 +44,7 @@ class NewsPinnedController extends Controller
         $max_id = $request->query('max_id', 0);
         $user = $request->query('user');
         $state = $request->query('state');
+        $category = $request->query('cate_id');
 
         $pinneds = $newsPinnedModel->with('news', 'user')
             ->where('channel', 'news')
@@ -65,6 +66,9 @@ class NewsPinnedController extends Controller
             })
             ->when($user, function ($query) use ($user) {
                 return $query->where('user_id', $user);
+            })
+            ->when($category, function ($query) use ($category) {
+                return $query->where('cate_id', $category);
             })
             ->whereExists(function ($query) {
                 return $query->from('news')->whereRaw('news.id = news_pinneds.target')->where('deleted_at', null);

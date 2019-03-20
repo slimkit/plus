@@ -6,12 +6,12 @@ declare(strict_types=1);
  * +----------------------------------------------------------------------+
  * |                          ThinkSNS Plus                               |
  * +----------------------------------------------------------------------+
- * | Copyright (c) 2018 Chengdu ZhiYiChuangXiang Technology Co., Ltd.     |
+ * | Copyright (c) 2016-Present ZhiYiChuangXiang Technology Co., Ltd.     |
  * +----------------------------------------------------------------------+
- * | This source file is subject to version 2.0 of the Apache license,    |
- * | that is bundled with this package in the file LICENSE, and is        |
- * | available through the world-wide-web at the following url:           |
- * | http://www.apache.org/licenses/LICENSE-2.0.html                      |
+ * | This source file is subject to enterprise private license, that is   |
+ * | bundled with this package in the file LICENSE, and is available      |
+ * | through the world-wide-web at the following url:                     |
+ * | https://github.com/slimkit/plus/blob/master/LICENSE                  |
  * +----------------------------------------------------------------------+
  * | Author: Slim Kit Group <master@zhiyicx.com>                          |
  * | Homepage: www.thinksns.com                                           |
@@ -28,6 +28,7 @@ use Zhiyi\Plus\Models\Certification;
 use Zhiyi\Plus\Http\Controllers\Controller;
 use Zhiyi\Plus\Models\FileWith as FileWithModel;
 use Zhiyi\Plus\Http\Requests\API2\UserCertification;
+use Zhiyi\Plus\Notifications\System as SystemNotification;
 
 class CertificationController extends Controller
 {
@@ -65,6 +66,8 @@ class CertificationController extends Controller
         ->offset($offset)
         ->get();
 
+        $items->load('user');
+
         $data['items'] = $items;
         $data['counts'] = $this->certificationCount();
 
@@ -78,16 +81,12 @@ class CertificationController extends Controller
      */
     protected function certificationCount()
     {
-        $counts = \DB::select('
-            SELECT 
-                COUNT(status) AS `全部认证用户：`,
-                COUNT(CASE WHEN status=0 THEN 1 ELSE NULL END ) AS `待审核用户：`,
-                COUNT(CASE WHEN status=1 THEN 1 ELSE NULL END ) AS `已认证用户：`,
-                COUNT(CASE WHEN status=2 THEN 1 ELSE NULL END ) AS `驳回用户：` 
-            FROM `certifications`'
-        );
-
-        return $counts;
+        return [
+            '全部认证用户：' => Certification::count(),
+            '待审核用户：' => Certification::where('status', 0)->count(),
+            '已认证用户：' => Certification::where('status', 1)->count(),
+            '驳回用户：' => Certification::where('status', 2)->count(),
+        ];
     }
 
     /**
@@ -112,9 +111,12 @@ class CertificationController extends Controller
         $certification->examiner = Auth::user()->id;
         $certification->save();
 
-        $certification->user->sendNotifyMessage('user-certification:pass', '你申请的身份认证已被通过', [
-            'certification' => $certification,
-        ]);
+        if ($certification->user) {
+            $certification->user->notify(new SystemNotification('你申请的身份认证已被通过', [
+                'type' => 'user-certification',
+                'state' => 'passed',
+            ]));
+        }
 
         return response()->json(['message' => ['通过认证成功']], 201);
     }
@@ -141,9 +143,11 @@ class CertificationController extends Controller
         $certification->examiner = Auth::user()->id;
 
         if ($certification->save()) {
-            $certification->user->sendNotifyMessage('user-certification:reject', sprintf('你申请的身份认证已被驳回，驳回理由为%s', $content), [
-                'certification' => $certification,
-            ]);
+            $certification->user->notify(new SystemNotification('你申请的身份认证已被驳回！', [
+                'type' => 'user-certification',
+                'contents' => $content,
+                'state' => 'rejected',
+            ]));
 
             return response()->json(['message' => ['驳回成功']], 201);
         } else {

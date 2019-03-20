@@ -1,19 +1,22 @@
 <template>
   <div
     id="cropperImg"
-    :class="{ round }">
+    :class="{ round }"
+  >
     <img
       ref="cropperImg"
-      :src="url">
+      :src="url"
+    >
   </div>
 </template>
 <script>
 import Cropper from 'cropperjs'
 
 export default {
+  name: 'ImageCropper',
   props: {
     url: { type: String, default: '' },
-    aspectRatio: { type: [Number, String], default: 1 / 1 },
+    aspectRatio: { type: Number, default: NaN },
     round: { type: Boolean, default: true },
   },
   data () {

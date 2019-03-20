@@ -1,32 +1,37 @@
-const postNews = () =>
+import i18n from '@/i18n'
+
+const PostNews = () =>
   import(/* webpackChunkName: 'post' */ '@/page/post/PostNews.vue')
-const postImage = () =>
+const PostImage = () =>
   import(/* webpackChunkName: 'post' */ '@/page/post/PostImage.vue')
-const postText = () =>
+const PostText = () =>
   import(/* webpackChunkName: 'post' */ '@/page/post/PostText.vue')
 
 export default [
   {
     path: '/post/release',
-    component: postNews,
+    name: 'PostNews',
+    component: PostNews,
     meta: {
-      title: '编辑文章',
+      title: i18n.t('release.post'),
       requiresAuth: true,
     },
   },
   {
     path: '/post/text',
-    component: postText,
+    name: 'PostText',
+    component: PostText,
     meta: {
-      title: '发布动态',
+      title: i18n.t('release.text'),
       requiresAuth: true,
     },
   },
   {
     path: '/post/pic',
-    component: postImage,
+    name: 'PostImage',
+    component: PostImage,
     meta: {
-      title: '发布图片',
+      title: i18n.t('release.image'),
       requiresAuth: true,
     },
   },

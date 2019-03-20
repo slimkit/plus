@@ -1,3 +1,4 @@
+import { limit } from '@/api'
 import dataBase from '@/util/database.js'
 export default {
   // 初始化聊天列表
@@ -32,7 +33,7 @@ export default {
           .where('cid')
           .equals(ids[i])
           .desc()
-          .limit(15)
+          .limit(limit)
           .sortBy('time')
       })
       MESSAGES[`room_${ids[i]}`] = message

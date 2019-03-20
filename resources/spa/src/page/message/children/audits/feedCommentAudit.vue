@@ -1,28 +1,30 @@
 <template>
   <div :class="`${prefixCls}`">
     <div :class="`${prefixCls}-container`">
-      <jo-load-more
+      <JoLoadMore
         ref="loadmore"
         :class="`${prefixCls}-loadmore`"
         @onRefresh="onRefresh"
-        @onLoadMore="onLoadMore" >
+        @onLoadMore="onLoadMore"
+      >
         <div
           v-for="audit in audits"
+          :key="`feed-comment-${audit.id}`"
           :class="`${prefixCls}-item`"
-          :key="`feed-comment-${audit.id}`">
+        >
           <div :class="`${prefixCls}-item-top`">
-            <avatar :user="audit.user" />
+            <Avatar :user="audit.user" />
             <section class="userInfo">
-              <router-link :class="`${prefixCls}-item-top-link`" :to="`/users/${audit.user_id}`">
+              <RouterLink :class="`${prefixCls}-item-top-link`" :to="`/users/${audit.user_id}`">
                 {{ audit.user.name }}
-              </router-link>
+              </RouterLink>
               <p>{{ audit.created_at | time2tips }}</p>
             </section>
-            <audit-status-feed-comment :audit="audit"/>
+            <AuditStatusFeedComment :audit="audit" />
           </div>
-          <audit-content :audit="getAuditContent(audit)"/>
+          <AuditContent :audit="getAuditContent(audit)" />
         </div>
-      </jo-load-more>
+      </JoLoadMore>
     </div>
   </div>
 </template>

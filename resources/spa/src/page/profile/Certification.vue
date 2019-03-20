@@ -1,13 +1,13 @@
 <template>
   <div class="p-profile-certification">
-
-    <common-header :pinned="true">{{ type === 'user' ? '个人' : '企业' }}认证</common-header>
+    <CommonHeader :pinned="true">{{ `certificate.${type}.name` | t }}</CommonHeader>
 
     <main class="m-box-model main">
       <div
         v-if="verified.status === 0"
-        class="info-bar">
-        认证信息审核中，我们会在7个工作日内给您答复
+        class="info-bar"
+      >
+        {{ $t('certificate.reviewing', [7]) }}
       </div>
       <div class="info-main">
         <template v-if="type !== 'user'">
@@ -37,17 +37,18 @@
           <span class="value">{{ verified.data.desc }}</span>
         </div>
         <div class="row">
-          <span class="label">认证资料</span>
+          <span class="label">{{ $t('certificate.data') }}</span>
           <span class="value">
             <img
-              v-for="imageId in verified.data.files"
-              :key="imageId"
-              :src="getImageSrc(imageId)">
+              v-for="(image, index) in images"
+              :key="image.id"
+              :src="`${getImageSrc(image.id)}?w=250&h=185`"
+              @click="viewImage(index)"
+            >
           </span>
         </div>
       </div>
     </main>
-
   </div>
 </template>
 
@@ -58,21 +59,22 @@
 
 import _ from 'lodash'
 import { mapState } from 'vuex'
+import i18n from '@/i18n'
 
 const formInfo = {
   user: {
-    name: '真实姓名',
-    number: '身份证号码',
-    phone: '手机号码',
-    desc: '认证描述',
+    name: i18n.t('certificate.user.label.name'),
+    number: i18n.t('certificate.user.label.number'),
+    phone: i18n.t('certificate.user.label.phone'),
+    desc: i18n.t('certificate.user.label.desc'),
   },
   org: {
-    name: '负责人',
-    number: '身份证号码',
-    phone: '手机号码',
-    desc: '认证描述',
-    orgName: '机构名称',
-    orgAddress: '机构地址',
+    name: i18n.t('certificate.org.label.name'),
+    number: i18n.t('certificate.org.label.number'),
+    phone: i18n.t('certificate.org.label.phone'),
+    desc: i18n.t('certificate.org.label.desc'),
+    orgName: i18n.t('certificate.org.label.org_name'),
+    orgAddress: i18n.t('certificate.org.label.org_address'),
   },
 }
 
@@ -90,6 +92,15 @@ export default {
     type () {
       const { certification_name: type = 'user' } = this.verified
       return type
+    },
+    images () {
+      const files = this.verified.data.files || []
+      return files.map((item, index) => ({
+        id: item,
+        src: this.getImageSrc(item),
+        w: 250,
+        h: 185,
+      }))
     },
   },
   watch: {
@@ -112,7 +123,10 @@ export default {
      * @returns {string}
      */
     getImageSrc (id) {
-      return `${this.$http.defaults.baseURL}/files/${id}?w=250&h=185`
+      return `${this.$http.defaults.baseURL}/files/${id}`
+    },
+    viewImage (index) {
+      this.$bus.$emit('mvGallery', { index, images: this.images })
     },
   },
 }

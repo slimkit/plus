@@ -1,71 +1,68 @@
 <template>
-  <transition
+  <Transition
     enter-active-class="animated bounceInRight"
-    leave-active-class="animated bounceOutLeft">
+    leave-active-class="animated bounceOutLeft"
+  >
     <div class="m-box-model m-pos-f p-signin-dynamic">
-
-      <common-header>
-        一键登录
-        <router-link
-          slot="right"
-          to="/signup">注册</router-link>
-      </common-header>
+      <CommonHeader>
+        {{ $t('auth.one_key') }}
+        <RouterLink slot="right" to="/signup">{{ $t('auth.register.name') }}</RouterLink>
+      </CommonHeader>
 
       <main class="m-box-model m-flex-grow1">
         <div class="m-form-row m-main">
-          <label for="account">手机号</label>
+          <label for="account">{{ $t('auth.label.phone') }}</label>
           <div class="m-input">
             <input
               id="account"
               v-model="account"
               maxlength="11"
               type="tel"
-              placeholder="输入11位手机号">
+              :placeholder="$t('auth.placeholder.phone', [11])"
+            >
           </div>
           <svg
             v-show="account.length > 0"
             class="m-style-svg m-svg-def"
-            @click="account = ''">
-            <use xlink:href="#icon-clean"/>
+            @click="account = ''"
+          >
+            <use xlink:href="#icon-clean" />
           </svg>
         </div>
         <div class="m-form-row m-main">
-          <label for="password">验证码</label>
+          <label for="password">{{ $t('auth.label.code') }}</label>
           <div class="m-input">
             <input
               id="password"
               v-model="code"
               maxlength="6"
               type="number"
-              placeholder="输入4-6位验证码"
-              @keyup.enter="signinByAccount">
+              :placeholder="$t('auth.placeholder.code', [4, 6])"
+              @keyup.enter="signinByAccount"
+            >
           </div>
-          <span
-            :class="[{ disabledCode }, 'get-code']"
-            @click="beforeGetCode">{{ codeText }}</span>
+          <span :class="[{ disabledCode }, 'get-code']" @click="beforeGetCode">{{ codeText }}</span>
         </div>
         <div class="m-box m-aln-center m-text-box m-form-err-box">
           <span>{{ err | plusMessageFirst }}</span>
         </div>
-        <div
-          class="m-form-row"
-          style="border: 0">
+        <div class="m-form-row" style="border: 0">
           <button
             :disabled="disabled"
             class="m-long-btn m-signin-btn"
-            @click="isRegister ? signupByCode() : signinByCode()">
-            <circle-loading v-if="loading" />
-            <span v-else>登录</span>
+            @click="isRegister ? signupByCode() : signinByCode()"
+          >
+            <CircleLoading v-if="loading" />
+            <span v-else>{{ $t('auth.login') }}</span>
           </button>
         </div>
 
         <div class="dynamic-signin">
-          <a @click="goBack">使用账号密码登陆</a>
+          <a @click="goBack">{{ $t('auth.use_account') }}</a>
         </div>
       </main>
-
     </div>
-  </transition>
+  </Transition>
 </template>
 
 <script>
@@ -98,7 +95,7 @@ export default {
       return this.account.length !== 11 || this.countdown || this.codeLoading
     },
     codeText () {
-      return this.countdown > 0 ? `${this.countdown}s后重发` : '获取验证码'
+      return this.countdown > 0 ? this.$t('auth.resend', [this.countdown]) : this.$t('auth.get_code')
     },
   },
   methods: {
@@ -157,7 +154,7 @@ export default {
     signupByCode () {
       this.loading = true
       const params = {
-        name: '用户' + generateString(6),
+        name: `${this.$t('auth.user')} ` + generateString(6),
         phone: this.account,
         verifiable_type: 'sms',
         verifiable_code: this.code,
@@ -166,7 +163,7 @@ export default {
         .post('/users', params)
         .then(({ data: { token } }) => {
           if (token) {
-            this.$Message.success('注册成功')
+            this.$Message.success(this.$t('auth.register.success'))
             this.$lstore.setData('H5_ACCESS_TOKEN', `Bearer ${token}`)
             this.$store.dispatch('fetchUserInfo')
             this.$nextTick(() => {

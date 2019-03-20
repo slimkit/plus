@@ -1,50 +1,59 @@
 <template>
-  <div class="p-post-pic">
-
-    <common-header>
-      发布动态
+  <div class="p-post-image">
+    <CommonHeader>
+      {{ $t('release.feed') }}
       <template slot="left">
         <a
           class="m-send-btn"
           href="javascript:;"
-          @click="beforeGoBack">取消</a>
+          @click="beforeGoBack"
+        >
+          {{ $t('cancel') }}
+        </a>
       </template>
       <template slot="right">
-        <circle-loading v-if="loading" />
+        <CircleLoading v-if="loading" />
         <a
           v-else
           :class="{ disabled }"
           class="m-send-btn"
-          @click.prevent.stop="sendmessage">发布</a>
+          @click.prevent.stop="sendmessage"
+        >
+          {{ $t('release.name') }}
+        </a>
       </template>
-    </common-header>
+    </CommonHeader>
 
     <main>
-      <textarea-input
-        v-model="contentText"
-        :rows="11"
-        :maxlength="255"
-        :warnlength="200"
-        placeholder="输入要说的话，图文结合更精彩哦"
-        class="textarea-input" />
-      <image-list :edit="pinned" style="padding: 0 .3rem .3rem"/>
-    </main>
+      <div class="content-wrap">
+        <TextareaInput
+          v-model="contentText"
+          :rows="11"
+          :maxlength="255"
+          :warnlength="200"
+          :placeholder="$t('release.image_placeholder')"
+        />
+      </div>
+      <ImageList :edit="pinned" style="padding: 0 .3rem .3rem" />
 
-    <footer @click.capture.stop.prevent="popupBuyTS">
-      <v-switch
-        v-if="paycontrol"
-        v-model="pinned"
-        class="m-box m-bt1 m-bb1 m-lim-width m-pinned-row"
-        type="checkbox">
-        <slot>是否收费</slot>
-      </v-switch>
-    </footer>
+      <div class="options">
+        <TopicSelector v-model="topics" />
+
+        <FormSwitchItem
+          v-if="paycontrol"
+          v-model="pinned"
+          :label="$t('release.need_pay')"
+          @click.capture.stop.prevent="popupBuyTS"
+        />
+      </div>
+    </main>
   </div>
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
-import ImageList from './components/ImageList.vue'
+import ImageList from './components/ImageList'
+import TopicSelector from './components/TopicSelector'
 import TextareaInput from '@/components/common/TextareaInput.vue'
 
 export default {
@@ -52,6 +61,7 @@ export default {
   components: {
     ImageList,
     TextareaInput,
+    TopicSelector,
   },
   data () {
     return {
@@ -60,6 +70,8 @@ export default {
       curpos: 0,
       loading: false,
       contentText: '',
+      topics: [],
+      fromTopic: false,
       scrollHeight: 0,
     }
   },
@@ -75,21 +87,35 @@ export default {
       return this.$store.state.CONFIG.feed.paycontrol
     },
   },
+  created () {
+    this.queryTopic()
+  },
   methods: {
+    queryTopic () {
+      const { topicId, topicName } = this.$route.query
+      if (topicId) {
+        this.fromTopic = true
+        this.topics.push({
+          id: topicId,
+          name: topicName,
+          readonly: true,
+        })
+      }
+    },
     beforeGoBack () {
       this.contentText.length > 0
         ? this.$bus.$emit(
           'actionSheet',
           [
             {
-              text: '确定',
+              text: this.$t('confirm'),
               method: () => {
                 this.goBack()
               },
             },
           ],
-          '取消',
-          '你还有没有发布的内容,是否放弃发布?'
+          this.$t('cancel'),
+          this.$t('release.confirm_cancel')
         )
         : this.goBack()
     },
@@ -98,7 +124,7 @@ export default {
         this.loading = true
         // 检测是否存在上传失败的图片
         if (this.composePhoto.some(item => Object.keys(item).length === 0)) {
-          this.$Message.error('存在上传失败的图片，请确认')
+          this.$Message.error(this.$t('release.has_failed_upload'))
           this.loading = false
           return
         }
@@ -111,12 +137,15 @@ export default {
               feed_from: 2,
               feed_mark:
                 new Date().valueOf() + '' + this.$store.state.CURRENTUSER.id,
+              topics: this.topics.map(topic => topic.id),
             },
             {
               validateStatus: s => s === 201,
             }
           )
           .then(() => {
+            this.$Message.success(this.$t('release.success'))
+            if (this.fromTopic) return this.goBack()
             this.$router.replace('/feeds?type=new&refresh=1')
           })
           .catch(err => {
@@ -132,13 +161,12 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.p-post-pic {
-  height: 100%;
+.p-post-image {
   background-color: #fff;
 
   main {
-    .textarea-input {
-      padding-left: 20px;
+    .content-wrap {
+      padding: 20px;
     }
   }
 

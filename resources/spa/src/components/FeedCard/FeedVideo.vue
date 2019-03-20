@@ -5,8 +5,8 @@
   >
     <video
       v-if="videoFile"
-      :poster="coverFile"
       :ref="`video_${id}`"
+      :poster="coverFile"
       controls
       x-webkit-airplay="true"
       webkit-playsinline="true"

@@ -9,12 +9,12 @@ use Illuminate\Console\Command;
 class PackageHandler extends \Zhiyi\Plus\Support\PackageHandler
 {
     /**
-     * Publish public asstes source handle.
+     * Publish public assets source handle.
      *
      * @param \Illuminate\Console\Command $command
      * @return mixed
      */
-    public function publishAsstesHandle(Command $command)
+    public function publishAssetsHandle(Command $command)
     {
         $force = $command->confirm('Overwrite any existing files');
 
@@ -22,37 +22,6 @@ class PackageHandler extends \Zhiyi\Plus\Support\PackageHandler
             '--provider' => \{namespace}\Providers\AppServiceProvider::class,
             '--tag' => '{name}-public',
             '--force' => boolval($force),
-        ]);
-    }
-
-    /**
-     * Publish package config source handle.
-     *
-     * @param \Illuminate\Console\Command $command
-     * @return mixed
-     */
-    public function publishConfigHandle(Command $command)
-    {
-        $force = $command->confirm('Overwrite any existing files');
-
-        return $command->call('vendor:publish', [
-            '--provider' => \{namespace}\Providers\AppServiceProvider::class,
-            '--tag' => '{name}-config',
-            '--force' => boolval($force),
-        ]);
-    }
-
-    /**
-     * Publish package resource handle.
-     *
-     * @param \Illuminate\Console\Command $command
-     * @return mixed
-     * @author Seven Du <shiweidu@outlook.com>
-     */
-    public function publishHandle(Command $command)
-    {
-        return $command->call('vendor:publish', [
-            '--provider' => \{namespace}\Providers\AppServiceProvider::class,
         ]);
     }
 

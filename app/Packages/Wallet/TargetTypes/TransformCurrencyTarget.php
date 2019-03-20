@@ -6,12 +6,12 @@ declare(strict_types=1);
  * +----------------------------------------------------------------------+
  * |                          ThinkSNS Plus                               |
  * +----------------------------------------------------------------------+
- * | Copyright (c) 2018 Chengdu ZhiYiChuangXiang Technology Co., Ltd.     |
+ * | Copyright (c) 2016-Present ZhiYiChuangXiang Technology Co., Ltd.     |
  * +----------------------------------------------------------------------+
- * | This source file is subject to version 2.0 of the Apache license,    |
- * | that is bundled with this package in the file LICENSE, and is        |
- * | available through the world-wide-web at the following url:           |
- * | http://www.apache.org/licenses/LICENSE-2.0.html                      |
+ * | This source file is subject to enterprise private license, that is   |
+ * | bundled with this package in the file LICENSE, and is available      |
+ * | through the world-wide-web at the following url:                     |
+ * | https://github.com/slimkit/plus/blob/master/LICENSE                  |
  * +----------------------------------------------------------------------+
  * | Author: Slim Kit Group <master@zhiyicx.com>                          |
  * | Homepage: www.thinksns.com                                           |
@@ -21,8 +21,8 @@ declare(strict_types=1);
 namespace Zhiyi\Plus\Packages\Wallet\TargetTypes;
 
 use DB;
+use function Zhiyi\Plus\setting;
 use Zhiyi\Plus\Packages\Wallet\Wallet;
-use Zhiyi\Plus\Repository\CurrencyConfig;
 use Zhiyi\Plus\Packages\Currency\Processes\Recharge;
 
 class TransformCurrencyTarget extends Target
@@ -37,9 +37,9 @@ class TransformCurrencyTarget extends Target
 
         $this->initWallet();
 
-        $config = app(CurrencyConfig::class)->get();
+        $ratio = setting('currency', 'settings')['recharge-ratio'] ?? 1;
         $order = $this->order->getOrderModel();
-        $currency_amount = $order->amount * $config['recharge-ratio'];
+        $currency_amount = $order->amount * $ratio;
 
         $orderHandle = function () use ($order, $currency_amount) {
             // 钱包订单部分

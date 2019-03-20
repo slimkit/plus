@@ -1,25 +1,25 @@
 <template>
   <div class="profile-group">
-    <head-top :go-back="cancel">
-      <div
-        slot="nav"
-        class="head-top-tabs-nav">
-        <router-link
+    <HeadTop :go-back="cancel">
+      <div slot="nav" class="head-top-tabs-nav">
+        <RouterLink
           v-for="({label, path}, index) in types"
           :key="`profile-group-tab-${index}`"
           :to="path"
-          class="head-top-tabs-nav-item">
-          {{ label }}
-        </router-link>
+          class="head-top-tabs-nav-item"
+          v-text="label"
+        />
       </div>
-    </head-top>
-    <keep-alive>
-      <router-view class="profile-group-content"/>
-    </keep-alive>
+    </HeadTop>
+    <KeepAlive>
+      <RouterView class="profile-group-content" />
+    </KeepAlive>
   </div>
 </template>
+
 <script>
 import HeadTop from '@/components/HeadTop'
+
 export default {
   name: 'ProfileGroup',
   components: {
@@ -46,8 +46,10 @@ export default {
   },
 }
 </script>
+
 <style lang='less'>
 @profile-group-prefix: profile-group;
+
 .@{profile-group-prefix} {
   &-nav {
     position: fixed;
@@ -59,8 +61,7 @@ export default {
     height: 90px;
     width: 100%;
     line-height: 89px;
-    border-bottom: 1px solid #ededed;
-    /*no*/
+    border-bottom: 1px solid #ededed; /*no*/
     background-color: #fff;
     justify-content: center;
     &-item {

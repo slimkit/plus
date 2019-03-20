@@ -1,6 +1,6 @@
 <template>
   <div class="v-msg-list">
-    <message
+    <Message
       v-for="msg in msgs"
       :key="msg.name"
       :type="msg.type"
@@ -10,11 +10,12 @@
       :closable="msg.closable"
       :name="msg.name"
       :transition-name="msg.transitionName"
-      :on-close="msg.onClose"/>
+      :on-close="msg.onClose"
+    />
   </div>
 </template>
 <script>
-import message from './message'
+import Message from './message'
 
 let seed = 0
 const getUuid = () => {
@@ -23,7 +24,7 @@ const getUuid = () => {
 export default {
   name: 'MessageList',
   components: {
-    message,
+    Message,
   },
   data () {
     return {

@@ -6,12 +6,12 @@ declare(strict_types=1);
  * +----------------------------------------------------------------------+
  * |                          ThinkSNS Plus                               |
  * +----------------------------------------------------------------------+
- * | Copyright (c) 2018 Chengdu ZhiYiChuangXiang Technology Co., Ltd.     |
+ * | Copyright (c) 2016-Present ZhiYiChuangXiang Technology Co., Ltd.     |
  * +----------------------------------------------------------------------+
- * | This source file is subject to version 2.0 of the Apache license,    |
- * | that is bundled with this package in the file LICENSE, and is        |
- * | available through the world-wide-web at the following url:           |
- * | http://www.apache.org/licenses/LICENSE-2.0.html                      |
+ * | This source file is subject to enterprise private license, that is   |
+ * | bundled with this package in the file LICENSE, and is available      |
+ * | through the world-wide-web at the following url:                     |
+ * | https://github.com/slimkit/plus/blob/master/LICENSE                  |
  * +----------------------------------------------------------------------+
  * | Author: Slim Kit Group <master@zhiyicx.com>                          |
  * | Homepage: www.thinksns.com                                           |
@@ -23,6 +23,7 @@ namespace Zhiyi\Plus\Http\Controllers\Admin;
 use Illuminate\Http\Request;
 use Zhiyi\Plus\Http\Controllers\Controller;
 use Zhiyi\Plus\Models\Report as ReportModel;
+use Zhiyi\Plus\Notifications\System as SystemNotification;
 
 class ReportController extends Controller
 {
@@ -70,17 +71,15 @@ class ReportController extends Controller
         $report->save();
 
         if ($report->user) {
-            $report->user->sendNotifyMessage('user-report:notice', '你的举报已被平台处理', [
-                'report' => $report,
-            ]);
-        }
-
-        if ($report->target) {
-            $report->target->sendNotifyMessage(
-                'user-report:notice',
-                '你的'.$report->subject.'已被举报',
-                ['report' => $report]
-            );
+            $report->user->notify(new SystemNotification('你举报的内容平台已处理', [
+                'type' => 'report',
+                'resource' => [
+                    'type' => $report->reportable_type,
+                    'id' => $report->reportable_id,
+                ],
+                'subject' => $report->subject,
+                'state' => 'passed',
+            ]));
         }
 
         return response()->json(['message' => ['操作成功']], 201);
@@ -102,9 +101,15 @@ class ReportController extends Controller
         $report->save();
 
         if ($report->user) {
-            $report->user->sendNotifyMessage('user-report:notice', '你的举报已被平台处理', [
-                'report' => $report,
-            ]);
+            $report->user->notify(new SystemNotification('你举报的内容平台已处理', [
+                'type' => 'report',
+                'resource' => [
+                    'type' => $report->reportable_type,
+                    'id' => $report->reportable_id,
+                ],
+                'subject' => $report->subject,
+                'state' => 'rejected',
+            ]));
         }
 
         return response()->json(['message' => ['操作成功']], 201);

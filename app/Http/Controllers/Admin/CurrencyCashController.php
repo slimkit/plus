@@ -6,12 +6,12 @@ declare(strict_types=1);
  * +----------------------------------------------------------------------+
  * |                          ThinkSNS Plus                               |
  * +----------------------------------------------------------------------+
- * | Copyright (c) 2018 Chengdu ZhiYiChuangXiang Technology Co., Ltd.     |
+ * | Copyright (c) 2016-Present ZhiYiChuangXiang Technology Co., Ltd.     |
  * +----------------------------------------------------------------------+
- * | This source file is subject to version 2.0 of the Apache license,    |
- * | that is bundled with this package in the file LICENSE, and is        |
- * | available through the world-wide-web at the following url:           |
- * | http://www.apache.org/licenses/LICENSE-2.0.html                      |
+ * | This source file is subject to enterprise private license, that is   |
+ * | bundled with this package in the file LICENSE, and is available      |
+ * | through the world-wide-web at the following url:                     |
+ * | https://github.com/slimkit/plus/blob/master/LICENSE                  |
  * +----------------------------------------------------------------------+
  * | Author: Slim Kit Group <master@zhiyicx.com>                          |
  * | Homepage: www.thinksns.com                                           |
@@ -24,10 +24,10 @@ use DB;
 use Illuminate\Http\Request;
 use Zhiyi\Plus\Models\WalletOrder;
 use Zhiyi\Plus\Packages\Wallet\Order;
-use Zhiyi\Plus\Repository\CurrencyConfig;
 use Zhiyi\Plus\Http\Controllers\Controller;
 use Zhiyi\Plus\Models\CurrencyOrder as OrderModel;
 use Zhiyi\Plus\Models\NewWallet as NewWalletModel;
+use Zhiyi\Plus\Notifications\System as SystemNotification;
 
 class CurrencyCashController extends Controller
 {
@@ -75,7 +75,6 @@ class CurrencyCashController extends Controller
      *
      * @param  Request        $request
      * @param  OrderModel     $order
-     * @param  CurrencyConfig $config
      * @return mixed
      */
     public function audit(Request $request, OrderModel $order)
@@ -96,11 +95,6 @@ class CurrencyCashController extends Controller
             $order->save();
 
             if ($state === 1) {
-                $order->user->sendNotifyMessage(
-                    'user-currency:cash',
-                    '积分提现申请审核通过',
-                    ['order' => $order]
-                );
                 // 钱包变更记录.
                 $walletOrderModel = new WalletOrder();
                 $walletOrderModel->owner_id = $order->owner_id;
@@ -126,14 +120,22 @@ class CurrencyCashController extends Controller
             }
             // 处理退还积分
             if ($state === -1) {
-                $order->user->sendNotifyMessage(
-                    'user-currency:cash',
-                    sprintf('积分提现申请被驳回,原因：%s', $mark),
-                    ['order' => $order]
-                );
                 $order->user->currency->increment('sum', $order->amount);
             }
         });
+
+        if ($state === 1) {
+            $order->user->notify(new SystemNotification('你的积分提现申请已审核通过', [
+                'type' => 'user-currency:cash',
+                'state' => 'passed',
+            ]));
+        } elseif ($state === -1) {
+            $order->user->notify(new SystemNotification('你的积分提现申请被驳回', [
+                'type' => 'user-currency:cash',
+                'state' => 'rejected',
+                'contents' => $mark,
+            ]));
+        }
 
         return response()->json(['message' => '处理成功'], 200);
     }

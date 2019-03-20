@@ -6,12 +6,12 @@ declare(strict_types=1);
  * +----------------------------------------------------------------------+
  * |                          ThinkSNS Plus                               |
  * +----------------------------------------------------------------------+
- * | Copyright (c) 2018 Chengdu ZhiYiChuangXiang Technology Co., Ltd.     |
+ * | Copyright (c) 2016-Present ZhiYiChuangXiang Technology Co., Ltd.     |
  * +----------------------------------------------------------------------+
- * | This source file is subject to version 2.0 of the Apache license,    |
- * | that is bundled with this package in the file LICENSE, and is        |
- * | available through the world-wide-web at the following url:           |
- * | http://www.apache.org/licenses/LICENSE-2.0.html                      |
+ * | This source file is subject to enterprise private license, that is   |
+ * | bundled with this package in the file LICENSE, and is available      |
+ * | through the world-wide-web at the following url:                     |
+ * | https://github.com/slimkit/plus/blob/master/LICENSE                  |
  * +----------------------------------------------------------------------+
  * | Author: Slim Kit Group <master@zhiyicx.com>                          |
  * | Homepage: www.thinksns.com                                           |
@@ -22,11 +22,10 @@ namespace Zhiyi\Plus\Packages\Currency\Processes;
 
 use DB;
 use Illuminate\Http\Request;
+use function Zhiyi\Plus\setting;
 use Pingpp\Charge as PingppCharge;
 use Zhiyi\Plus\Packages\Currency\Order;
 use Zhiyi\Plus\Packages\Currency\Process;
-use Zhiyi\Plus\Repository\CurrencyConfig;
-use Zhiyi\Plus\Repository\WalletPingPlusPlus;
 use Zhiyi\Plus\Models\CurrencyOrder as CurrencyOrderModel;
 use Zhiyi\Plus\Services\Wallet\Charge as WalletChargeService;
 
@@ -38,8 +37,7 @@ class Recharge extends Process
     public function createOrder(int $owner_id, int $amount): CurrencyOrderModel
     {
         $user = $this->checkUser($owner_id);
-
-        $config = app(CurrencyConfig::class)->get();
+        $ratio = setting('currency', 'settings')['recharge-ratio'] ?? 1;
 
         $title = '积分充值';
         $body = sprintf('充值积分：%s%s%s', $amount, $this->currency_type->unit, $this->currency_type->name);
@@ -51,7 +49,7 @@ class Recharge extends Process
         $order->type = 1;
         $order->currency = $this->currency_type->id;
         $order->target_type = Order::TARGET_TYPE_RECHARGE;
-        $order->amount = $amount * $config['recharge-ratio'];
+        $order->amount = $amount * $ratio;
 
         return $order;
     }
@@ -164,8 +162,9 @@ class Recharge extends Process
             return false;
         }
 
+        $settings = setting('wallet', 'ping++', []);
         $signature = $request->headers->get('x-pingplusplus-signature');
-        $pingPlusPlusPublicCertificate = app(WalletPingPlusPlus::class)->get()['public_key'] ?? null;
+        $pingPlusPlusPublicCertificate = $settings['public_key'] ?? null;
         $signed = openssl_verify($request->getContent(), base64_decode($signature), $pingPlusPlusPublicCertificate, OPENSSL_ALGO_SHA256);
 
         if (! $signed) {

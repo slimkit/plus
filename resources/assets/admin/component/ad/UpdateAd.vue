@@ -109,7 +109,7 @@
                             </span>
                           </div>
                         </div>
-                        <span class="help-block col-md-3">{{ (item.split('|'))[2] }}</span>
+                        <span class="help-block col-md-3">{{ (item.split('|'))[2] }}更多尺寸要求请看：<a href="https://github.com/slimkit/thinksns-plus-guide/blob/master/%E6%8A%80%E6%9C%AF%E6%96%87%E6%A1%A3/common/ADVERT_DES.md" target="_blank">尺寸建议</a></span>
                       </div>
                       <!-- 广告链接 -->
                       <div class="form-group" v-else-if="key=='link'">

@@ -1,39 +1,37 @@
 <template>
   <div class="p-wechat-signin">
     <header class="m-box m-aln-center m-head-top m-pos-f m-main m-bb1">
-      <router-link
+      <RouterLink
         tag="div"
         to="/"
-        class="m-box m-aln-center m-flex-grow1 m-flex-base0">
+        class="m-box m-aln-center m-flex-grow1 m-flex-base0"
+      >
         <svg class="m-style-svg m-svg-def">
-          <use xlink:href="#icon-back"/>
+          <use xlink:href="#icon-back" />
         </svg>
-      </router-link>
+      </RouterLink>
       <div class="m-box m-aln-center m-justify-center m-flex-grow1 m-flex-base0 m-head-top-title">
         <span>绑定账号</span>
       </div>
-      <div class="m-box m-aln-center m-justify-end m-flex-grow1 m-flex-base0"/>
+      <div class="m-box m-aln-center m-justify-end m-flex-grow1 m-flex-base0" />
     </header>
     <!-- loading -->
-    <div v-if="loading" class="m-spinner pos-f">
-      <div/>
-      <div/>
-    </div>
+    <div v-if="loading" class="m-spinner m-pos-f" />
 
     <div v-else>
-      <transition name="toast">
-        <div class="m-pop-box"/>
-      </transition>
-      <transition name="pop">
+      <Transition name="toast">
+        <div class="m-pop-box" />
+      </Transition>
+      <Transition name="pop">
         <div class="m-lim-width m-pos-f m-wechat-box">
-          <router-link tag="button" to="/wechat/signup">
+          <RouterLink tag="button" to="/wechat/signup">
             <a>注册新用户</a>
-          </router-link>
-          <router-link tag="button" to="/wechat/bind">
+          </RouterLink>
+          <RouterLink tag="button" to="/wechat/bind">
             <a>绑定已有用户</a>
-          </router-link>
+          </RouterLink>
         </div>
-      </transition>
+      </Transition>
     </div>
   </div>
 </template>
@@ -81,11 +79,10 @@ export default {
       let accessToken = this.$lstore.getData('H5_WECHAT_MP_ASTOKEN')
 
       if (!accessToken || !openId) {
-        const { data } = await this.$http.get(
-          `socialite/getAccess/${code}`,
-          { validateStatus: status => status === 200 }
-        )
-        const { access_token: accessToken, openid: openId } = data
+        const { data } = await this.$http.get(`/socialite/getAccess/${code}`, { validateStatus: s => s === 200 })
+        const { access_token: newAccessToken, openid: newOpenId } = data
+        accessToken = newAccessToken
+        openId = newOpenId
 
         this.$lstore.setData('H5_WECHAT_MP_OPENID', openId)
         this.$lstore.setData('H5_WECHAT_MP_ASTOKEN', accessToken)
@@ -143,7 +140,7 @@ export default {
     width: 100%;
     height: 95px;
     + button {
-      border-top: 1px solid @border-color;
+      border-top: 1px solid @border-color; /* no */
     }
   }
 }

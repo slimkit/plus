@@ -1,10 +1,10 @@
 <template>
   <div class="page-question">
     <!-- App Bar. -->
-    <switch-bar />
+    <SwitchBar />
 
     <!-- Module content. -->
-    <router-view />
+    <RouterView />
   </div>
 </template>
 

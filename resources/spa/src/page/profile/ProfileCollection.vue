@@ -1,84 +1,34 @@
 <template>
   <div class="p-profile-collection">
-
-    <common-header>我的收藏</common-header>
+    <CommonHeader>{{ $t('profile.collect.name') }}</CommonHeader>
 
     <main>
-      <div class="m-pos-f m-box m-aln-center m-justify-bet m-sub-nav m-bb1 m-main">
-        <router-link
-          replace
-          exact
-          tag="div"
-          exact-active-class="active"
-          to="/profile/collection/feeds"
-          class="m-sub-nav-item">
-          <a>动态</a>
-        </router-link>
-        <router-link
-          replace
-          exact
-          tag="div"
-          exact-active-class="active"
-          to="/profile/collection/news"
-          class="m-sub-nav-item">
-          <a>资讯</a>
-        </router-link>
-        <router-link
-          replace
-          exact
-          tag="div"
-          exact-active-class="active"
-          to="/profile/collection/answers"
-          class="m-sub-nav-item">
-          <a>回答</a>
-        </router-link>
-        <router-link
-          replace
-          exact
-          tag="div"
-          exact-active-class="active"
-          to="/profile/collection/posts"
-          class="m-sub-nav-item">
-          <a>帖子</a>
-        </router-link>
-      </div>
-      <keep-alive>
-        <router-view/>
-      </keep-alive>
+      <NavTab class="nav" :nav="types" />
+      <KeepAlive>
+        <RouterView />
+      </KeepAlive>
     </main>
   </div>
 </template>
 
 <script>
+import NavTab from '@/components/common/NavTab.vue'
+import i18n from '@/i18n'
+
+const types = [
+  { name: 'feed', label: i18n.t('feed.name'), route: '/profile/collection/feeds' },
+  { name: 'news', label: i18n.t('news.name'), route: '/profile/collection/news' },
+  { name: 'answer', label: i18n.t('question.answer.name'), route: '/profile/collection/answers' },
+  { name: 'post', label: i18n.t('group.post.name'), route: '/profile/collection/posts' },
+]
+
 export default {
   name: 'ProfileCollection',
+  components: { NavTab },
   data () {
-    return {}
+    return {
+      types,
+    }
   },
 }
 </script>
-
-<style lang="less" scoped>
-.p-profile-collection {
-  .m-sub-nav {
-    top: 90px;
-    z-index: 2;
-
-    .m-sub-nav-item {
-      height: 100%;
-      line-height: 90px;
-      text-align: center;
-
-      > a {
-        display: inline-block;
-        width: 100%;
-      }
-
-      &.router-link-active {
-        color: #333;
-        border-bottom: 4px solid @primary;
-      }
-    }
-  }
-}
-</style>

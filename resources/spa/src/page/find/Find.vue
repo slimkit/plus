@@ -1,22 +1,21 @@
 <template>
   <div class="p-find-person">
-
     <header class="m-pos-f m-box m-aln-center m-justify-bet m-lim-width m-bb1 m-main m-head-top" style="padding: 0 10px;">
       <div class="m-box m-aln-center m-flex-grow0 m-flex-shrink0">
         <svg class="m-style-svg m-svg-def" @click="goBack">
-          <use xlink:href="#icon-back"/>
+          <use xlink:href="#icon-back" />
         </svg>
       </div>
       <div class="m-box m-aln-center m-flex-grow1 m-flex-shrink1 m-head-search-box" @click="showSearchUser">
         <svg class="m-style-svg m-svg-def placeholder">
-          <use xlink:href="#icon-search"/>
+          <use xlink:href="#icon-search" />
         </svg>
-        <span class="placeholder">搜索</span>
+        <span class="placeholder">{{ $t('search') }}</span>
       </div>
       <div class="m-box m-aln-center m-flex-grow0 m-flex-shrink0 m-justify-end m-location" @click="switchLocation">
-        <circle-loading v-if="loading"/>
+        <CircleLoading v-if="loading" />
         <svg v-else class="m-style-svg m-svg-def">
-          <use xlink:href="#icon-find-location"/>
+          <use xlink:href="#icon-find-location" />
         </svg>
         <span class="m-location-label m-text-cut">{{ location }}</span>
       </div>
@@ -24,48 +23,53 @@
 
     <main style="padding-top: 0.9rem">
       <div class="m-pos-f m-box m-aln-center m-justify-bet m-sub-nav m-bb1 m-main">
-        <router-link
+        <RouterLink
           replace
           exact
           tag="div"
           exact-active-class="active"
           to="/find/pop"
-          class="m-sub-nav-item">
-          <a>热门</a>
-        </router-link>
-        <router-link
+          class="m-sub-nav-item"
+        >
+          <a>{{ $t('hot') }}</a>
+        </RouterLink>
+        <RouterLink
           replace
           exact
           tag="div"
           exact-active-class="active"
           to="/find/new"
-          class="m-sub-nav-item">
-          <a>最新</a>
-        </router-link>
-        <router-link
+          class="m-sub-nav-item"
+        >
+          <a>{{ $t('newest') }}</a>
+        </RouterLink>
+        <RouterLink
           replace
           exact
           tag="div"
           exact-active-class="active"
           to="/find/rec"
-          class="m-sub-nav-item">
-          <a>推荐</a>
-        </router-link>
-        <router-link
+          class="m-sub-nav-item"
+        >
+          <a>{{ $t('recommend') }}</a>
+        </RouterLink>
+        <RouterLink
           replace
           exact
           tag="div"
           exact-active-class="active"
           to="/find/ner"
-          class="m-sub-nav-item">
-          <a>附近</a>
-        </router-link>
+          class="m-sub-nav-item"
+        >
+          <a>{{ $t('nearby') }}</a>
+        </RouterLink>
       </div>
-      <keep-alive>
-        <router-view
+      <KeepAlive>
+        <RouterView
           class="p-find-body"
-          style="padding-top: 0.9rem"/>
-      </keep-alive>
+          style="padding-top: 0.9rem"
+        />
+      </KeepAlive>
     </main>
   </div>
 </template>
@@ -89,7 +93,7 @@ export default {
       // label.length > 5
       //   ? `${label.slice(0, 2)}…${label.slice(-2)}`
       //   :
-      return label || '选择城市'
+      return label || this.$t('location.city')
     },
   },
   created () {

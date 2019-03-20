@@ -6,12 +6,12 @@ declare(strict_types=1);
  * +----------------------------------------------------------------------+
  * |                          ThinkSNS Plus                               |
  * +----------------------------------------------------------------------+
- * | Copyright (c) 2018 Chengdu ZhiYiChuangXiang Technology Co., Ltd.     |
+ * | Copyright (c) 2016-Present ZhiYiChuangXiang Technology Co., Ltd.     |
  * +----------------------------------------------------------------------+
- * | This source file is subject to version 2.0 of the Apache license,    |
- * | that is bundled with this package in the file LICENSE, and is        |
- * | available through the world-wide-web at the following url:           |
- * | http://www.apache.org/licenses/LICENSE-2.0.html                      |
+ * | This source file is subject to enterprise private license, that is   |
+ * | bundled with this package in the file LICENSE, and is available      |
+ * | through the world-wide-web at the following url:                     |
+ * | https://github.com/slimkit/plus/blob/master/LICENSE                  |
  * +----------------------------------------------------------------------+
  * | Author: Slim Kit Group <master@zhiyicx.com>                          |
  * | Homepage: www.thinksns.com                                           |
@@ -22,11 +22,11 @@ namespace Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\API2;
 
 use Carbon\Carbon;
 use Illuminate\Http\Request;
-use Zhiyi\Plus\Services\Push;
 use Zhiyi\Plus\Http\Controllers\Controller;
 use Zhiyi\Plus\AtMessage\AtMessageHelperTrait;
 use Zhiyi\Plus\Models\Comment as CommentModel;
 use Zhiyi\Plus\Models\UserCount as UserCountModel;
+use Zhiyi\Plus\Notifications\Comment as CommentNotification;
 use Zhiyi\Plus\Packages\Currency\Processes\User as UserProcess;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\FeedPinned;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\Feed as FeedModel;
@@ -183,42 +183,20 @@ class FeedCommentController extends Controller
             $feed->comments()->save($comment);
             $feed->increment('feed_comment_count', 1);
             $user->extra()->firstOrCreate([])->increment('comments_count', 1);
-            if ($feed->user->id !== $user->id) {
-                // 添加被评论未读数
-                // 旧, 保留
-                $feed->user->unreadCount()->firstOrCreate([])->increment('unread_comments_count', 1);
-                // 新, 1.8启用
-                $userCommentedCount = UserCountModel::firstOrNew([
-                    'type' => 'user-commented',
-                    'user_id' => $feed->user->id,
-                ]);
-
-                $userCommentedCount->total += 1;
-                $userCommentedCount->save();
-                // 推送
-                app(Push::class)->push(sprintf('%s 评论了你的动态', $user->name), (string) $feed->user->id, ['channel' => 'feed:comment']);
-                unset($userCommentedCount);
-            }
         });
 
+        // 发送消息通知
+        if ($feed->user) {
+            $feed->user->notify(new CommentNotification($comment, $user));
+        }
+
+        // 如果回复条件满足，发送给被回复用户通知
         if ($replyUser && $replyUser !== $user->id && $replyUser !== $feed->user_id) {
             $replyUser = $user->newQuery()->where('id', $replyUser)->first();
-            // 添加被回复未读数
-            // 旧, 暂时保留
-            $replyUser->unreadCount()->firstOrCreate([])->increment('unread_comments_count', 1);
-            // 新, 1.8启用
-            $userCommentedCount = UserCountModel::firstOrNew([
-                'type' => 'user-commented',
-                'user_id' => $replyUser->id,
-            ]);
-
-            $userCommentedCount->total += 1;
-            $userCommentedCount->save();
-            // 推送
-            app(Push::class)->push(sprintf('%s 回复了你的评论', $user->name), (string) $replyUser->id, ['channel' => 'feed:comment-reply']);
-            unset($userCommentedCount);
+            if ($replyUser) {
+                $replyUser->notify(new CommentNotification($comment, $user));
+            }
         }
-        $comment->load('user');
 
         // 发送 at 数据
         $this->sendAtMessage($comment->body, $user, $comment);

@@ -9,6 +9,7 @@ import groupRoutes from './group.js'
 import messageRoutes from './message.js'
 import questionRoutes from './question.js'
 import profileRoutes from './profile.js'
+import topicRoutes from './topic.js'
 
 const router = [
   /* 入口重定向 */
@@ -24,6 +25,7 @@ const router = [
   ...messageRoutes,
   ...questionRoutes,
   ...profileRoutes,
+  ...topicRoutes,
 
   { path: '*', component: NotFound }, /* 404 页面 */
 ]
