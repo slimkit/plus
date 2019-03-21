@@ -301,6 +301,7 @@ currency:
 
 certificate:
   name: 认证
+  base: 基本信息
   apply: 申请认证
   info: 认证信息
   data: 认证资料
@@ -321,7 +322,7 @@ certificate:
     number: 请检查身份证号码是否正确
     phone: 请检查手机号码是否正确
   user:
-    name: 基本信息
+    name: 个人认证
     label:
       name: 真实姓名
       number: 身份证号码
@@ -333,7 +334,7 @@ certificate:
       phone: 输入11位手机号码
       desc: 该描述会影响审核，请慎重填写
   org:
-    name: 基本信息
+    name: 机构认证
     label:
       name: 负责人
       number: 身份证号码

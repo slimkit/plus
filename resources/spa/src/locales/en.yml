@@ -300,6 +300,7 @@ currency:
 
 certificate:
   name: Certificate
+  base: Basic information
   apply: Apply certificate
   info: Certification
   data: Data
@@ -320,7 +321,7 @@ certificate:
     number: Please check if the ID number is correct.
     phone: Please check if the mobile number is correct.
   user:
-    name: Basic Information
+    name: User
     label:
       name: Real name
       number: ID number
@@ -332,7 +333,7 @@ certificate:
       phone: Enter 11 mobile phone number
       desc: This description will affect the review, please fill in carefully
   org:
-    name: Basic Information
+    name: Organization
     label:
       name: Person in charge
       number: ID number
