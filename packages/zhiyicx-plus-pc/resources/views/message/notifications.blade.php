@@ -25,6 +25,11 @@
                             你的资讯《{{ $ref['news']['title'] }}》被{{ $ref['sender']['name'] }}打赏了{{ $ref['amount'].$ref['unit'] }}
                         </a>
                         @break
+                    @case('group:post-reward')
+                        <a href="{{route('pc:grouppost', ['group_id'=>$ref['group_id'], ''=>$ref['post']['id']])}}">
+                            你的帖子「{{ $ref['post']['title'] }}」被{{ $ref['sender']['name'] }}打赏了
+                        </a>
+                        @break
                     @case('group:join')
                         @if($ref['state'] ?? 'accept'== 'rejected')
                             <a href="{{route('pc:groupread', ['group_id'=>$ref['group']['id']])}}">
@@ -98,6 +103,10 @@
                         @endif
                         </a>
                         @break
+                    @case('group:pinned-admin')
+                        <a href="{{route('pc:grouppost', ['group_id'=>$ref['group_id'], ''=>$ref['post']['id']])}}">
+                            你的帖子「{{ $ref['post']['title'] }}」被管理员置顶
+                        </a>
                     @endswitch
                 </div>
                 <div class="tz-date">{{ getTime($noti['created_at']) }}</div>

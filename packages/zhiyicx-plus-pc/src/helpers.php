@@ -61,7 +61,7 @@ function formatContent($content)
             'user' => $username,
         ]);
 
-        return sprintf('<a href="%s">@%s</a>', $url, $username);
+        return sprintf('<a class="mcolor" href="%s">@%s</a>', $url, $username);
     }, $content);
 
     return $content;

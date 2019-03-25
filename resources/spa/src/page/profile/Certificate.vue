@@ -211,7 +211,7 @@ export default {
   computed: {
     title () {
       if (this.step !== 1) return i18n.t('certificate.upload.name')
-      return i18n.t(`certificate.${this.type}.name`)
+      return i18n.t('certificate.base')
     },
     /**
      * 认证类型. 必须是 (user|org)

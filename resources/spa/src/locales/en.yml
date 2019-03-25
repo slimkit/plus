@@ -300,6 +300,7 @@ currency:
 
 certificate:
   name: Certificate
+  base: Basic information
   apply: Apply certificate
   info: Certification
   data: Data
@@ -320,7 +321,7 @@ certificate:
     number: Please check if the ID number is correct.
     phone: Please check if the mobile number is correct.
   user:
-    name: Basic Information
+    name: User
     label:
       name: Real name
       number: ID number
@@ -332,7 +333,7 @@ certificate:
       phone: Enter 11 mobile phone number
       desc: This description will affect the review, please fill in carefully
   org:
-    name: Basic Information
+    name: Organization
     label:
       name: Person in charge
       number: ID number
@@ -596,15 +597,19 @@ message:
     reward_user: '{user} rewards you'
     reward_feed: '{user} rewards your feed'
     reward_news: '{user} reward your news "{news}" {amount}'
+    reward_post: 'Your post "{post}" was rewarded by {user}'
     group_join: ['Agree to user {user} to join the group "{group}"', 'Reject users to join the group "{group}"']
     certificate: ['The identity you applied for has passed', 'The identity you applied for has been rejected']
     qa_adopt: 'The answer you submitted "{answer}" was adopted'
     reward_qa: '{user} rewards your answer'
     qa_invitation: '{user} invites you to answer the question "{question}"'
+    qa_topic_passed: 'Your question topic "{topic}" application was passed'
+    qa_topic_reject: 'Your question topic "{topic}" application was rejected'
     pinned_feed_comment: ['Agree to the feed comment on "{comment}" top request', 'Reject the feed comment "{comment}" top request']
     pinned_news_comment: ['Agree to the news "{news}"" comment "{comment}"', 'Reject to the news "{news}" comment "{comment}"']
     pinned_post_comment: ['Agree to post "{post}" comment pin request', 'reject post "{post}" comment pin request']
     pinned_post: ['Agree to the top request for the post "{post}"', 'Reject the top request for the post "{post}"']
+    pinned_post_by_admin: 'Your post "{post}" has been placed on top of the admin'
 
   comment:
     name: Comments

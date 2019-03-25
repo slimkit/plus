@@ -61,6 +61,7 @@
 
     var params = {
         isAjax: true,
+        type: '{{ $type }}',
     };
     loader.init({
         container: '#topic_list',

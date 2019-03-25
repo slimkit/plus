@@ -43,11 +43,16 @@ class TopicController extends BaseController
     {
         $data['type'] = $request->query('type') ?? 'hot';
         if ($request->isAjax) {
-            $after = $request->query('after') ?? 0;
-            $data['topics'] = api('GET', '/api/v2/feed/topics', [
-                'limit' => 8,
-                'index' => $after,
-            ]);
+            if ($data['type'] === 'hot') {
+                $params = ['only' => 'hot'];
+            } else {
+                $after = $request->query('after') ?? 0;
+                $params = [
+                    'limit' => 8,
+                    'index' => $after,
+                ];
+            }
+            $data['topics'] = api('GET', '/api/v2/feed/topics', $params);
 
             $view = view('pcview::templates.feed_topic', $data, $this->PlusData)->render();
 
