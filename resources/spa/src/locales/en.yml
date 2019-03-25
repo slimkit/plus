@@ -691,8 +691,7 @@ auth:
     name: Register
     success: Register success
     protocol: Register protocol
-    agree: By clicking Register, I agree to {protocol}
-    ts_protocol: '"ThinkSNS + User Use Agreement"'
+    agree: By clicking Register, I agree to "{protocol}"
     label:
       phone: Register with phone
       email: Register with email
