@@ -37,6 +37,7 @@ export default {
 
 <style lang="less" scoped>
 .c-search-bar {
+  flex: none;
   position: relative;
   display: flex;
   align-items: center;
