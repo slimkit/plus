@@ -1,6 +1,4 @@
 import { version } from '../package.json'
-import { ENABLE_MOBLINK } from '@/constants/app'
-
 import Vue from 'vue'
 
 import 'github-markdown-css'
@@ -54,21 +52,6 @@ for (const k in filters) {
 }
 if (!window.initUrl) {
   window.initUrl = window.location.href.replace(/(\/$)/, '')
-}
-
-// 加载 moblink 用于引导打开 APP
-if (ENABLE_MOBLINK) {
-  window.addEventListener('load', () => {
-    const key = process.env.VUE_APP_MOBLINK_KEY || ''
-    const script = document.createElement('script')
-    script.type = 'text/javascript'
-    script.src = `//f.moblink.mob.com/3.0.1/moblink.js?appkey=${key}`
-    script.onload = () => {
-      // eslint-disable-next-line
-      MobLink({ path: location.href })
-    }
-    document.querySelector('body').appendChild(script)
-  })
 }
 
 /* eslint-disable no-new */
