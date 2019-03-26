@@ -173,7 +173,7 @@ class AliOss implements FileUrlGeneratorContract
             $quality = min(100, max(0, intval($extra['quality'] ?? 0)));
             $blur = max(0, intval($extra['blur'] ?? 0));
 
-            if (! $width && ! $height && ! $blur && $quality && app('files')->extension($filename) === 'gif') {
+            if (! $width && ! $height && ! $blur && ! $quality && app('files')->extension($filename) === 'gif') {
                 return [];
             }
 
