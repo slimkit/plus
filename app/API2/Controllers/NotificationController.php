@@ -111,7 +111,7 @@ class NotificationController extends Controller
      */
     public function clearFollowNotifications(Request $request)
     {
-        $request->user()->whereType(FollowNotification::class)->delete();
+        $request->user()->notifications()->whereType(FollowNotification::class)->delete();
 
         return new Response('', Response::HTTP_NO_CONTENT);
     }

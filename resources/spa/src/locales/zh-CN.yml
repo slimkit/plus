@@ -695,8 +695,7 @@ auth:
     name: 注册
     success: 注册成功
     protocol: 用户注册协议
-    agree: 点击注册即代表同意{protocol}
-    ts_protocol: '《ThinkSNS+用户使用协议》'
+    agree: 点击注册即代表同意《{protocol}》
     label:
       phone: 手机注册
       email: 邮箱注册
