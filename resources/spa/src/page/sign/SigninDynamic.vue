@@ -154,7 +154,7 @@ export default {
     signupByCode () {
       this.loading = true
       const params = {
-        name: `${this.$t('auth.user')} ` + generateString(6),
+        name: `${this.$t('auth.user')}` + generateString(6),
         phone: this.account,
         verifiable_type: 'sms',
         verifiable_code: this.code,
