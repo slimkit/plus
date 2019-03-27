@@ -176,8 +176,8 @@ export default [
       forGuest: true,
     },
     beforeEnter (to, from, next) {
-      const accessToken = window.$lstore.getData('H5_WECHAT_MP_ASTOKEN')
-      const nickname = window.$lstore.getData('H5_WECHAT_NICKNAME')
+      const accessToken = window.$lstore.getData('H5_WECHAT_MP_ASTOKEN', true)
+      const nickname = window.$lstore.getData('H5_WECHAT_NICKNAME', true)
       accessToken && nickname ? next() : next('/wechat')
     },
   },
@@ -189,7 +189,7 @@ export default [
       forGuest: true,
     },
     beforeEnter (to, from, next) {
-      const accessToken = window.$lstore.getData('H5_WECHAT_MP_ASTOKEN')
+      const accessToken = window.$lstore.getData('H5_WECHAT_MP_ASTOKEN', true)
       accessToken ? next() : next('/wechat')
     },
   },

@@ -76,7 +76,7 @@ export default {
     },
     async resolveUser (code) {
       let openId = this.$lstore.getData('H5_WECHAT_MP_OPENID')
-      let accessToken = this.$lstore.getData('H5_WECHAT_MP_ASTOKEN')
+      let accessToken = this.$lstore.getData('H5_WECHAT_MP_ASTOKEN', true)
 
       if (!accessToken || !openId) {
         const { data } = await this.$http.get(`/socialite/getAccess/${code}`, { validateStatus: s => s === 200 })
@@ -85,7 +85,7 @@ export default {
         openId = newOpenId
 
         this.$lstore.setData('H5_WECHAT_MP_OPENID', openId)
-        this.$lstore.setData('H5_WECHAT_MP_ASTOKEN', accessToken)
+        this.$lstore.setData('H5_WECHAT_MP_ASTOKEN', accessToken, true)
       }
       this.accessToken = accessToken
       this.$http
