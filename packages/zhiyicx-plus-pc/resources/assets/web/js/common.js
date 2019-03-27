@@ -1850,13 +1850,52 @@ function handleFile(blob, callback) {
     reader.readAsArrayBuffer(blob)
 }
 
+function dataURLtoBlob (dataURL) {
+    var arr = dataURL.split(',')
+    var mime = arr[0].match(/:(.*?);/)[1]
+    var bstr = atob(arr[1])
+    var n = bstr.length
+    var u8arr = new Uint8Array(n)
+    while (n--) {
+      u8arr[n] = bstr.charCodeAt(n)
+    }
+    return new Blob([u8arr], { type: mime })
+  }
+
+function getFirstFrameOfGif (file, type) {
+    return new Promise(resolve => {
+        var image = new Image()
+
+        image.onload = () => {
+            var width = image.width
+            var height = image.height
+
+            var canvas = document.createElement('canvas')
+
+            canvas.width = width
+            canvas.height = height
+            // 绘制图片帧（第一帧）
+            canvas.getContext('2d').drawImage(image, 0, 0, width, height)
+            var dataURL = canvas.toDataURL('image/jpeg', 0.5)
+            switch (type) {
+            case 'dataURL':
+                return resolve(dataURL)
+            default:
+                return resolve(dataURLtoBlob(dataURL))
+            }
+        }
+
+        image.src = URL.createObjectURL(file)
+    })
+}
+
 // 播放 GIF 图
 if ('getContext' in document.createElement('canvas')) {
     HTMLImageElement.prototype.play = function() {
         var that = this
         that.parentElement.classList.add('playing')
-        if (that.dataset.blobUrl) {
-            that.src = that.dataset.blobUrl
+        if (that.dataset.blobGifUrl) {
+            that.src = that.dataset.blobGifUrl
             gifInfo.timer = setTimeout(function() {
                 that.stop()
                 gifInfo.currentIndex++
@@ -1872,7 +1911,7 @@ if ('getContext' in document.createElement('canvas')) {
             // 加载图片
             var blobUrl = window.URL.createObjectURL(blob);
             that.src = blobUrl
-            that.dataset.blobUrl = blobUrl
+            that.dataset.blobGifUrl = blobUrl
 
             // 解析 GIF 信息 （via gify）
             handleFile(blob, function (info) {
@@ -1889,7 +1928,24 @@ if ('getContext' in document.createElement('canvas')) {
     HTMLImageElement.prototype.stop = function() {
         clearTimeout(gifInfo.timer)
         this.parentElement.classList.remove('playing')
-        this.src = this.dataset.original
+        var that = this
+        if (that.dataset.blobUrl) {
+            that.src = that.dataset.blobUrl
+            return
+        }
+        // 从远程获取 GIF blob 对象
+        axios.get(that.dataset.original, {
+            responseType: 'blob'
+        }).then(function(res) {
+            var blob = res.data
+
+            getFirstFrameOfGif(blob)
+                .then(function(b) {
+                    var blobUrl = window.URL.createObjectURL(b);
+                    that.src = blobUrl
+                    that.dataset.blobUrl = blobUrl
+                })
+        })
     };
 }
 
