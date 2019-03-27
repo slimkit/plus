@@ -31,12 +31,12 @@
                             <div class="currency-info clearfix">
                                 <div class="remaining-sum"></div>
                                 <div class="operate">
-                                    @if($config['bootstrappers']['currency:recharge']['open'])
+                                    @if($config['bootstrappers']['currency']['recharge']['status'])
                                         <a href="javascript:;">
                                             <button>充值</button>
                                         </a>
                                     @endif
-                                    @if($config['bootstrappers']['currency:cash']['open'])
+                                    @if($config['bootstrappers']['currency']['cash']['status'])
                                     <a href="javascript:;">
                                         <button class="gray">提取</button>
                                     </a>
@@ -47,7 +47,7 @@
                             @if($type==1)
                                 <p>{{ $config['bootstrappers']['site']['currency_name']['name'] }}规则</p>
                                 <div class="rules">
-                                    {{$currency['rule']}}
+                                    {{$config['bootstrappers']['currency']['rule']}}
                                 </div>
                             @endif
                         </div>
@@ -63,7 +63,7 @@
 
 @section('scripts')
     <script>
-        var currency = {!! json_encode($currency) !!};
+        var currency = {!! json_encode($config['bootstrappers']['currency']) !!};
         $(function(){
             var type = {{ $type }};
             switchType(type);

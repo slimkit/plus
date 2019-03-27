@@ -34,7 +34,7 @@
         <div class="pay-way">
             <label for="alipay" class="active"><img src="{{ asset('assets/pc/images/pay_pic_zfb_on.png') }}"/></label>
             <input class="hide" id="alipay" type="radio" name="payway" value="AlipayWapOrder" checked>
-            @if($config['bootstrappers']['wallet:transform']['open'])
+            @if($config['bootstrappers']['wallet']['transform-currency'])
                 <label for="wallet"><img src="{{ asset('assets/pc/images/pay_pic_wallet_on.png') }}"/></label>
                 <input class="hide" id="wallet" type="radio" name="payway" value="wallet_pc_direct">
             @endif
