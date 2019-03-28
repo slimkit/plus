@@ -78,14 +78,26 @@ class AuthController extends Controller
             $verify->delete();
 
             if ($user = User::where($field, $login)->first()) {
-                return $this->respondWithToken($this->guard()->login($user));
+                return $user->deleted_at ?
+                    $this->respondWithToken($this->guard()->login($user)) :
+                    $this->response()->json([
+                        'message' => '账号已被锁定，请联系管理员',
+                    ], 403);
             }
 
             return $this->response()->json([
                 'message' => sprintf('%s还没有注册', $field == 'phone' ? '手机号' : '邮箱'),
             ], 422);
         }
-
+        $user = User::withTrashed()
+            ->where($field, $login)
+            ->whereNotNull('deleted_at')
+            ->first();
+        if ($user) {
+            return $this->response()->json([
+                'message' => '账号已被禁用，请联系管理员',
+            ], 403);
+        }
         $credentials = [
             $field => $login,
             'password' => $request->input('password', ''),
