@@ -20,12 +20,12 @@ declare(strict_types=1);
 
 namespace Zhiyi\Plus\Http\Controllers\Auth;
 
-use Illuminate\Http\Request;
-use Illuminate\Validation\ValidationException;
 use Zhiyi\Plus\Models\User;
+use Illuminate\Http\Request;
 use function Zhiyi\Plus\username;
 use Illuminate\Contracts\Config\Repository;
 use Zhiyi\Plus\Http\Controllers\Controller;
+use Illuminate\Validation\ValidationException;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 
 class LoginController extends Controller
