@@ -150,7 +150,7 @@
           <RouterLink to="/signup/protocol" class="register-protocol">
             <!-- eslint-disable-next-line vue/component-name-in-template-casing -->
             <i18n path="auth.register.agree">
-              <span place="protocol">{{ process.env.VUE_APP_NAME + '用户注册协议' }}</span>
+              <span place="protocol">{{ siteName }}用户注册协议</span>
             </i18n>
           </RouterLink>
         </template>
@@ -199,6 +199,8 @@ export default {
       eye: false,
       error: '',
       loading: false,
+
+      siteName: process.env.VUE_APP_NAME,
 
       name: '',
       email: '',
