@@ -52,8 +52,7 @@ body {
 .about-us {
 
   .container .content {
-    display: flex;
-    white-space: pre-line;
+    word-break: break-all;
   }
 }
 </style>

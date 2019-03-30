@@ -30,8 +30,8 @@ $lefyNavWidth: 240px;
     }
   }
   .context-container {
-    width: 100%;
-    padding-left: $lefyNavWidth;
+    width: calc(100vw - #{$lefyNavWidth});
+    margin-left: $lefyNavWidth;
   }
 }
 </style>

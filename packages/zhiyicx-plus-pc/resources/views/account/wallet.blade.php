@@ -33,7 +33,7 @@
                             </ul>
                             <i></i>
                         </span>
-                        @if($config['bootstrappers']['wallet:cash']['open'])
+                        @if($config['bootstrappers']['wallet']['cash']['status'])
                             <span class="switch @if($type == 3) active @endif" type="3">提现记录</span>
                         @endif
                     </div>
@@ -41,10 +41,10 @@
                         <div class="wallet-info clearfix">
                             <div class="remaining-sum"> </div>
                             <div class="operate">
-                                @if($config['bootstrappers']['wallet:recharge']['open'])
+                                @if($config['bootstrappers']['wallet']['recharge']['status'])
                                     <a href="javascript:;"><button>充值</button></a>
                                 @endif
-                                @if($config['bootstrappers']['wallet:cash']['open'])
+                                @if($config['bootstrappers']['wallet']['cash']['status'])
                                     <a href="javascript:;">
                                         <button class="gray">提现</button>
                                     </a>

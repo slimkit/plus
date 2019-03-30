@@ -78,8 +78,8 @@ export default {
     }
   },
   created () {
-    this.nickname = this.$lstore.getData('H5_WECHAT_NICKNAME') || ''
-    this.accessToken = this.$lstore.getData('H5_WECHAT_MP_ASTOKEN') || ''
+    this.nickname = this.$lstore.getData('H5_WECHAT_NICKNAME', true) || ''
+    this.accessToken = this.$lstore.getData('H5_WECHAT_MP_ASTOKEN', true) || ''
     this.checkName(this.nickname)
   },
 
