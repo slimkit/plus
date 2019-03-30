@@ -19,6 +19,7 @@
         <div class="pay-way">
             <img src="{{ asset('assets/pc/images/pay_pic_zfb_on.png') }}"/>
             <input class="hide" id="alipay" type="radio" name="payway" value="alipay" checked>
+            {{-- <label class="opt" for="wxpay">微信<input class="hide" id="wxpay" type="radio" name="payway" value="wx"></label> --}}
         </div>
 
         <button class="pay-btn" id="J-pay-btn">提现</button>
@@ -56,7 +57,7 @@ $('#J-pay-btn').on('click', function(){
         account: account
     };
 
-    axios.post('/api/v2/wallet/cashes', params)
+    axios.post('/api/v2/plus-pay/cashes', params)
       .then(function (response) {
         noticebox('提现成功，请等待管理员审核', 1, '/settings/wallet/3');
       })
