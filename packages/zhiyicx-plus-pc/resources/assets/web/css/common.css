@@ -85,8 +85,8 @@ a {font-size:100%;vertical-align:baseline;background:transparent;text-decoration
 .head_search .history .clear {font-size:12px;line-height:40px;display:block;height:40px;cursor:pointer;text-align:center;color:#999;background:#f8fcff;}
 .head_search .search_types {display:none;}
 .head_search .search_types ul {display:block;margin:0;padding:20px 20px 0px 20px;overflow:hidden;}
-.head_search .search_types ul li {color:#666;width:100%;cursor:pointer;float:left;margin-bottom:20px;overflow:hidden;line-height:16px;}
-.head_search .search_types ul li .keywords {color:#59b6d7;max-width:110px;line-height:1;display:inline-block;vertical-align:middle;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.head_search .search_types ul li {color:#666;width:100%;cursor:pointer;float:left;margin-bottom:20px;overflow:hidden;line-height:18px;}
+.head_search .search_types ul li .keywords {color:#59b6d7;max-width:110px;line-height:18px;display:inline-block;vertical-align:middle;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
 .nav_right {float:right;margin:17px 50px;}
 .nav_right .role-icon {position:absolute;width:14px;height:14px;bottom:-3px;left:20px;}
 .nav_right a.nava {font-size:14px;color:#666;margin-right:20px;}
