@@ -7,6 +7,7 @@
       :loading="loading"
       :show-footer="!isMine"
       :back="beforeBack"
+      :show-more="!isMine"
       @update="updateData"
       @more="onMoreClick"
       @loadmore="fetchUserFeed(true)"
