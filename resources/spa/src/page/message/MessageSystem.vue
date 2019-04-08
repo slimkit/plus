@@ -62,30 +62,40 @@ export default {
       switch (data.type) {
         case 'reward':
           url = `/users/${data.sender.id}`; break
-        case 'reward:feeds':
-          url = `/feeds/${data.feed_id}`; break
-        case 'reward:news':
-          url = `/news/${data.news.id}`; break
-        case 'group:join':
-          url = `/groups/${data.group.id}`; break
         case 'user-certification':
           url = data.state === 'rejected' ? '/profile/certificate' : '/profile/certification'; break
+
+        case 'reward:feeds':
+          url = `/feeds/${data.feed_id}`; break
+        case 'pinned:feed/comment':
+          url = `/message/audits/feedcomments`; break
+
+        case 'reward:news':
+          url = `/news/${data.news.id}`; break
+        case 'pinned:news/comment':
+          url = `/message/audits/newscomments`; break
+
         case 'qa:answer-adoption':
         case 'question:answer':
-          url = `/question/${data.question.id}/answer/${data.answer.id}`; break
+          url = `/questions/${data.question.id}/answers/${data.answer.id}`; break
         case 'qa:reward':
-          url = `/question/${data.answer.question_id}/answer/${data.answer.id}`; break
+          url = `/questions/${data.answer.question_id}/answers/${data.answer.id}`; break
         case 'qa:invitation':
-          url = `/question/${data.question.id}`; break
-        case 'pinned:feed/comment':
-          url = `/feeds/${data.feed.id}`; break
-        case 'pinned:news/comment':
-          url = `/news/${data.news.id}`; break
+          url = `/questions/${data.question.id}`; break
+        case 'qa:question-excellent:accept':
+          url = `/questions/${data.application.question_id}`; break
+
+        case 'group:join':
+          if (data.state) url = `/groups/${data.group.id}`
+          else url = `/message/audits/groupjoins`
+          break
+        case 'group:post-reward':
+          url = `/groups/${data.group_id}/posts/${data.post.id}`; break
         case 'group:comment-pinned':
         case 'group:send-comment-pinned':
-          url = `/groups/${data.group_id}/posts/${data.post.id}`; break
+          url = `/message/audits/groupcomments`; break
         case 'group:post-pinned':
-          url = `/groups/${data.group_id}/posts/${data.post.id}`; break
+          url = `/message/audits/groupposts`; break
       }
       this.$router.push(url)
     },

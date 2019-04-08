@@ -387,8 +387,7 @@ feed:
   top: 置顶动态
 
   pay:
-    need_paid: '你只需要支付{0}@:(currency.unit)就可查看此{1}'
-    buy:
+    need_pay: '你只需要支付{0}@:(currency.unit)就可查看此{1}'
 
   topic:
     name: 话题
@@ -551,6 +550,18 @@ question:
   qa: 问答
   q_a: 问答
 
+  comment:
+    name: 问题评论
+    add: 添加评论
+
+  reward:
+    public: 公开悬赏
+    set_amount: 设置悬赏金额
+    custom_amount: 自定义金额
+    input_amount: 输入金额
+    rule: 悬赏规则
+    success: 设置悬赏成功
+
   topic:
     name: 专题
     detail: 专题详情
@@ -575,10 +586,13 @@ question:
     detail: 回答详情
     add: 添加回答
     view: 查看回答
+
+    adoption_answer: 采纳答案
+    adoption_success: 采纳成功
     count: '{0}个回答'
     invite: ['已邀请悬赏', '已设置悬赏', '未设置悬赏']
     sort: ['时间排序', '默认排序']
-    adoption: 已采纳
+    adoption: ['采纳', '已采纳']
     invited: 邀请回答
     look:
       already: 已围观
@@ -599,21 +613,29 @@ message:
     empty: 暂无系统通知
 
     reward_user: '{user}打赏了你'
-    reward_feed: '{user}打赏了你的动态'
-    reward_news: '你的资讯《{news}》被{user}打赏了{amount}'
-    reward_post: '你的帖子「{post}」被{user}打赏了'
-    group_join: ['同意用户{user}加入圈子「{group}」', '拒绝用户加入圈子「{group}」']
     certificate: ['你申请的身份认证已通过', '你申请的身份认证已被驳回，驳回理由：{reason}']
-    qa_adopt: 你提交的回答「{answer}」被采纳
+
+    reward_feed: '{user}打赏了你的动态'
+    pinned_feed_by_admin: '管理员置顶了你的动态'
+    pinned_feed_comment: ['同意用户动态评论「{comment}」的置顶请求', '拒绝用户动态评论「{comment}」的置顶请求']
+
+    reward_news: '你的资讯《{news}》被{user}打赏了{amount}'
+    pinned_news_comment: ['同意用户关于资讯《{news}》评论「{comment}」的置顶请求', '同意用户关于资讯《{news}》评论「{comment}」的置顶请求']
+
+    qa_adopt: '你提交的回答「{answer}」被采纳'
     reward_qa: '{user}打赏了你的回答'
     qa_invitation: '{user}邀请你回答问题「{question}」'
     qa_topic_passed: '你的《{topic}》专题申请已通过'
     qa_topic_reject: '你的《{topic}》专题申请被拒绝'
-    pinned_feed_comment: ['同意用户动态评论「{comment}」的置顶请求', '拒绝用户动态评论「{comment}」的置顶请求']
-    pinned_news_comment: ['同意用户关于资讯《{news}》评论「{comment}」的置顶请求', '同意用户关于资讯《{news}》评论「{comment}」的置顶请求']
+    qa_excellent: ['你的问题「{question}」已通过申请精选']
+
+    group_join: ['你被同意加入圈子「{group}」', '你被拒绝加入圈子「{group}」', '{user}请求加入圈子「{group}」']
+    reward_post: '你的帖子「{post}」被{user}打赏了'
     pinned_post_comment: ['同意帖子「{post}」的评论置顶请求', '拒绝帖子「{post}」的评论置顶请求']
     pinned_post: ['同意用户帖子「{post}」的置顶请求', '拒绝用户帖子「{post}」的置顶请求']
     pinned_post_by_admin: '你的帖子「{post}」已被管理员置顶'
+
+    report: '你举报的内容平台已处理'
 
   comment:
     name: 收到的评论
@@ -650,18 +672,17 @@ message:
   chat:
     name: 聊天
 
-
 rank:
   name: 排行榜
   user: 用户
-  banance: 财富达人排行榜
+  balance: 财富达人排行榜
   checkin: 社区签到排行榜
   checkin_count: 累计签到：{0}
-  expert: 问答达人排行榜
+  expert: 社区专家排行榜
   fans: 全站粉丝排行榜
   fans_count: 粉丝：{0}
   income: 收入达人排行榜
-  question_like: 问答点赞排行榜
+  question_like: 问答达人排行榜
   question_like_count: 问答点赞量：{0}
   feed: '{0}动态排行榜'
   feed_count: 点赞量：{0}
