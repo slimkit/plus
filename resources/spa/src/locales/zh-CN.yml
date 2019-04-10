@@ -631,7 +631,7 @@ message:
     qa_excellent: ['你的问题「{question}」已通过申请精选', '你申请精选问题「{question}」被拒绝']
 
     group_join: ['你被同意加入圈子「{group}」', '你被拒绝加入圈子「{group}」', '{user}请求加入圈子「{group}」']
-    group_transform: '{user}将圈子「{group}」转移给你了'
+    group_transform: '{user}将圈子「{group}」转让给你了'
     reward_post: '你的帖子「{post}」被{user}打赏了'
     pinned_post_comment: ['你的帖子「{post}」的评论置顶请求被通过', '你的帖子「{post}」的评论置顶请求被拒绝']
     pinned_post: ['你的帖子「{post}」的置顶请求被通过', '你的帖子「{post}」的置顶请求被拒绝']
