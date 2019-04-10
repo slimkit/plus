@@ -176,16 +176,17 @@ export function getNotificationDisplay (data) {
       return i18n.t(`message.system.certificate[${data.state !== 'reject' ? 1 : 0}]`, { reason: data.contents })
     case 'user-currency:cash':
       return i18n.t(`message.system.user_cash[${data.state === 'rejected' ? 1 : 0}]`, { reason: data.contents })
+    case 'user-cash':
+      return i18n.t(`message.system.user_cash_wallet[${data.state === 'rejected' ? 1 : 0}]`, { reason: data.contents })
 
     case 'reward:feeds':
       return i18n.t('message.system.reward_feed', { user: data.sender.name })
     case 'pinned:feeds':
       return i18n.t('message.system.pinned_feed_by_admin')
-
     case 'pinned:feed/comment':
       body = data.comment.contents
       if (body.length > 12) body = body.slice(0, 12) + '...'
-      return i18n.t(`message.system.pinned_feed_comment[${data.state !== 'reject' ? 1 : 0}]`, { comment: body })
+      return i18n.t(`message.system.pinned_feed_comment[${data.state === 'passed' ? 0 : 1}]`, { comment: body })
 
     case 'reward:news':
       return i18n.t('message.system.reward_news', { news: data.news.title, user: data.sender.name, amount: data.amount + data.unit })
@@ -223,7 +224,7 @@ export function getNotificationDisplay (data) {
     case 'group:send-comment-pinned':
       return i18n.t(`message.system.pinned_post_comment[${data.state !== 'reject' ? 1 : 0}]`, { post: data.post.title })
     case 'group:post-pinned':
-      return i18n.t(`message.system.pinned_post[${data.state !== 'reject' ? 1 : 0}]`, { post: data.post.title })
+      return i18n.t(`message.system.pinned_post[${data.state !== 'rejected' ? 0 : 1}]`, { post: data.post.title })
     case 'group:pinned-admin':
       return i18n.t('message.system.pinned_post_by_admin', { post: data.post.title })
 

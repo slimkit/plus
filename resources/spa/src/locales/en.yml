@@ -611,6 +611,7 @@ message:
     reward_user: '{user} rewards you'
     certificate: ['The identity you applied for has passed', 'The identity you applied for has been rejected']
     user_cash: ['Your currency withdrawal request has been passed', 'Your currency withdrawal request was rejected: {reason}']
+    user_cash_wallet: ['Your withdrawal request has been passed', 'Your withdrawal request was rejected: {reason}']
 
 
     reward_feed: '{user} rewards your feed'

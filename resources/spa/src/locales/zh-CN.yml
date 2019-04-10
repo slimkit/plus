@@ -615,6 +615,7 @@ message:
     reward_user: '{user}打赏了你'
     certificate: ['你申请的身份认证已通过', '你申请的身份认证已被驳回，驳回理由：{reason}']
     user_cash: ['你的积分提取申请已通过', '你的积分提取申请被拒绝：{reason}']
+    user_cash_wallet: ['你的提现申请已通过', '你的提现申请被拒绝：{reason}']
 
     reward_feed: '{user}打赏了你的动态'
     pinned_feed_by_admin: '管理员置顶了你的动态'
