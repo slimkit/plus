@@ -374,7 +374,7 @@ export default {
               this.$bus.$emit('report', {
                 type: 'news',
                 payload: this.newsId,
-                username: this.news.user.name,
+                username: this.news.author,
                 reference: this.news.title,
               })
             },

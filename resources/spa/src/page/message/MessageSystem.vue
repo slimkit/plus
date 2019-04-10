@@ -8,8 +8,8 @@
       @onLoadMore="onLoadMore"
     >
       <section
-        v-for="notification in notifications"
-        :key="notification.id"
+        v-for="(notification, index) in notifications"
+        :key="index"
         class="notification-item"
         @click="jump(notification.data)"
       >
@@ -64,16 +64,20 @@ export default {
           url = `/users/${data.sender.id}`; break
         case 'user-certification':
           url = data.state === 'rejected' ? '/profile/certificate' : '/profile/certification'; break
+        case 'user-currency:cash':
+          url = '/currency/journal-detail'; break
+        case 'user-cash':
+          url = '/wallet/detail'; break
 
         case 'reward:feeds':
+        case 'pinned:feed':
           url = `/feeds/${data.feed_id}`; break
         case 'pinned:feed/comment':
-          url = `/message/audits/feedcomments`; break
+          url = `/feeds/${data.feed.id}`; break
 
         case 'reward:news':
-          url = `/news/${data.news.id}`; break
         case 'pinned:news/comment':
-          url = `/message/audits/newscomments`; break
+          url = `/news/${data.news.id}`; break
 
         case 'qa:answer-adoption':
         case 'question:answer':
@@ -82,20 +86,20 @@ export default {
           url = `/questions/${data.answer.question_id}/answers/${data.answer.id}`; break
         case 'qa:invitation':
           url = `/questions/${data.question.id}`; break
+        case 'qa:question-topic:accept':
+          url = `/question-topics/${data.topic.id}`; break
+        case 'qa:question-excellent:reject':
         case 'qa:question-excellent:accept':
           url = `/questions/${data.application.question_id}`; break
 
         case 'group:join':
-          if (data.state) url = `/groups/${data.group.id}`
-          else url = `/message/audits/groupjoins`
-          break
+        case 'group:gransform':
+          url = `/groups/${data.group.id}`; break
         case 'group:post-reward':
-          url = `/groups/${data.group_id}/posts/${data.post.id}`; break
         case 'group:comment-pinned':
         case 'group:send-comment-pinned':
-          url = `/message/audits/groupcomments`; break
         case 'group:post-pinned':
-          url = `/message/audits/groupposts`; break
+          url = `/groups/${data.group_id}/posts/${data.post.id}`; break
       }
       this.$router.push(url)
     },

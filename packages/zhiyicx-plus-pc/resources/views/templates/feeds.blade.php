@@ -52,7 +52,7 @@ use function Zhiyi\Component\ZhiyiPlus\PlusComponentPc\getAvatar;
             @endphp
             {!! formatContent($content) !!}
             @if($has_more)
-            <a href="{{ route('pc:feedread', ['feed' => $post['id']]) }}" class="more"> ...查看更多</a>
+            <a href="{{ route('pc:feedread', ['feed' => $post['id']]) }}" class="more mcolor"> ...查看更多</a>
             @endif
         </a>
         @endif
