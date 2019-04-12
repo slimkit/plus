@@ -92,7 +92,7 @@ class AuthController extends Controller
         $user = User::withTrashed()
             ->where($field, $login)
             ->first();
-        if ($user->deleted_at) {
+        if ($user && $user->deleted_at) {
             return $this->response()->json([
                 'message' => '账号已被禁用，请联系管理员',
             ], 403);
