@@ -93,13 +93,16 @@ export default {
           url = `/questions/${data.application.question_id}`; break
 
         case 'group:join':
-        case 'group:gransform':
+        case 'group:transform':
           url = `/groups/${data.group.id}`; break
         case 'group:post-reward':
         case 'group:comment-pinned':
         case 'group:send-comment-pinned':
         case 'group:post-pinned':
           url = `/groups/${data.group_id}/posts/${data.post.id}`; break
+        case 'group:report-comment':
+        case 'group:report-post':
+          url = `/groups/${data.group.id}/posts/${data.post.id}`; break
       }
       this.$router.push(url)
     },

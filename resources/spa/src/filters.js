@@ -227,6 +227,10 @@ export function getNotificationDisplay (data) {
       return i18n.t(`message.system.pinned_post[${data.state !== 'rejected' ? 0 : 1}]`, { post: data.post.title })
     case 'group:pinned-admin':
       return i18n.t('message.system.pinned_post_by_admin', { post: data.post.title })
+    case 'group:report-comment':
+      return i18n.t('message.system.report_post_comment', { user: data.sender.name, group: data.group.name, post: data.post.title, comment: data.comment.contents })
+    case 'group:report-post':
+      return i18n.t('message.system.report_post', { user: data.sender.name, group: data.group.name, post: data.post.title })
 
     case 'report':
       return i18n.t('message.system.report') + ': ' + data.subject
