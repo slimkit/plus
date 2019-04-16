@@ -61,7 +61,7 @@ class AuthController extends Controller
     public function login(Request $request)
     : JsonResponse
     {
-        $login = (string)$request->input('login', '');
+        $login = (string) $request->input('login', '');
         $code = $request->input('verifiable_code');
         $field = username($login);
 
@@ -73,15 +73,14 @@ class AuthController extends Controller
                 ->orderby('id', 'desc')
                 ->first();
 
-            if (!$verify) {
+            if (! $verify) {
                 return $this->response()->json(['message' => '验证码错误或者已失效'], 422);
             }
 
             $verify->delete();
 
             if ($user = User::withTrashed()->where($field, $login)->first()) {
-
-                return !$user->deleted_at ?
+                return ! $user->deleted_at ?
                     $this->respondWithToken($this->guard()->login($user)) :
                     $this->response()->json([
                         'message' => '账号已被禁用，请联系管理员',
@@ -96,7 +95,6 @@ class AuthController extends Controller
             ->where($field, $login)
             ->first()) {
             if ($user->deleted_at) {
-
                 return $this->response()->json([
                     'message' => '账号已被禁用，请联系管理员',
                 ], 403);
@@ -112,7 +110,6 @@ class AuthController extends Controller
 
             return $this->response()->json(['message' => '账号或密码不正确'], 422);
         } else {
-
             return $this->response()->json([
                 'message' => sprintf('%s还没有注册', $field == 'phone' ? '手机号' : '邮箱'),
             ], 422);
