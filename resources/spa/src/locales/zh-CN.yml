@@ -637,6 +637,8 @@ message:
     pinned_post_comment: ['你的帖子「{post}」的评论置顶请求被通过', '你的帖子「{post}」的评论置顶请求被拒绝']
     pinned_post: ['你的帖子「{post}」的置顶请求被通过', '你的帖子「{post}」的置顶请求被拒绝']
     pinned_post_by_admin: '你的帖子「{post}」已被管理员置顶'
+    report_post: '{user}举报了你的圈子「{group}」下的帖子「{post}」'
+    report_post_comment: '{user}举报了你的帖子「{post}」下的评论「{comment}」'
 
     report: '你举报的内容平台已处理'
 

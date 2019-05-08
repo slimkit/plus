@@ -45,7 +45,8 @@ class AuthController extends Controller
      *
      * @return \Illuminate\Contracts\Auth\Guard
      */
-    public function guard(): Guard
+    public function guard()
+    : Guard
     {
         return Auth::guard('api');
     }
@@ -57,7 +58,8 @@ class AuthController extends Controller
      * @return \Illuminate\Http\JsonResponse
      * @author Seven Du <shiweidu@outlook.com>
      */
-    public function login(Request $request): JsonResponse
+    public function login(Request $request)
+    : JsonResponse
     {
         $login = (string) $request->input('login', '');
         $code = $request->input('verifiable_code');
@@ -77,11 +79,11 @@ class AuthController extends Controller
 
             $verify->delete();
 
-            if ($user = User::where($field, $login)->first()) {
-                return $user->deleted_at ?
+            if ($user = User::withTrashed()->where($field, $login)->first()) {
+                return ! $user->deleted_at ?
                     $this->respondWithToken($this->guard()->login($user)) :
                     $this->response()->json([
-                        'message' => '账号已被锁定，请联系管理员',
+                        'message' => '账号已被禁用，请联系管理员',
                     ], 403);
             }
 
@@ -89,24 +91,29 @@ class AuthController extends Controller
                 'message' => sprintf('%s还没有注册', $field == 'phone' ? '手机号' : '邮箱'),
             ], 422);
         }
-        $user = User::withTrashed()
+        if ($user = User::withTrashed()
             ->where($field, $login)
-            ->first();
-        if ($user->deleted_at) {
+            ->first()) {
+            if ($user->deleted_at) {
+                return $this->response()->json([
+                    'message' => '账号已被禁用，请联系管理员',
+                ], 403);
+            }
+            $credentials = [
+                $field => $login,
+                'password' => $request->input('password', ''),
+            ];
+
+            if ($token = $this->guard()->attempt($credentials)) {
+                return $this->respondWithToken($token);
+            }
+
+            return $this->response()->json(['message' => '账号或密码不正确'], 422);
+        } else {
             return $this->response()->json([
-                'message' => '账号已被禁用，请联系管理员',
-            ], 403);
+                'message' => sprintf('%s还没有注册', $field == 'phone' ? '手机号' : '邮箱'),
+            ], 422);
         }
-        $credentials = [
-            $field => $login,
-            'password' => $request->input('password', ''),
-        ];
-
-        if ($token = $this->guard()->attempt($credentials)) {
-            return $this->respondWithToken($token);
-        }
-
-        return $this->response()->json(['message' => '账号或密码不正确'], 422);
     }
 
     /**
@@ -115,7 +122,8 @@ class AuthController extends Controller
      * @return \Illuminate\Http\JsonResponse
      * @author Seven Du <shiweidu@outlook.com>
      */
-    public function logout(): JsonResponse
+    public function logout()
+    : JsonResponse
     {
         $this->guard()->logout();
 
@@ -128,7 +136,8 @@ class AuthController extends Controller
      * @return \Illuminate\Http\JsonResponse
      * @author Seven Du <shiweidu@outlook.com>
      */
-    public function refresh(): JsonResponse
+    public function refresh()
+    : JsonResponse
     {
         return $this->respondWithToken(
             $this->guard()->refresh()
@@ -138,11 +147,12 @@ class AuthController extends Controller
     /**
      * Get the token array structure.
      *
-     * @param  string $token
+     * @param string $token
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    protected function respondWithToken(string $token): JsonResponse
+    protected function respondWithToken(string $token)
+    : JsonResponse
     {
         $this->guard()->user()->update([
             'last_login_ip' => request()->ip(),

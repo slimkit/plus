@@ -26,7 +26,6 @@ export default [
     meta: {
       title: i18n.t('news.detail'),
       keepAlive: true,
-      requiresAuth: true,
     },
   },
   {

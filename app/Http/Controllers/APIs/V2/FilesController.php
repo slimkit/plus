@@ -105,7 +105,7 @@ class FilesController extends Controller
                 ini_set('memory_limit', '-1');
                 Image::make($file->getRealPath())->orientate()->save($file->getRealPath(), 100);
             }
-            list($width, $height) = ($imageInfo = @getimagesize($file->getRealPath())) === false ? [null, null] : $imageInfo;
+            [$width, $height] = ($imageInfo = @getimagesize($file->getRealPath())) === false ? [null, null] : $imageInfo;
             $path = $dateTime->format('Y/m/d/Hi');
             if (($filename = $file->store($path, config('cdn.generators.filesystem.disk'))) === false) {
                 return $response->json(['message' => '上传失败'], 500);
