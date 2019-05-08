@@ -150,7 +150,7 @@ class AppServiceProvider extends ServiceProvider
             throw new \InvalidArgumentException('Parameters must be passed');
         }
 
-        list($min, $max) = array_pad($parameters, -2, 0);
+        [$min, $max] = array_pad($parameters, -2, 0);
 
         return $number >= $min && $number <= $max;
     }

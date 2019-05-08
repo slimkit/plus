@@ -57,7 +57,7 @@ class PackageCreateCommand extends Command
     {
         $this->initRepository();
 
-        list($vendor, $name) = explode('/', $packageName = $this->questionName());
+        [$vendor, $name] = explode('/', $packageName = $this->questionName());
         $namespace = sprintf('%s\\%s\\', $this->cameCase($vendor), $this->cameCase($name));
         $namespace = $this->ask('Autoload namespace, default', $namespace);
         $namespace = $this->formatNamespace($namespace);

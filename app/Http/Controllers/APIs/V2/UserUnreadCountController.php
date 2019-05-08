@@ -55,8 +55,7 @@ class UserUnreadCountController extends Controller
         // 查询最近几条评论记录
         $comments = $commentModel->select('user_id',
             DB::raw('max(id) as id, max(created_at) as time'))
-            ->where(function ($query) use ($user)
-            {
+            ->where(function ($query) use ($user) {
                 return $query->where('target_user', $user->id)
                     ->orWhere('reply_user', $user->id);
             })
@@ -80,8 +79,7 @@ class UserUnreadCountController extends Controller
 
         // 未处理审核统计
         $pinneds = $eventer->dispatch()->mapWithKeys(function ($pinnedModels
-        ) use ($user)
-        {
+        ) use ($user) {
             $model = new $pinnedModels['namespace']();
 
             $pinned = $model
@@ -127,15 +125,12 @@ class UserUnreadCountController extends Controller
             'atme'     => $atMeUsers->isEmpty()
                 ? null
                 : [
-                    'users'     => $atMeUsers->map(function ($item)
-                    {
-
+                    'users'     => $atMeUsers->map(function ($item) {
                         return $item->data['sender']['name'] ?? null;
                     })->filter()->unique()->values()->all(),
                     'latest_at' => $atLatestTimestamp,
                 ],
-        ], function ($item)
-        {
+        ], function ($item) {
             if (is_null($item)) {
                 return false;
             } elseif ($item instanceof Collection) {
