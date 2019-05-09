@@ -143,7 +143,7 @@ class CurrencyPayController extends Controller
         if ($from !== 1 && $from !== 2) {
             return $response->json(['message' => '请求来源非法'], 403);
         }
-        $config = array_filter(config('newPay.alipay'));
+        $config = array_filter(config('newPay.alipay') ?: []);
         // 支付宝配置必须包含signType, appId, secretKey, publicKey, 缺一不可
         if (count($config) < 4) {
             return $response->json(['message' => '系统错误,请联系小助手'], 500);
@@ -219,7 +219,7 @@ class CurrencyPayController extends Controller
     public function alipayNotify(Request $request, NativePayOrder $orderModel)
     {
         $data = $request->all();
-        $config = array_filter(config('newPay.alipay'));
+        $config = array_filter(config('newPay.alipay') ?: []);
         // 支付宝配置必须包含signType, appId, secretKey, publicKey, 缺一不可
         if (count($config) < 4) {
             return new Response('fail');
@@ -289,7 +289,7 @@ class CurrencyPayController extends Controller
         if ($order->status === 2) {
             return $response->json(['message' => '充值失败'], 200);
         }
-        $config = config('newPay.alipay');
+        $config = config('newPay.alipay' ?: []);
         $resultStatus = $request->input('resultStatus');
         $gateWay = Omnipay::create('Alipay_AopApp');
         // 签名方法

@@ -300,6 +300,7 @@ currency:
 
 certificate:
   name: Certificate
+  base: Basic information
   apply: Apply certificate
   info: Certification
   data: Data
@@ -320,7 +321,7 @@ certificate:
     number: Please check if the ID number is correct.
     phone: Please check if the mobile number is correct.
   user:
-    name: Basic Information
+    name: User
     label:
       name: Real name
       number: ID number
@@ -332,7 +333,7 @@ certificate:
       phone: Enter 11 mobile phone number
       desc: This description will affect the review, please fill in carefully
   org:
-    name: Basic Information
+    name: Organization
     label:
       name: Person in charge
       number: ID number
@@ -383,7 +384,7 @@ feed:
   paid: Paid feeds
   top: Top feeds
   pay:
-    need_paid: 'You only need to pay {0} @:(currency.unit) to view this {1}'
+    need_pay: 'You only need to pay {0} @:(currency.unit) to view this {1}'
 
   topic:
     name: Topic
@@ -546,6 +547,18 @@ question:
   qa: Questions and answers
   q_a: Q&A
 
+  comment:
+    name: Question comments
+    add: Add
+
+  reward:
+    public: Public amount
+    set_amount: Set reward amount
+    custom_amount: Custom amount
+    input_amount: Input amount
+    rule: Reward rule
+    success: Reward success
+
   topic:
     name: Topic
     detail: Topic detail
@@ -570,10 +583,12 @@ question:
     detail: Answer detail
     add: Add answer
     view: View answer
+    adoption_answer: Adoption answer
+    adoption_success: Adoption success
     count: '{0} answers'
     invite: ['Invited Reward', 'Set Reward', 'Unset Reward']
     sort: ['time', 'default']
-    adoption: Adopted
+    adoption: ['Adopt', 'Adopted']
     invited: Invited
     look:
       already: Overlooking
@@ -594,17 +609,35 @@ message:
     empty: No system notification
 
     reward_user: '{user} rewards you'
-    reward_feed: '{user} rewards your feed'
-    reward_news: '{user} reward your news "{news}" {amount}'
-    group_join: ['Agree to user {user} to join the group "{group}"', 'Reject users to join the group "{group}"']
     certificate: ['The identity you applied for has passed', 'The identity you applied for has been rejected']
+    user_cash: ['Your currency withdrawal request has been passed', 'Your currency withdrawal request was rejected: {reason}']
+    user_cash_wallet: ['Your withdrawal request has been passed', 'Your withdrawal request was rejected: {reason}']
+
+
+    reward_feed: '{user} rewards your feed'
+    pinned_feed_by_admin: 'The administrator has pinned your feeds'
+    pinned_feed_comment: ['Your feed comment "{comment}" top request was passed ', 'Your feed comment "{comment}" top request was rejected']
+
+    reward_news: '{user} rewards your news "{news}" {amount}'
+    pinned_news_comment: ['Your request for comment on the "{news}" comment "{comment}" was passed', 'Your request for the comment on the "{news}" comment "{comment}" was rejected.']
+
     qa_adopt: 'The answer you submitted "{answer}" was adopted'
     reward_qa: '{user} rewards your answer'
     qa_invitation: '{user} invites you to answer the question "{question}"'
-    pinned_feed_comment: ['Agree to the feed comment on "{comment}" top request', 'Reject the feed comment "{comment}" top request']
-    pinned_news_comment: ['Agree to the news "{news}"" comment "{comment}"', 'Reject to the news "{news}" comment "{comment}"']
-    pinned_post_comment: ['Agree to post "{post}" comment pin request', 'reject post "{post}" comment pin request']
-    pinned_post: ['Agree to the top request for the post "{post}"', 'Reject the top request for the post "{post}"']
+    qa_topic_passed: 'Your question topic "{topic}" application was passed'
+    qa_topic_reject: 'Your question topic "{topic}" application was rejected'
+    qa_excellent: ['Your question "{question}"" has been selected by the application', 'You have been rejected for applying for the selected question "{question}"']
+
+    group_join: ['Agree to user {user} to join the group "{group}"', 'Reject users to join the group "{group}"']
+    group_transform: '{user} has transferred the group "{group}" to you'
+    reward_post: '{user} rewards your post "{post}"'
+    pinned_post_comment: ['Your post "{post}" comment pin request was passed', 'Your post "{post}" comment pinned request rejected']
+    pinned_post: ['Your post "{post}" top request was passed', 'Your post "{post}" top request was rejected']
+    pinned_post_by_admin: 'Your post "{post}" has been placed on top of the admin'
+    report_post: '{user} reported the post "{post}" in your group "{group}"'
+    report_post_comment: '{user} reported the comment "{comment}" under your post "{post}"'
+
+    report: 'The content you reported has been processed by the platform.'
 
   comment:
     name: Comments
@@ -645,14 +678,14 @@ message:
 rank:
   name: Ranking list
   user: User
-  balance: Wealth leader list
-  checkin: Check-in ranking list
+  balance: Wealth leader ranking
+  checkin: Check-in ranking
   checkin_count: 'Cumulative check-in: {0}'
-  expert: Q&A leader list
+  expert: Q&A expert ranking
   fans: Fans rankings
   fans_count: "Fans: {0}"
   income: Revenue leader ranking
-  question_like: Q&A like ranking
+  question_like: Q&A leader ranking
   question_like_count: 'like: {0}'
   feed: 'Feed ranking {0}'
   feed_count: 'like: {0}'
@@ -686,8 +719,7 @@ auth:
     name: Register
     success: Register success
     protocol: Register protocol
-    agree: By clicking Register, I agree to {protocol}
-    ts_protocol: '"ThinkSNS + User Use Agreement"'
+    agree: By clicking Register, I agree to "{protocol}"
     label:
       phone: Register with phone
       email: Register with email

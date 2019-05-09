@@ -131,7 +131,9 @@ function playFeedGif(feedId) {
     gifInfo.feed = feedId
     gifInfo.currentIndex = 0
     gifInfo.len = els.length
-    els[gifInfo.currentIndex].play()
+    if (els[gifInfo.currentIndex]) {
+        els[gifInfo.currentIndex].play()
+    }
 }
 
 Object.defineProperty(gifInfo, 'currentFeed', {

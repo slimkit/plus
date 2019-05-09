@@ -8,8 +8,8 @@
       @onLoadMore="onLoadMore"
     >
       <section
-        v-for="notification in notifications"
-        :key="notification.id"
+        v-for="(notification, index) in notifications"
+        :key="index"
         class="notification-item"
         @click="jump(notification.data)"
       >
@@ -62,30 +62,47 @@ export default {
       switch (data.type) {
         case 'reward':
           url = `/users/${data.sender.id}`; break
-        case 'reward:feeds':
-          url = `/feeds/${data.feed_id}`; break
-        case 'reward:news':
-          url = `/news/${data.news.id}`; break
-        case 'group:join':
-          url = `/groups/${data.group.id}`; break
         case 'user-certification':
           url = data.state === 'rejected' ? '/profile/certificate' : '/profile/certification'; break
-        case 'qa:answer-adoption':
-        case 'question:answer':
-          url = `/question/${data.question.id}/answer/${data.answer.id}`; break
-        case 'qa:reward':
-          url = `/question/${data.answer.question_id}/answer/${data.answer.id}`; break
-        case 'qa:invitation':
-          url = `/question/${data.question.id}`; break
+        case 'user-currency:cash':
+          url = '/currency/journal-detail'; break
+        case 'user-cash':
+          url = '/wallet/detail'; break
+
+        case 'reward:feeds':
+        case 'pinned:feed':
+          url = `/feeds/${data.feed_id}`; break
         case 'pinned:feed/comment':
           url = `/feeds/${data.feed.id}`; break
+
+        case 'reward:news':
         case 'pinned:news/comment':
           url = `/news/${data.news.id}`; break
+
+        case 'qa:answer-adoption':
+        case 'question:answer':
+          url = `/questions/${data.question.id}/answers/${data.answer.id}`; break
+        case 'qa:reward':
+          url = `/questions/${data.answer.question_id}/answers/${data.answer.id}`; break
+        case 'qa:invitation':
+          url = `/questions/${data.question.id}`; break
+        case 'qa:question-topic:accept':
+          url = `/question-topics/${data.topic.id}`; break
+        case 'qa:question-excellent:reject':
+        case 'qa:question-excellent:accept':
+          url = `/questions/${data.application.question_id}`; break
+
+        case 'group:join':
+        case 'group:transform':
+          url = `/groups/${data.group.id}`; break
+        case 'group:post-reward':
         case 'group:comment-pinned':
         case 'group:send-comment-pinned':
-          url = `/groups/${data.group_id}/posts/${data.post.id}`; break
         case 'group:post-pinned':
           url = `/groups/${data.group_id}/posts/${data.post.id}`; break
+        case 'group:report-comment':
+        case 'group:report-post':
+          url = `/groups/${data.group.id}/posts/${data.post.id}`; break
       }
       this.$router.push(url)
     },

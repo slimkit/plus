@@ -133,14 +133,13 @@ var mention = {
         if (this.$atList.css('display') === 'block') {
             // 显示at中的选项列表
             var key = event.keyCode
-            var $list = this.$atList.find('li')
+            var $list = this.$atList.find('.list-content')
             var len = $list.length
-            var index = $list.index($('.active'))
+            var index = $list.index($(this.$atList.find('.active')))
 
             if (key === 40) { // 下箭头
                 this.setCursorPosition(this.savedCursor)
-                var next = index === len - 1 ? 0 : index
-                console.log(len, index, next);
+                var next = index === len - 1 ? -1 : index
                 $list.removeClass('active')
                 $list.eq(next + 1).addClass('active')
                 return
@@ -204,7 +203,7 @@ $(function() {
         mention.objChange(event)
     })
 
-    $('.feed_content, .detail_comment, .profile_list').on('keyup mouseup', '.ev-comment-editor', function(event) {
+    $('.feed_content, .detail_comment, .profile_list, .feed_bottom').on('keyup mouseup', '.ev-comment-editor', function(event) {
       event.preventDefault();
       mention.$textarea = $(this)
       mention.$hiddenObj = $(this).next('.ev-mirror')

@@ -21,6 +21,7 @@ declare(strict_types=1);
 namespace Zhiyi\Plus\Cdn\Adapter;
 
 use OSS\OssClient;
+use Illuminate\Support\Arr;
 use Zhiyi\Plus\Cdn\Refresh;
 use Zhiyi\Plus\Models\File;
 use Illuminate\Support\Arr;
@@ -174,7 +175,7 @@ class AliOss implements FileUrlGeneratorContract
             $quality = min(100, max(0, intval($extra['quality'] ?? 0)));
             $blur = max(0, intval($extra['blur'] ?? 0));
 
-            if (! $width && ! $height && ! $blur && $quality && app('files')->extension($filename) === 'gif') {
+            if (! $width && ! $height && ! $blur && ! $quality && app('files')->extension($filename) === 'gif') {
                 return [];
             }
 

@@ -24,6 +24,7 @@ use HTMLPurifier;
 use Carbon\Carbon;
 use GuzzleHttp\Client;
 use HTMLPurifier_Config;
+use Illuminate\Support\Arr;
 use Zhiyi\Plus\Models\User;
 use Illuminate\Support\Arr;
 use Illuminate\Http\Request;
@@ -61,7 +62,7 @@ function formatContent($content)
             'user' => $username,
         ]);
 
-        return sprintf('<a href="%s">@%s</a>', $url, $username);
+        return sprintf('<a class="mcolor" href="%s">@%s</a>', $url, $username);
     }, $content);
 
     return $content;

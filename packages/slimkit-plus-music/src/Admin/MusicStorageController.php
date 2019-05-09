@@ -116,7 +116,7 @@ class MusicStorageController extends Controller
     public function specialStorage(SpecialUploadFileRequest $request, ResponseContract $response, Carbon $dateTime, FileModel $fileModel, FileWithModel $fileWith)
     {
         $fileModel = $this->validateFileInDatabase($fileModel, $file = $request->file('file'), function (UploadedFile $file, string $md5) use ($fileModel, $dateTime): FileModel {
-            list($width, $height) = ($imageInfo = @getimagesize($file->getRealPath())) === false ? [null, null] : $imageInfo;
+            [$width, $height] = ($imageInfo = @getimagesize($file->getRealPath())) === false ? [null, null] : $imageInfo;
             $path = $dateTime->format('Y/m/d/Hi');
 
             if (($filename = $file->store($path, 'public')) === false) {

@@ -4,6 +4,7 @@ import router from '@/routers'
 import Message from '@/plugins/message-box'
 import lstore from '@/plugins/lstore/lstore.js'
 import i18n from '@/i18n'
+import { plusMessageFirst } from '@/filters'
 
 let cancel
 let pending = {}
@@ -79,11 +80,7 @@ instance.interceptors.response.use(
             break
           case 422: {
             const { data } = err.response
-            try {
-              err.tips = Object.values(data.errors)[0][0]
-            } catch (error) {
-              err.tips = data || { message: i18n.t('network.error.e422') }
-            }
+            err.tips = plusMessageFirst(data, i18n.t('network.error.e422'))
             break
           }
           case 500:

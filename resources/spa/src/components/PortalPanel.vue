@@ -24,7 +24,11 @@
       </div>
       <div class="title m-text-cut">{{ title }}</div>
       <div :style="{opacity: loading ? 0 : 1}" class="right">
-        <svg class="m-style-svg m-svg-def" @click="$emit('more')">
+        <svg
+          v-if="showMore"
+          class="m-style-svg m-svg-def"
+          @click="$emit('more')"
+        >
           <use xlink:href="#icon-more" />
         </svg>
       </div>
@@ -89,6 +93,7 @@ export default {
     showFooter: { type: Boolean, default: false },
     back: { type: Function, default: null },
     noData: { type: Boolean, default: true },
+    showMore: { type: Boolean, default: true },
   },
   data () {
     return {

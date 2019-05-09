@@ -10,7 +10,7 @@ if (ENABLE_MOBLINK) {
     script.src = `//f.moblink.mob.com/3.0.1/moblink.js?appkey=${key}`
     script.onload = () => {
       // eslint-disable-next-line
-      MobLink({ path: location.href })
+      MobLink({ path: location.origin + location.pathname })
     }
     document.querySelector('body').appendChild(script)
   })

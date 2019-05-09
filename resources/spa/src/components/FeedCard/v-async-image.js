@@ -73,7 +73,7 @@ export default Vue => {
         .get(`/files/${file}`, {
           // 验证 status ; 屏蔽 404 抛错
           vaildateStatus: s => [200, 201, 204, 400, 302].includes(s),
-          params: { json: 1 },
+          params: { json: 1, q: 80 },
         })
         .then(async ({ data: { url } }) => {
           if (url) {

@@ -117,7 +117,7 @@ export default {
     },
   },
   created () {
-    this.accessToken = this.$lstore.getData('H5_WECHAT_MP_ASTOKEN')
+    this.accessToken = this.$lstore.getData('H5_WECHAT_MP_ASTOKEN', true)
   },
   methods: {
     onFocus () {

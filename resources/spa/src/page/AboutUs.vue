@@ -12,18 +12,23 @@
 </template>
 
 <script>
-import md from '@/util/markdown'
+import * as api from '@/api'
 
 export default {
   name: 'AboutUs',
-  computed: {
-    aboutUs () {
-      const { aboutUs = {} } = this.$store.state.CONFIG.site
-      return aboutUs
-    },
-    body () {
-      const content = this.aboutUs.content || ''
-      return md(content)
+  data () {
+    return {
+      body: '',
+    }
+  },
+  created () {
+    this.fetchAboutInfo()
+  },
+  methods: {
+    fetchAboutInfo () {
+      api.getAboutUs().then(({ data }) => {
+        this.body = data
+      })
     },
   },
 }
@@ -35,6 +40,19 @@ export default {
     padding: 20px;
     min-height: 100vh;
     background: #fff;
+    line-height: 1.5;
+  }
+}
+</style>
+
+<style lang="less">
+body {
+  padding: 0 !important;
+}
+.about-us {
+
+  .container .content {
+    word-break: break-all;
   }
 }
 </style>

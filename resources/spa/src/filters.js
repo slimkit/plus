@@ -1,7 +1,7 @@
-import plueMessageBundle from 'plus-message-bundle'
-import { transTime } from '@/util'
-import i18n from '@/i18n'
 import xss from 'xss'
+import plueMessageBundle from 'plus-message-bundle'
+import i18n from '@/i18n'
+import { transTime } from '@/util'
 
 /**
  * ThinkSNS Plus 消息解析器，获取顶部消息.
@@ -48,6 +48,14 @@ export function plusMessageAnalyze (message, defaultMessage) {
  * @return {String}
  */
 export function formatDate (date, fmt = 'yyyy/MM/dd hh:mm') {
+  if (typeof date === 'string') {
+    date = date.replace(/-/g, '/') // for safari
+    // match 2018/10/17 01:48:52"
+    if (date.match(/^\d{4}\/\d{2}\/\d{2} \d{2}:\d{2}:\d{2}$/)) {
+      // 如果匹配到服务器返回的时间是非标准格式的祖鲁时间，需要进行本地化
+      date = +new Date(date) - timeOffset
+    }
+  }
   date = new Date(date)
   const o = {
     'M+': date.getMonth() + 1,
@@ -160,32 +168,71 @@ export function t (params, keypath) {
  * @param {Object} data
  */
 export function getNotificationDisplay (data) {
+  let body
   switch (data.type) {
     case 'reward':
       return i18n.t('message.system.reward_user', { user: data.sender.name })
-    case 'reward:feeds':
-      return i18n.t('message.system.reward_feed', { user: data.sender.name })
-    case 'reward:news':
-      return i18n.t('message.system.reward_news', { news: data.news.title, user: data.sender.name, amount: data.amount + data.unit })
-    case 'group:join':
-      return i18n.t(`message.system.group_join[${data.state !== 'reject' ? 1 : 0}]`, { group: data.group.name, user: (data.user || {}).name })
     case 'user-certification':
       return i18n.t(`message.system.certificate[${data.state !== 'reject' ? 1 : 0}]`, { reason: data.contents })
+    case 'user-currency:cash':
+      return i18n.t(`message.system.user_cash[${data.state === 'rejected' ? 1 : 0}]`, { reason: data.contents })
+    case 'user-cash':
+      return i18n.t(`message.system.user_cash_wallet[${data.state === 'rejected' ? 1 : 0}]`, { reason: data.contents })
+
+    case 'reward:feeds':
+      return i18n.t('message.system.reward_feed', { user: data.sender.name })
+    case 'pinned:feeds':
+      return i18n.t('message.system.pinned_feed_by_admin')
+    case 'pinned:feed/comment':
+      body = data.comment.contents
+      if (body.length > 12) body = body.slice(0, 12) + '...'
+      return i18n.t(`message.system.pinned_feed_comment[${data.state === 'passed' ? 0 : 1}]`, { comment: body })
+
+    case 'reward:news':
+      return i18n.t('message.system.reward_news', { news: data.news.title, user: data.sender.name, amount: data.amount + data.unit })
+    case 'pinned:news/comment':
+      body = data.comment.contents
+      if (body.length > 12) body = body.slice(0, 12) + '...'
+      return i18n.t(`message.system.pinned_news_comment[${data.state !== 'reject' ? 1 : 0}]`, { news: data.news.title, comment: body })
+
     case 'qa:answer-adoption':
     case 'question:answer':
-      return i18n.t('message.system.qa_adopt', { answer: data.answer.body })
+      body = data.answer.body
+      if (body.length > 12) body = body.slice(0, 12) + '...'
+      return i18n.t('message.system.qa_adopt', { answer: body })
     case 'qa:reward':
       return i18n.t('message.system.reward_qa', { user: data.sender.name })
     case 'qa:invitation':
       return i18n.t('message.system.qa_invitation', { user: data.sender.name, question: data.question.subject })
-    case 'pinned:feed/comment':
-      return i18n.t(`message.system.pinned_feed_comment[${data.state !== 'reject' ? 1 : 0}]`, { comment: data.comment.contents })
-    case 'pinned:news/comment':
-      return i18n.t(`message.system.pinned_news_comment[${data.state !== 'reject' ? 1 : 0}]`, { news: data.news.title, comment: data.comment.contents })
+    case 'qa:question-topic:accept':
+      return i18n.t('message.system.qa_topic_passed', { topic: data.topic.name })
+    case 'qa:question-topic:reject':
+      return i18n.t('message.system.qa_topic_reject', { topic: data.topic_application.name })
+    case 'qa:question-excellent:accept':
+      return i18n.t('message.system.qa_excellent[0]', { question: data.application.question.subject })
+    case 'qa:question-excellent:reject':
+      return i18n.t('message.system.qa_excellent[1]', { question: data.application.question.subject })
+
+    case 'group:join':
+      if (data.state) return i18n.t(`message.system.group_join[${data.state === 'passed' ? 0 : 1}]`, { group: data.group.name })
+      return i18n.t('message.system.group_join[2]', { group: data.group.name, user: data.user.name })
+    case 'group:transform':
+      return i18n.t('message.system.group_transform', { user: data.user.name, group: data.group.name })
+    case 'group:post-reward':
+      return i18n.t('message.system.reward_post', { user: data.sender.name, post: data.post.title })
     case 'group:comment-pinned':
     case 'group:send-comment-pinned':
       return i18n.t(`message.system.pinned_post_comment[${data.state !== 'reject' ? 1 : 0}]`, { post: data.post.title })
     case 'group:post-pinned':
-      return i18n.t(`message.system.pinned_post[${data.state !== 'reject' ? 1 : 0}]`, { post: data.post.title })
+      return i18n.t(`message.system.pinned_post[${data.state !== 'rejected' ? 0 : 1}]`, { post: data.post.title })
+    case 'group:pinned-admin':
+      return i18n.t('message.system.pinned_post_by_admin', { post: data.post.title })
+    case 'group:report-comment':
+      return i18n.t('message.system.report_post_comment', { user: data.sender.name, group: data.group.name, post: data.post.title, comment: data.comment.contents })
+    case 'group:report-post':
+      return i18n.t('message.system.report_post', { user: data.sender.name, group: data.group.name, post: data.post.title })
+
+    case 'report':
+      return i18n.t('message.system.report') + ': ' + data.subject
   }
 }

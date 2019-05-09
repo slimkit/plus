@@ -212,7 +212,7 @@ class PcTableSeeder extends Seeder
             'channel' => 'pc',
             'space' => 'pc:feeds:list',
             'alias' => 'PC端动态列表广告',
-            'allow_type' => 'pc:feedlist',
+            'allow_type' => 'pc:feeds:list',
             'format' => [
                 'pc:feeds:list' => [
                     'avatar' => '头像图|string|必填，头像',

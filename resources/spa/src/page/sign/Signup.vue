@@ -36,7 +36,7 @@
           </svg>
         </div>
         <div
-          v-if="verifiable_type === 'sms'"
+          v-if="currentType === 'sms'"
           class="m-form-row m-main"
         >
           <label for="phone">{{ $t('auth.label.phone') }}</label>
@@ -60,7 +60,7 @@
           </span>
         </div>
         <div
-          v-if="verifiable_type === 'mail'"
+          v-if="currentType === 'mail'"
           class="m-form-row m-main"
         >
           <label for="email">{{ $t('auth.label.email') }}</label>
@@ -150,7 +150,7 @@
           <RouterLink to="/signup/protocol" class="register-protocol">
             <!-- eslint-disable-next-line vue/component-name-in-template-casing -->
             <i18n path="auth.register.agree">
-              <span place="protocol">{{ $t('auth.register.ts_protocol') }}</span>
+              <span place="protocol">{{ siteName }}用户注册协议</span>
             </i18n>
           </RouterLink>
         </template>
@@ -199,6 +199,8 @@ export default {
       eye: false,
       error: '',
       loading: false,
+
+      siteName: process.env.VUE_APP_NAME,
 
       name: '',
       email: '',
@@ -262,7 +264,7 @@ export default {
         : email.length <= 4
     },
     type () {
-      return this.verifiable_type === SMS ? 'phone' : 'email'
+      return this.currentType === SMS ? 'phone' : 'email'
     },
   },
   methods: {

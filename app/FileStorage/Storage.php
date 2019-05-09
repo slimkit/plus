@@ -20,6 +20,7 @@ declare(strict_types=1);
 
 namespace Zhiyi\Plus\FileStorage;
 
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Zhiyi\Plus\AppInterface;
 use Illuminate\Support\Carbon;

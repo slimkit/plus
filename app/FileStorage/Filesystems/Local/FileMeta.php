@@ -107,7 +107,7 @@ class FileMeta extends FileMetaAbstract
         $realPath = $this->filesystem->path(
             $this->resource->getPath()
         );
-        list($width, $height) = getimagesize($realPath);
+        [$width, $height] = getimagesize($realPath);
 
         return $this->dimension = new ImageDimension((float) $width, (float) $height);
     }

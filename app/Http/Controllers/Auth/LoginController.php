@@ -20,10 +20,12 @@ declare(strict_types=1);
 
 namespace Zhiyi\Plus\Http\Controllers\Auth;
 
+use Zhiyi\Plus\Models\User;
 use Illuminate\Http\Request;
 use function Zhiyi\Plus\username;
 use Illuminate\Contracts\Config\Repository;
 use Zhiyi\Plus\Http\Controllers\Controller;
+use Illuminate\Validation\ValidationException;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 
 class LoginController extends Controller
@@ -62,6 +64,7 @@ class LoginController extends Controller
      *
      * @param \Illuminate\Http\Request $request
      * @return mixed
+     * @throws \Illuminate\Validation\ValidationException
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function login(Request $request)
@@ -69,6 +72,14 @@ class LoginController extends Controller
         $request->merge([
             $this->username() => $request->input('login'),
         ]);
+
+        $user = User::withTrashed()
+            ->where($this->username(), $request->input('login'))
+            ->whereNotNull('deleted_at')
+            ->first();
+        if ($user) {
+            throw ValidationException::withMessages(['账号已被禁用，请联系管理员']);
+        }
 
         return $this->authenticatesUsersLogin($request);
     }
