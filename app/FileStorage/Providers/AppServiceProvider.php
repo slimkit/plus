@@ -36,11 +36,11 @@ class AppServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function register() {
+    public function register()
+    {
         // Register StorageInterface instance.
         $this->app->singleton(StorageInterface::class,
-            function (AppInterface $app)
-            {
+            function (AppInterface $app) {
                 $manager = $this->app->make(ChannelManager::class);
 
                 return new Storage($app, $manager);
@@ -53,7 +53,8 @@ class AppServiceProvider extends ServiceProvider
      * @return void
      * @throws BindingResolutionException
      */
-    public function boot() {
+    public function boot()
+    {
         // Register routes.
         $this->app->make(MakeRoutes::class)->register();
 

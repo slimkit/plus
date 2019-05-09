@@ -67,12 +67,12 @@ class ValidatorRulesRegister
      * @return void
      */
     public function register()
-    : void {
+    : void
+    {
         $app = $this->app;
         foreach ($this->rules as $ruleName => $rulerClassname) {
             $this->validator->extend($ruleName,
-                function (...$params) use ($app, $rulerClassname): bool
-                {
+                function (...$params) use ($app, $rulerClassname): bool {
                     return $app->make($rulerClassname)->handle($params);
                 });
         }

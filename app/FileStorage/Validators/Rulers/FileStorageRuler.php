@@ -38,7 +38,8 @@ class FileStorageRuler implements RulerInterface
      *
      * @param  StorageInterface  $storage
      */
-    public function __construct(StorageInterface $storage) {
+    public function __construct(StorageInterface $storage)
+    {
         $this->storage = $storage;
     }
 
@@ -50,7 +51,8 @@ class FileStorageRuler implements RulerInterface
      * @return bool
      */
     public function handle(array $params)
-    : bool {
+    : bool
+    {
         try {
             return (bool) $this->storage
                 ->meta(new Resource($params[1]))
