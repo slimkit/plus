@@ -17,8 +17,6 @@ jpush.log
 /storage/*.key
 /vendor
 /resources/views/vendor
-/.idea
-/.vscode
 /nbproject
 /.vagrant
 .env
@@ -27,3 +25,4 @@ Homestead.json
 Homestead.yaml
 npm-debug.log
 yarn-error.log
+_ide_helper.php
