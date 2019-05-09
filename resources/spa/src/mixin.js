@@ -23,7 +23,8 @@ export default {
       const isIos = ua.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/)
       const isWechat =
         wechatUA !== null && wechatUA.toString() === 'micromessenger'
-      return isIos && isWechat && this.$route.query.jxytime === undefined
+      return isIos && isWechat
+      // && this.$route.query.jxytime === undefined
     },
   },
   watch: {
