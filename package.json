@@ -15,10 +15,8 @@
     "docs:build": "vuepress build docs"
   },
   "devDependencies": {
-    "@slimkit/plus-editor": "^0.0.3",
-    "babel-plugin-component": "^1.1.1",
-    "babel-preset-env": "^1.7.0",
-    "babel-preset-stage-2": "^6.24.1",
+    "@babel/plugin-proposal-class-properties": "^7.4.4",
+    "@babel/preset-env": "^7.4.4",
     "conventional-changelog-cli": "^2.0.1",
     "cross-env": "^5.1.5",
     "laravel-mix": "^4.0.7",

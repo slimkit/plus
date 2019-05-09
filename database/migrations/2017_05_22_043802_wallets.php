@@ -27,9 +27,9 @@ class Wallets extends Migration
      *
      * @return void
      */
-    public function up()
-    {
-        Schema::create('wallets', function (Blueprint $table) {
+    public function up() {
+        Schema::create('wallets', function (Blueprint $table)
+        {
             // 主键
             $table
                 ->bigIncrements('id')
@@ -37,8 +37,7 @@ class Wallets extends Migration
 
             // 关联用户
             $table
-                ->integer('user_id')
-                ->unsigned()
+                ->unsignedBigInteger('user_id')
                 ->comment('钱包所属用户');
 
             // 余额，单位 分 (避免小数计算偏移)
@@ -70,8 +69,7 @@ class Wallets extends Migration
      *
      * @return void
      */
-    public function down()
-    {
+    public function down() {
         Schema::dropIfExists('wallets');
     }
 }

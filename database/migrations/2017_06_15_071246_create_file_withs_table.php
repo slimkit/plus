@@ -27,15 +27,17 @@ class CreateFileWithsTable extends Migration
      *
      * @return void
      */
-    public function up()
-    {
-        Schema::create('file_withs', function (Blueprint $table) {
+    public function up() {
+        Schema::create('file_withs', function (Blueprint $table)
+        {
             $table->increments('id');
             $table->integer('file_id')->unsigned()->comment('文件ID');
-            $table->integer('user_id')->unsigned()->comment('用户ID');
-            $table->string('channel', 100)->nullable()->default(null)->comment('记录频道');
+            $table->unsignedBigInteger('user_id')->unsigned()->comment('用户ID');
+            $table->string('channel', 100)->nullable()->default(null)
+                ->comment('记录频道');
             $table->integer('raw')->nullable()->comment('原始频道关联信息');
-            $table->string('size', 50)->nullable()->default(null)->comment('图片尺寸，目标文件如果是图片的话则存在。便于客户端提前预设盒子');
+            $table->string('size', 50)->nullable()->default(null)
+                ->comment('图片尺寸，目标文件如果是图片的话则存在。便于客户端提前预设盒子');
             $table->timestamps();
             $table->softDeletes();
 
@@ -63,8 +65,7 @@ class CreateFileWithsTable extends Migration
      *
      * @return void
      */
-    public function down()
-    {
+    public function down() {
         Schema::dropIfExists('file_withs');
     }
 }

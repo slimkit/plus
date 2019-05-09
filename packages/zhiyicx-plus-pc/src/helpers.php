@@ -26,23 +26,26 @@ use GuzzleHttp\Client;
 use HTMLPurifier_Config;
 use Illuminate\Support\Arr;
 use Zhiyi\Plus\Models\User;
-use Illuminate\Support\Arr;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Artisan;
 
 /**
  * [formatContent 动态列表内容处理].
- * @author Foreach
+ *
  * @param  [string] $content [内容]
+ *
  * @return [string]
+ * @author Foreach
  */
-function formatContent($content)
-{
+function formatContent($content) {
     // 链接替换
-    $content = preg_replace_callback('/((?:https?|mailto|ftp):\/\/([^\x{2e80}-\x{9fff}\s<\'\"“”‘’，。}]*)?)/u', function ($url) {
-        return '<a class="mcolor" href="'.$url[0].'">访问链接+</a>';
-    }, $content);
+    $content
+        = preg_replace_callback('/((?:https?|mailto|ftp):\/\/([^\x{2e80}-\x{9fff}\s<\'\"“”‘’，。}]*)?)/u',
+        function ($url)
+        {
+            return '<a class="mcolor" href="'.$url[0].'">访问链接+</a>';
+        }, $content);
 
     // 回车替换
     $pattern = ["\r\n", "\n", "\r"];
@@ -56,35 +59,49 @@ function formatContent($content)
     $content = $purifier->purify($content);
 
     // at 用户替换为链接
-    $content = preg_replace_callback('/\x{00ad}@((?:[^\/]+?))\x{00ad}/iu', function ($match) {
-        $username = $match[1];
-        $url = route('pc:mine', [
-            'user' => $username,
-        ]);
+    $content = preg_replace_callback('/\x{00ad}@((?:[^\/]+?))\x{00ad}/iu',
+        function ($match)
+        {
+            $username = $match[1];
+            $url = route('pc:mine', [
+                'user' => $username,
+            ]);
 
-        return sprintf('<a class="mcolor" href="%s">@%s</a>', $url, $username);
-    }, $content);
+            return sprintf('<a class="mcolor" href="%s">@%s</a>', $url,
+                $username);
+        }, $content);
 
     return $content;
 }
 
 /**
  * [inapi 内部请求（弃用）].
- * @author Foreach
- * @param  string  $method   [请求方式]
- * @param  string  $url      [地址]
- * @param  array   $params   [参数]
- * @param  int $instance
- * @param  int $original
+ *
+ * @param  string  $method  [请求方式]
+ * @param  string  $url  [地址]
+ * @param  array  $params  [参数]
+ * @param  int  $instance
+ * @param  int  $original
+ *
  * @return
+ * @author Foreach
  */
-function inapi($method = 'POST', $url = '', $params = [], $instance = 1, $original = 1)
-{
+function inapi(
+    $method = 'POST',
+    $url = '',
+    $params = [],
+    $instance = 1,
+    $original = 1
+) {
     $request = Request::create($url, $method, $params);
-    $request->headers->add(['Accept' => 'application/json', 'Authorization' => 'Bearer '.Session::get('token')]);
+    $request->headers->add([
+        'Accept'        => 'application/json',
+        'Authorization' => 'Bearer '.Session::get('token'),
+    ]);
 
     // 注入JWT请求单例
-    app()->resolving(\Tymon\JWTAuth\JWT::class, function ($jwt) use ($request) {
+    app()->resolving(\Tymon\JWTAuth\JWT::class, function ($jwt) use ($request)
+    {
         $jwt->setRequest($request);
 
         return $jwt;
@@ -92,7 +109,8 @@ function inapi($method = 'POST', $url = '', $params = [], $instance = 1, $origin
     Auth::guard('api')->setRequest($request);
 
     // 解决获取认证用户
-    $request->setUserResolver(function () {
+    $request->setUserResolver(function ()
+    {
         return Auth::user('api');
     });
 
@@ -108,29 +126,33 @@ function inapi($method = 'POST', $url = '', $params = [], $instance = 1, $origin
 
 /**
  * [api].
- * @author Foreach
- * @param  string  $method   [请求方式]
- * @param  string  $url      [地址]
- * @param  array   $params   [参数]
+ *
+ * @param  string  $method  [请求方式]
+ * @param  string  $url  [地址]
+ * @param  array  $params  [参数]
+ *
  * @return
+ * @author Foreach
  */
-function api($method = 'POST', $url = '', $params = [])
-{
+function api($method = 'POST', $url = '', $params = []) {
     $client = new Client([
         'base_uri' => config('app.url'),
     ]);
 
-    $headers = ['Accept' => 'application/json', 'Authorization' => 'Bearer '.Session::get('token')];
+    $headers = [
+        'Accept'        => 'application/json',
+        'Authorization' => 'Bearer '.Session::get('token'),
+    ];
     if ($method == 'GET') {
         $response = $client->request($method, $url, [
-            'query' => $params,
-            'headers' => $headers,
+            'query'       => $params,
+            'headers'     => $headers,
             'http_errors' => false,
         ]);
     } else {
         $response = $client->request($method, $url, [
             'form_params' => $params,
-            'headers' => $headers,
+            'headers'     => $headers,
             'http_errors' => false,
         ]);
     }
@@ -140,23 +162,29 @@ function api($method = 'POST', $url = '', $params = [])
 
 /**
  * [getTime 时间转换].
- * @author Foreach
+ *
  * @param  [string] $time [时间]
+ *
  * @return
+ * @author Foreach
  */
-function getTime($time)
-{
+function getTime($time) {
     // 本地化
     $time = Carbon::parse($time);
     Carbon::setLocale('zh');
-    $timezone = isset($_COOKIE['customer_timezone']) ? $_COOKIE['customer_timezone'] : 0;
+    $timezone = isset($_COOKIE['customer_timezone'])
+        ? $_COOKIE['customer_timezone'] : 0;
     if (Carbon::now()->subHours(24) < $time && $time < Carbon::now()) {
         // 一天内显示友好时间
         return $time->diffForHumans();
-    } elseif ((Carbon::now()->subHours(24) > $time) && (Carbon::now()->subHours(48) < $time)) {
+    } elseif ((Carbon::now()->subHours(24) > $time)
+        && (Carbon::now()->subHours(48) < $time)
+    ) {
         // 一到两天内显示昨天+时分
         return '昨天 '.$time->addHours($timezone)->format('H:i');
-    } elseif (Carbon::now()->subHours(48) > $time && $time->addHours($timezone)->isCurrentYear()) {
+    } elseif (Carbon::now()->subHours(48) > $time
+        && $time->addHours($timezone)->isCurrentYear()
+    ) {
         // 两天以上，今年内显示月日时分
         return $time->format('m-d H:i');
     } else {
@@ -167,16 +195,17 @@ function getTime($time)
 
 /**
  * [getImageUrl 获取图片地址].
- * @author Foreach
- * @param  array   $image  [图片数组]
+ *
+ * @param  array  $image  [图片数组]
  * @param  [type]  $width  [宽度]
  * @param  [type]  $height [高度]
- * @param  bool $cut    [是否裁剪]
- * @param  int $blur   [是否高斯模糊]
+ * @param  bool  $cut  [是否裁剪]
+ * @param  int  $blur  [是否高斯模糊]
+ *
  * @return [string]
+ * @author Foreach
  */
-function getImageUrl($image = [], $width, $height, $cut = true, $blur = 0)
-{
+function getImageUrl($image = [], $width, $height, $cut = true, $blur = 0) {
     if (! $image) {
         return false;
     }
@@ -193,7 +222,8 @@ function getImageUrl($image = [], $width, $height, $cut = true, $blur = 0)
             $height = number_format($width / $size[0] * $size[1], 2, '.', '');
         }
 
-        return asset('/api/v2/files/'.$file).'?&w='.$width.'&h='.$height.$b.'&token='.Session::get('token');
+        return asset('/api/v2/files/'.$file).'?&w='.$width.'&h='.$height.$b
+            .'&token='.Session::get('token');
     } else {
         return asset('/api/v2/files/'.$file).'?token='.Session::get('token').$b;
     }
@@ -201,23 +231,24 @@ function getImageUrl($image = [], $width, $height, $cut = true, $blur = 0)
 
 /**
  * [cacheClear 清理缓存].
- * @author Zsyd
+ *
  * @return
+ * @author Zsyd
  */
-function cacheClear()
-{
+function cacheClear() {
     return Artisan::call('cache:clear');
 }
 
 /**
  * [getAvatar 获取头像].
- * @author Foreach
+ *
  * @param  [type]  $user  [用户数组]
- * @param  int $width [宽度]
+ * @param  int  $width  [宽度]
+ *
  * @return [string]
+ * @author Foreach
  */
-function getAvatar($user, $width = 0)
-{
+function getAvatar($user, $width = 0) {
     if (empty($user['avatar']) || ! $user['avatar']) {
         switch ($user['sex'] ?? false) {
             case 1:
@@ -246,14 +277,16 @@ function getAvatar($user, $width = 0)
 
 /**
  * [formatMarkdown 转换markdown].
- * @author Foreach
+ *
  * @param  [string] $body [内容]
+ *
  * @return [string] [html]
+ * @author Foreach
  */
-function formatMarkdown($body)
-{
+function formatMarkdown($body) {
     // 图片替换
-    $body = preg_replace('/\@\!\[(.*?)\]\((\d+)\)/i', '![$1]('.getenv('APP_URL').'/api/v2/files/$2)', $body);
+    $body = preg_replace('/\@\!\[(.*?)\]\((\d+)\)/i',
+        '![$1]('.getenv('APP_URL').'/api/v2/files/$2)', $body);
 
     // $content = htmlspecialchars_decode(\Parsedown::instance()->setMarkupEscaped(true)->text($body));
     // if (!strip_tags($content)) {
@@ -272,12 +305,12 @@ function formatMarkdown($body)
 }
 
 /**
- * @author Foreach
  * @param  [string] $body [内容]
+ *
  * @return [string] [html]
+ * @author Foreach
  */
-function formatList($body)
-{
+function formatList($body) {
     $body = preg_replace('/\@\!\[(.*?)\]\((\d+)\)/', '[图片]', $body);
 
     $config = HTMLPurifier_Config::createDefault();
@@ -286,30 +319,32 @@ function formatList($body)
     $body = $purifier->purify($body);
     $content = \Parsedown::instance()->text($body);
 
-    return  $content;
+    return $content;
 }
 
 /**
  * [getUserInfo 获取用户信息].
- * @author Foreach
+ *
  * @param  [type] $id [用户id]
+ *
  * @return
+ * @author Foreach
  */
-function getUserInfo($id)
-{
+function getUserInfo($id) {
     return User::find($id)->toArray();
 }
 
 /**
  * [setPinneds 置顶数据组装].
- * @author Foreach
+ *
  * @param  [type] $data    [列表数据]
  * @param  [type] $pinneds [置顶数据]
  * @param  [type] $k       [键名]
+ *
  * @return [type]        [description]
+ * @author Foreach
  */
-function formatPinneds($data, $pinneds)
-{
+function formatPinneds($data, $pinneds) {
     if (empty($pinneds)) {
         return $data;
     }
@@ -329,12 +364,13 @@ function formatPinneds($data, $pinneds)
 
 /**
  * [formatRepostable 转发数据组装].
- * @author Foreach
+ *
  * @param  [array] $feeds
+ *
  * @return [array]
+ * @author Foreach
  */
-function formatRepostable($feeds)
-{
+function formatRepostable($feeds) {
     foreach ($feeds as &$feed) {
         if (! $feed['repostable_type']) {
             continue;
@@ -352,21 +388,26 @@ function formatRepostable($feeds)
                 }
                 break;
             case 'groups':
-                $feed['repostable'] = api('GET', "/api/v2/plus-group/groups/{$id}");
+                $feed['repostable'] = api('GET',
+                    "/api/v2/plus-group/groups/{$id}");
                 break;
             case 'group-posts':
             case 'posts':
-                $post = api('GET', '/api/v2/group/simple-posts', ['id' => $id.'']);
+                $post = api('GET', '/api/v2/group/simple-posts',
+                    ['id' => $id.'']);
                 $feed['repostable'] = $post[0] ?? $post;
                 if ($feed['repostable']['title'] ?? false) {
-                    $feed['repostable']['group'] = api('GET', '/api/v2/plus-group/groups/'.$feed['repostable']['group_id']);
+                    $feed['repostable']['group'] = api('GET',
+                        '/api/v2/plus-group/groups/'
+                        .$feed['repostable']['group_id']);
                 }
                 break;
             case 'questions':
                 $feed['repostable'] = api('GET', "/api/v2/questions/{$id}");
                 break;
             case 'question-answers':
-                $feed['repostable'] = api('GET', "/api/v2/question-answers/{$id}");
+                $feed['repostable'] = api('GET',
+                    "/api/v2/question-answers/{$id}");
                 break;
         }
     }

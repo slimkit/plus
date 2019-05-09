@@ -27,21 +27,19 @@ class UserFollow extends Migration
      *
      * @return void
      */
-    public function up()
-    {
-        Schema::create('user_follow', function (Blueprint $table) {
+    public function up() {
+        Schema::create('user_follow', function (Blueprint $table)
+        {
             $table->bigIncrements('id')->comment('关注ID');
 
             // 操作对象用户
             $table
-                ->integer('user_id')
-                ->unsigned()
+                ->unsignedBigInteger('user_id')
                 ->comment('对象用户');
 
             // 操作目标用户
             $table
-                ->integer('target')
-                ->unsigned()
+                ->unsignedBigInteger('target')
                 ->comment('目标用户');
 
             $table->timestamps(); // 对象时间维护
@@ -70,8 +68,7 @@ class UserFollow extends Migration
      *
      * @return void
      */
-    public function down()
-    {
+    public function down() {
         Schema::dropIfExists('user_follow');
     }
 }

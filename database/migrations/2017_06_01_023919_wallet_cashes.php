@@ -27,16 +27,15 @@ class WalletCashes extends Migration
      *
      * @return void
      */
-    public function up()
-    {
-        Schema::create('wallet_cashes', function (Blueprint $table) {
+    public function up() {
+        Schema::create('wallet_cashes', function (Blueprint $table)
+        {
             $table
                 ->bigIncrements('id')
                 ->comment('提现记录ID');
 
             $table
-                ->integer('user_id')
-                ->unsigned()
+                ->unsignedBigInteger('user_id')
                 ->comment('提现用户');
 
             $table
@@ -85,8 +84,7 @@ class WalletCashes extends Migration
      *
      * @return void
      */
-    public function down()
-    {
+    public function down() {
         Schema::dropIfExists('wallet_cashes');
     }
 }

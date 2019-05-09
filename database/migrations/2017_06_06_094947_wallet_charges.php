@@ -27,15 +27,14 @@ class WalletCharges extends Migration
      *
      * @return void
      */
-    public function up()
-    {
-        Schema::create('wallet_charges', function (Blueprint $table) {
+    public function up() {
+        Schema::create('wallet_charges', function (Blueprint $table)
+        {
             $table
                 ->increments('id');
 
             $table
-                ->integer('user_id')
-                ->unsigned()
+                ->unsignedBigInteger('user_id')
                 ->nullable()
                 ->default(null)
                 ->comment('关联用户，可不存在，例如直接支付方式等。存在便于按照用户检索。');
@@ -119,8 +118,7 @@ class WalletCharges extends Migration
      *
      * @return void
      */
-    public function down()
-    {
+    public function down() {
         Schema::dropIfExists('wallet_charges');
     }
 }

@@ -43,5 +43,3 @@ mix.sass('resources/sass/bootstrap.scss', path.join('public', 'assets', 'css')).
  */
 
 mix.js('resources/assets/admin', path.join('public', 'assets', 'js'))
-mix.js('resources/js/app.js', 'public/js').
-  sass('resources/sass/app.scss', 'public/css')
