@@ -27,9 +27,9 @@ class Wallets extends Migration
      *
      * @return void
      */
-    public function up() {
-        Schema::create('wallets', function (Blueprint $table)
-        {
+    public function up()
+    {
+        Schema::create('wallets', function (Blueprint $table) {
             // 主键
             $table
                 ->bigIncrements('id')
@@ -69,7 +69,8 @@ class Wallets extends Migration
      *
      * @return void
      */
-    public function down() {
+    public function down()
+    {
         Schema::dropIfExists('wallets');
     }
 }

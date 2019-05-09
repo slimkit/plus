@@ -20,8 +20,8 @@ declare(strict_types=1);
 
 namespace SlimKit\PlusID\Handlers;
 
-use Illuminate\Support\Str;
 use Zhiyi\Plus\Utils\Path;
+use Illuminate\Support\Str;
 use Illuminate\Support\Str;
 use Illuminate\Console\Command;
 use Illuminate\Contracts\Foundation\Application as ApplicationContract;

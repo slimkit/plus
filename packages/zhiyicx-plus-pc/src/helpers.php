@@ -38,12 +38,12 @@ use Illuminate\Support\Facades\Artisan;
  * @return [string]
  * @author Foreach
  */
-function formatContent($content) {
+function formatContent($content)
+{
     // 链接替换
     $content
         = preg_replace_callback('/((?:https?|mailto|ftp):\/\/([^\x{2e80}-\x{9fff}\s<\'\"“”‘’，。}]*)?)/u',
-        function ($url)
-        {
+        function ($url) {
             return '<a class="mcolor" href="'.$url[0].'">访问链接+</a>';
         }, $content);
 
@@ -60,8 +60,7 @@ function formatContent($content) {
 
     // at 用户替换为链接
     $content = preg_replace_callback('/\x{00ad}@((?:[^\/]+?))\x{00ad}/iu',
-        function ($match)
-        {
+        function ($match) {
             $username = $match[1];
             $url = route('pc:mine', [
                 'user' => $username,
@@ -100,8 +99,7 @@ function inapi(
     ]);
 
     // 注入JWT请求单例
-    app()->resolving(\Tymon\JWTAuth\JWT::class, function ($jwt) use ($request)
-    {
+    app()->resolving(\Tymon\JWTAuth\JWT::class, function ($jwt) use ($request) {
         $jwt->setRequest($request);
 
         return $jwt;
@@ -109,8 +107,7 @@ function inapi(
     Auth::guard('api')->setRequest($request);
 
     // 解决获取认证用户
-    $request->setUserResolver(function ()
-    {
+    $request->setUserResolver(function () {
         return Auth::user('api');
     });
 
@@ -134,7 +131,8 @@ function inapi(
  * @return
  * @author Foreach
  */
-function api($method = 'POST', $url = '', $params = []) {
+function api($method = 'POST', $url = '', $params = [])
+{
     $headers = [
         'Accept'        => 'application/json',
         'Authorization' => 'Bearer '.Session::get('token'),
@@ -166,7 +164,8 @@ function api($method = 'POST', $url = '', $params = []) {
  * @return
  * @author Foreach
  */
-function getTime($time) {
+function getTime($time)
+{
     // 本地化
     $time = Carbon::parse($time);
     Carbon::setLocale('zh');
@@ -203,7 +202,8 @@ function getTime($time) {
  * @return [string]
  * @author Foreach
  */
-function getImageUrl($image = [], $width, $height, $cut = true, $blur = 0) {
+function getImageUrl($image = [], $width, $height, $cut = true, $blur = 0)
+{
     if (! $image) {
         return false;
     }
@@ -233,7 +233,8 @@ function getImageUrl($image = [], $width, $height, $cut = true, $blur = 0) {
  * @return
  * @author Zsyd
  */
-function cacheClear() {
+function cacheClear()
+{
     return Artisan::call('cache:clear');
 }
 
@@ -246,7 +247,8 @@ function cacheClear() {
  * @return [string]
  * @author Foreach
  */
-function getAvatar($user, $width = 0) {
+function getAvatar($user, $width = 0)
+{
     if (empty($user['avatar']) || ! $user['avatar']) {
         switch ($user['sex'] ?? false) {
             case 1:
@@ -281,7 +283,8 @@ function getAvatar($user, $width = 0) {
  * @return [string] [html]
  * @author Foreach
  */
-function formatMarkdown($body) {
+function formatMarkdown($body)
+{
     // 图片替换
     $body = preg_replace('/\@\!\[(.*?)\]\((\d+)\)/i',
         '![$1]('.getenv('APP_URL').'/api/v2/files/$2)', $body);
@@ -308,7 +311,8 @@ function formatMarkdown($body) {
  * @return [string] [html]
  * @author Foreach
  */
-function formatList($body) {
+function formatList($body)
+{
     $body = preg_replace('/\@\!\[(.*?)\]\((\d+)\)/', '[图片]', $body);
 
     $config = HTMLPurifier_Config::createDefault();
@@ -328,7 +332,8 @@ function formatList($body) {
  * @return
  * @author Foreach
  */
-function getUserInfo($id) {
+function getUserInfo($id)
+{
     return User::find($id)->toArray();
 }
 
@@ -342,7 +347,8 @@ function getUserInfo($id) {
  * @return [type]        [description]
  * @author Foreach
  */
-function formatPinneds($data, $pinneds) {
+function formatPinneds($data, $pinneds)
+{
     if (empty($pinneds)) {
         return $data;
     }
@@ -368,7 +374,8 @@ function formatPinneds($data, $pinneds) {
  * @return [array]
  * @author Foreach
  */
-function formatRepostable($feeds) {
+function formatRepostable($feeds)
+{
     foreach ($feeds as &$feed) {
         if (! $feed['repostable_type']) {
             continue;

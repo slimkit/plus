@@ -27,9 +27,9 @@ class RoleUser extends Migration
      *
      * @return void
      */
-    public function up() {
-        Schema::create('role_user', function (Blueprint $table)
-        {
+    public function up()
+    {
+        Schema::create('role_user', function (Blueprint $table) {
             $table->unsignedBigInteger('user_id');
             $table->unsignedInteger('role_id');
 
@@ -47,7 +47,8 @@ class RoleUser extends Migration
      *
      * @return void
      */
-    public function down() {
+    public function down()
+    {
         Schema::dropIfExists('role_user');
     }
 }

@@ -27,9 +27,9 @@ class UserFollow extends Migration
      *
      * @return void
      */
-    public function up() {
-        Schema::create('user_follow', function (Blueprint $table)
-        {
+    public function up()
+    {
+        Schema::create('user_follow', function (Blueprint $table) {
             $table->bigIncrements('id')->comment('关注ID');
 
             // 操作对象用户
@@ -68,7 +68,8 @@ class UserFollow extends Migration
      *
      * @return void
      */
-    public function down() {
+    public function down()
+    {
         Schema::dropIfExists('user_follow');
     }
 }
