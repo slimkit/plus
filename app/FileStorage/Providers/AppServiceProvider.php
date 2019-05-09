@@ -26,34 +26,38 @@ use Illuminate\Support\ServiceProvider;
 use Zhiyi\Plus\FileStorage\ChannelManager;
 use Zhiyi\Plus\FileStorage\Http\MakeRoutes;
 use Zhiyi\Plus\FileStorage\StorageInterface;
-use Zhiyi\Plus\FileStorage\Validators\Rulers\ValidatorRegister;
+use Illuminate\Contracts\Container\BindingResolutionException;
+use Zhiyi\Plus\FileStorage\Validators\Rulers\ValidatorRulesRegister;
 
 class AppServiceProvider extends ServiceProvider
 {
     /**
      * The app register.
+     *
      * @return void
      */
-    public function register()
-    {
+    public function register() {
         // Register StorageInterface instance.
-        $this->app->singleton(StorageInterface::class, function (AppInterface $app) {
-            $manager = $this->app->make(ChannelManager::class);
+        $this->app->singleton(StorageInterface::class,
+            function (AppInterface $app)
+            {
+                $manager = $this->app->make(ChannelManager::class);
 
-            return new Storage($app, $manager);
-        });
+                return new Storage($app, $manager);
+            });
     }
 
     /**
-     * The app bolstrap handler.
+     * The app bootstrap handler.
+     *
      * @return void
+     * @throws BindingResolutionException
      */
-    public function boot()
-    {
+    public function boot() {
         // Register routes.
         $this->app->make(MakeRoutes::class)->register();
 
         // Register validate rules.
-        $this->app->make(ValidatorRegister::class)->register();
+        $this->app->make(ValidatorRulesRegister::class)->register();
     }
 }
