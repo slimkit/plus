@@ -78,6 +78,3 @@
 * **SPA:** 多国语言文本替换 ([e015aec](https://github.com/slimkit/plus/commit/e015aec))
 * **SPA:** 好友功能 ([6f53f4c](https://github.com/slimkit/plus/commit/6f53f4c))
 * **SPA:** 增加 QQ 在线咨询可选功能 ([284fc35](https://github.com/slimkit/plus/commit/284fc35))
-
-
-

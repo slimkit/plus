@@ -1,5 +1,5 @@
-let mix = require('laravel-mix');
-let path = require('path');
+let mix = require('laravel-mix')
+let path = require('path')
 
 /*
  |--------------------------------------------------------------------------
@@ -12,13 +12,13 @@ let path = require('path');
  |
  */
 
-mix.setPublicPath(path.join('public', 'assets'));
-mix.setResourceRoot('/assets/');
-mix.sourceMaps(! mix.inProduction());
-mix.disableNotifications();
+mix.setPublicPath(path.join('public', 'assets'))
+mix.setResourceRoot('/assets/')
+mix.sourceMaps(!mix.inProduction())
+mix.disableNotifications()
 
 if (mix.config.hmr === true) {
-  mix.setResourceRoot('/');
+  mix.setResourceRoot('/')
 }
 
 /*
@@ -30,9 +30,8 @@ if (mix.config.hmr === true) {
  |
  */
 
-mix.sass('resources/sass/bootstrap.scss', path.join('public', 'assets', 'css'))
-   .js('resources/js/bootstrap.js', path.join('public', 'assets', 'js'))
-
+mix.sass('resources/sass/bootstrap.scss', path.join('public', 'assets', 'css')).
+  js('resources/js/bootstrap.js', path.join('public', 'assets', 'js'))
 
 /*
  |--------------------------------------------------------------------------
@@ -43,4 +42,6 @@ mix.sass('resources/sass/bootstrap.scss', path.join('public', 'assets', 'css'))
  |
  */
 
-mix.js('resources/assets/admin', path.join('public', 'assets', 'js'));
+mix.js('resources/assets/admin', path.join('public', 'assets', 'js'))
+mix.js('resources/js/app.js', 'public/js').
+  sass('resources/sass/app.scss', 'public/css')
