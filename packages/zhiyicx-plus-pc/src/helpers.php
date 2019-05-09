@@ -135,24 +135,22 @@ function inapi(
  * @author Foreach
  */
 function api($method = 'POST', $url = '', $params = []) {
-    $client = new Client([
-        'base_uri' => config('app.url'),
-    ]);
-
     $headers = [
         'Accept'        => 'application/json',
         'Authorization' => 'Bearer '.Session::get('token'),
     ];
+    $client = new Client([
+        'base_uri' => config('app.url'),
+        'headers'  => $headers,
+    ]);
     if ($method == 'GET') {
         $response = $client->request($method, $url, [
             'query'       => $params,
-            'headers'     => $headers,
             'http_errors' => false,
         ]);
     } else {
         $response = $client->request($method, $url, [
             'form_params' => $params,
-            'headers'     => $headers,
             'http_errors' => false,
         ]);
     }
