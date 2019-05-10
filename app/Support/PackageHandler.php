@@ -43,7 +43,8 @@ abstract class PackageHandler
      * @return array
      * @author Seven Du <shiweidu@outlook.com>
      */
-    public static function getHandles() {
+    public static function getHandles()
+    {
         return static::$handles;
     }
 
@@ -56,7 +57,8 @@ abstract class PackageHandler
      * @return void
      * @author Seven Du <shiweidu@outlook.com>
      */
-    public static function loadHandleFrom(string $name, $handler) {
+    public static function loadHandleFrom(string $name, $handler)
+    {
         static::$handles[$name] = $handler;
     }
 
@@ -69,7 +71,8 @@ abstract class PackageHandler
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function formatHandleToDisplay(string $handle)
-    : string {
+    : string
+    {
         if (strtolower(substr($handle, -6)) === 'handle') {
             $handle = substr($handle, 0, -6);
         }
@@ -86,7 +89,8 @@ abstract class PackageHandler
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function formatHandleToMethod(string $handle)
-    : string {
+    : string
+    {
         if (strtolower(substr($handle, -6)) === 'handle') {
             $handle = substr($handle, 0, -6);
         }
@@ -101,7 +105,8 @@ abstract class PackageHandler
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function methods()
-    : array {
+    : array
+    {
         if (! $this->methods) {
             $this->methods = [];
             foreach (get_class_methods($this) as $method) {
@@ -126,7 +131,8 @@ abstract class PackageHandler
      * @return mixed
      * @author Seven Du <shiweidu@outlook.com>
      */
-    public function handle($command, $handler) {
+    public function handle($command, $handler)
+    {
         $handler = $this->formatHandleToMethod($handler);
         if (! method_exists($this, $handler)) {
             throw new \RuntimeException('The handler not exist.');

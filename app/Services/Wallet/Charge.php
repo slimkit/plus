@@ -21,11 +21,11 @@ declare(strict_types=1);
 namespace Zhiyi\Plus\Services\Wallet;
 
 use Illuminate\Support\Str;
+use function Zhiyi\Plus\setting;
 use Pingpp\Pingpp as PingppInit;
 use Pingpp\Charge as PingppCharge;
 use Zhiyi\Plus\Models\WalletOrder as WalletOrderModel;
 use Zhiyi\Plus\Models\WalletCharge as WalletChargeModel;
-use function Zhiyi\Plus\setting;
 
 class Charge
 {
@@ -74,7 +74,8 @@ class Charge
      *
      * @author Seven Du <shiweidu@outlook.com>
      */
-    public function __construct() {
+    public function __construct()
+    {
         $config = setting('wallet', 'ping++', []);
 
         $this->appId = $config['app_id'] ?? null;
@@ -94,7 +95,8 @@ class Charge
      * @return array
      * @author Seven Du <shiweidu@outlook.com>
      */
-    public function query(string $charge) {
+    public function query(string $charge)
+    {
         return PingppCharge::retrieve($charge);
     }
 
@@ -107,7 +109,8 @@ class Charge
      * @return array
      * @author Seven Du <shiweidu@outlook.com>
      */
-    public function create(WalletChargeModel $charge, array $extra = []) {
+    public function create(WalletChargeModel $charge, array $extra = [])
+    {
         if (! $charge->id) {
             $charge->save();
         }
@@ -202,7 +205,8 @@ class Charge
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function formatChargeId(int $chargeId)
-    : string {
+    : string
+    {
         return $this->getPrefix().str_pad(strval($chargeId), 19, '0',
                 STR_PAD_LEFT);
     }
@@ -216,7 +220,8 @@ class Charge
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function unformatChargeId(string $chargeId)
-    : int {
+    : int
+    {
         return intval(
             ltrim(
                 ltrim($chargeId, $this->getPrefix()), '0'
@@ -231,7 +236,8 @@ class Charge
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function getPrefix()
-    : string {
+    : string
+    {
         return $this->prefix;
     }
 
@@ -242,7 +248,8 @@ class Charge
      *
      * @author Seven Du <shiweidu@outlook.com>
      */
-    public function setPrefix(string $prefix) {
+    public function setPrefix(string $prefix)
+    {
         if (strlen($prefix) > 1) {
             throw new \Exception('Prefix length > 1');
         }
@@ -262,7 +269,8 @@ class Charge
      * @author BS <414606094@qq.com>
      */
     public function checkRechargeArgs(string $type, array $extra)
-    : bool {
+    : bool
+    {
         if (in_array($type, $this->allowType)) {
             return $this->{Str::camel('check_'.$type.'_extra')}($extra);
         }
@@ -271,37 +279,44 @@ class Charge
     }
 
     protected function checkApplepayUpacpExtra()
-    : bool {
+    : bool
+    {
         return true;
     }
 
     protected function checkAlipayExtra()
-    : bool {
+    : bool
+    {
         return true;
     }
 
     protected function checkAlipayWapExtra(array $extra)
-    : bool {
+    : bool
+    {
         return array_key_exists('success_url', $extra);
     }
 
     protected function checkAlipayPcDirectExtra(array $extra)
-    : bool {
+    : bool
+    {
         return array_key_exists('success_url', $extra);
     }
 
     protected function checkAlipayQrExtra(array $extra)
-    : bool {
+    : bool
+    {
         return array_key_exists('success_url', $extra);
     }
 
     protected function checkWxExtra()
-    : bool {
+    : bool
+    {
         return true;
     }
 
     protected function checkWxWapExtra(array $extra)
-    : bool {
+    : bool
+    {
         return array_key_exists('success_url', $extra);
     }
 }

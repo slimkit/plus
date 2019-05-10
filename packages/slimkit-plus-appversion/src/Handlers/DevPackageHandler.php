@@ -39,7 +39,8 @@ class DevPackageHandler extends \Zhiyi\Plus\Support\PackageHandler
      *
      * @param  \Illuminate\Contracts\Foundation\Application  $app
      */
-    public function __construct(ApplicationContract $app) {
+    public function __construct(ApplicationContract $app)
+    {
         $this->app = $app;
     }
 
@@ -50,7 +51,8 @@ class DevPackageHandler extends \Zhiyi\Plus\Support\PackageHandler
      *
      * @return mixed
      */
-    public function makeMigrationHandle(Command $command) {
+    public function makeMigrationHandle(Command $command)
+    {
         // Resolve migration file path.
         $path = Path::relative(
             $this->app->basePath(),
@@ -59,8 +61,7 @@ class DevPackageHandler extends \Zhiyi\Plus\Support\PackageHandler
 
         // Ask table name.
         $table = $command->getOutput()
-            ->ask('Enter the table name', null, function ($table)
-            {
+            ->ask('Enter the table name', null, function ($table) {
                 if (! preg_match('/^[a-z0-9_]+$/is', $table)) {
                     throw new \InvalidArgumentException(
                         'The name '.$table.' is invalid, matching: [a-z0-9_]'
@@ -92,11 +93,11 @@ class DevPackageHandler extends \Zhiyi\Plus\Support\PackageHandler
      * @return mixed
      * @author Seven Du <shiweidu@outlook.com>
      */
-    public function makeSeederHandle(Command $command) {
+    public function makeSeederHandle(Command $command)
+    {
         $path = $this->app->make('path.plus-appversion.seeds');
         $name = $command->getOutput()
-            ->ask('Enter the seeder name', null, function ($name)
-            {
+            ->ask('Enter the seeder name', null, function ($name) {
                 if (! preg_match('/^[a-z][a-z0-9_-]+[a-z0-9]$/is', $name)) {
                     throw new \InvalidArgumentException(
                         'The name '.$name
@@ -132,10 +133,10 @@ class DevPackageHandler extends \Zhiyi\Plus\Support\PackageHandler
      * @return mixed
      * @author Seven Du <shiweidu@outlook.com>
      */
-    public function makeModelHandle(Command $command) {
+    public function makeModelHandle(Command $command)
+    {
         $modelName = $command->getOutput()
-            ->ask('Enter the Model name', null, function ($modelName)
-            {
+            ->ask('Enter the Model name', null, function ($modelName) {
                 if (! preg_match('/^[a-zA-Z0-9]+$/is', $modelName)) {
                     throw new \InvalidArgumentException(
                         'The name '.$modelName
@@ -148,8 +149,7 @@ class DevPackageHandler extends \Zhiyi\Plus\Support\PackageHandler
         $modelName = ucfirst(Str::camel($modelName));
         $table = Str::plural(strtolower(Str::snake($modelName)));
         $table = $command->getOutput()
-            ->ask('Enter the table name', $table, function ($table)
-            {
+            ->ask('Enter the table name', $table, function ($table) {
                 if (! preg_match('/^[a-z0-9_]+$/is', $table)) {
                     throw new \InvalidArgumentException(
                         'The name '.$table.' is invalid, matching: [a-z0-9_]'

@@ -65,11 +65,11 @@ class WalletRechargeController extends Controller
      * @return mixed
      * @author Seven Du <shiweidu@outlook.com>
      */
-    public function store(StoreWalletRecharge $request) {
+    public function store(StoreWalletRecharge $request)
+    {
         // 设置共享实例，一面多个地方重复调用验证
         $this->app->singleton(StoreWalletRecharge::class,
-            function () use ($request)
-            {
+            function () use ($request) {
                 return $request;
             });
 
@@ -101,7 +101,8 @@ class WalletRechargeController extends Controller
      * @return mixed
      * @author Seven Du <shiweidu@outlook.com>
      */
-    protected function resolveStore(string $type) {
+    protected function resolveStore(string $type)
+    {
         return $this->app->call([$this, StrAlias::camel($type.'_store')]);
     }
 
@@ -131,7 +132,8 @@ class WalletRechargeController extends Controller
      * @author Seven Du <shiweidu@outlook.com>
      */
     protected function createChargeModel(Request $request, string $channel)
-    : WalletChargeModel {
+    : WalletChargeModel
+    {
         $charge = new WalletChargeModel();
         $charge->user_id = $request->user()->id;
         $charge->channel = $channel;

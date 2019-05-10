@@ -52,7 +52,8 @@ class PackageCreateCommand extends Command
      * @return mixed
      * @author Seven Du <shiweidu@outlook.com>
      */
-    public function handle() {
+    public function handle()
+    {
         $this->initRepository();
 
         [$vendor, $name] = explode('/', $packageName = $this->questionName());
@@ -153,7 +154,8 @@ class PackageCreateCommand extends Command
      * @author Seven Du <shiweidu@outlook.com>
      */
     protected function findStub()
-    : Finder {
+    : Finder
+    {
         $finder = new Finder();
 
         return $finder->files()
@@ -171,7 +173,8 @@ class PackageCreateCommand extends Command
      * @author Seven Du <shiweidu@outlook.com>
      */
     protected function formatNamespace(string $namespace)
-    : string {
+    : string
+    {
         $namespace = ltrim($namespace, '\\');
         $namespace = rtrim($namespace, '\\');
         $namespace = preg_replace('/(\\\)+/', '\\', $namespace);
@@ -190,7 +193,8 @@ class PackageCreateCommand extends Command
      * @author Seven Du <shiweidu@outlook.com>
      */
     protected function cameCase(string $name)
-    : string {
+    : string
+    {
         $name = str_replace('.', '', $name);
         $name = str_replace('-', '_', $name);
 
@@ -204,10 +208,10 @@ class PackageCreateCommand extends Command
      * @author Seven Du <shiweidu@outlook.com>
      */
     protected function questionName()
-    : string {
+    : string
+    {
         return $this->getOutput()
-            ->ask('Package name (<vendor>/<name>)', null, function ($name)
-            {
+            ->ask('Package name (<vendor>/<name>)', null, function ($name) {
                 if (! preg_match('{^[a-z0-9_.-]+/[a-z0-9_.-]+$}', $name)) {
                     throw new \InvalidArgumentException(
                         'The package name '.$name
@@ -225,7 +229,8 @@ class PackageCreateCommand extends Command
      * @return void
      * @author Seven Du <shiweidu@outlook.com>
      */
-    protected function initRepository() {
+    protected function initRepository()
+    {
         $this->repository = new Repository([
             'name'        => 'vendor/name',
             'description' => '✈️The package is a ThinkSNS+ package.',
