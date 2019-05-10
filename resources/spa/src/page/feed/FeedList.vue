@@ -87,8 +87,13 @@ export default {
     async onRefresh () {
       const type = this.feedType.replace(/^\S/, s => s.toUpperCase())
       const action = `feed/get${type}Feeds`
-      const data = await this.$store.dispatch(action, { refresh: true })
-      this.$refs.loadmore.afterRefresh(data.length < limit)
+      let data
+      try {
+        data = await this.$store.dispatch(action, { refresh: true })
+        this.$refs.loadmore.afterRefresh(data.length < limit)
+      } catch (error) {
+        this.$refs.loadmore.afterRefresh()
+      }
     },
     async onLoadMore () {
       const type = this.feedType.replace(/^\S/, s => s.toUpperCase())
