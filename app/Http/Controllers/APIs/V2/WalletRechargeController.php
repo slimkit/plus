@@ -21,6 +21,7 @@ declare(strict_types=1);
 namespace Zhiyi\Plus\Http\Controllers\APIs\V2;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Str as StrAlias;
 use Zhiyi\Plus\Http\Requests\API2\StoreWalletRecharge;
 use Zhiyi\Plus\Models\WalletCharge as WalletChargeModel;
 use Zhiyi\Plus\Services\Wallet\Charge as WalletChargeService;
@@ -34,7 +35,6 @@ class WalletRechargeController extends Controller
      * @var \Illuminate\Contracts\Foundation\Application
      */
     protected $app;
-
     /**
      * Wallet charge service.
      *
@@ -45,11 +45,14 @@ class WalletRechargeController extends Controller
     /**
      * Create controller instance.
      *
-     * @param \Illuminate\Contracts\Foundation\Application $app
+     * @param  \Illuminate\Contracts\Foundation\Application  $app
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
-    public function __construct(ApplicationContract $app, WalletChargeService $chargeService)
-    {
+    public function __construct(
+        ApplicationContract $app,
+        WalletChargeService $chargeService
+    ) {
         $this->app = $app;
         $this->chargeService = $chargeService;
     }
@@ -57,22 +60,26 @@ class WalletRechargeController extends Controller
     /**
      * Create a recharge charge.
      *
-     * @param \Zhiyi\Plus\Http\Requests\API2\StoreWalletRecharge $request
+     * @param  \Zhiyi\Plus\Http\Requests\API2\StoreWalletRecharge  $request
+     *
      * @return mixed
      * @author Seven Du <shiweidu@outlook.com>
      */
-    public function store(StoreWalletRecharge $request)
-    {
+    public function store(StoreWalletRecharge $request) {
         // 设置共享实例，一面多个地方重复调用验证
-        $this->app->singleton(StoreWalletRecharge::class, function () use ($request) {
-            return $request;
-        });
+        $this->app->singleton(StoreWalletRecharge::class,
+            function () use ($request)
+            {
+                return $request;
+            });
 
         $type = $request->input('type');
         $controllers = [
             WalletRechargeApplePayController::class => ['applepay_upacp'],
-            WalletRechargeAlipayController::class => ['alipay', 'alipay_wap', 'alipay_pc_direct', 'alipay_qr'],
-            WalletRechargeWeChatController::class => ['wx', 'wx_wap'],
+            WalletRechargeAlipayController::class   => [
+                'alipay', 'alipay_wap', 'alipay_pc_direct', 'alipay_qr',
+            ],
+            WalletRechargeWeChatController::class   => ['wx', 'wx_wap'],
         ];
 
         foreach ($controllers as $controller => $keys) {
@@ -89,38 +96,42 @@ class WalletRechargeController extends Controller
     /**
      * Resolve store method.
      *
-     * @param string $type
+     * @param  string  $type
+     *
      * @return mixed
      * @author Seven Du <shiweidu@outlook.com>
      */
-    protected function resolveStore(string $type)
-    {
-        return $this->app->call([$this, camel_case($type.'_store')]);
+    protected function resolveStore(string $type) {
+        return $this->app->call([$this, StrAlias::camel($type.'_store')]);
     }
 
     /**
      * Create a recharge charge.
      *
-     * @param \Zhiyi\Plus\Models\WalletCharge $charge
-     * @param array $extra
+     * @param  \Zhiyi\Plus\Models\WalletCharge  $charge
+     * @param  array  $extra
+     *
      * @return array
      * @author Seven Du <shiweidu@outlook.com>
      */
-    protected function createCharge(WalletChargeModel $charge, array $extra = [])
-    {
+    protected function createCharge(
+        WalletChargeModel $charge,
+        array $extra = []
+    ) {
         return $this->chargeService->create($charge, $extra);
     }
 
     /**
      * Create a charge model.
      *
-     * @param \Illuminate\Http\Request $request
-     * @param string $channel
+     * @param  \Illuminate\Http\Request  $request
+     * @param  string  $channel
+     *
      * @return \Zhiyi\Plus\Models\WalletCharge
      * @author Seven Du <shiweidu@outlook.com>
      */
-    protected function createChargeModel(Request $request, string $channel): WalletChargeModel
-    {
+    protected function createChargeModel(Request $request, string $channel)
+    : WalletChargeModel {
         $charge = new WalletChargeModel();
         $charge->user_id = $request->user()->id;
         $charge->channel = $channel;
