@@ -22,11 +22,11 @@ namespace Zhiyi\Plus\Http\Controllers\APIs\V2;
 
 use Zhiyi\Plus\Models\User;
 use Illuminate\Http\Request;
+use function Zhiyi\Plus\username;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Support\Facades\Auth;
 use Zhiyi\Plus\Models\VerificationCode;
-use function Zhiyi\Plus\username;
 
 class AuthController extends Controller
 {
@@ -60,7 +60,8 @@ class AuthController extends Controller
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function login(Request $request)
-    : JsonResponse {
+    : JsonResponse
+    {
         $login = (string) $request->input('login', '');
         $code = $request->input('verifiable_code');
         $field = username($login);
@@ -158,7 +159,8 @@ class AuthController extends Controller
      * @return \Illuminate\Http\JsonResponse
      */
     protected function respondWithToken(string $token)
-    : JsonResponse {
+    : JsonResponse
+    {
         $this->guard()->user()->update([
             'last_login_ip' => request()->ip(),
         ]);
