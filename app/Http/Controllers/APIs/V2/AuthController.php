@@ -22,11 +22,11 @@ namespace Zhiyi\Plus\Http\Controllers\APIs\V2;
 
 use Zhiyi\Plus\Models\User;
 use Illuminate\Http\Request;
-use function Zhiyi\Plus\username;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Support\Facades\Auth;
 use Zhiyi\Plus\Models\VerificationCode;
+use function Zhiyi\Plus\username;
 
 class AuthController extends Controller
 {
@@ -54,13 +54,13 @@ class AuthController extends Controller
     /**
      * Get a JWT token via given credentials.
      *
-     * @param \Illuminate\Http\Request $request
+     * @param  \Illuminate\Http\Request  $request
+     *
      * @return \Illuminate\Http\JsonResponse
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function login(Request $request)
-    : JsonResponse
-    {
+    : JsonResponse {
         $login = (string) $request->input('login', '');
         $code = $request->input('verifiable_code');
         $field = username($login);
@@ -74,26 +74,31 @@ class AuthController extends Controller
                 ->first();
 
             if (! $verify) {
-                return $this->response()->json(['message' => '验证码错误或者已失效'], 422);
+                return $this->response()
+                    ->json(['message' => '验证码错误或者已失效'], 422);
             }
 
             $verify->delete();
 
             if ($user = User::withTrashed()->where($field, $login)->first()) {
-                return ! $user->deleted_at ?
-                    $this->respondWithToken($this->guard()->login($user)) :
+                return ! $user->deleted_at
+                    ?
+                    $this->respondWithToken($this->guard()->login($user))
+                    :
                     $this->response()->json([
                         'message' => '账号已被禁用，请联系管理员',
                     ], 403);
             }
 
             return $this->response()->json([
-                'message' => sprintf('%s还没有注册', $field == 'phone' ? '手机号' : '邮箱'),
+                'message' => sprintf('%s还没有注册',
+                    $field == 'phone' ? '手机号' : '邮箱'),
             ], 422);
         }
         if ($user = User::withTrashed()
             ->where($field, $login)
-            ->first()) {
+            ->first()
+        ) {
             if ($user->deleted_at) {
                 return $this->response()->json([
                     'message' => '账号已被禁用，请联系管理员',
@@ -111,7 +116,8 @@ class AuthController extends Controller
             return $this->response()->json(['message' => '账号或密码不正确'], 422);
         } else {
             return $this->response()->json([
-                'message' => sprintf('%s还没有注册', $field == 'phone' ? '手机号' : '邮箱'),
+                'message' => sprintf('%s还没有注册', $field == 'phone'
+                    ? '手机号' : ($field === 'name' ? '账号' : '邮箱')),
             ], 422);
         }
     }
@@ -147,22 +153,21 @@ class AuthController extends Controller
     /**
      * Get the token array structure.
      *
-     * @param string $token
+     * @param  string  $token
      *
      * @return \Illuminate\Http\JsonResponse
      */
     protected function respondWithToken(string $token)
-    : JsonResponse
-    {
+    : JsonResponse {
         $this->guard()->user()->update([
             'last_login_ip' => request()->ip(),
         ]);
 
         return $this->response()->json([
             'access_token' => $token,
-            'token_type' => 'Bearer',
-            'expires_in' => $this->guard()->factory()->getTTL(),
-            'refresh_ttl' => config('jwt.refresh_ttl'),
+            'token_type'   => 'Bearer',
+            'expires_in'   => $this->guard()->factory()->getTTL(),
+            'refresh_ttl'  => config('jwt.refresh_ttl'),
         ]);
     }
 }
