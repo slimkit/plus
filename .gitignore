@@ -16,6 +16,7 @@ jpush.log
 /node_modules
 /public/hot
 /public/storage
+/public/spa
 /storage/*.key
 /vendor
 /resources/views/vendor
@@ -25,7 +26,5 @@ jpush.log
 /.vagrant
 Homestead.json
 Homestead.yaml
-npm-debug.log
-yarn-error.log
 .env
 .phpunit.result.cache
