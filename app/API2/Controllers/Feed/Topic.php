@@ -23,7 +23,6 @@ namespace Zhiyi\Plus\API2\Controllers\Feed;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Carbon;
-use function Zhiyi\Plus\setting;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Database\Eloquent\Model;
 use Zhiyi\Plus\API2\Controllers\Controller;
@@ -36,6 +35,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Zhiyi\Plus\Models\FeedTopicUserLink as FeedTopicUserLinkModel;
 use Zhiyi\Plus\API2\Requests\Feed\CreateTopic as CreateTopicRequest;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
+use function Zhiyi\Plus\setting;
 
 class Topic extends Controller
 {
@@ -55,8 +55,8 @@ class Topic extends Controller
             ->only(['create', 'update']);
     }
 
-    public function listTopicsOnlyHot(Request $request, FeedTopicModel $model): JsonResponse
-    {
+    public function listTopicsOnlyHot(Request $request, FeedTopicModel $model)
+    : JsonResponse {
         $user = $request->user('api');
         $topics = $model
             ->query()
@@ -65,21 +65,12 @@ class Topic extends Controller
             ->limit(8)
             ->orderBy('id', 'desc')
             ->get();
-        if (($count = $topics->count()) < 8) {
-            $topics = $topics->merge(
-                $model->query()
-                ->whereNull('hot_at')
-                ->where('status', FeedTopicModel::REVIEW_PASSED)
-                ->limit(8 - $count)
-                ->orderBy('feeds_count', 'desc')
-                ->get()
-                ->all()
-            )->values();
-        }
         if ($user) {
-            $topics->load(['users' => function ($query) use ($user) {
-                return $query->wherePivot('user_id', $user->id);
-            }]);
+            $topics->load([
+                'users' => function ($query) use ($user) {
+                    return $query->wherePivot('user_id', $user->id);
+                },
+            ]);
         }
 
         return TopicResource::collection($topics)
@@ -90,12 +81,13 @@ class Topic extends Controller
     /**
      * List topics.
      *
-     * @param \Zhiyi\Plus\Requests\Feed\TopicIndex $request
-     * @param \Zhiyi\Plus\Models\FeedTopic $model
+     * @param  \Zhiyi\Plus\Requests\Feed\TopicIndex  $request
+     * @param  \Zhiyi\Plus\Models\FeedTopic  $model
+     *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function index(IndexRequest $request, FeedTopicModel $model): JsonResponse
-    {
+    public function index(IndexRequest $request, FeedTopicModel $model)
+    : JsonResponse {
         if ($request->query('only') === 'hot') {
             return $this->listTopicsOnlyHot($request, $model);
         }
@@ -109,35 +101,36 @@ class Topic extends Controller
         $result = $model
             ->query()
             ->where('status', FeedTopicModel::REVIEW_PASSED)
-
             // If `$request->query('q')` param exists,
             // create "`name` like %?%" SQL where.
-            ->when((bool) ($searchKeyword = $request->query('q', false)), function (EloquentBuilder $query) use ($searchKeyword) {
-                return $query->where('name', 'like', sprintf('%%%s%%', $searchKeyword));
-            })
-
+            ->when((bool) ($searchKeyword = $request->query('q', false)),
+                function (EloquentBuilder $query) use ($searchKeyword) {
+                    return $query->where('name', 'like',
+                        sprintf('%%%s%%', $searchKeyword));
+                })
             // If `$request->query('index)` param exists,
             // using `$direction` create "id ? ?" where
             //     ?[0] `$direction === asc` is `>`
             //     ?[0] `$direction === desc` is `<`
-            ->when((bool) ($indexID = $request->query('index', false)), function (EloquentBuilder $query) use ($indexID, $direction) {
-                return $query->where('id', $direction === 'asc' ? '>' : '<', $indexID);
-            })
-
+            ->when((bool) ($indexID = $request->query('index', false)),
+                function (EloquentBuilder $query) use ($indexID, $direction) {
+                    return $query->where('id', $direction === 'asc' ? '>' : '<',
+                        $indexID);
+                })
             // Set the number of data
             ->limit($request->query('limit', 15))
-
             // Using `$direction` set `id` direction,
             // the `$direction` enum `asc` or `desc`.
             ->orderBy('id', $direction)
-
             // Run the SQL query, return a collection.
             // instanceof \Illuminate\Support\Collection
             ->get();
         if ($user) {
-            $result->load(['users' => function ($query) use ($user) {
-                return $query->wherePivot('user_id', $user->id);
-            }]);
+            $result->load([
+                'users' => function ($query) use ($user) {
+                    return $query->wherePivot('user_id', $user->id);
+                },
+            ]);
         }
 
         // Create the action response.
@@ -151,11 +144,12 @@ class Topic extends Controller
     /**
      * Create an topic.
      *
-     * @param \Zhiyi\Plus\API2\Requests\Feed\CreateTopic $request
+     * @param  \Zhiyi\Plus\API2\Requests\Feed\CreateTopic  $request
+     *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function create(CreateTopicRequest $request): JsonResponse
-    {
+    public function create(CreateTopicRequest $request)
+    : JsonResponse {
         // Create feed topic module
         $topic = new FeedTopicModel;
         foreach ($request->only(['name', 'logo', 'desc']) as $key => $value) {
@@ -168,7 +162,8 @@ class Topic extends Controller
             ->where('name', $topic->name)
             ->exists();
         if ($exists) {
-            throw new UnprocessableEntityHttpException(sprintf('“%s”话题已存在', $topic->name));
+            throw new UnprocessableEntityHttpException(sprintf('“%s”话题已存在',
+                $topic->name));
         }
 
         // Fetch the authentication user model.
@@ -176,12 +171,17 @@ class Topic extends Controller
 
         // Open a database transaction,
         // database commit success return the topic model.
-        $topic = $user->getConnection()->transaction(function () use ($user, $topic) {
+        $topic = $user->getConnection()->transaction(function () use (
+            $user,
+            $topic
+        ) {
             // Set topic creator user ID and
             // init default followers count.
             $topic->creator_user_id = $user->id;
             $topic->followers_count = 1;
-            $topic->status = setting('feed', 'topic:need-review', false) ? FeedTopicModel::REVIEW_WAITING : FeedTopicModel::REVIEW_PASSED;
+            $topic->status = setting('feed', 'topic:need-review', false)
+                ? FeedTopicModel::REVIEW_WAITING
+                : FeedTopicModel::REVIEW_PASSED;
             $topic->save();
 
             // Attach the creator user follow the topic.
@@ -210,16 +210,18 @@ class Topic extends Controller
     /**
      * Edit an topic.
      *
-     * @param \Zhiyi\Plus\API2\Requests\Feed\EditTopic $request
-     * @param \Zhiyi\Plus\Models\FeedTopic $topic
+     * @param  \Zhiyi\Plus\API2\Requests\Feed\EditTopic  $request
+     * @param  \Zhiyi\Plus\Models\FeedTopic  $topic
+     *
      * @return \Illuminate\Http\Response
      */
-    public function update(EditTopicRequest $request, FeedTopicModel $topic): Response
-    {
+    public function update(EditTopicRequest $request, FeedTopicModel $topic)
+    : Response {
         $this->authorize('update', $topic);
 
         // Create success 204 response
-        $response = (new Response())->setStatusCode(Response::HTTP_NO_CONTENT /* 204 */);
+        $response
+            = (new Response())->setStatusCode(Response::HTTP_NO_CONTENT /* 204 */);
 
         // If `logo` and `desc` field all is NULL
         $data = array_filter($request->only(['name', 'desc', 'logo']));
@@ -238,11 +240,12 @@ class Topic extends Controller
     /**
      * Get a single topic.
      *
-     * @param \Zhiyi\Plus\Models\FeedTopic $topic
+     * @param  \Zhiyi\Plus\Models\FeedTopic  $topic
+     *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function show(FeedTopicModel $topic): JsonResponse
-    {
+    public function show(FeedTopicModel $topic)
+    : JsonResponse {
         if ($topic->status !== FeedTopicModel::REVIEW_PASSED) {
             throw new NotFoundHttpException('话题不存在或者还没有通过审核');
         }
