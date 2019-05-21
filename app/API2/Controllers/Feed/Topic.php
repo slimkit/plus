@@ -23,6 +23,7 @@ namespace Zhiyi\Plus\API2\Controllers\Feed;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Carbon;
+use function Zhiyi\Plus\setting;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Database\Eloquent\Model;
 use Zhiyi\Plus\API2\Controllers\Controller;
@@ -35,7 +36,6 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Zhiyi\Plus\Models\FeedTopicUserLink as FeedTopicUserLinkModel;
 use Zhiyi\Plus\API2\Requests\Feed\CreateTopic as CreateTopicRequest;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
-use function Zhiyi\Plus\setting;
 
 class Topic extends Controller
 {
@@ -56,7 +56,8 @@ class Topic extends Controller
     }
 
     public function listTopicsOnlyHot(Request $request, FeedTopicModel $model)
-    : JsonResponse {
+    : JsonResponse
+    {
         $user = $request->user('api');
         $topics = $model
             ->query()
@@ -87,7 +88,8 @@ class Topic extends Controller
      * @return \Illuminate\Http\JsonResponse
      */
     public function index(IndexRequest $request, FeedTopicModel $model)
-    : JsonResponse {
+    : JsonResponse
+    {
         if ($request->query('only') === 'hot') {
             return $this->listTopicsOnlyHot($request, $model);
         }
@@ -149,7 +151,8 @@ class Topic extends Controller
      * @return \Illuminate\Http\JsonResponse
      */
     public function create(CreateTopicRequest $request)
-    : JsonResponse {
+    : JsonResponse
+    {
         // Create feed topic module
         $topic = new FeedTopicModel;
         foreach ($request->only(['name', 'logo', 'desc']) as $key => $value) {
@@ -216,7 +219,8 @@ class Topic extends Controller
      * @return \Illuminate\Http\Response
      */
     public function update(EditTopicRequest $request, FeedTopicModel $topic)
-    : Response {
+    : Response
+    {
         $this->authorize('update', $topic);
 
         // Create success 204 response
@@ -245,7 +249,8 @@ class Topic extends Controller
      * @return \Illuminate\Http\JsonResponse
      */
     public function show(FeedTopicModel $topic)
-    : JsonResponse {
+    : JsonResponse
+    {
         if ($topic->status !== FeedTopicModel::REVIEW_PASSED) {
             throw new NotFoundHttpException('话题不存在或者还没有通过审核');
         }
