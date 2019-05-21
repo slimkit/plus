@@ -74,8 +74,8 @@
             url: '/topic',
             params: params
           });
+          @endif
       })();
-      @endif
 
       // 创建话题
       function gotoCreateTopic() {
