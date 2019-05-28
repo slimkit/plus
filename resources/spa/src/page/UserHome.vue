@@ -374,14 +374,13 @@ export default {
       this.isMine && this.screen !== 'all' && (params.screen = this.screen)
 
       this.$http
-        .get('/feeds', {
-          params,
-        })
+        .get('/feeds', { params })
         .then(({ data: { feeds = [] } }) => {
           this.feeds = loadmore ? [...this.feeds, ...feeds] : feeds
           this.$refs.portal.afterLoadMore(feeds.length < params.limit)
         })
         .finally(() => {
+          this.fetchFeeding = false
           this.$refs.portal.afterUpdate()
         })
     },
