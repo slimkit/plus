@@ -41,6 +41,7 @@ class MessageController extends BaseController
      * @param  Request  $request
      *
      * @return JsonResponse
+     * @throws Throwable
      */
     public function comments(Request $request)
     {
@@ -48,13 +49,16 @@ class MessageController extends BaseController
         $limit = $request->input('limit') ?: 20;
         $data['comments'] = api('GET', '/api/v2/user/comments',
             ['after' => $after, 'limit' => $limit]);
-
+        // dd($data['comments']);
         $return = '';
         if (! empty($data['comments'])) {
             foreach ($data['comments'] as &$v) {
                 switch ($v['commentable_type']) {
                     case 'feeds':
-                        $v['source_type'] = '评论了你的动态';
+                        // dd($v);
+                        $v['source_type'] = $v['reply']
+                        && $v['reply']['id'] === auth()->id() ? '在动态中回复了你'
+                            : '评论了你的动态';
                         if ($v['commentable']) {
                             $v['source_url'] = Route('pc:feedread',
                                 ($v['commentable']['id'] ?? 0));
@@ -72,13 +76,14 @@ class MessageController extends BaseController
                         }
                         break;
                     case 'group-posts':
-                        $v['source_type'] = '评论了你的帖子';
+                        $v['source_type'] = $v['reply']['id'] === auth()->id()
+                            ? '在帖子中回复了你' : '评论了你的帖子';
                         if ($v['commentable']) {
                             $v['source_url'] = Route('pc:grouppost', [
                                 'group_id' => $v['commentable']['group_id'],
                                 'post_id'  => $v['commentable']['id'],
                             ]);
-                            $v['source_content'] = $v['commentable']['title'];
+                            $v['source_content'] = $v['contents'];
                             ! empty($v['commentable']['images'])
                             && count($v['commentable']['images']) > 0
                             && $v['source_img']
@@ -88,11 +93,12 @@ class MessageController extends BaseController
                         }
                         break;
                     case 'news':
-                        $v['source_type'] = '评论了你的文章';
+                        $v['source_type'] = $v['reply']['id'] === auth()->id()
+                            ? '在文章中回复了你' : '评论了你的文章';
                         if ($v['commentable']) {
                             $v['source_url'] = Route('pc:newsread',
                                 ($v['commentable']['id'] ?? 0));
-                            $v['source_content'] = $v['commentable']['subject'];
+                            $v['source_content'] = $v['contents'];
                             $v['commentable']['image']
                             && $v['source_img']
                                 = $this->PlusData['routes']['storage']
@@ -100,11 +106,12 @@ class MessageController extends BaseController
                         }
                         break;
                     case 'questions':
-                        $v['source_type'] = '评论了你的问题';
+                        $v['source_type'] = $v['reply']['id'] === auth()->id()
+                            ? '在问题中回复了你' : '评论了你的问题';
                         if ($v['commentable']) {
                             $v['source_url'] = Route('pc:questionread',
                                 ($v['commentable']['id'] ?? 0));
-                            $v['source_content'] = $v['commentable']['subject'];
+                            $v['source_content'] = $v['contents'];
                             preg_match('/\@\!\[.*\]\((\d+)\)/i',
                                 $v['commentable']['body'], $imgs);
                             count($imgs) > 0
@@ -113,7 +120,8 @@ class MessageController extends BaseController
                         }
                         break;
                     case 'question-answers':
-                        $v['source_type'] = '评论了你的回答';
+                        $v['source_type'] = $v['reply']['id'] === auth()->id()
+                            ? '在回答中回复了你' : '评论了你的回答';
                         if ($v['commentable']) {
                             $v['source_url'] = Route('pc:answeread', ([
                                 'question'      => $v['commentable']->question_id
@@ -121,7 +129,7 @@ class MessageController extends BaseController
                                     0, 'answer' => $v['commentable']['id'] ?? 0,
                             ]));
                             $v['source_content']
-                                = formatList($v['commentable']['body']);
+                                = formatList($v['contents']);
                             preg_match('/\@\!\[.*\]\((\d+)\)/i',
                                 $v['commentable']['body'], $imgs);
                             count($imgs) > 0
@@ -150,6 +158,7 @@ class MessageController extends BaseController
      * @param  Request  $request
      *
      * @return JsonResponse
+     * @throws Throwable
      */
     public function likes(Request $request)
     {
@@ -257,8 +266,8 @@ class MessageController extends BaseController
         $data['notifications'] = api('GET', '/api/v2/user/notifications',
             ['page' => $page, 'limit' => $limit, 'type' => 'system'])['data'];
         // 设置已读
+        // dd($data['notifications']);
         api('PATCH', '/api/v2/user/notifications');
-
         $return = '';
         if (! empty($data['notifications'])) {
             $return = view('pcview::message.notifications', $data,
@@ -278,6 +287,7 @@ class MessageController extends BaseController
      * @param  Request  $request
      *
      * @return JsonResponse
+     * @throws Throwable
      */
     public function pinnedFeedComment(Request $request)
     {
@@ -303,6 +313,7 @@ class MessageController extends BaseController
      * @param  Request  $request
      *
      * @return JsonResponse
+     * @throws Throwable
      */
     public function pinnedNewsComment(Request $request)
     {
@@ -327,6 +338,7 @@ class MessageController extends BaseController
      * @param  Request  $request
      *
      * @return JsonResponse
+     * @throws Throwable
      */
     public function pinnedPostComment(Request $request)
     {
@@ -351,6 +363,7 @@ class MessageController extends BaseController
      * @param  Request  $request
      *
      * @return JsonResponse
+     * @throws Throwable
      */
     public function pinnedPost(Request $request)
     {
@@ -375,6 +388,7 @@ class MessageController extends BaseController
      * @param  Request  $request
      *
      * @return JsonResponse
+     * @throws Throwable
      */
     public function followMutual(Request $request)
     {
@@ -399,6 +413,7 @@ class MessageController extends BaseController
      * @param  Request  $request
      *
      * @return JsonResponse
+     * @throws Throwable
      */
     public function mention(Request $request)
     {
