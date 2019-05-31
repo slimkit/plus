@@ -26,11 +26,11 @@ use Tymon\JWTAuth\JWTAuth;
 use Zhiyi\Plus\Models\User;
 use Illuminate\Http\Request;
 use Zhiyi\Plus\Models\Taggable;
+use function Zhiyi\Plus\setting;
+use function Zhiyi\Plus\username;
 use Zhiyi\Plus\Models\VerificationCode;
 use Zhiyi\Plus\Http\Requests\API2\StoreUserPost;
 use Illuminate\Contracts\Routing\ResponseFactory as ResponseFactoryContract;
-use function Zhiyi\Plus\setting;
-use function Zhiyi\Plus\username;
 
 class UserController extends Controller
 {
