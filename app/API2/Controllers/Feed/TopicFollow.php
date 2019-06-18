@@ -20,6 +20,7 @@ declare(strict_types=1);
 
 namespace Zhiyi\Plus\API2\Controllers\Feed;
 
+use DB;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Carbon;
@@ -40,14 +41,19 @@ class TopicFollow extends Controller
     /**
      * Follow a topic.
      *
-     * @param \Illuminate\Http\Request $request
-     * @param \Zhiyi\Plus\Models\FeedTopic $model
-     * @param int $topicID
-     * @return \Illuminate\Http\Response
+     * @param  Request  $request
+     * @param  FeedTopicModel  $model
+     * @param  int  $topicID
+     *
+     * @return Response
      */
-    public function follow(Request $request, FeedTopicModel $model, int $topicID): Response
-    {
-        // Featch the request authentication user model.
+    public function follow(
+        Request $request,
+        FeedTopicModel $model,
+        int $topicID
+    )
+    : Response {
+        // Fetch the request authentication user model.
         $user = $request->user();
 
         // Database query topic.
@@ -61,40 +67,54 @@ class TopicFollow extends Controller
             throw new NotFoundHttpException('关注的话题不存在');
         }
 
-        $link = $topic->users()->wherePivot('user_id', $user->id)->first()->pivot;
-        if ($link->following_at ?? false) {
-            return (new Response())->setStatusCode(Response::HTTP_NO_CONTENT /* 204 */);
+        $link = $topic->users()->wherePivot('user_id', $user->id)->first();
+        if ($link) {
+            if ($link->pivot->following_at ?? false) {
+                return (new Response())->setStatusCode(Response::HTTP_NO_CONTENT /* 204 */);
+            }
         }
 
         $feedsCount = $topic->feeds()->where('user_id', $user->id)->count();
 
-        return $user->getConnection()->transaction(function () use ($topic, $user, $feedsCount, $link): Response {
-            if ($link) {
-                $link->following_at = new Carbon;
-                $link->save();
-            } else {
+        return $user->getConnection()->transaction(function () use (
+            $topic,
+            $user,
+            $feedsCount
+        ): Response {
+            return $topic->getConnection()->transaction(function () use (
+                $user,
+                $topic,
+                $feedsCount
+            ) {
                 $topic->users()->attach($user, [
                     'following_at' => new Carbon(),
-                    'feeds_count' => $feedsCount,
+                    'feeds_count'  => $feedsCount,
                 ]);
-            }
-            $topic->increment('followers_count', 1);
+                // }
+                $topic->increment('followers_count', 1);
 
-            return (new Response)->setStatusCode(Response::HTTP_NO_CONTENT /* 204 */);
+                return (new Response)->setStatusCode(Response::HTTP_NO_CONTENT /* 204 */);
+            });
+
         });
     }
 
     /**
-     * Unfollow a topic.
+     * unFollow a topic.
      *
-     * @param \Illuminate\Http\Request $request
-     * @param \Zhiyi\Plus\Models\FeedTopic $model
-     * @param int $topicID
-     * @return \Illuminate\Http\Response
+     * @param  Request  $request
+     * @param  FeedTopicModel  $model
+     * @param  int  $topicID
+     *
+     * @return Response
      */
-    public function unfollow(Request $request, FeedTopicModel $model, int $topicID): Response
-    {
-        // Featch the request authentication user model.
+    public function unfollow(
+        Request $request,
+        FeedTopicModel $model,
+        int $topicID
+    )
+    : Response {
+        // Fetch the request authentication user model.
         $user = $request->user();
 
         // Database query topic.
@@ -109,23 +129,33 @@ class TopicFollow extends Controller
         }
 
         // Create success 204 response
-        $response = (new Response)->setStatusCode(Response::HTTP_NO_CONTENT /* 204 */);
+        $response
+            = (new Response)->setStatusCode(Response::HTTP_NO_CONTENT /* 204 */);
 
         // If not followed, return 204 response.
-        $link = $topic->users()->wherePivot('user_id', $user->id)->first()->pivot;
+        $link = $topic->users()->wherePivot('user_id', $user->id)
+            ->first()->pivot;
         if (! $link || ! ($link->following_at ?? false)) {
             return $response;
         }
 
-        return $user->getConnection()->transaction(function () use ($topic, $response, $user, $link): Response {
-            if ($topic->followers_count > 0) {
-                $topic->decrement('followers_count', 1);
-            }
+        return $user->getConnection()->transaction(function () use (
+            $topic,
+            $response,
+            $user
+        ): Response {
+            return $topic->getConnection()->transaction(function () use (
+                $topic,
+                $user,
+                $response
+            ) {
+                if ($topic->followers_count > 0) {
+                    $topic->decrement('followers_count', 1);
+                }
+                $topic->users()->detach($user);
 
-            $link->following_at = null;
-            $link->save();
-
-            return $response;
+                return $response;
+            });
         });
     }
 }
