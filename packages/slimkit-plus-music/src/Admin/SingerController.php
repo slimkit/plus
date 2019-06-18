@@ -55,7 +55,7 @@ class SingerController extends Controller
         ]);
     }
 
-    protected function search(MusicSinger $musicSinger, String $type, $name, $limit)
+    protected function search(MusicSinger $musicSinger, string $type, $name, $limit)
     {
         if ($type === 'all') {
             return $musicSinger->when($name, function ($query) use ($name) {

@@ -20,7 +20,6 @@ declare(strict_types=1);
 
 namespace Zhiyi\Plus\API2\Controllers\Feed;
 
-use DB;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Carbon;
@@ -95,7 +94,6 @@ class TopicFollow extends Controller
 
                 return (new Response)->setStatusCode(Response::HTTP_NO_CONTENT /* 204 */);
             });
-
         });
     }
 

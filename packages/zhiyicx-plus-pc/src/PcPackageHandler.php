@@ -18,7 +18,6 @@
 
 namespace Zhiyi\Component\ZhiyiPlus\PlusComponentPc;
 
-use Zhiyi\Plus\Models\Comment;
 use Zhiyi\Plus\Models\Advertising;
 use Zhiyi\Plus\Support\Configuration;
 use Zhiyi\Plus\Support\PackageHandler;

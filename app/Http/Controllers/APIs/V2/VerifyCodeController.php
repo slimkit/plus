@@ -21,7 +21,6 @@ declare(strict_types=1);
 namespace Zhiyi\Plus\Http\Controllers\APIs\V2;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Mail;
 use Zhiyi\Plus\Models\VerificationCode;
 use Zhiyi\Plus\Http\Requests\API2\StoreVerifyCode;
 use Zhiyi\Plus\Http\Requests\API2\CreateRegisterVerifyCodeRequest;

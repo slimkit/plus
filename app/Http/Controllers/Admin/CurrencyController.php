@@ -23,7 +23,6 @@ namespace Zhiyi\Plus\Http\Controllers\Admin;
 use DB;
 use Zhiyi\Plus\Models\User;
 use Illuminate\Http\Request;
-use Zhiyi\Plus\Models\Currency;
 use function Zhiyi\Plus\setting;
 use Zhiyi\Plus\Http\Controllers\Controller;
 use Zhiyi\Plus\Models\CurrencyOrder as OrderModel;
