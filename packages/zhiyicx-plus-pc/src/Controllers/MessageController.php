@@ -54,8 +54,13 @@ class MessageController extends BaseController
         if (! empty($data['comments'])) {
             foreach ($data['comments'] as &$v) {
                 switch ($v['commentable_type']) {
+                    case 'music_specials':
+                        $v['source_type'] = $v['reply_user'] ? '在专辑中回复了你'
+                            : '评论了你的专辑';
+                        $v['source_content'] = $v['commentable']['title'];
+                        $v['source_url'] = '#';
+                        break;
                     case 'feeds':
-                        // dd($v);
                         $v['source_type'] = $v['reply']
                         && $v['reply']['id'] === auth()->id() ? '在动态中回复了你'
                             : '评论了你的动态';
@@ -83,7 +88,7 @@ class MessageController extends BaseController
                                 'group_id' => $v['commentable']['group_id'],
                                 'post_id'  => $v['commentable']['id'],
                             ]);
-                            $v['source_content'] = $v['contents'];
+                            $v['source_content'] = $v['commentable']['title'];
                             ! empty($v['commentable']['images'])
                             && count($v['commentable']['images']) > 0
                             && $v['source_img']
@@ -98,7 +103,7 @@ class MessageController extends BaseController
                         if ($v['commentable']) {
                             $v['source_url'] = Route('pc:newsread',
                                 ($v['commentable']['id'] ?? 0));
-                            $v['source_content'] = $v['contents'];
+                            $v['source_content'] = $v['commentable']['title'];
                             $v['commentable']['image']
                             && $v['source_img']
                                 = $this->PlusData['routes']['storage']
@@ -111,7 +116,7 @@ class MessageController extends BaseController
                         if ($v['commentable']) {
                             $v['source_url'] = Route('pc:questionread',
                                 ($v['commentable']['id'] ?? 0));
-                            $v['source_content'] = $v['contents'];
+                            $v['source_content'] = $v['commentable']['subject'];
                             preg_match('/\@\!\[.*\]\((\d+)\)/i',
                                 $v['commentable']['body'], $imgs);
                             count($imgs) > 0
@@ -124,12 +129,12 @@ class MessageController extends BaseController
                             ? '在回答中回复了你' : '评论了你的回答';
                         if ($v['commentable']) {
                             $v['source_url'] = Route('pc:answeread', ([
-                                'question'      => $v['commentable']->question_id
+                                'question'      => $v['commentable']['question_id']
                                     ??
                                     0, 'answer' => $v['commentable']['id'] ?? 0,
                             ]));
                             $v['source_content']
-                                = formatList($v['contents']);
+                                = formatList($v['commentable']['text_body']);
                             preg_match('/\@\!\[.*\]\((\d+)\)/i',
                                 $v['commentable']['body'], $imgs);
                             count($imgs) > 0
