@@ -20,6 +20,8 @@ declare(strict_types=1);
 
 namespace Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models;
 
+use DB;
+use Carbon\Carbon;
 use Zhiyi\Plus\Models\User;
 use Zhiyi\Plus\Models\Report;
 use Zhiyi\Plus\Models\Comment;
@@ -30,6 +32,10 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Zhiyi\Plus\Models\FeedTopic as FeedTopicModel;
+use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Zhiyi\Plus\Models\FeedTopicLink as FeedTopicLinkModel;
 
@@ -40,29 +46,27 @@ class Feed extends Model
         Relations\FeedHasReward,
         Relations\FeedHasLike,
         Relations\FeedHasVideo;
-
     /**
      * The model table name.
      *
      * @var string
      */
     protected $table = 'feeds';
-
-    protected $fillable = [
-        'feed_content',
-        'feed_from',
-        'feed_latitude',
-        'feed_longtitude',
-        'feed_client_id',
-        'feed_goehash',
-        'feed_mark',
-        'user_id',
-    ];
-
-    protected $hidden = [
-        'feed_client_id',
-    ];
-
+    protected $fillable
+        = [
+            'feed_content',
+            'feed_from',
+            'feed_latitude',
+            'feed_longtitude',
+            'feed_client_id',
+            'feed_goehash',
+            'feed_mark',
+            'user_id',
+        ];
+    protected $hidden
+        = [
+            'feed_client_id',
+        ];
     /**
      * The relations to eager load on every query.
      *
@@ -70,10 +74,35 @@ class Feed extends Model
      */
     protected $with = ['images', 'paidNode', 'video'];
 
+
+    public static function boot()
+    {
+        parent::boot();
+        static::addGlobalScope('topics', function (Builder $query) {
+            $query->with('topics');
+        });
+
+        // static::addGlobalScope('pinnedComments', function (Builder $query) {
+        //     $query->with('pinnedComments');
+        // });
+
+        static::addGlobalScope('image', function (Builder $query) {
+            $query->with([
+                'images' => function (HasMany $query) {
+                    $query->orderBy('id', 'asc');
+                },
+            ]);
+        });
+
+        static::addGlobalScope('user', function (Builder $builder) {
+            $builder->with('user');
+        });
+    }
+
     /**
      * Has feed pinned.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     * @return HasOne
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function pinned()
@@ -84,10 +113,11 @@ class Feed extends Model
 
     /**
      * blacklists of current user.
+     *
      * @Author   Wayne
      * @DateTime 2018-04-13
      * @Email    qiaobin@zhiyicx.com
-     * @return   [type]              [description]
+     * @return HasMany
      */
     public function blacks()
     {
@@ -97,7 +127,7 @@ class Feed extends Model
     /**
      * Get feed images.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return HasMany
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function images()
@@ -109,28 +139,30 @@ class Feed extends Model
     /**
      * 动态付费节点.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     * @return HasOne
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function paidNode()
     {
         return $this->hasOne(PaidNode::class, 'raw', 'id')
-            ->where('channel', 'like', 'feed');
+            ->where('channel', 'like', 'feeds');
     }
 
     /**
      * 单条动态属于一个用户.
-     * @return [type] [description]
+     *
+     * @return BelongsTo
      */
     public function user()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class)
+            ->withTrashed();
     }
 
     /**
      * Has comments.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\MorphMany
+     * @return MorphMany
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function comments()
@@ -141,13 +173,17 @@ class Feed extends Model
     /**
      * Has pinned comments.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     * @return BelongsToMany
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function pinnedComments()
     {
-        return $this->belongsToMany(Comment::class, 'feed_pinneds', 'raw', 'target')
-            ->where('channel', 'like', 'comment');
+        return $this->belongsToMany(Comment::class, 'feed_pinneds', 'raw',
+            'target')
+            ->where('channel', 'comment')
+            ->where('expires_at', '>', new Carbon)
+            ->orderBy('amount', 'desc')
+            ->orderBy('created_at', 'desc');
     }
 
     /**
@@ -162,43 +198,48 @@ class Feed extends Model
 
     /**
      * find the data from the user id.
-     * @param  Builder $query [description]
-     * @param  string  $phone [description]
-     * @return [type]         [description]
+     *
+     * @param  Builder  $query
+     * @param  int  $userId
+     *
+     * @return Builder
      */
-    public function scopeByUserId(Builder $query, int $userId): Builder
-    {
+    public function scopeByUserId(Builder $query, int $userId)
+    : Builder {
         return $query->where('user_id', $userId);
     }
 
     /**
      * find the data from the feed id.
      *
+     * @param  Builder  $query  [description]
+     * @param  int  $feedId  [description]
+     *
+     * @return Builder
      * @author bs<414606094@qq.com>
-     * @param  Builder $query  [description]
-     * @param  int $feedId [description]
-     * @return [type]          [description]
      */
-    public function scopeByFeedId(Builder $query, int $feedId): Builder
-    {
+    public function scopeByFeedId(Builder $query, int $feedId)
+    : Builder {
         return $query->where('id', $feedId);
     }
 
     /**
      * 筛选已审核动态
      *
+     * @param  Builder  $query  [description]
+     *
+     * @return Builder
      * @author bs<414606094@qq.com>
-     * @param  Builder $query [description]
-     * @return [type]         [description]
      */
-    public function scopeByAudit(Builder $query): Builder
-    {
+    public function scopeByAudit(Builder $query)
+    : Builder {
         return $query->where('audit_status', 1);
     }
 
     /**
      * 动态拥有多条收藏记录.
-     * @return [type] [description]
+     *
+     * @return HasMany
      */
     public function collection()
     {
@@ -208,7 +249,7 @@ class Feed extends Model
     /**
      * Has reports.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\MorphMany
+     * @return MorphMany
      * @author bs<414606094@qq.com>
      */
     public function reports()
@@ -219,23 +260,27 @@ class Feed extends Model
     /**
      * The feed topic belongs to many.
      *
-     * @return Illuminate\Database\Eloquent\Relations\BelongsToMany
+     * @return BelongsToMany
      */
-    public function topics(): BelongsToMany
+    public function topics()
+    : BelongsToMany
     {
         $table = (new FeedTopicLinkModel)->getTable();
 
         return $this
-            ->belongsToMany(FeedTopicModel::class, $table, 'feed_id', 'topic_id')
-            ->using(FeedTopicLinkModel::class);
+            ->belongsToMany(FeedTopicModel::class, $table, 'feed_id',
+                'topic_id')
+            ->using(FeedTopicLinkModel::class)
+            ->select('id', 'name');
     }
 
-    public function makeHotValue($model = null): int
-    {
+    public function makeHotValue($model = null)
+    : int {
         if (! $model instanceof static) {
             $model = $this;
         }
 
-        return $model->feed_view_count + $model->feed_comment_count * 10 + $model->like_count * 5;
+        return $model->feed_view_count + $model->feed_comment_count * 10
+            + $model->like_count * 5;
     }
 }

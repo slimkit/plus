@@ -137,7 +137,7 @@ return [
 
     'key' => env('APP_KEY'),
 
-    'cipher' => 'AES-256-CBC',
+    'cipher'     => 'AES-256-CBC',
 
     /*
      |
@@ -197,6 +197,7 @@ return [
         Zhiyi\Plus\Providers\NotificationServiceProvider::class,
         Zhiyi\Plus\Providers\EloquentServiceProvider::class,
         Zhiyi\Plus\FileStorage\Providers\AppServiceProvider::class,
+        Mavinoo\LaravelBatch\LaravelBatchServiceProvider::class,
 
     ],
 
@@ -246,6 +247,7 @@ return [
         'Validator'    => Illuminate\Support\Facades\Validator::class,
         'View'         => Illuminate\Support\Facades\View::class,
         'Image'        => Intervention\Image\Facades\Image::class,
+        'Batch'        => Mavinoo\LaravelBatch\LaravelBatchFacade::class,
     ],
 
 ];
