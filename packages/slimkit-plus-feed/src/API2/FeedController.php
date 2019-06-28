@@ -24,7 +24,6 @@ use Batch;
 use Throwable;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
-use function Zhiyi\Plus\setting;
 use Zhiyi\Plus\Models\UserCount;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Cache;
@@ -40,14 +39,15 @@ use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\Feed;
 use Zhiyi\Plus\Packages\Currency\Processes\User as UserProcess;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\FeedVideo;
-use Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\FeedPinned;
 use Zhiyi\Plus\Models\FeedTopicUserLink as FeedTopicUserLinkModel;
+use Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\FeedPinned;
 use Illuminate\Contracts\Routing\ResponseFactory as ResponseContract;
 use Illuminate\Contracts\Foundation\Application as ApplicationContract;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\Feed as FeedModel;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Repository\Feed as FeedRepository;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\FormRequest\API2\StoreFeedPost as StoreFeedPostRequest;
+use function Zhiyi\Plus\setting;
 
 class FeedController extends Controller
 {
@@ -77,7 +77,7 @@ class FeedController extends Controller
         }
 
         return $response->json([
-            // 'pinned' => $app->call([$this, 'getPinnedFeeds']),
+            'pinned' => $app->call([$this, 'getPinnedFeeds']),
             'feeds'  => $app->call([$this, $type]),
         ])
             ->setStatusCode(200);
@@ -438,8 +438,7 @@ class FeedController extends Controller
      * @return array
      */
     private function makeFeedLinkTopics(StoreFeedPostRequest $request)
-    : array
-    {
+    : array {
         $topics = array_map(function ($item)
         : ?int {
             if (is_numeric($item) || $item == (int) $item) {
@@ -480,8 +479,7 @@ class FeedController extends Controller
      * @return void
      */
     private function linkFeedToTopics(array $topics, FeedModel $feed)
-    : void
-    {
+    : void {
         if (empty($topics)) {
             return;
         }
@@ -793,8 +791,7 @@ class FeedController extends Controller
      * @author Seven Du <shiweidu@outlook.com>
      */
     protected function fillFeedBaseData(Request $request, FeedModel $feed)
-    : FeedModel
-    {
+    : FeedModel {
         $baseFormInputs = $request->only([
             'feed_content', 'feed_from', 'feed_mark',
             'feed_latitude', 'feed_longtitude', 'feed_geohash',
