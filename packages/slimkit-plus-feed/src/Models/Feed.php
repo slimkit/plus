@@ -82,10 +82,6 @@ class Feed extends Model
             $query->with('topics');
         });
 
-        // static::addGlobalScope('pinnedComments', function (Builder $query) {
-        //     $query->with('pinnedComments');
-        // });
-
         static::addGlobalScope('image', function (Builder $query) {
             $query->with([
                 'images' => function (HasMany $query) {

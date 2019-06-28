@@ -21,13 +21,15 @@ declare(strict_types=1);
 namespace Zhiyi\Plus\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\MorphTo;
 
 class Comment extends Model
 {
     /**
      * Has commentable.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\MorphTo
+     * @return MorphTo
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function commentable()
@@ -38,7 +40,7 @@ class Comment extends Model
     /**
      * Has a user.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return BelongsTo
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function user()

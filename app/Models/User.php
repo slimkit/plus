@@ -20,6 +20,9 @@ declare(strict_types=1);
 
 namespace Zhiyi\Plus\Models;
 
+use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\MorphToMany;
+use Medz\Laravel\Notifications\JPush\Sender;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Builder;
@@ -84,13 +87,21 @@ class User extends Authenticatable implements JWTSubject
      */
     protected $with = ['extra'];
 
+    public static function boot()
+    {
+        parent::boot();
+        static::addGlobalScope('certification', function (Builder $builder) {
+            $builder->with('certification');
+        });
+    }
+
     /**
      * Get Notification for JPush sender.
-     * @return \Medz\Laravel\Notifications\JPush\Sender
+     * @return Sender
      */
     protected function routeNotificationForJpush()
     {
-        return new \Medz\Laravel\Notifications\JPush\Sender([
+        return new Sender([
             'platform' => 'all',
             'audience' => [
                 'alias' => sprintf('user_%d', $this->id),
@@ -162,7 +173,7 @@ class User extends Authenticatable implements JWTSubject
     /**
      * Has user extra.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     * @return HasOne
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function extra()
@@ -173,7 +184,7 @@ class User extends Authenticatable implements JWTSubject
     /**
      * Has user certification.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     * @return HasOne
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function certification()
@@ -184,7 +195,7 @@ class User extends Authenticatable implements JWTSubject
     /**
      * Has tags of the user.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\MorphToMany
+     * @return MorphToMany
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function tags()
@@ -318,7 +329,7 @@ class User extends Authenticatable implements JWTSubject
     /**
      * The user topics belong to many.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     * @return BelongsToMany
      */
     public function feedTopics(): BelongsToMany
     {

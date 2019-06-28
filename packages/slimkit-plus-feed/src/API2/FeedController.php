@@ -21,13 +21,12 @@ declare(strict_types=1);
 namespace Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\API2;
 
 use Batch;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Throwable;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Zhiyi\Plus\Models\UserCount;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Cache;
 use Zhiyi\Plus\Models\User as UserModel;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Query\JoinClause;
@@ -36,8 +35,7 @@ use Zhiyi\Plus\AtMessage\AtMessageHelperTrait;
 use Zhiyi\Plus\Models\FileWith as FileWithModel;
 use Zhiyi\Plus\Models\PaidNode as PaidNodeModel;
 use Zhiyi\Plus\Models\FeedTopic as FeedTopicModel;
-use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\Feed;
 use Zhiyi\Plus\Packages\Currency\Processes\User as UserProcess;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\FeedVideo;
@@ -60,6 +58,8 @@ class FeedController extends Controller
      *
      * @param  Request  $request
      * @param  ApplicationContract  $app
+     *
+     * @param  ResponseContract  $response
      *
      * @return mixed
      * @author Seven Du <shiweidu@outlook.com>
@@ -97,36 +97,44 @@ class FeedController extends Controller
         }
 
         $user = $request->user('api')->id ?? 0;
-        $feeds = $feedModel->newQuery()->select('feeds.*')
-            ->with([
-                'topics'         => function (BelongsTo $query) {
-                    return $query->select('id', 'name');
-                },
-                'pinnedComments' => function (HasMany $query) {
-                    $query->where('expires_at', '>', new Carbon)
-                        ->orderBy('amount', 'desc')
-                        ->orderBy('created_at', 'desc');
-                },
-            ])
-            ->join('feed_pinneds', function (JoinClause $join) use ($datetime) {
-                return $join->on('feeds.id', '=', 'feed_pinneds.target')
-                    ->where('channel', 'feed')
-                    ->where('expires_at', '>', $datetime);
-            })
-            ->whereDoesntHave('blacks', function (Builder $query) use ($user) {
-                $query->where('user_id', $user);
-            })
-            ->orderBy('feed_pinneds.amount', 'desc')
-            ->orderBy('feed_pinneds.created_at', 'desc')
-            ->get();
+        // 置顶动态缓存
+        $feeds = Cache::remember('pinnedFeeds', '5',
+            function () use ($feedModel, $datetime, $user) {
+                return $feedModel->newQuery()->select('feeds.*')
+                    ->with([
+                        'pinnedComments',
+                        'comments' => function (MorphMany $builder) {
+                            $builder->limit(10);
+                        },
+                    ])
+                    ->join('feed_pinneds',
+                        function (JoinClause $join) use ($datetime) {
+                            return $join->on('feeds.id', '=',
+                                'feed_pinneds.target')
+                                ->where('channel', 'feed')
+                                ->where('expires_at', '>', $datetime);
+                        })
+                    ->whereDoesntHave('blacks',
+                        function (Builder $query) use ($user) {
+                            $query->where('user_id', $user);
+                        })
+                    ->orderBy('feed_pinneds.amount', 'desc')
+                    ->orderBy('feed_pinneds.created_at', 'desc')
+                    ->get();
+            });
 
         $user = $request->user('api')->id ?? 0;
-
-        return $feeds->map(function (FeedModel $feed) use ($repository, $user) {
+        $updateValues = [];
+        $feeds = $feeds->map(function (FeedModel $feed) use (
+            $repository,
+            $user
+        ) {
             $feed->feed_view_count += 1;
-            $feed->hot = $feed->makeHotValue();
-            $feed->save();
-
+            $updateValues[] = [
+                'id'              => $feed->id,
+                'feed_view_count' => $feed->feed_view_count,
+                'hot'             => $feed->makeHotValue(),
+            ];
             $repository->setModel($feed);
             $repository->images();
             $repository->format($user);
@@ -137,6 +145,10 @@ class FeedController extends Controller
 
             return $feed;
         });
+
+        Batch::update($feedModel->getTable(), $updateValues, 'id');
+
+        return $feeds;
     }
 
     /**
@@ -165,7 +177,7 @@ class FeedController extends Controller
                 'pinnedComments',
                 'comments' => function (MorphMany $builder) {
                     $builder->limit(10);
-                }
+                },
             ])
             ->when($after,
                 function (Builder $query) use ($after) {
