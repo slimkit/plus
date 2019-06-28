@@ -77,7 +77,7 @@ class FeedController extends Controller
         }
 
         return $response->json([
-            'pinned' => $app->call([$this, 'getPinnedFeeds']),
+            // 'pinned' => $app->call([$this, 'getPinnedFeeds']),
             'feeds'  => $app->call([$this, $type]),
         ])
             ->setStatusCode(200);
@@ -140,8 +140,8 @@ class FeedController extends Controller
             $repository->format($user);
             $repository->previewComments();
 
-            $feed->has_collect = $feed->collected($user);
-            $feed->has_like = $feed->liked($user);
+            $feed->has_collect = $user ? $feed->collected($user) : false;
+            $feed->has_like = $user ? $feed->liked($user) : false;
 
             return $feed;
         });
@@ -234,8 +234,8 @@ class FeedController extends Controller
             //     });
             // }
 
-            $feed->has_collect = $feed->collected($user);
-            $feed->has_like = $feed->liked($user);
+            $feed->has_collect = $user ? $feed->collected($user) : false;
+            $feed->has_like = $user ? $feed->liked($user) : false;
 
             return $feed;
         });
@@ -299,8 +299,8 @@ class FeedController extends Controller
             $repository->images();
             $repository->format($user);
             $repository->previewComments();
-            $feed->has_collect = $feed->collected($user);
-            $feed->has_like = $feed->liked($user);
+            $feed->has_collect = $user ? $feed->collected($user) : false;
+            $feed->has_like = $user ? $feed->liked($user) : false;
 
             return $feed;
         });
@@ -371,8 +371,8 @@ class FeedController extends Controller
             $repository->format($user->id);
             $repository->previewComments();
 
-            $feed->has_collect = $feed->collected($user->id);
-            $feed->has_like = $feed->liked($user);
+            $feed->has_collect = $user ? $feed->collected($user) : false;
+            $feed->has_like = $user ? $feed->liked($user) : false;
 
             return $feed;
         });
@@ -818,6 +818,7 @@ class FeedController extends Controller
      * @param  FeedModel  $feed
      *
      * @return mixed
+     * @throws Throwable
      * @author BS <414606094@qq.com>
      */
     public function newDestroy(
@@ -916,7 +917,7 @@ class FeedController extends Controller
         $screen = $request->query('screen');
 
         $feeds = $feedModel->where('user_id', $current_user)
-            ->when($screen, function ($query) use ($datetime, $screen) {
+            ->when($screen, function (Builder $query) use ($datetime, $screen) {
                 switch ($screen) {
                     case 'pinned':
                         $query->whereHas('pinned',
@@ -929,26 +930,11 @@ class FeedController extends Controller
                         break;
                 }
             })
-            ->when($after, function ($query) use ($after) {
+            ->when($after, function (Builder $query) use ($after) {
                 return $query->where('id', '<', $after);
             })
             ->with([
-                'user'           => function ($query) {
-                    return $query->withTrashed();
-                },
-                'topics'         => function ($query) {
-                    return $query->select('id', 'name');
-                },
-                'user.certification',
-                'pinnedComments' => function ($query) {
-                    return $query->with([
-                        'user',
-                        'user.certification',
-                    ])
-                        ->where('expires_at', '>', new Carbon)
-                        ->orderBy('amount', 'desc')
-                        ->orderBy('created_at', 'desc');
-                },
+                'pinnedComments'
             ])
             ->orderBy('id', 'desc')
             ->limit($limit)
@@ -960,8 +946,8 @@ class FeedController extends Controller
             $repository->format($user);
             $repository->previewComments();
 
-            $feed->has_collect = $feed->collected($user);
-            $feed->has_like = $feed->liked($user);
+            $feed->has_collect = $user ? $feed->collected($user) : false;
+            $feed->has_like = $user ? $feed->liked($user) : false;
 
             return $feed;
         });

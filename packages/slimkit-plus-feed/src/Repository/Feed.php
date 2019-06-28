@@ -149,7 +149,8 @@ class Feed
                 if ($item->paidNode !== null) {
                     $image['amount'] = $item->paidNode->amount;
                     $image['type'] = $item->paidNode->extra;
-                    $image['paid'] = $item->paidNode->paid($user);
+                    $image['paid'] = $user ? $item->paidNode->paid($user) :
+                        false;
                     $image['paid_node'] = $item->paidNode->id;
                 }
 

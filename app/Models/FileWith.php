@@ -20,7 +20,9 @@ declare(strict_types=1);
 
 namespace Zhiyi\Plus\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class FileWith extends Model
 {
@@ -31,6 +33,14 @@ class FileWith extends Model
      */
     protected $fillable = ['file_id', 'user_id', 'channel', 'raw', 'size'];
 
+    public static function boot()
+    {
+        parent::boot();
+        static::addGlobalScope('paidNode', function (Builder $query) {
+           $query->with('paidNode');
+        });
+    }
+
     public function getPayIndexAttribute(): string
     {
         return sprintf('file:%d', $this->id);
@@ -39,7 +49,7 @@ class FileWith extends Model
     /**
      * has file.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     * @return HasOne
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function file()
@@ -50,7 +60,7 @@ class FileWith extends Model
     /**
      * 获取付费节点.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     * @return HasOne
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function paidNode()
