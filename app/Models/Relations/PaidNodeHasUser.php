@@ -20,12 +20,12 @@ declare(strict_types=1);
 
 namespace Zhiyi\Plus\Models\Relations;
 
-use Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\CacheName\CacheKeys;
 use Zhiyi\Plus\Models\User;
 use Zhiyi\Plus\Models\Wallet;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\CacheName\CacheKeys;
 
 trait PaidNodeHasUser
 {
@@ -69,16 +69,16 @@ trait PaidNodeHasUser
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function paid(int $user, bool $filter = true)
-    : bool {
+    : bool
+    {
         if ($filter === true && $this->user_id === $user) {
             return true;
         }
 
         $status = Cache::rememberForever(sprintf(CacheKeys::PAID, $this->id,
             $user), function () use ($user) {
-            return $this->users()->newPivotStatementForId($user)->exists();
-        });
-
+                return $this->users()->newPivotStatementForId($user)->exists();
+            });
 
         return $status;
     }

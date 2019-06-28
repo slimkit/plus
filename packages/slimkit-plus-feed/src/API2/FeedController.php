@@ -934,7 +934,7 @@ class FeedController extends Controller
                 return $query->where('id', '<', $after);
             })
             ->with([
-                'pinnedComments'
+                'pinnedComments',
             ])
             ->orderBy('id', 'desc')
             ->limit($limit)

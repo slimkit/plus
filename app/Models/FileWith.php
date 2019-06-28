@@ -20,8 +20,8 @@ declare(strict_types=1);
 
 namespace Zhiyi\Plus\Models;
 
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class FileWith extends Model
@@ -37,7 +37,7 @@ class FileWith extends Model
     {
         parent::boot();
         static::addGlobalScope('paidNode', function (Builder $query) {
-           $query->with('paidNode');
+            $query->with('paidNode');
         });
     }
 

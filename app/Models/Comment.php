@@ -23,20 +23,20 @@ namespace Zhiyi\Plus\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
-use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 
 class Comment extends Model
 {
     // public static function boot()
     // {
-        // parent::boot();
-        // static::addGlobalScope('user', function (Builder $query) {
-        //     $query->with('user');
-        // });
-        // static::addGlobalScope('reply', function (Builder $query) {
-        //     $query->with('reply');
-        // });
+    // parent::boot();
+    // static::addGlobalScope('user', function (Builder $query) {
+    //     $query->with('user');
+    // });
+    // static::addGlobalScope('reply', function (Builder $query) {
+    //     $query->with('reply');
+    // });
     // }
 
     /**

@@ -20,8 +20,8 @@ declare(strict_types=1);
 
 namespace Zhiyi\Plus\Models;
 
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Certification extends Model
@@ -72,6 +72,7 @@ class Certification extends Model
             $builder->with('category');
         });
     }
+
     /**
      * Get icon url.
      *
