@@ -21,12 +21,12 @@ declare(strict_types=1);
 namespace Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Repository;
 
 use Carbon\Carbon;
+use function Zhiyi\Plus\setting;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Zhiyi\Plus\Models\FileWith as FileWithModel;
 use Illuminate\Contracts\Cache\Repository as CacheContract;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\Feed as FeedModel;
-use function Zhiyi\Plus\setting;
 
 class Feed
 {
@@ -136,7 +136,8 @@ class Feed
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function format(int $user = 0)
-    : FeedModel {
+    : FeedModel
+    {
         $this->model->setRelation('images',
             $this->model->images->map(function (FileWithModel $item) use ($user
             ) {
@@ -217,9 +218,8 @@ class Feed
             //     })
             //     ->orderBy('id', 'desc')
             //     ->get();
-            $comments = $this->model->comments->filter(function ($comment)
-            use ($ids) {
-                return !in_array($comment->id, $ids);
+            $comments = $this->model->comments->filter(function ($comment) use ($ids) {
+                return ! in_array($comment->id, $ids);
             });
         }
 

@@ -48,13 +48,14 @@ trait HasFeedCollect
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function collected(int $user)
-    : bool {
+    : bool
+    {
         $status = Cache::rememberForever(sprintf(CacheKeys::COLLECTED,
             $this->id, $user), function () use ($user) {
-            return $this->collections()
+                return $this->collections()
                 ->newPivotStatementForId($user)
                 ->exists();
-        });
+            });
 
         return $status;
     }

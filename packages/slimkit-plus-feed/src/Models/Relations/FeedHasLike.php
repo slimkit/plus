@@ -48,11 +48,11 @@ trait FeedHasLike
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function liked($user)
-    : bool {
+    : bool
+    {
         if ($user instanceof User) {
             $user = $user->id;
         }
-
 
         $status = Cache::rememberForever(
             sprintf(CacheKeys::LIKED, $this->id, $user),

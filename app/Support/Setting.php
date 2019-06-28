@@ -58,7 +58,8 @@ class Setting
      * @return self
      */
     public function new(?string $namespace = null)
-    : self {
+    : self
+    {
         return new static($this->model,
             $namespace ? $namespace : $this->namespace);
     }
@@ -96,17 +97,16 @@ class Setting
 
                     return $single ? $single->contents : $default;
                 });
-
         }
 
         return Cache::rememberForever(sprintf('setting_namespace_%s',
             $this->namespace), function () {
-            $collection = $this->query()->get();
+                $collection = $this->query()->get();
 
-            return $collection->keyBy('name')->map(function ($value) {
-                return $value;
+                return $collection->keyBy('name')->map(function ($value) {
+                    return $value;
+                });
             });
-        });
     }
 
     /**
@@ -119,7 +119,8 @@ class Setting
      * @throws \Throwable
      */
     public function set($name, $contents = null)
-    : void {
+    : void
+    {
         if (is_array($name)) {
             $callbale = [$this, __METHOD__];
             $this->model->getConnection()->transaction(function () use (

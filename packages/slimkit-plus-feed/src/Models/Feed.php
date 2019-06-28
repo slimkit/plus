@@ -20,7 +20,6 @@ declare(strict_types=1);
 
 namespace Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models;
 
-use DB;
 use Carbon\Carbon;
 use Zhiyi\Plus\Models\User;
 use Zhiyi\Plus\Models\Report;
@@ -31,8 +30,8 @@ use Zhiyi\Plus\Models\BlackList;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Zhiyi\Plus\Models\FeedTopic as FeedTopicModel;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Zhiyi\Plus\Models\FeedTopic as FeedTopicModel;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
@@ -73,7 +72,6 @@ class Feed extends Model
      * @var array
      */
     protected $with = ['images', 'paidNode', 'video'];
-
 
     public static function boot()
     {
@@ -201,7 +199,8 @@ class Feed extends Model
      * @return Builder
      */
     public function scopeByUserId(Builder $query, int $userId)
-    : Builder {
+    : Builder
+    {
         return $query->where('user_id', $userId);
     }
 
@@ -215,7 +214,8 @@ class Feed extends Model
      * @author bs<414606094@qq.com>
      */
     public function scopeByFeedId(Builder $query, int $feedId)
-    : Builder {
+    : Builder
+    {
         return $query->where('id', $feedId);
     }
 
@@ -228,7 +228,8 @@ class Feed extends Model
      * @author bs<414606094@qq.com>
      */
     public function scopeByAudit(Builder $query)
-    : Builder {
+    : Builder
+    {
         return $query->where('audit_status', 1);
     }
 
@@ -271,7 +272,8 @@ class Feed extends Model
     }
 
     public function makeHotValue($model = null)
-    : int {
+    : int
+    {
         if (! $model instanceof static) {
             $model = $this;
         }
