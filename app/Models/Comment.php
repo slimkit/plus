@@ -28,16 +28,16 @@ use Illuminate\Database\Eloquent\Relations\MorphMany;
 
 class Comment extends Model
 {
-    // public static function boot()
-    // {
-    // parent::boot();
-    // static::addGlobalScope('user', function (Builder $query) {
-    //     $query->with('user');
-    // });
-    // static::addGlobalScope('reply', function (Builder $query) {
-    //     $query->with('reply');
-    // });
-    // }
+    public static function boot()
+    {
+        parent::boot();
+        static::addGlobalScope('user', function (Builder $query) {
+            $query->with('user');
+        });
+        static::addGlobalScope('reply', function (Builder $query) {
+            $query->with('reply');
+        });
+    }
 
     /**
      * Has commentable.
