@@ -34,8 +34,7 @@ class UserObserver
     {
         // 处理默认关注和默认相互关注
         $famous = Famous::query()->with('user')->get()
-            ->groupBy
-            ('type');
+            ->groupBy('type');
         $famous
             ->map(function ($type, $key) use ($user) {
                 $users = $type->filter(function ($famou) {

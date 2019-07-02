@@ -24,11 +24,11 @@ use Zhiyi\Plus\Models\User;
 use Illuminate\Support\Facades\Schema;
 use Zhiyi\Plus\Observers\UserObserver;
 use Illuminate\Support\ServiceProvider;
+use function Zhiyi\Plus\validateUsername;
 use Zhiyi\Plus\Packages\Wallet\TypeManager;
 use Illuminate\Http\Resources\Json\Resource;
-use Zhiyi\Plus\Packages\Wallet\TargetTypeManager;
-use function Zhiyi\Plus\validateUsername;
 use function Zhiyi\Plus\validateChinaPhoneNumber;
+use Zhiyi\Plus\Packages\Wallet\TargetTypeManager;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -126,7 +126,8 @@ class AppServiceProvider extends ServiceProvider
      * @author Seven Du <shiweidu@outlook.com>
      */
     protected function validateDisplayLength(string $value, array $parameters)
-    : bool {
+    : bool
+    {
         preg_match_all('/[a-zA-Z0-9_]/', $value, $single);
         $length = count($single[0]) / 2
             + mb_strlen(preg_replace('([a-zA-Z0-9_])', '', $value));
@@ -143,7 +144,8 @@ class AppServiceProvider extends ServiceProvider
      * @return bool
      */
     protected function validateDisplayWidth(string $value, array $parameters)
-    : bool {
+    : bool
+    {
         $number = strlen(mb_convert_encoding($value, 'GB18030', 'UTF-8'));
 
         return $this->validateBetween($number, $parameters);
@@ -158,7 +160,8 @@ class AppServiceProvider extends ServiceProvider
      * @return bool
      */
     private function validateBetween(float $number, array $parameters)
-    : bool {
+    : bool
+    {
         if (empty($parameters)) {
             throw new \InvalidArgumentException('Parameters must be passed');
         }
