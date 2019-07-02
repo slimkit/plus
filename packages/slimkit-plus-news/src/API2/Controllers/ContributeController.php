@@ -232,10 +232,10 @@ class ContributeController extends Controller
         }
 
         return $category->getConnection()->transaction(function () use ($news, $response, $user) {
-            if ($news->audit_status == 0) { // 已发布的需提交后台申请删除
+            if ($news->audit_status === 0) { // 已发布的需提交后台申请删除
                 $news
                     ->applylog()
-                    ->firstOrCreate(['user_id' => $user->id], ['status' => 0]);
+                    ->firstOrCreate(['user_id' => $user->id, 'status' => 0]);
 
                 return $response->make(['message' => '删除申请已提交，请等待审核'], 201);
             }

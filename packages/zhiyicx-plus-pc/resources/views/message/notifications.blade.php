@@ -158,6 +158,16 @@
                             @endif
                         </a>
                         @break
+                        @case('news:delete:reject')
+                            <a href="{{route('pc:newsread', ['news'=>$noti['data']['news']['id']])}}">
+                                你申请删除资讯「{{ $noti['data']['news']['title']}}」的请求已被拒绝
+                            </a>
+                        @break
+                        @case('news:delete:accept')
+                            <a href="javascript:void(0)">
+                                你申请删除资讯「{{ $noti['data']['news']['title']}}」的请求已被通过
+                            </a>
+                        @break
                         @case('group:post-pinned')
                         <a href="{{route('pc:grouppost', ['group_id'=>$noti['data']['group_id'], 'post_id'=>$noti['data']['post']['id']])}}">
                             @if($noti['data']['state']  === 'rejected')
