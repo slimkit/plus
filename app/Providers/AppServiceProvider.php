@@ -20,13 +20,15 @@ declare(strict_types=1);
 
 namespace Zhiyi\Plus\Providers;
 
+use Zhiyi\Plus\Models\User;
 use Illuminate\Support\Facades\Schema;
+use Zhiyi\Plus\Observers\UserObserver;
 use Illuminate\Support\ServiceProvider;
-use function Zhiyi\Plus\validateUsername;
 use Zhiyi\Plus\Packages\Wallet\TypeManager;
 use Illuminate\Http\Resources\Json\Resource;
-use function Zhiyi\Plus\validateChinaPhoneNumber;
 use Zhiyi\Plus\Packages\Wallet\TargetTypeManager;
+use function Zhiyi\Plus\validateUsername;
+use function Zhiyi\Plus\validateChinaPhoneNumber;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -41,6 +43,10 @@ class AppServiceProvider extends ServiceProvider
         Resource::withoutWrapping();
         // 注册验证规则.
         $this->registerValidator();
+
+        User::observe([
+            UserObserver::class,
+        ]);
     }
 
     /**
@@ -64,7 +70,8 @@ class AppServiceProvider extends ServiceProvider
         });
 
         $this->app->singleton('at-message', function ($app) {
-            $manager = $app->make(\Zhiyi\Plus\AtMessage\ResourceManagerInterface::class);
+            $manager
+                = $app->make(\Zhiyi\Plus\AtMessage\ResourceManagerInterface::class);
 
             return new \Zhiyi\Plus\AtMessage\Message($manager);
         });
@@ -93,32 +100,36 @@ class AppServiceProvider extends ServiceProvider
         });
 
         // 注册显示长度验证规则
-        $this->app->validator->extend('display_length', function ($attribute, string $value, array $parameters) {
-            unset($attribute);
+        $this->app->validator->extend('display_length',
+            function ($attribute, string $value, array $parameters) {
+                unset($attribute);
 
-            return $this->validateDisplayLength($value, $parameters);
-        });
+                return $this->validateDisplayLength($value, $parameters);
+            });
 
         // 注册中英文显示宽度验证规则
-        $this->app->validator->extend('display_width', function ($attribute, string $value, array $parameters) {
-            unset($attribute);
+        $this->app->validator->extend('display_width',
+            function ($attribute, string $value, array $parameters) {
+                unset($attribute);
 
-            return $this->validateDisplayWidth($value, $parameters);
-        });
+                return $this->validateDisplayWidth($value, $parameters);
+            });
     }
 
     /**
      * 验证显示长度计算.
      *
-     * @param string|int $value
-     * @param array $parameters
+     * @param  string|int  $value
+     * @param  array  $parameters
+     *
      * @return bool
      * @author Seven Du <shiweidu@outlook.com>
      */
-    protected function validateDisplayLength(string $value, array $parameters): bool
-    {
+    protected function validateDisplayLength(string $value, array $parameters)
+    : bool {
         preg_match_all('/[a-zA-Z0-9_]/', $value, $single);
-        $length = count($single[0]) / 2 + mb_strlen(preg_replace('([a-zA-Z0-9_])', '', $value));
+        $length = count($single[0]) / 2
+            + mb_strlen(preg_replace('([a-zA-Z0-9_])', '', $value));
 
         return $this->validateBetween($length, $parameters);
     }
@@ -126,12 +137,13 @@ class AppServiceProvider extends ServiceProvider
     /**
      * 验证中英文显示宽度.
      *
-     * @param string $value
-     * @param array $parameters
+     * @param  string  $value
+     * @param  array  $parameters
+     *
      * @return bool
      */
-    protected function validateDisplayWidth(string $value, array $parameters): bool
-    {
+    protected function validateDisplayWidth(string $value, array $parameters)
+    : bool {
         $number = strlen(mb_convert_encoding($value, 'GB18030', 'UTF-8'));
 
         return $this->validateBetween($number, $parameters);
@@ -140,12 +152,13 @@ class AppServiceProvider extends ServiceProvider
     /**
      * 验证一个数字是否在指定的最小最大值之间.
      *
-     * @param float $number
-     * @param array $parameters
+     * @param  float  $number
+     * @param  array  $parameters
+     *
      * @return bool
      */
-    private function validateBetween(float $number, array $parameters): bool
-    {
+    private function validateBetween(float $number, array $parameters)
+    : bool {
         if (empty($parameters)) {
             throw new \InvalidArgumentException('Parameters must be passed');
         }

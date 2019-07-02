@@ -33,9 +33,14 @@ class UserObserver
     public function created(User $user)
     {
         // 处理默认关注和默认相互关注
-        Famous::query()->with('user')->get()->groupBy('type')
+        $famous = Famous::query()->with('user')->get()
+            ->groupBy
+            ('type');
+        $famous
             ->map(function ($type, $key) use ($user) {
-                $users = $type->pluck('user');
+                $users = $type->filter(function ($famou) {
+                    return $famou->user !== null;
+                })->pluck('user');
                 $user->followings()->attach($users->pluck('id'));
                 // 相互关注
                 if ($key === 'each') {
