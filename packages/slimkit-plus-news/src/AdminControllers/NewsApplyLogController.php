@@ -22,9 +22,9 @@ namespace Zhiyi\Component\ZhiyiPlus\PlusComponentNews\AdminControllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Zhiyi\Plus\Notifications\System;
 use Zhiyi\Plus\Http\Controllers\Controller;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentNews\Models\NewsApplyLog;
-use Zhiyi\Plus\Notifications\System;
 
 class NewsApplyLogController extends Controller
 {
@@ -75,8 +75,8 @@ class NewsApplyLogController extends Controller
                 'type' => 'news:delete:accept',
                 'news' => [
                     'id' => $log->news_id,
-                    'title' => $log->news->title
-                ]
+                    'title' => $log->news->title,
+                ],
             ]));
         });
 
@@ -98,8 +98,8 @@ class NewsApplyLogController extends Controller
             'type' => 'news:delete:reject',
             'news' => [
                 'id' => $log->news_id,
-                'title' => $log->news->title
-            ]
+                'title' => $log->news->title,
+            ],
         ]));
 
         return response()->json('', 204);
