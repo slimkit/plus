@@ -21,12 +21,12 @@ declare(strict_types=1);
 namespace SlimKit\PlusCheckIn\API\Controllers;
 
 use Illuminate\Http\Request;
+use function Zhiyi\Plus\setting;
 use Zhiyi\Plus\Models\WalletCharge as WalletChargeModel;
 use Illuminate\Contracts\Auth\Access\Gate as GateContract;
 use SlimKit\PlusCheckIn\Models\CheckinLog as CheckinLogModel;
 use Zhiyi\Plus\Packages\Currency\Processes\Common as CommonProcess;
 use Illuminate\Contracts\Routing\ResponseFactory as ResponseFactoryContract;
-use function Zhiyi\Plus\setting;
 
 class CheckInController extends Controller
 {
