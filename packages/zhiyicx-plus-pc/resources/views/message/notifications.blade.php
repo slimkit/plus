@@ -43,8 +43,9 @@
                         @endif
                         @break
                         @case('user-certification')
+
                         <a href="{{route('pc:authenticate')}}">
-                            @if($ref['state'] ?? 'accept' == 'rejected')
+                            @if($ref['state']  === 'rejected')
                                 你申请的身份认证已被驳回，驳回理由：{{ $ref['contents'] }}
                             @else
                                 你申请的身份认证已通过

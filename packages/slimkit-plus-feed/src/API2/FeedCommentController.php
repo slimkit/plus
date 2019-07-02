@@ -20,12 +20,11 @@ declare(strict_types=1);
 
 namespace Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\API2;
 
-use Carbon\Carbon;
-use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use Illuminate\Database\Eloquent\Builder;
 use Zhiyi\Plus\Http\Controllers\Controller;
-use Zhiyi\Plus\AtMessage\AtMessageHelperTrait;
 use Zhiyi\Plus\Models\Comment as CommentModel;
+use Zhiyi\Plus\AtMessage\AtMessageHelperTrait;
 use Zhiyi\Plus\Models\UserCount as UserCountModel;
 use Zhiyi\Plus\Notifications\Comment as CommentNotification;
 use Zhiyi\Plus\Packages\Currency\Processes\User as UserProcess;
@@ -41,68 +40,65 @@ class FeedCommentController extends Controller
     /**
      * List comments of the feed.
      *
-     * @param \Illuminate\Http\Request $request
-     * @param \Illuminate\Contracts\Routing\ResponseFactory $response
-     * @param \Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\Feed $feed
+     * @param  Request  $request
+     * @param  ResponseFactoryContract  $response
+     * @param  FeedModel  $feed
+     *
      * @return mixed
      * @author Seven Du <shiweidu@outlook.com>
      */
-    public function index(Request $request, ResponseFactoryContract $response, FeedModel $feed)
-    {
+    public function index(
+        Request $request,
+        ResponseFactoryContract $response,
+        FeedModel $feed
+    ) {
         $user = $request->user('api')->id ?? 0;
         $limit = $request->query('limit', 15);
         $after = $request->query('after', false);
 
         $comments = $feed->comments()
-            ->whereDoesntHave('blacks', function ($query) use ($user) {
+            ->whereDoesntHave('blacks', function (Builder $query) use ($user) {
                 $query->where('user_id', $user);
             })
-            ->when($after, function ($query) use ($after) {
+            ->when($after, function (Builder $query) use ($after) {
                 return $query->where('id', '<', $after);
             })
-            ->with([
-                'user' => function ($query) {
-                    return $query->withTrashed();
-                },
-                'reply',
-            ])
             ->limit($limit)
             ->orderBy('id', 'desc')
             ->get();
 
         return $response->json([
-            'pinneds' => ! $after ? app()->call([$this, 'pinneds'], ['feed' => $feed]) : [],
+            'pinneds'  => ! $after ? app()->call([$this, 'pinneds'],
+                ['feed' => $feed]) : [],
             'comments' => $comments,
         ])->setStatusCode(200);
     }
 
-    public function pinneds(Request $request, Carbon $dateTime, FeedModel $feed)
+    public function pinneds(Request $request, FeedModel $feed)
     {
         if ($request->query('after')) {
             return [];
         }
 
         return $feed->pinnedComments()
-            ->with(['user' => function ($query) {
-                return $query->withTrashed();
-            }, 'reply'])
-            ->where('expires_at', '>', $dateTime)
-            ->orderBy('amount', 'desc')
-            ->orderBy('created_at', 'desc')
             ->get();
     }
 
     /**
      * Get a comment.
      *
-     * @param \Illuminate\Contracts\Routing\ResponseFactory $response
-     * @param mixed $feed
-     * @param \Zhiyi\Plus\Models\Comment $comment
+     * @param  ResponseFactoryContract  $response
+     * @param  mixed  $feed
+     * @param  CommentModel  $comment
+     *
      * @return mixed
      * @author Seven Du <shiweidu@outlook.com>
      */
-    public function show(ResponseFactoryContract $response, $feed, CommentModel $comment)
-    {
+    public function show(
+        ResponseFactoryContract $response,
+        $feed,
+        CommentModel $comment
+    ) {
         unset($feed);
 
         return $response->json($comment, 200);
@@ -111,15 +107,21 @@ class FeedCommentController extends Controller
     /**
      * destroy the comment.
      *
-     * @param \Illuminate\Http\Request $request
-     * @param \Illuminate\Contracts\Routing\ResponseFactory $response
-     * @param \Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\Feed $feed
-     * @param \Zhiyi\Plus\Models\Comment $comment
+     * @param  Request  $request
+     * @param  ResponseFactoryContract  $response
+     * @param  FeedModel  $feed
+     * @param  CommentModel  $comment
+     *
      * @return mixed
+     * @throws \Throwable
      * @author Seven Du <shiweidu@outlook.com>
      */
-    public function destroy(Request $request, ResponseFactoryContract $response, FeedModel $feed, CommentModel $comment)
-    {
+    public function destroy(
+        Request $request,
+        ResponseFactoryContract $response,
+        FeedModel $feed,
+        CommentModel $comment
+    ) {
         $user = $request->user();
         if ($comment->user_id !== $user->id) {
             return $response->json(['message' => '没有权限'], 403);
@@ -128,7 +130,12 @@ class FeedCommentController extends Controller
             ->where('target', $comment->id)
             ->where('user_id', $user->id)
             ->first();
-        $feed->getConnection()->transaction(function () use ($user, $feed, $comment, $pinnedComment) {
+        $feed->getConnection()->transaction(function () use (
+            $user,
+            $feed,
+            $comment,
+            $pinnedComment
+        ) {
             if ($pinnedComment) {
                 $pinnedComment->delete();
                 $userUnredCount = $pinnedComment->newQuery()
@@ -137,10 +144,12 @@ class FeedCommentController extends Controller
                     ->where('channel', 'comment')
                     ->count();
                 $process = new UserProcess();
-                $process->reject(0, $pinnedComment->amount, $user->id, '评论申请置顶退款', sprintf('退还在动态《%s》申请置顶的评论的款项', Str::limit($feed->feed_content, 100)));
+                $process->reject(0, $pinnedComment->amount, $user->id,
+                    '评论申请置顶退款', sprintf('退还在动态《%s》申请置顶的评论的款项',
+                        str_limit($feed->feed_content, 100)));
                 $userCount = UserCountModel::firstOrNew([
                     'user_id' => $feed->user_id,
-                    'type' => 'user-feed-comment-pinned',
+                    'type'    => 'user-feed-comment-pinned',
                 ]);
                 $userCount->total = $userUnredCount;
                 $userCount->save();
@@ -156,11 +165,13 @@ class FeedCommentController extends Controller
     /**
      * Send comment of the feed.
      *
-     * @param \Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\FormRequest\API2\StoreFeedComment $request
-     * @param \Illuminate\Contracts\Routing\ResponseFactory $response
-     * @param \Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\Feed $feed
-     * @param \Zhiyi\Plus\Models\Comment $comment
+     * @param  CommentFormRequest  $request
+     * @param  ResponseFactoryContract  $response
+     * @param  FeedModel  $feed
+     * @param  CommentModel  $comment
+     *
      * @return mixed
+     * @throws \Throwable
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function store(
@@ -180,7 +191,11 @@ class FeedCommentController extends Controller
         $comment->body = $body;
         $comment->comment_mark = $mark;
 
-        $feed->getConnection()->transaction(function () use ($feed, $user, $comment) {
+        $feed->getConnection()->transaction(function () use (
+            $feed,
+            $user,
+            $comment
+        ) {
             $feed->comments()->save($comment);
             $feed->increment('feed_comment_count', 1);
             $user->extra()->firstOrCreate([])->increment('comments_count', 1);
@@ -192,7 +207,9 @@ class FeedCommentController extends Controller
         }
 
         // 如果回复条件满足，发送给被回复用户通知
-        if ($replyUser && $replyUser !== $user->id && $replyUser !== $feed->user_id) {
+        if ($replyUser && $replyUser !== $user->id
+            && $replyUser !== $feed->user_id
+        ) {
             $replyUser = $user->newQuery()->where('id', $replyUser)->first();
             if ($replyUser) {
                 $replyUser->notify(new CommentNotification($comment, $user));

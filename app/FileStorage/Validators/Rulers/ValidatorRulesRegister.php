@@ -28,13 +28,13 @@ class ValidatorRulesRegister
     /**
      * The app.
      *
-     * @var \Zhiyi\Plus\AppInterface
+     * @var AppInterface
      */
     protected $app;
     /**
      * The app validator.
      *
-     * @var \Illuminate\Contracts\Validation\Factory
+     * @var ValidationFactoryContract
      */
     protected $validator;
     /**
@@ -50,8 +50,8 @@ class ValidatorRulesRegister
     /**
      * Create the validator rules register instance.
      *
-     * @param  \Zhiyi\Plus\AppInterface  $app
-     * @param  \Illuminate\Contracts\Validation\Factory  $validator
+     * @param  AppInterface  $app
+     * @param  ValidationFactoryContract  $validator
      */
     public function __construct(
         AppInterface $app,

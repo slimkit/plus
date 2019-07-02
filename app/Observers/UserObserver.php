@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 /*
  * +----------------------------------------------------------------------+
  * |                          ThinkSNS Plus                               |
@@ -18,45 +16,37 @@ declare(strict_types=1);
  * +----------------------------------------------------------------------+
  */
 
-namespace Zhiyi\Plus\FileStorage\Providers;
+namespace Zhiyi\Plus\Observers;
 
-use Zhiyi\Plus\AppInterface;
-use Zhiyi\Plus\FileStorage\Storage;
-use Illuminate\Support\ServiceProvider;
-use Zhiyi\Plus\FileStorage\ChannelManager;
-use Zhiyi\Plus\FileStorage\Http\MakeRoutes;
-use Zhiyi\Plus\FileStorage\StorageInterface;
-use Zhiyi\Plus\FileStorage\Validators\Rulers\ValidatorRulesRegister;
+use Zhiyi\Plus\Models\User;
+use Zhiyi\Plus\Models\Famous;
 
-class AppServiceProvider extends ServiceProvider
+class UserObserver
 {
     /**
-     * The app register.
+     * Handle the user "created" event.
+     *
+     * @param  User  $user
      *
      * @return void
      */
-    public function register()
+    public function created(User $user)
     {
-        // Register StorageInterface instance.
-        $this->app->singleton(StorageInterface::class,
-            function (AppInterface $app) {
-                $manager = $this->app->make(ChannelManager::class);
-
-                return new Storage($app, $manager);
+        // 处理默认关注和默认相互关注
+        $famous = Famous::query()->with('user')->get()
+            ->groupBy('type');
+        $famous
+            ->map(function ($type, $key) use ($user) {
+                $users = $type->filter(function ($famou) {
+                    return $famou->user !== null;
+                })->pluck('user');
+                $user->followings()->attach($users->pluck('id'));
+                // 相互关注
+                if ($key === 'each') {
+                    $users->map(function ($source) use ($user) {
+                        $source->followings()->attach($user);
+                    });
+                }
             });
-    }
-
-    /**
-     * The app bootstrap handler.
-     *
-     * @return void
-     */
-    public function boot()
-    {
-        // Register routes.
-        $this->app->make(MakeRoutes::class)->register();
-
-        // Register validate rules.
-        $this->app->make(ValidatorRulesRegister::class)->register();
     }
 }

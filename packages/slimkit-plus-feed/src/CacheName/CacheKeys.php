@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 /*
  * +----------------------------------------------------------------------+
  * |                          ThinkSNS Plus                               |
@@ -18,15 +16,14 @@ declare(strict_types=1);
  * +----------------------------------------------------------------------+
  */
 
-namespace SlimKit\PlusCheckIn\Models;
+namespace Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\CacheName;
 
-use Zhiyi\Plus\Models\User;
-use Illuminate\Database\Eloquent\Model;
-
-class CheckinLog extends Model
+class CacheKeys
 {
-    public function owner()
-    {
-        return $this->belongsTo(User::class, 'user_id', 'id');
-    }
+    /* 节点支付缓存KEY */
+    const PAID = 'paid:%s,%s';
+    /* 动态点赞 */
+    const LIKED = 'feed-like:%s,%s';
+    /* 动态收藏 */
+    const COLLECTED = 'feed-collected:%s,%s';
 }

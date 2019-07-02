@@ -20,10 +20,13 @@ declare(strict_types=1);
 
 namespace Zhiyi\Plus;
 
+use Zhiyi\Plus\Support\Setting;
+
 /**
  * 验证是否是中国验证码.
  *
  * @param string $number
+ *
  * @return bool
  */
 function validateChinaPhoneNumber(string $number): bool
@@ -129,13 +132,15 @@ function filterUrlStringLength(string $data, int $length = 0): string
 /**
  * Setting helper.
  *
- * @param string $namespace
- * @param string|null $name
- * @return any
+ * @param  string  $namespace
+ * @param  string|null  $name
+ * @param  null  $default
+ *
+ * @return Support\any|Setting
  */
 function setting(string $namespace, ?string $name = null, $default = null)
 {
-    $setting = \Zhiyi\Plus\Support\Setting::create($namespace);
+    $setting = Setting::create($namespace);
     if ($name) {
         return $setting->get($name, $default);
     }

@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 /*
  * +----------------------------------------------------------------------+
  * |                          ThinkSNS Plus                               |
@@ -18,54 +16,32 @@ declare(strict_types=1);
  * +----------------------------------------------------------------------+
  */
 
-namespace Zhiyi\Plus\Models;
+use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Migrations\Migration;
 
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Relations\HasOne;
-
-class FileWith extends Model
+class UpdateBlacklistTable extends Migration
 {
     /**
-     * 可以被批量赋值的属性.
+     * Run the migrations.
      *
-     * @var array
+     * @return void
      */
-    protected $fillable = ['file_id', 'user_id', 'channel', 'raw', 'size'];
-
-    public static function boot()
+    public function up()
     {
-        parent::boot();
-        static::addGlobalScope('paidNode', function (Builder $query) {
-            $query->with('paidNode');
+        Schema::table('black_lists', function (Blueprint $blueprint) {
+            $blueprint->index('user_id');
+            $blueprint->index('target_id');
         });
     }
 
-    public function getPayIndexAttribute(): string
-    {
-        return sprintf('file:%d', $this->id);
-    }
-
     /**
-     * has file.
+     * Reverse the migrations.
      *
-     * @return HasOne
-     * @author Seven Du <shiweidu@outlook.com>
+     * @return void
      */
-    public function file()
+    public function down()
     {
-        return $this->hasOne(File::class, 'id', 'file_id');
-    }
-
-    /**
-     * 获取付费节点.
-     *
-     * @return HasOne
-     * @author Seven Du <shiweidu@outlook.com>
-     */
-    public function paidNode()
-    {
-        return $this->hasOne(PaidNode::class, 'raw', 'id')
-            ->where('channel', 'file');
+        //
     }
 }
