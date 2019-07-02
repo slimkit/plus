@@ -25,7 +25,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class CheckinLog extends Model
 {
-    public function onwer()
+    public function owner()
     {
         return $this->belongsTo(User::class, 'user_id', 'id');
     }
