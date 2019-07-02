@@ -1,190 +1,190 @@
 {
-  "name": "slimkit/plus",
-  "description": "The Plus(ThinkSNS+) is a powerful, easy-to-develop social system built with Laravel.",
-  "keywords": [
-    "thinksns",
-    "web",
-    "php",
-    "laravel",
-    "sns",
-    "user",
-    "think",
-    "app"
-  ],
-  "license": "Apache-2.0",
-  "type": "project",
-  "repositories": [
-    {
-      "type": "artifact",
-      "url": "resources/repositorie/zips/"
-    },
-    {
-      "type": "path",
-      "url": "packages/slimkit-plus-appversion",
-      "options": {
-        "symlink": true,
-        "plus-soft": true
-      }
-    },
-    {
-      "type": "path",
-      "url": "packages/slimkit-plus-around-amap",
-      "options": {
-        "symlink": true,
-        "plus-soft": true
-      }
-    },
-    {
-      "type": "path",
-      "url": "packages/slimkit-plus-checkin",
-      "options": {
-        "symlink": true,
-        "plus-soft": true
-      }
-    },
-    {
-      "type": "path",
-      "url": "packages/slimkit-plus-feed",
-      "options": {
-        "symlink": true,
-        "plus-soft": true
-      }
-    },
-    {
-      "type": "path",
-      "url": "packages/slimkit-plus-id",
-      "options": {
-        "symlink": true,
-        "plus-soft": true
-      }
-    },
-    {
-      "type": "path",
-      "url": "packages/slimkit-plus-music",
-      "options": {
-        "symlink": true,
-        "plus-soft": true
-      }
-    },
-    {
-      "type": "path",
-      "url": "packages/slimkit-plus-news",
-      "options": {
-        "symlink": true,
-        "plus-soft": true
-      }
-    },
-    {
-      "type": "path",
-      "url": "packages/slimkit-plus-socialite",
-      "options": {
-        "symlink": true,
-        "plus-soft": true
-      }
-    },
-    {
-      "type": "path",
-      "url": "packages/zhiyicx-plus-pc",
-      "options": {
-        "symlink": true,
-        "plus-soft": true
-      }
-    }
-  ],
-  "require": {
-    "php": "^7.1.3",
-    "ext-json": "*",
-    "aliyuncs/oss-sdk-php": "^2.3",
-    "doctrine/dbal": "^2.5",
-    "erusev/parsedown": "^1.7",
-    "ezyang/htmlpurifier": "^4.10",
-    "fideloper/proxy": "^4.0",
-    "fzaninotto/faker": "^1.7",
-    "guzzlehttp/guzzle": "^6.3",
-    "intervention/image": "^2.3",
-    "jenssegers/agent": "^2.6",
-    "jpush/jpush": "^3.5",
-    "laravel/framework": "5.7.*",
-    "laravel/telescope": "^1.0",
-    "laravel/tinker": "^1.0",
-    "league/html-to-markdown": "^4.6",
-    "league/omnipay": "^3.0",
-    "lokielse/omnipay-alipay": "^3.0",
-    "lokielse/omnipay-wechatpay": "^3.0",
-    "mavinoo/laravel-batch": "^2.0",
-    "medz/cors": "^1.3",
-    "medz/gb-t-2260": "^1.0",
-    "medz/laravel-jpush-notification-channel": "^1.0",
-    "overtrue/easy-sms": "^1.0",
-    "pingplusplus/pingpp-php": "^2.2",
-    "predis/predis": "^1.1",
-    "slimkit/plus-appversion": "2.3.1",
-    "slimkit/plus-around-amap": "2.3.1",
-    "slimkit/plus-checkin": "2.3.1",
-    "slimkit/plus-feed": "2.3.1",
-    "slimkit/plus-id": "2.3.1",
-    "slimkit/plus-music": "2.3.1",
-    "slimkit/plus-news": "2.3.1",
-    "slimkit/plus-socialite": "2.3.1",
-    "symfony/finder": "^4.0",
-    "symfony/yaml": "^4.0",
-    "tymon/jwt-auth": "1.0.0-rc.3",
-    "zhiyicx/plus-pc": "2.3.1"
-  },
-  "require-dev": {
-    "beyondcode/laravel-dump-server": "^1.0",
-    "codacy/coverage": "^1.4",
-    "filp/whoops": "^2.0",
-    "mockery/mockery": "^1.0",
-    "nunomaduro/collision": "^2.0",
-    "phpunit/phpunit": "^7.0"
-  },
-  "autoload": {
-    "files": [
-      "app/helpers.php"
+    "name": "slimkit/plus",
+    "description": "The Plus(ThinkSNS+) is a powerful, easy-to-develop social system built with Laravel.",
+    "keywords": [
+        "thinksns",
+        "web",
+        "php",
+        "laravel",
+        "sns",
+        "user",
+        "think",
+        "app"
     ],
-    "classmap": [
-      "database/seeds",
-      "database/factories"
+    "license": "Apache-2.0",
+    "type": "project",
+    "repositories": [
+        {
+            "type": "artifact",
+            "url": "resources/repositorie/zips/"
+        },
+        {
+            "type": "path",
+            "url": "packages/slimkit-plus-appversion",
+            "options": {
+                "symlink": true,
+                "plus-soft": true
+            }
+        },
+        {
+            "type": "path",
+            "url": "packages/slimkit-plus-around-amap",
+            "options": {
+                "symlink": true,
+                "plus-soft": true
+            }
+        },
+        {
+            "type": "path",
+            "url": "packages/slimkit-plus-checkin",
+            "options": {
+                "symlink": true,
+                "plus-soft": true
+            }
+        },
+        {
+            "type": "path",
+            "url": "packages/slimkit-plus-feed",
+            "options": {
+                "symlink": true,
+                "plus-soft": true
+            }
+        },
+        {
+            "type": "path",
+            "url": "packages/slimkit-plus-id",
+            "options": {
+                "symlink": true,
+                "plus-soft": true
+            }
+        },
+        {
+            "type": "path",
+            "url": "packages/slimkit-plus-music",
+            "options": {
+                "symlink": true,
+                "plus-soft": true
+            }
+        },
+        {
+            "type": "path",
+            "url": "packages/slimkit-plus-news",
+            "options": {
+                "symlink": true,
+                "plus-soft": true
+            }
+        },
+        {
+            "type": "path",
+            "url": "packages/slimkit-plus-socialite",
+            "options": {
+                "symlink": true,
+                "plus-soft": true
+            }
+        },
+        {
+            "type": "path",
+            "url": "packages/zhiyicx-plus-pc",
+            "options": {
+                "symlink": true,
+                "plus-soft": true
+            }
+        }
     ],
-    "psr-4": {
-      "Zhiyi\\Plus\\": "app/"
-    }
-  },
-  "autoload-dev": {
-    "psr-4": {
-      "Zhiyi\\Plus\\Tests\\": "tests/"
-    }
-  },
-  "extra": {
-    "branch-alias": {
-      "dev-master": "2.1-dev"
+    "require": {
+        "php": "^7.1.3",
+        "ext-json": "*",
+        "aliyuncs/oss-sdk-php": "^2.3",
+        "doctrine/dbal": "^2.5",
+        "erusev/parsedown": "^1.7",
+        "ezyang/htmlpurifier": "^4.10",
+        "fideloper/proxy": "^4.0",
+        "fzaninotto/faker": "^1.7",
+        "guzzlehttp/guzzle": "^6.3",
+        "intervention/image": "^2.3",
+        "jenssegers/agent": "^2.6",
+        "jpush/jpush": "^3.5",
+        "laravel/framework": "5.7.*",
+        "laravel/telescope": "^1.0",
+        "laravel/tinker": "^1.0",
+        "league/html-to-markdown": "^4.6",
+        "league/omnipay": "^3.0",
+        "lokielse/omnipay-alipay": "^3.0",
+        "lokielse/omnipay-wechatpay": "^3.0",
+        "mavinoo/laravel-batch": "^2.0",
+        "medz/cors": "^1.3",
+        "medz/gb-t-2260": "^1.0",
+        "medz/laravel-jpush-notification-channel": "^1.0",
+        "overtrue/easy-sms": "^1.0",
+        "pingplusplus/pingpp-php": "^2.2",
+        "predis/predis": "^1.1",
+        "slimkit/plus-appversion": "2.3.1",
+        "slimkit/plus-around-amap": "2.3.1",
+        "slimkit/plus-checkin": "2.3.1",
+        "slimkit/plus-feed": "2.3.1",
+        "slimkit/plus-id": "2.3.1",
+        "slimkit/plus-music": "2.3.1",
+        "slimkit/plus-news": "2.3.1",
+        "slimkit/plus-socialite": "2.3.1",
+        "symfony/finder": "^4.0",
+        "symfony/yaml": "^4.0",
+        "tymon/jwt-auth": "1.0.0-rc.3",
+        "zhiyicx/plus-pc": "2.3.1"
     },
-    "laravel": {
-      "dont-discover": []
-    }
-  },
-  "scripts": {
-    "post-autoload-dump": [
-      "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
-      "@php artisan package:discover --ansi"
-    ],
-    "post-root-package-install": [
-      "@php -r \"file_exists('storage/configure/.env') || copy('storage/configure/.env.example', 'storage/configure/.env');\""
-    ],
-    "post-create-project-cmd": [
-      "@php artisan key:generate --ansi",
-      "@php artisan jwt:secret --force --ansi"
-    ]
-  },
-  "config": {
-    "preferred-install": "dist",
-    "sort-packages": true,
-    "optimize-autoloader": true,
-    "platform": {
-      "php": "7.1.3"
-    }
-  },
-  "minimum-stability": "dev",
-  "prefer-stable": true
+    "require-dev": {
+        "beyondcode/laravel-dump-server": "^1.0",
+        "codacy/coverage": "^1.4",
+        "filp/whoops": "^2.0",
+        "mockery/mockery": "^1.0",
+        "nunomaduro/collision": "^2.0",
+        "phpunit/phpunit": "^7.0"
+    },
+    "autoload": {
+        "files": [
+            "app/helpers.php"
+        ],
+        "classmap": [
+            "database/seeds",
+            "database/factories"
+        ],
+        "psr-4": {
+            "Zhiyi\\Plus\\": "app/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Zhiyi\\Plus\\Tests\\": "tests/"
+        }
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "2.1-dev"
+        },
+        "laravel": {
+            "dont-discover": []
+        }
+    },
+    "scripts": {
+        "post-autoload-dump": [
+            "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
+            "@php artisan package:discover --ansi"
+        ],
+        "post-root-package-install": [
+            "@php -r \"file_exists('storage/configure/.env') || copy('storage/configure/.env.example', 'storage/configure/.env');\""
+        ],
+        "post-create-project-cmd": [
+            "@php artisan key:generate --ansi",
+            "@php artisan jwt:secret --force --ansi"
+        ]
+    },
+    "config": {
+        "preferred-install": "dist",
+        "sort-packages": true,
+        "optimize-autoloader": true,
+        "platform": {
+            "php": "7.1.3"
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
 }
