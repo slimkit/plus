@@ -20,12 +20,12 @@ declare(strict_types=1);
 
 namespace Zhiyi\Plus\Http\Controllers\APIs\V2;
 
-use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Facades\Cache;
 use Zhiyi\Plus\CacheNames;
 use Zhiyi\Plus\Models\User;
 use Illuminate\Http\Request;
 use Zhiyi\Plus\Models\GoldType;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Cache;
 use Zhiyi\Plus\Http\Middleware\VerifyUserPassword;
 use Zhiyi\Plus\Notifications\System as SystemNotification;
 use Zhiyi\Plus\Packages\Currency\Processes\User as UserProcess;
@@ -58,7 +58,6 @@ class NewUserRewardController extends Controller
 
         // 判断锁
         if (Cache::has(sprintf(CacheNames::REWARD_USER_LOCK, $target->id, $user->id))) {
-
             return response('操作太频繁了', 429);
         }
         // 加锁
