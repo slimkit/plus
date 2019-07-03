@@ -20,13 +20,18 @@ declare(strict_types=1);
 
 namespace SlimKit\PlusCheckIn\API\Controllers;
 
+use Exception;
+use SlimKit\PlusCheckIn\CacheName\CheckInCacheName;
+use Zhiyi\Plus\Models\User;
 use Illuminate\Http\Request;
-use function Zhiyi\Plus\setting;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Cache;
 use Zhiyi\Plus\Models\WalletCharge as WalletChargeModel;
 use Illuminate\Contracts\Auth\Access\Gate as GateContract;
 use SlimKit\PlusCheckIn\Models\CheckinLog as CheckinLogModel;
 use Zhiyi\Plus\Packages\Currency\Processes\Common as CommonProcess;
 use Illuminate\Contracts\Routing\ResponseFactory as ResponseFactoryContract;
+use function Zhiyi\Plus\setting;
 
 class CheckInController extends Controller
 {
@@ -45,7 +50,6 @@ class CheckInController extends Controller
     public function __construct()
     {
         $this->attach_balance = setting('checkin', 'attach-balance', 1);
-        // dd($this->attach_balance);
     }
 
     /**
@@ -165,6 +169,7 @@ class CheckInController extends Controller
      * @param  GateContract  $gate
      *
      * @return mixed
+     * @throws Exception
      * @author BS <414606094@qq.com>
      */
     public function newStore(
@@ -181,12 +186,40 @@ class CheckInController extends Controller
         }
 
         $user = $request->user();
-
-        // lasted
+        $cacheConfig = config('cache.default');
         $date = $user->freshTimestamp()->subDay(1)->format('Y-m-d');
-        $lasted = (bool) $user->checkinLogs()
-            ->whereDate('created_at', $date)
-            ->first();
+        // 使用原子锁
+        if (in_array($cacheConfig, ['redis', 'memcached'])) {
+            Log::debug('ehhehe');
+
+            return Cache::lock(sprintf(CheckInCacheName::CheckLocked, $user->id))
+                ->get(function () use ($user, $response, $date) {
+                    // lasted
+                    $this->checkIn($user, $date);
+
+                    return $response->make('', 204);
+                });
+        } else {
+            // 使用普通锁
+            if (Cache::has(sprintf(sprintf(CheckInCacheName::CheckLocked, $user->id)))) {
+                return response(null, 429);
+            } else {
+                $this->checkIn($user, $date);
+                Cache::forget(sprintf(sprintf(CheckInCacheName::CheckLocked,
+                    $user->id)));
+
+                return $response->make('', 204);
+            }
+        }
+    }
+
+    protected function checkIn(User $user, string $date)
+    {
+        $lasted = Cache::rememberForever(sprintf(CheckInCacheName::CheckInAtDate, $date), function ($date, $user) {
+          return $user->checkinLogs()
+              ->whereDate('created_at', $date)
+              ->exists();
+        });
 
         // Check-in -log.
         $log = new CheckinLogModel();
@@ -202,7 +235,8 @@ class CheckInController extends Controller
             $user,
             $log,
             $order,
-            $lasted
+            $lasted,
+            $date
         ) {
 
             // Save log
@@ -211,17 +245,20 @@ class CheckInController extends Controller
             // Save charge and attach balance.
             $order->state = 1;
             $order->save();
-            $user->currency()->firstOrCreate(['type' => 1], ['sum' => 0])
+            $user->currency()
+                ->firstOrCreate(['type' => 1], ['sum' => 0])
                 ->increment('sum', $order->amount);
 
             // increment check-in count.
-            $extra = $user->extra ?: $user->extra()->firstOrCreate([]);
+            $extra = $user->extra
+                ?: $user->extra()->firstOrCreate([]);
             $extra->checkin_count += 1;
-            $extra->last_checkin_count = $lasted ? $extra->last_checkin_count
+            $extra->last_checkin_count = $lasted
+                ? $extra->last_checkin_count
                 + 1 : 1;
             $extra->save();
+            Cache::forever(sprintf(CheckInCacheName::CheckInAtDate,
+                $user->id, $date), true);
         });
-
-        return $response->make('', 204);
     }
 }
