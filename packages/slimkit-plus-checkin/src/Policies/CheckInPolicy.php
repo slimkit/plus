@@ -20,9 +20,9 @@ declare(strict_types=1);
 
 namespace SlimKit\PlusCheckIn\Policies;
 
-use SlimKit\PlusCheckIn\CacheName\CheckInCacheName;
 use Zhiyi\Plus\Models\User;
 use Illuminate\Support\Facades\Cache;
+use SlimKit\PlusCheckIn\CacheName\CheckInCacheName;
 
 class CheckInPolicy
 {
@@ -35,15 +35,15 @@ class CheckInPolicy
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function create(User $user)
-    : bool {
+    : bool
+    {
         $date = $user->freshTimestamp()->format('Y-m-d');
 
         return ! Cache::rememberForever(sprintf(CheckInCacheName::CheckInAtDate,
             $user->id, $date), function () use ($date, $user) {
-            return $user->checkinLogs()
+                return $user->checkinLogs()
                 ->whereDate('created_at', $date)
                 ->first();
-        });
-
+            });
     }
 }
