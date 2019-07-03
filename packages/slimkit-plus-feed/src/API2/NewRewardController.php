@@ -43,15 +43,16 @@ class NewRewardController extends Controller
     /**
      * 打赏一条动态.
      *
-     * @author bs<414606094@qq.com>
-     * @param  Request $request
-     * @param  Feed $feed
-     * @param  WalletCharge $charge
+     * @param  Request  $request
+     * @param  Feed  $feed
+     * @param  UserProcess  $process
+     * @param  GoldType  $goldModel
+     *
      * @return mix
+     * @author bs<414606094@qq.com>
      */
     public function reward(Request $request, Feed $feed, UserProcess $process, GoldType $goldModel)
     {
-        $goldName = $goldModel->where('status', 1)->select('name', 'unit')->value('name') ?? '积分';
         $goldName = $goldModel->where('status', 1)->select('name', 'unit')->value('name') ?? '积分';
         $amount = (int) $request->input('amount');
         if (! $amount || $amount < 0) {
