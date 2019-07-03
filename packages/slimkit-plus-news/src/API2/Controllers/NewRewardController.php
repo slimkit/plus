@@ -47,14 +47,16 @@ class NewRewardController extends Controller
     /**
      * 打赏一条资讯.
      *
-     * @author bs<414606094@qq.com>
-     * @param  Request $request
-     * @param  News $news
+     * @param  Request  $request
+     * @param  News  $news
+     * @param  UserProcess  $processer
+     *
      * @return mix
+     * @author bs<414606094@qq.com>
      */
-    public function reward(Request $request, News $news, UserProcess $processer, GoldType $goldModel)
+    public function reward(Request $request, News $news, UserProcess $processer)
     {
-        $goldName = $goldModel->where('status', 1)->select('name', 'unit')->value('name') ?? '积分';
+        $goldName = GoldType::current('name');
         $amount = (int) $request->input('amount');
         if (! $amount || $amount < 0) {
             return response()->json(['amount' => '请输入正确的'.$goldName.'数量'], 422);

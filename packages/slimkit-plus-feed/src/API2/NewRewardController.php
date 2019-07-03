@@ -51,9 +51,9 @@ class NewRewardController extends Controller
      * @return mix
      * @author bs<414606094@qq.com>
      */
-    public function reward(Request $request, Feed $feed, UserProcess $process, GoldType $goldModel)
+    public function reward(Request $request, Feed $feed, UserProcess $process)
     {
-        $goldName = $goldModel->where('status', 1)->select('name', 'unit')->value('name') ?? '积分';
+        $goldName = GoldType::current('name');
         $amount = (int) $request->input('amount');
         if (! $amount || $amount < 0) {
             return response()->json([
