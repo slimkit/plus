@@ -135,7 +135,6 @@ class NewRewardController extends Controller
 
             return response()->json(['message' => '打赏成功'], 201);
         } else {
-
             Cache::forget(sprintf(CacheNames::REWARD_FEED_LOCK, $feed->id,
                 $user->id));
 

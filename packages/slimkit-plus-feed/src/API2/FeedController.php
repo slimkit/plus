@@ -21,7 +21,6 @@ declare(strict_types=1);
 namespace Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\API2;
 
 use Batch;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Throwable;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -107,7 +106,7 @@ class FeedController extends Controller
                         'comments' => function (MorphMany $builder) {
                             $builder->limit(10);
                         },
-                        'user'
+                        'user',
                     ])
                     ->join('feed_pinneds',
                         function (JoinClause $join) use ($datetime) {
@@ -180,7 +179,7 @@ class FeedController extends Controller
                 'comments' => function (MorphMany $builder) {
                     $builder->limit(10);
                 },
-                'user'
+                'user',
             ])
             ->when($after,
                 function (Builder $query) use ($after) {

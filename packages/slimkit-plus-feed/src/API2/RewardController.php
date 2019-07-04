@@ -30,7 +30,6 @@ use Zhiyi\Plus\Notifications\System as SystemNotification;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\CacheNames;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\Feed;
 
-
 class RewardController extends Controller
 {
     // 系统货币名称
@@ -73,6 +72,7 @@ class RewardController extends Controller
         if (! $amount || $amount < 0) {
             Cache::forget(sprintf(CacheNames::REWARD_FEED_LOCK, $feed->id,
                 $user->id));
+
             return response()->json([
                 'amount' => '请输入正确的打赏金额',
             ], 422);
@@ -83,6 +83,7 @@ class RewardController extends Controller
         if (! $user->wallet || $user->wallet->balance < $amount) {
             Cache::forget(sprintf(CacheNames::REWARD_FEED_LOCK, $feed->id,
                 $user->id));
+
             return response()->json([
                 'message' => '余额不足',
             ], 403);

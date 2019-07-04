@@ -21,11 +21,11 @@ declare(strict_types=1);
 namespace Zhiyi\Component\ZhiyiPlus\PlusComponentNews\API2\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Cache;
-use Zhiyi\Component\ZhiyiPlus\PlusComponentNews\CacheNames;
 use Zhiyi\Plus\Models\CurrencyType;
+use Illuminate\Support\Facades\Cache;
 use Zhiyi\Plus\Http\Middleware\VerifyUserPassword;
 use Zhiyi\Plus\Notifications\System as SystemNotification;
+use Zhiyi\Component\ZhiyiPlus\PlusComponentNews\CacheNames;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentNews\Models\News;
 use Zhiyi\Plus\Packages\Currency\Processes\User as UserProcess;
 
@@ -71,17 +71,20 @@ class NewRewardController extends Controller
         if (! $amount || $amount < 0) {
             Cache::forget(sprintf(CacheNames::REWARD_NEWS_LOCK, $news->id,
                 $user->id));
+
             return response()->json(['amount' => '请输入正确的'.$goldName.'数量'], 422);
         }
         $target = $news->user;
         if ($user->id == $target->id) {
             Cache::forget(sprintf(CacheNames::REWARD_NEWS_LOCK, $news->id,
                 $user->id));
+
             return response()->json(['message' => '不能打赏自己的发布的资讯'], 422);
         }
         if (! $user->currency || $user->currency->sum < $amount) {
             Cache::forget(sprintf(CacheNames::REWARD_NEWS_LOCK, $news->id,
                 $user->id));
+
             return response()->json(['message' => '余额不足'], 403);
         }
 
@@ -111,6 +114,7 @@ class NewRewardController extends Controller
         } else {
             Cache::forget(sprintf(CacheNames::REWARD_NEWS_LOCK, $news->id,
                 $user->id));
+
             return response()->json(['message' => '打赏失败'], 500);
         }
     }

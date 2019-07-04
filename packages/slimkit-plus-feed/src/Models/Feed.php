@@ -65,12 +65,12 @@ class Feed extends Model
     protected $hidden = [
             'feed_client_id',
         ];
+
     /**
      * The relations to eager load on every query.
      *
      * @var array
      */
-
     public static function boot()
     {
         parent::boot();

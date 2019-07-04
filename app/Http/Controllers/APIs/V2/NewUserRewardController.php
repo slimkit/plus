@@ -21,11 +21,10 @@ declare(strict_types=1);
 namespace Zhiyi\Plus\Http\Controllers\APIs\V2;
 
 use Zhiyi\Plus\CacheNames;
-use Zhiyi\Plus\Models\CurrencyType;
 use Zhiyi\Plus\Models\User;
 use Illuminate\Http\Request;
-use Zhiyi\Plus\Models\GoldType;
 use Illuminate\Http\JsonResponse;
+use Zhiyi\Plus\Models\CurrencyType;
 use Illuminate\Support\Facades\Cache;
 use Zhiyi\Plus\Http\Middleware\VerifyUserPassword;
 use Zhiyi\Plus\Notifications\System as SystemNotification;

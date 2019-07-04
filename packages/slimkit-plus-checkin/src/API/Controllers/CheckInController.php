@@ -189,13 +189,13 @@ class CheckInController extends Controller
         $date = $user->freshTimestamp()->subDay(1)->format('Y-m-d');
         // 使用原子锁
         if (in_array($cacheConfig, ['redis', 'memcached'])) {
-
-                Cache::lock(sprintf(CheckInCacheName::CheckLocked,
+            Cache::lock(sprintf(CheckInCacheName::CheckLocked,
                     $user->id))
                     ->get(function () use ($user, $date) {
                         $this->checkIn($user, $date);
                     });
-                return $response->make('', 204);
+
+            return $response->make('', 204);
         } else {
             // 使用普通锁
             if (Cache::has(sprintf(sprintf(CheckInCacheName::CheckLocked, $user->id)))) {
@@ -218,8 +218,7 @@ class CheckInController extends Controller
      */
     protected function checkIn(User $user, string $date)
     {
-        $lasted = Cache::rememberForever(sprintf
-        (CheckInCacheName::CheckInAtDate, $user->id, $date), function () use ($date,
+        $lasted = Cache::rememberForever(sprintf(CheckInCacheName::CheckInAtDate, $user->id, $date), function () use ($date,
             $user) {
             return $user->checkinLogs()
               ->whereDate('created_at', $date)

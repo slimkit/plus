@@ -20,9 +20,9 @@ declare(strict_types=1);
 
 namespace Zhiyi\Plus\Models;
 
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Cache;
 use Zhiyi\Plus\CacheNames;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Database\Eloquent\Model;
 
 class CurrencyType extends Model
 {
@@ -34,7 +34,7 @@ class CurrencyType extends Model
     public $timestamps = false;
 
     /**
-     * 获取当前使用的积分名称
+     * 获取当前使用的积分名称.
      *
      * @param  null  $field
      *
@@ -42,9 +42,8 @@ class CurrencyType extends Model
      */
     public static function current($field = null)
     {
-        $gold = Cache::rememberForever(CacheNames::CURRENCY_NAME, function
-        () {
-            $current =  self::query()->where('enable', 1)
+        $gold = Cache::rememberForever(CacheNames::CURRENCY_NAME, function () {
+            $current = self::query()->where('enable', 1)
                 ->select('id', 'name', 'unit')
                 ->first();
 
@@ -57,7 +56,7 @@ class CurrencyType extends Model
     }
 
     /**
-     * 设置当前使用的积分名称
+     * 设置当前使用的积分名称.
      *
      * @param  string  $name
      * @param  string  $unit
@@ -66,7 +65,7 @@ class CurrencyType extends Model
     {
         Cache::forever(CacheNames::CURRENCY_NAME, collect([
             'name' => $name,
-            'unit' => $unit
+            'unit' => $unit,
         ]));
     }
 }
