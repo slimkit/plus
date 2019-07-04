@@ -53,6 +53,9 @@ class GoldTypeController extends Controller
         }
 
         if (GoldType::create($request->all())) {
+            // 保存使用缓存
+            GoldType::setCurrent($request->input('name'), $request->input('unit'));
+
             return response()->json(['message' => ['添加类别成功']], 201);
         } else {
             return response()->json(['message' => ['添加类别失败']], 500);
@@ -67,6 +70,8 @@ class GoldTypeController extends Controller
 
             $type->status = ! $type->status;
             $type->save();
+            // 保存使用缓存
+            GoldType::setCurrent($type->name, $type->unit);
 
             return response()->json(['message' => [sprintf('启动"%s"分类成功', $type->name)]], 201);
         }

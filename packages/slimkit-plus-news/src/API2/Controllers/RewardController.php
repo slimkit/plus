@@ -34,11 +34,11 @@ class RewardController extends Controller
     // 系统内货币与真实货币兑换比例
     protected $wallet_ratio;
 
-    public function __construct(GoldType $goldModel, CommonConfig $configModel)
+    public function __construct(CommonConfig $configModel)
     {
         $walletConfig = $configModel->where('name', 'wallet:ratio')->first();
 
-        $this->goldName = $goldModel->where('status', 1)->select('name', 'unit')->value('name') ?? '金币';
+        $this->goldName = GoldType::current('name');
         $this->wallet_ratio = $walletConfig->value ?? 100;
     }
 

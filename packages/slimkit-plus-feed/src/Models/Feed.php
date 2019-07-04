@@ -62,17 +62,15 @@ class Feed extends Model
             'feed_mark',
             'user_id',
         ];
-    protected $hidden
-        = [
+    protected $hidden = [
             'feed_client_id',
         ];
+
     /**
      * The relations to eager load on every query.
      *
      * @var array
      */
-    protected $with = ['images', 'paidNode', 'video'];
-
     public static function boot()
     {
         parent::boot();
@@ -80,7 +78,7 @@ class Feed extends Model
             $query->with('topics');
         });
 
-        static::addGlobalScope('image', function (Builder $query) {
+        static::addGlobalScope('images', function (Builder $query) {
             $query->with([
                 'images' => function (HasMany $query) {
                     $query->orderBy('id', 'asc');
@@ -88,8 +86,11 @@ class Feed extends Model
             ]);
         });
 
-        static::addGlobalScope('user', function (Builder $builder) {
-            $builder->with('user');
+        static::addGlobalScope('video', function (Builder $builder) {
+            $builder->with('video');
+        });
+        static::addGlobalScope('paidNode', function (Builder $builder) {
+            $builder->with('paidNode');
         });
     }
 

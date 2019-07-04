@@ -20,8 +20,12 @@ declare(strict_types=1);
 
 namespace SlimKit\PlusCheckIn\API\Controllers;
 
+use Exception;
+use Zhiyi\Plus\Models\User;
 use Illuminate\Http\Request;
 use function Zhiyi\Plus\setting;
+use Illuminate\Support\Facades\Cache;
+use SlimKit\PlusCheckIn\CacheName\CheckInCacheName;
 use Zhiyi\Plus\Models\WalletCharge as WalletChargeModel;
 use Illuminate\Contracts\Auth\Access\Gate as GateContract;
 use SlimKit\PlusCheckIn\Models\CheckinLog as CheckinLogModel;
@@ -45,7 +49,6 @@ class CheckInController extends Controller
     public function __construct()
     {
         $this->attach_balance = setting('checkin', 'attach-balance', 1);
-        // dd($this->attach_balance);
     }
 
     /**
@@ -165,6 +168,7 @@ class CheckInController extends Controller
      * @param  GateContract  $gate
      *
      * @return mixed
+     * @throws Exception
      * @author BS <414606094@qq.com>
      */
     public function newStore(
@@ -181,12 +185,45 @@ class CheckInController extends Controller
         }
 
         $user = $request->user();
-
-        // lasted
+        $cacheConfig = config('cache.default');
         $date = $user->freshTimestamp()->subDay(1)->format('Y-m-d');
-        $lasted = (bool) $user->checkinLogs()
-            ->whereDate('created_at', $date)
-            ->first();
+        // 使用原子锁
+        if (in_array($cacheConfig, ['redis', 'memcached'])) {
+            Cache::lock(sprintf(CheckInCacheName::CheckLocked,
+                    $user->id))
+                    ->get(function () use ($user, $date) {
+                        $this->checkIn($user, $date);
+                    });
+
+            return $response->make('', 204);
+        } else {
+            // 使用普通锁
+            if (Cache::has(sprintf(sprintf(CheckInCacheName::CheckLocked, $user->id)))) {
+                return response()->json(null, 429);
+            } else {
+                $this->checkIn($user, $date);
+                Cache::forget(sprintf(sprintf(CheckInCacheName::CheckLocked,
+                    $user->id)));
+
+                return $response->make('', 204);
+            }
+        }
+    }
+
+    /**
+     * @param  User  $user
+     * @param  string  $date
+     *
+     * @throws \Throwable
+     */
+    protected function checkIn(User $user, string $date)
+    {
+        $lasted = Cache::rememberForever(sprintf(CheckInCacheName::CheckInAtDate, $user->id, $date), function () use ($date,
+            $user) {
+            return $user->checkinLogs()
+              ->whereDate('created_at', $date)
+              ->exists();
+        });
 
         // Check-in -log.
         $log = new CheckinLogModel();
@@ -202,26 +239,27 @@ class CheckInController extends Controller
             $user,
             $log,
             $order,
-            $lasted
+            $lasted,
+            $date
         ) {
-
             // Save log
             $user->checkinLogs()->save($log);
-
             // Save charge and attach balance.
             $order->state = 1;
             $order->save();
-            $user->currency()->firstOrCreate(['type' => 1], ['sum' => 0])
+            $user->currency()
+                ->firstOrCreate(['type' => 1], ['sum' => 0])
                 ->increment('sum', $order->amount);
-
             // increment check-in count.
-            $extra = $user->extra ?: $user->extra()->firstOrCreate([]);
+            $extra = $user->extra
+                ?: $user->extra()->firstOrCreate([]);
             $extra->checkin_count += 1;
-            $extra->last_checkin_count = $lasted ? $extra->last_checkin_count
+            $extra->last_checkin_count = $lasted
+                ? $extra->last_checkin_count
                 + 1 : 1;
             $extra->save();
+            Cache::forever(sprintf(CheckInCacheName::CheckInAtDate,
+                $user->id, $date), true);
         });
-
-        return $response->make('', 204);
     }
 }

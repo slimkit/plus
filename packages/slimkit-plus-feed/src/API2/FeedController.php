@@ -107,6 +107,7 @@ class FeedController extends Controller
                         'comments' => function (MorphMany $builder) {
                             $builder->limit(10);
                         },
+                        'user',
                     ])
                     ->join('feed_pinneds',
                         function (JoinClause $join) use ($datetime) {
@@ -179,6 +180,7 @@ class FeedController extends Controller
                 'comments' => function (MorphMany $builder) {
                     $builder->limit(10);
                 },
+                'user',
             ])
             ->when($after,
                 function (Builder $query) use ($after) {
@@ -226,22 +228,12 @@ class FeedController extends Controller
             $repository->images();
             $repository->format($user);
             $repository->previewComments();
-            // if ($feed->pinnedComments->count() < 5) {
-            //     $feed->pinnedComments
-            // } else {
-            //     $feed->comments = $feed->pinnedComments->map(function
-            //     ($comment) {
-            //        $comment->pinned = true;
-            //     });
-            // }
 
             $feed->has_collect = $user ? $feed->collected($user) : false;
             $feed->has_like = $user ? $feed->liked($user) : false;
 
             return $feed;
         });
-
-        // dd($feeds);
 
         Batch::update($feedModel->getTable(), $updateValues, 'id');
 
@@ -271,7 +263,13 @@ class FeedController extends Controller
 
         $feeds = $model
             ->query()
-            ->with('pinnedComments')
+            ->with([
+                'pinnedComments',
+                'user',
+                'comments' => function (MorphMany $builder) {
+                    $builder->limit(10);
+                },
+            ])
             ->when($hot, function (Builder $query) use ($hot) {
                 return $query->where('hot', '<', $hot);
             })
@@ -288,7 +286,6 @@ class FeedController extends Controller
             &$updateValues
         ) {
             $feed->feed_view_count += 1;
-            // $feed->hot = $feed->makeHotValue();
 
             $updateValues[] = [
                 'id'              => $feed->id,
@@ -336,7 +333,13 @@ class FeedController extends Controller
             ->leftJoin('user_follow', function (JoinClause $join) use ($user) {
                 $join->where('user_follow.user_id', $user->id);
             })
-            ->with('pinnedComments')
+            ->with([
+                'pinnedComments',
+                'user',
+                'comments' => function (MorphMany $builder) {
+                    $builder->limit(10);
+                },
+            ])
             ->whereDoesntHave('blacks', function (Builder $query) use ($user) {
                 $query->where('user_id', $user->id);
             })
@@ -475,7 +478,7 @@ class FeedController extends Controller
      * Link feed to topics and increment topic followers_count column.
      *
      * @param  array  $topics
-     * @param  Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\Feed  $feed
+     * @param  FeedModel  $feed
      *
      * @return void
      */
@@ -638,7 +641,7 @@ class FeedController extends Controller
      *
      * @param  StoreFeedPostRequest  $request  [description]
      *
-     * @return   [type]                        [description]
+     * @return FileWithModel
      */
     protected function makeVideoCoverWith(StoreFeedPostRequest $request)
     {
@@ -684,11 +687,11 @@ class FeedController extends Controller
      * @DateTime 2018-04-02
      * @Email    qiaobin@zhiyicx.com
      *
-     * @param    [type]              $videoWith      [description]
-     * @param    [type]              $videoCoverWith [description]
+     * @param $videoWith
+     * @param $videoCoverWith
      * @param  FeedModel  $feed  [description]
      *
-     * @return   [type]                              [description]
+     * @return void
      */
     protected function saveFeedVideoWith(
         $videoWith,
@@ -900,6 +903,8 @@ class FeedController extends Controller
      * @param  Request  $request
      * @param  FeedModel  $feedModel
      * @param  FeedRepository  $repository
+     *
+     * @param  Carbon  $datetime
      *
      * @return mixed
      * @author bs<414606094@qq.com>

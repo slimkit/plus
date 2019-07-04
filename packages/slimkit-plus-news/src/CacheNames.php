@@ -18,32 +18,9 @@ declare(strict_types=1);
  * +----------------------------------------------------------------------+
  */
 
-namespace SlimKit\PlusCheckIn\Policies;
+namespace Zhiyi\Component\ZhiyiPlus\PlusComponentNews;
 
-use Zhiyi\Plus\Models\User;
-use Illuminate\Support\Facades\Cache;
-use SlimKit\PlusCheckIn\CacheName\CheckInCacheName;
-
-class CheckInPolicy
+class CacheNames
 {
-    /**
-     * 检查用户是否可以创建签到记录.
-     *
-     * @param  User  $user
-     *
-     * @return bool
-     * @author Seven Du <shiweidu@outlook.com>
-     */
-    public function create(User $user)
-    : bool
-    {
-        $date = $user->freshTimestamp()->format('Y-m-d');
-
-        return ! Cache::rememberForever(sprintf(CheckInCacheName::CheckInAtDate,
-            $user->id, $date), function () use ($date, $user) {
-                return $user->checkinLogs()
-                ->whereDate('created_at', $date)
-                ->first();
-            });
-    }
+    const REWARD_NEWS_LOCK = 'rewarded_news_%d_by_%d';
 }

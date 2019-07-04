@@ -20,9 +20,12 @@ declare(strict_types=1);
 
 namespace Zhiyi\Plus\Http\Controllers\APIs\V2;
 
+use Zhiyi\Plus\CacheNames;
 use Zhiyi\Plus\Models\User;
 use Illuminate\Http\Request;
-use Zhiyi\Plus\Models\GoldType;
+use Illuminate\Http\JsonResponse;
+use Zhiyi\Plus\Models\CurrencyType;
+use Illuminate\Support\Facades\Cache;
 use Zhiyi\Plus\Http\Middleware\VerifyUserPassword;
 use Zhiyi\Plus\Notifications\System as SystemNotification;
 use Zhiyi\Plus\Packages\Currency\Processes\User as UserProcess;
@@ -32,31 +35,39 @@ class NewUserRewardController extends Controller
     // 系统货币名称
     protected $goldName;
 
-    public function __construct(GoldType $goldModel)
+    public function __construct()
     {
         $this
             ->middleware(VerifyUserPassword::class)
             ->only(['store']);
-        $this->goldName = GoldType::whereStatus(1)->first()->name ?? '积分';
+        $this->goldName = CurrencyType::current('name');
     }
 
     /**
      * 新版打赏用户.
      *
-     * @param Request $request
-     * @param User $target
-     * @param TypeManager $manager
-     * @return \Illuminate\Http\JsonResponse
+     * @param  Request  $request
+     * @param  User  $target
+     * @param  UserProcess  $processer
+     *
+     * @return JsonResponse
      */
     public function store(Request $request, User $target, UserProcess $processer)
     {
+        $user = $request->user();
+
+        // 判断锁
+        if (Cache::has(sprintf(CacheNames::REWARD_USER_LOCK, $target->id, $user->id))) {
+            return response('操作太频繁了', 429);
+        }
+        // 加锁
+        Cache::forever(sprintf(CacheNames::REWARD_USER_LOCK, $target->id, $user->id), true);
+
         $amount = (int) $request->input('amount');
 
         if (! $amount || $amount < 0) {
             return response()->json(['amount' => '请输入正确的'.$this->goldName.'数量'], 422);
         }
-
-        $user = $request->user();
 
         if ($user->id == $target->id) {
             return response()->json(['message' => '用户不能打赏自己'], 422);
@@ -83,9 +94,12 @@ class NewUserRewardController extends Controller
                 'amount' => $amount,
                 'unit' => $this->goldName,
             ]));
+            Cache::forget(sprintf(CacheNames::REWARD_USER_LOCK, $target->id, $user->id));
 
             return response()->json(['message' => '打赏成功'], 201);
         } else {
+            Cache::forget(sprintf(CacheNames::REWARD_USER_LOCK, $target->id, $user->id));
+
             return response()->json(['message' => '打赏失败'], 500);
         }
     }

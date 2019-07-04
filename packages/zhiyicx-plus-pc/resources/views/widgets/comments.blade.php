@@ -4,7 +4,7 @@
 
     $params = $params ?? ['group_id' => 0, 'disabled' => 0];
 @endphp
-@if($position == 1)
+@if($position === 1)
     <div class="comment_box" style="display: none;">
         <div class="comment_line">
             <div class="tr2"></div>

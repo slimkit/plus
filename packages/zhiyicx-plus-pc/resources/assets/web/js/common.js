@@ -1427,8 +1427,9 @@ var reported = {
     var urls = {
       'user': '/api/v2/report/users/' + this.row_id,
       'feed': '/api/v2/feeds/' + this.row_id + '/reports', // 动态
-      'news': '/api/v2/news/' + this.row_id + '/reports',
+      'news-detail': '/api/v2/news/' + this.row_id + '/reports',
       'feeds': '/api/v2/report/comments/' + this.row_id, //动态评论
+      'news': '/api/v2/report/comments/' + this.row_id, //动态评论
       'topic': '/api/v2/user/report-feed-topics/' + this.row_id, // 动态话题
       'posts': '/api/v2/plus-group/reports/posts/' + this.row_id,
       'group': '/api/v2/plus-group/groups/' + this.row_id + '/reports',

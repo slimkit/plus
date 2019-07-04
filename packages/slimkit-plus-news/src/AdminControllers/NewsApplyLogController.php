@@ -21,6 +21,8 @@ declare(strict_types=1);
 namespace Zhiyi\Component\ZhiyiPlus\PlusComponentNews\AdminControllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Zhiyi\Plus\Notifications\System;
 use Zhiyi\Plus\Http\Controllers\Controller;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentNews\Models\NewsApplyLog;
 
@@ -29,8 +31,9 @@ class NewsApplyLogController extends Controller
     /**
      * 删除申请列表.
      *
-     * @param Request $request
-     * @param NewsApplyLog $model
+     * @param  Request  $request
+     * @param  NewsApplyLog  $model
+     *
      * @return mixed
      * @author BS <414606094@qq.com>
      */
@@ -51,38 +54,53 @@ class NewsApplyLogController extends Controller
             })->withTrashed();
         });
         // $total = $query->count();
-        $datas = $query->limit($limit)->with(['news' => function ($query) {
-            return $query->withTrashed();
-        }, 'user'])->get();
+        $datas = $query->limit($limit)->with([
+            'news' => function ($query) {
+                return $query->withTrashed();
+            }, 'user',
+        ])->get();
 
         return response()->json($datas, 200);
     }
 
-    public function accept(NewsApplyLog $log)
+    public function accept(int $log)
     {
-        $log->getConnection()->transaction(function () use ($log) {
-            $log->load(['news', 'user']);
+        DB::transaction(function () use ($log) {
+            $log = NewsApplyLog::query()->with(['news', 'user'])->find($log);
             $log->news->delete();
             $log->status = 1;
             $log->save();
-            $log->user->sendNotifyMessage('news:delete:accept', sprintf('资讯《%s》的删除申请已被通过', $log->news->title), [
-                'news' => $log->news,
-                'log' => $log,
-            ]);
+            $log->user->notify(new System(sprintf('资讯《%s》的删除申请已被通过',
+                $log->news->title), [
+                'type' => 'news:delete:accept',
+                'news' => [
+                    'id' => $log->news_id,
+                    'title' => $log->news->title,
+                ],
+            ]));
         });
 
         return response()->json('', 204);
     }
 
-    public function reject(Request $request, NewsApplyLog $log)
+    public function reject(Request $request, int $log)
     {
+        $log = NewsApplyLog::query()->with(['news', 'user'])->find($log);
         $log->status = 2;
         $log->mark = $request->input('mark');
         $log->save();
-        $log->user->sendNotifyMessage('news:delete:reject', sprintf('资讯《%s》的删除申请已被拒绝，拒绝理由为%s', $log->news->title, $log->mark), [
-            'news' => $log->news,
-            'log' => $log,
-        ]);
+        // $log->user->sendNotifyMessage('news:delete:reject',
+        //     sprintf('资讯《%s》的删除申请已被拒绝，拒绝理由为%s', $log->news->title, $log->mark), [
+        //         'news' => $log->news,
+        //         'log'  => $log,
+        //     ]);
+        $log->user->notify(new System(sprintf('资讯《%s》的删除申请已被拒绝，拒绝理由为%s', $log->news->title, $log->mark), [
+            'type' => 'news:delete:reject',
+            'news' => [
+                'id' => $log->news_id,
+                'title' => $log->news->title,
+            ],
+        ]));
 
         return response()->json('', 204);
     }

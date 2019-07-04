@@ -71,7 +71,9 @@ class Feed
      */
     public function find($id, $columns = ['*'])
     {
-        $this->model = $this->model->findOrFail($id, $columns);
+        $this->model = $this->model
+            ->with('user')
+            ->findOrFail($id, $columns);
 
         return $this->model;
     }

@@ -18,32 +18,13 @@ declare(strict_types=1);
  * +----------------------------------------------------------------------+
  */
 
-namespace SlimKit\PlusCheckIn\Policies;
+namespace Zhiyi\Plus;
 
-use Zhiyi\Plus\Models\User;
-use Illuminate\Support\Facades\Cache;
-use SlimKit\PlusCheckIn\CacheName\CheckInCacheName;
-
-class CheckInPolicy
+class CacheNames
 {
-    /**
-     * 检查用户是否可以创建签到记录.
-     *
-     * @param  User  $user
-     *
-     * @return bool
-     * @author Seven Du <shiweidu@outlook.com>
-     */
-    public function create(User $user)
-    : bool
-    {
-        $date = $user->freshTimestamp()->format('Y-m-d');
+    // 积分名
+    const CURRENCY_NAME = 'currencyName';
 
-        return ! Cache::rememberForever(sprintf(CheckInCacheName::CheckInAtDate,
-            $user->id, $date), function () use ($date, $user) {
-                return $user->checkinLogs()
-                ->whereDate('created_at', $date)
-                ->first();
-            });
-    }
+    // 打赏用户锁名
+    const REWARD_USER_LOCK = 'rewarded_user_%d_by_%d';
 }

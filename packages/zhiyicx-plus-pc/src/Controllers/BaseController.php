@@ -37,7 +37,7 @@ class BaseController extends Controller
             // 用户认证
             $user = $request->user();
             if ($user) {
-                $user->load('wallet', 'newWallet', 'extra', 'tags', 'currency');
+                $user->load('newWallet', 'extra', 'tags', 'currency');
                 $user->makeVisible(['phone', 'email']);
             }
 

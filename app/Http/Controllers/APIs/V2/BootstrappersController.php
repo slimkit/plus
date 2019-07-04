@@ -34,9 +34,12 @@ class BootstrappersController extends Controller
     /**
      * Gets the list of initiator configurations.
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @param  BootstrapAPIsEventer  $events
+     * @param  AdvertisingSpace  $space
+     *
+     * @return JsonResponse
      */
-    public function show(BootstrapAPIsEventer $events, AdvertisingSpace $space, GoldType $goldType): JsonResponse
+    public function show(BootstrapAPIsEventer $events, AdvertisingSpace $space): JsonResponse
     {
         $bootstrappers = [
             'server:version' => app()->version(),
@@ -108,8 +111,7 @@ class BootstrappersController extends Controller
             'transform-currency' => setting('wallet', 'transform-status', true),
         ];
 
-        $goldSetting = $goldType->where('status', 1)->select('name', 'unit')->first() ?? collect(['name' => '金币', 'unit' => '个']);
-        $bootstrappers['site']['gold_name'] = $goldSetting;
+        $bootstrappers['site']['gold_name'] = GoldType::current();
 
         $currency = CurrencyType::where('enable', 1)->first() ?? collect(['name' => '积分', 'unit' => '']);
         $bootstrappers['site']['currency_name'] = $currency;
