@@ -21,7 +21,9 @@ declare(strict_types=1);
 namespace Zhiyi\Component\ZhiyiPlus\PlusComponentNews\API2\Controllers;
 
 use Illuminate\Http\Request;
-use Zhiyi\Plus\Models\GoldType;
+use Illuminate\Support\Facades\Cache;
+use Zhiyi\Component\ZhiyiPlus\PlusComponentNews\CacheNames;
+use Zhiyi\Plus\Models\CurrencyType;
 use Zhiyi\Plus\Http\Middleware\VerifyUserPassword;
 use Zhiyi\Plus\Notifications\System as SystemNotification;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentNews\Models\News;
@@ -52,21 +54,34 @@ class NewRewardController extends Controller
      * @param  UserProcess  $processer
      *
      * @return mix
+     * @throws \Exception
      * @author bs<414606094@qq.com>
      */
     public function reward(Request $request, News $news, UserProcess $processer)
     {
-        $goldName = GoldType::current('name');
+        $user = $request->user();
+        if (Cache::has(sprintf(CacheNames::REWARD_NEWS_LOCK, $news->id,
+            $user->id))) {
+            return response()->json(['message' => '操作太频繁了'], 429);
+        }
+        Cache::forever(sprintf(CacheNames::REWARD_NEWS_LOCK, $news->id,
+            $user->id), true);
+        $goldName = CurrencyType::current('name');
         $amount = (int) $request->input('amount');
         if (! $amount || $amount < 0) {
+            Cache::forget(sprintf(CacheNames::REWARD_NEWS_LOCK, $news->id,
+                $user->id));
             return response()->json(['amount' => '请输入正确的'.$goldName.'数量'], 422);
         }
-        $user = $request->user();
         $target = $news->user;
         if ($user->id == $target->id) {
+            Cache::forget(sprintf(CacheNames::REWARD_NEWS_LOCK, $news->id,
+                $user->id));
             return response()->json(['message' => '不能打赏自己的发布的资讯'], 422);
         }
         if (! $user->currency || $user->currency->sum < $amount) {
+            Cache::forget(sprintf(CacheNames::REWARD_NEWS_LOCK, $news->id,
+                $user->id));
             return response()->json(['message' => '余额不足'], 403);
         }
 
@@ -89,9 +104,13 @@ class NewRewardController extends Controller
                     'title' => $news->title,
                 ],
             ]));
+            Cache::forget(sprintf(CacheNames::REWARD_NEWS_LOCK, $news->id,
+                $user->id));
 
             return response()->json(['message' => '打赏成功'], 201);
         } else {
+            Cache::forget(sprintf(CacheNames::REWARD_NEWS_LOCK, $news->id,
+                $user->id));
             return response()->json(['message' => '打赏失败'], 500);
         }
     }
