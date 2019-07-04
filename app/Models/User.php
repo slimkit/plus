@@ -41,10 +41,7 @@ class User extends Authenticatable implements JWTSubject
         Concerns\UserHasNotifiable,
         Concerns\Macroable;
     // 关系数据相关
-    use Relations\UserHasWallet,
-        Relations\UserHasWalletCash,
-        Relations\UserHasWalletCharge,
-        Relations\UserHasFilesWith,
+    use Relations\UserHasFilesWith,
         Relations\UserHasFollow,
         Relations\UserHasComment,
         Relations\UserHasReward,
@@ -90,9 +87,6 @@ class User extends Authenticatable implements JWTSubject
         parent::boot();
         static::addGlobalScope('certification', function (Builder $query) {
             $query->with('certification');
-        });
-        static::addGlobalScope('extra', function (Builder $builder) {
-            $builder->with('extra');
         });
     }
 
