@@ -24,7 +24,6 @@ use Exception;
 use Zhiyi\Plus\Models\User;
 use Illuminate\Http\Request;
 use function Zhiyi\Plus\setting;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Cache;
 use SlimKit\PlusCheckIn\CacheName\CheckInCacheName;
 use Zhiyi\Plus\Models\WalletCharge as WalletChargeModel;
@@ -190,19 +189,17 @@ class CheckInController extends Controller
         $date = $user->freshTimestamp()->subDay(1)->format('Y-m-d');
         // 使用原子锁
         if (in_array($cacheConfig, ['redis', 'memcached'])) {
-            Log::debug('ehhehe');
 
-            return Cache::lock(sprintf(CheckInCacheName::CheckLocked, $user->id))
-                ->get(function () use ($user, $response, $date) {
-                    // lasted
-                    $this->checkIn($user, $date);
-
-                    return $response->make('', 204);
-                });
+                Cache::lock(sprintf(CheckInCacheName::CheckLocked,
+                    $user->id))
+                    ->get(function () use ($user, $date) {
+                        $this->checkIn($user, $date);
+                    });
+                return $response->make('', 204);
         } else {
             // 使用普通锁
             if (Cache::has(sprintf(sprintf(CheckInCacheName::CheckLocked, $user->id)))) {
-                return response(null, 429);
+                return response()->json(null, 429);
             } else {
                 $this->checkIn($user, $date);
                 Cache::forget(sprintf(sprintf(CheckInCacheName::CheckLocked,
@@ -213,9 +210,17 @@ class CheckInController extends Controller
         }
     }
 
+    /**
+     * @param  User  $user
+     * @param  string  $date
+     *
+     * @throws \Throwable
+     */
     protected function checkIn(User $user, string $date)
     {
-        $lasted = Cache::rememberForever(sprintf(CheckInCacheName::CheckInAtDate, $date), function ($date, $user) {
+        $lasted = Cache::rememberForever(sprintf
+        (CheckInCacheName::CheckInAtDate, $user->id, $date), function () use ($date,
+            $user) {
             return $user->checkinLogs()
               ->whereDate('created_at', $date)
               ->exists();
@@ -238,17 +243,14 @@ class CheckInController extends Controller
             $lasted,
             $date
         ) {
-
             // Save log
             $user->checkinLogs()->save($log);
-
             // Save charge and attach balance.
             $order->state = 1;
             $order->save();
             $user->currency()
                 ->firstOrCreate(['type' => 1], ['sum' => 0])
                 ->increment('sum', $order->amount);
-
             // increment check-in count.
             $extra = $user->extra
                 ?: $user->extra()->firstOrCreate([]);
