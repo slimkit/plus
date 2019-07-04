@@ -34,14 +34,17 @@ class Process
 
     public function __construct()
     {
-        $this->currency_type = CurrencyTypeModel::findOrFail(1);
+        $this->currency_type = CurrencyTypeModel::current();
     }
 
     /**
      * 检测用户模型.
      *
      * @param $user
+     * @param  bool  $throw
+     *
      * @return UserModel | bool
+     * @throws \Exception
      * @author BS <414606094@qq.com>
      */
     public function checkUser($user, $throw = true)
@@ -71,7 +74,8 @@ class Process
     protected function checkCurrency(UserModel $user): UserModel
     {
         if (! $user->currency) {
-            $user->currency = $user->currency()->create(['type' => $this->currency_type->id, 'sum' => 0]);
+            $user->currency = $user->currency()
+                ->create(['type' => $this->currency_type->get('id'), 'sum' => 0]);
         }
 
         return $user;

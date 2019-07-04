@@ -54,7 +54,7 @@ class Common extends Process
         $order->title = $title;
         $order->body = $body;
         $order->type = $type;
-        $order->currency = $this->currency_type->id;
+        $order->currency = $this->currency_type->get('id');
         $order->target_type = Order::TARGET_TYPE_COMMON;
         $order->target_id = 0;
         $order->amount = intval($amount);

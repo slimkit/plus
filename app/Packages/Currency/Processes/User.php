@@ -21,6 +21,7 @@ declare(strict_types=1);
 namespace Zhiyi\Plus\Packages\Currency\Processes;
 
 use DB;
+use Exception;
 use Zhiyi\Plus\Packages\Currency\Order;
 use Zhiyi\Plus\Models\User as UserModel;
 use Zhiyi\Plus\Packages\Currency\Process;
@@ -31,19 +32,20 @@ class User extends Process
     /**
      * 自动完成订单方法.
      *
-     * @param int $owner_id
-     * @param int $amount
-     * @param string $title
-     * @param string $body
-     * @param int|int $target_id
+     * @param $owner
+     * @param  int  $amount
+     * @param  int  $target_id
+     * @param  array  $extra
+     *
      * @return bool
+     * @throws Exception
      * @author BS <414606094@qq.com>
      */
-    public function complete(int $owner_id, int $amount, int $target_id, array $extra): bool
+    public function complete($owner, int $amount, $target_id, array $extra): bool
     {
         $extra = $this->checkDefaultParam($amount, $extra);
 
-        $user = $this->checkUser($owner_id);
+        $user = $this->checkUser($owner);
         $target_user = $this->checkUser($target_id, false);
 
         return DB::transaction(function () use ($user, $target_id, $target_user, $amount, $extra) {
@@ -66,17 +68,19 @@ class User extends Process
     /**
      * 用户对用户预付款流程.
      *
-     * @param int $owner_id
-     * @param int $amount
-     * @param int $target_id
-     * @param string $title
-     * @param string $body
+     * @param  int|UserModel  $owner
+     * @param  int  $amount
+     * @param  int  $target_id
+     * @param  string  $title
+     * @param  string  $body
+     *
      * @return bool
+     * @throws Exception
      * @author BS <414606094@qq.com>
      */
-    public function prepayment(int $owner_id, int $amount, int $target_id, string $title, string $body): bool
+    public function prepayment($owner, int $amount, int $target_id, string $title, string $body): bool
     {
-        $user = $this->checkUser($owner_id);
+        $user = $this->checkUser($owner);
 
         return DB::transaction(function () use ($user, $target_id, $amount, $title, $body) {
             $order = $this->createOrder($user, $amount, -1, $title, $body, $target_id);
@@ -91,17 +95,19 @@ class User extends Process
     /**
      * 用户收款流程.
      *
-     * @param int $owner_id
-     * @param int $amount
-     * @param int $target_id
-     * @param string $title
-     * @param string $body
+     * @param  int|UserModel  $owner
+     * @param  int  $amount
+     * @param  int  $target_id
+     * @param  string  $title
+     * @param  string  $body
+     *
      * @return bool
+     * @throws Exception
      * @author BS <414606094@qq.com>
      */
-    public function receivables(int $owner_id, int $amount, int $target_id, string $title, string $body): bool
+    public function receivables($owner, int $amount, int $target_id, string $title, string $body): bool
     {
-        $user = $this->checkUser($owner_id);
+        $user = $this->checkUser($owner);
 
         return DB::transaction(function () use ($user, $target_id, $amount, $title, $body) {
             $order = $this->createOrder($user, $amount, 1, $title, $body, $target_id);
@@ -116,12 +122,14 @@ class User extends Process
     /**
      * 用户拒绝，对方回款流程.
      *
-     * @param int $owner_id
-     * @param int $amount
-     * @param int $target_id
-     * @param string $title
-     * @param string $body
+     * @param  int  $owner_id
+     * @param  int  $amount
+     * @param  int  $target_id
+     * @param  string  $title
+     * @param  string  $body
+     *
      * @return bool
+     * @throws Exception
      * @author BS <414606094@qq.com>
      */
     public function reject(int $owner_id, int $amount, int $target_id, string $title, string $body): bool
@@ -141,13 +149,14 @@ class User extends Process
     /**
      * 创建订单方法.
      *
-     * @param int $owner_id
-     * @param int $amount
-     * @param int $type
-     * @param string $title
-     * @param string $body
-     * @param int|int $target_id
-     * @return Zhiyi\Plus\Models\CurrencyOrder
+     * @param  UserModel  $user
+     * @param  int  $amount
+     * @param  int  $type
+     * @param  string  $title
+     * @param  string  $body
+     * @param  int|int  $target_id
+     *
+     * @return CurrencyOrderModel
      * @author BS <414606094@qq.com>
      */
     public function createOrder(UserModel $user, int $amount, int $type, string $title = '', string $body = '', int $target_id = 0): CurrencyOrderModel
@@ -158,7 +167,7 @@ class User extends Process
         $order->body = $body;
         $order->type = $type;
         $order->target_id = $target_id;
-        $order->currency = $this->currency_type->id;
+        $order->currency = $this->currency_type->get('id');
         $order->target_type = Order::TARGET_TYPE_USER;
         $order->amount = $amount;
 
@@ -168,7 +177,9 @@ class User extends Process
     /**
      * 检测保存订单需要的参数.
      *
-     * @param array $extra
+     * @param  int  $amount
+     * @param  array  $extra
+     *
      * @return array
      * @author BS <414606094@qq.com>
      */
