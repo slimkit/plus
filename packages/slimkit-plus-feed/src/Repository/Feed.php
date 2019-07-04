@@ -21,6 +21,7 @@ declare(strict_types=1);
 namespace Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Repository;
 
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use function Zhiyi\Plus\setting;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
@@ -71,7 +72,9 @@ class Feed
      */
     public function find($id, $columns = ['*'])
     {
-        $this->model = $this->model->findOrFail($id, $columns);
+        $this->model = $this->model
+            ->with('user')
+            ->findOrFail($id, $columns);
 
         return $this->model;
     }
