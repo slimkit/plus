@@ -21,6 +21,7 @@ declare(strict_types=1);
 namespace Zhiyi\Plus\Http\Controllers\APIs\V2;
 
 use Zhiyi\Plus\CacheNames;
+use Zhiyi\Plus\Models\CurrencyType;
 use Zhiyi\Plus\Models\User;
 use Illuminate\Http\Request;
 use Zhiyi\Plus\Models\GoldType;
@@ -40,7 +41,7 @@ class NewUserRewardController extends Controller
         $this
             ->middleware(VerifyUserPassword::class)
             ->only(['store']);
-        $this->goldName = GoldType::current('name');
+        $this->goldName = CurrencyType::current('name');
     }
 
     /**

@@ -23,7 +23,7 @@ namespace Zhiyi\Plus;
 class CacheNames
 {
     // 积分名
-    const CURRENCY_NAME = 'goldName';
+    const CURRENCY_NAME = 'currencyName';
 
     // 打赏用户锁名
     const REWARD_USER_LOCK = 'rewarded_user_%d_by_%d';
