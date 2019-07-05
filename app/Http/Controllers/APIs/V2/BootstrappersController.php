@@ -20,7 +20,6 @@ declare(strict_types=1);
 
 namespace Zhiyi\Plus\Http\Controllers\APIs\V2;
 
-use Zhiyi\Plus\Models\GoldType;
 use function Zhiyi\Plus\setting;
 use Illuminate\Http\JsonResponse;
 use Zhiyi\Plus\Models\CommonConfig;
