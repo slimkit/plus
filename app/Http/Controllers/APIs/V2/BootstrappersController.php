@@ -111,10 +111,7 @@ class BootstrappersController extends Controller
             'transform-currency' => setting('wallet', 'transform-status', true),
         ];
 
-        $bootstrappers['site']['gold_name'] = GoldType::current();
-
-        $currency = CurrencyType::where('enable', 1)->first() ?? collect(['name' => '积分', 'unit' => '']);
-        $bootstrappers['site']['currency_name'] = $currency;
+        $bootstrappers['site']['currency_name'] = CurrencyType::current();
         config('im.helper-user') && $bootstrappers['im:helper-user'] = config('im.helper-user');
         // 每页数据量
         $bootstrappers['limit'] = config('app.data_limit');
