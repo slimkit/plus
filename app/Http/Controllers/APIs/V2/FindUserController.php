@@ -53,6 +53,7 @@ class FindUserController extends Controller
             ->select('user_id')
             ->with([
                 'user',
+                'user.extra'
             ])
             ->orderBy('followers_count', 'desc')
             ->orderBy('updated_at', 'desc')
@@ -83,6 +84,7 @@ class FindUserController extends Controller
         $users = $user->when($offset, function ($query) use ($offset) {
             return $query->offset($offset);
         })
+            ->with('extra')
             ->latest()
             ->limit($limit)
             ->get();
@@ -115,7 +117,7 @@ class FindUserController extends Controller
         ->whereExists(function ($query) {
             return $query->from('users')->whereRaw('users.id = users_recommended.user_id')->where('deleted_at', null);
         })
-        ->with(['user'])
+        ->with(['user', 'user.extra'])
         ->limit($limit)
         ->orderBy('id', 'desc')
         ->get();
@@ -148,7 +150,7 @@ class FindUserController extends Controller
             $users = $userRecommended->when($offset, function ($query) use ($offset) {
                 return $query->offset($offset);
             })
-                ->with(['user'])
+                ->with(['user', 'user.extra'])
                 ->limit($limit)
                 ->orderBy('id', 'desc')
                 ->get();
@@ -170,7 +172,7 @@ class FindUserController extends Controller
             ->when($offset, function ($query) use ($offset) {
                 return $query->offset($offset);
             })
-            ->with('tags')
+            ->with(['tags', 'extra'])
             ->limit($limit)
             ->orderBy('id', 'desc')
             ->get();
@@ -214,7 +216,7 @@ class FindUserController extends Controller
             ->when($offset, function ($query) use ($offset) {
                 return $query->offset($offset);
             })
-            ->with('user')
+            ->with(['user', 'user.extra'])
             ->limit($limit)
             ->select('taggable_id')
             ->groupBy('taggable_id')
@@ -249,6 +251,7 @@ class FindUserController extends Controller
         }
 
         $users = $userModel
+            ->with('extra')
             ->select('*')
             ->whereIn('phone', $phones)
             ->limit(100)

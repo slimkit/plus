@@ -42,6 +42,7 @@ class UserFollowController extends Controller
         $offset = $request->query('offset', 0);
 
         $followers = $user->followers()
+            ->with('extra')
             ->latest()
             ->offset($offset)
             ->limit($limit)
@@ -73,6 +74,7 @@ class UserFollowController extends Controller
         $offset = $request->query('offset', 0);
 
         $followings = $user->followings()
+            ->with('extra')
             ->latest()
             ->offset($offset)
             ->limit($limit)
