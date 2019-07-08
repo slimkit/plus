@@ -47,7 +47,7 @@ class RanksController extends Controller
             'user' => function ($query) {
                 return $query->withTrashed();
             },
-            'user.extra'
+            'user.extra',
         ])
             ->orderBy('checkin_count', 'desc')
             ->orderBy('updated_at', 'desc')
