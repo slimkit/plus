@@ -1,20 +1,6 @@
 {
-    "presets": [
-        ["env", {
-            "targets": {
-                "node": "6.10",
-                "browsers": [
-                    "last 2 versions",
-                    "not ie <= 8"
-                ]
-            }
-        }],
-        "stage-2"
-    ],
-    "plugins": [
-        ["component", [{
-            "libraryName": "element-ui",
-            "styleLibraryName": "theme-chalk"
-        }]]
-    ]
+  "presets": [
+    "@vue/app"
+  ],
+  "plugins": ["transform-class-properties"]
 }
