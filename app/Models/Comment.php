@@ -35,7 +35,11 @@ class Comment extends Model
             $query->with('user');
         });
         static::addGlobalScope('reply', function (Builder $query) {
-            $query->with('reply');
+            $query->with([
+                'reply' => function (BelongsTo $belongsTo) {
+                    $belongsTo->withoutGlobalScope('certification');
+                },
+            ]);
         });
     }
 
