@@ -27,8 +27,8 @@ use Medz\Laravel\Notifications\JPush\Sender;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Zhiyi\Plus\FileStorage\FileMetaInterface;
 use Illuminate\Database\Eloquent\Relations\HasOne;
-use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Zhiyi\Plus\FileStorage\Traits\EloquentAttributeTrait as FileStorageEloquentAttributeTrait;
 
@@ -128,8 +128,7 @@ class User extends Authenticatable implements JWTSubject
     }
 
     protected function getAvatarAttribute(?string $resource)
-    : ?FileMetaInterface
-    {
+    : ?FileMetaInterface {
         if (! $resource) {
             return null;
         }
@@ -138,8 +137,7 @@ class User extends Authenticatable implements JWTSubject
     }
 
     protected function getBgAttribute(?string $resource)
-    : ?FileMetaInterface
-    {
+    : ?FileMetaInterface {
         if (! $resource) {
             return null;
         }
@@ -234,8 +232,7 @@ class User extends Authenticatable implements JWTSubject
      * @homepage http://medz.cn
      */
     public function scopeByPhone(Builder $query, string $phone)
-    : Builder
-    {
+    : Builder {
         return $query->where('phone', $phone);
     }
 
@@ -251,8 +248,7 @@ class User extends Authenticatable implements JWTSubject
      * @homepage http://medz.cn
      */
     public function scopeByName(Builder $query, string $name)
-    : Builder
-    {
+    : Builder {
         return $query->where('name', $name);
     }
 
@@ -266,8 +262,7 @@ class User extends Authenticatable implements JWTSubject
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function scopeByEmail(Builder $query, string $email)
-    : Builder
-    {
+    : Builder {
         return $query->where('email', $email);
     }
 
@@ -282,8 +277,7 @@ class User extends Authenticatable implements JWTSubject
      * @homepage http://medz.cn
      */
     public function createPassword(string $password)
-    : self
-    {
+    : self {
         $this->password = app('hash')->make($password);
 
         return $this;
@@ -300,8 +294,7 @@ class User extends Authenticatable implements JWTSubject
      * @return bool 验证结果true or false
      */
     public function verifyPassword(string $password)
-    : bool
-    {
+    : bool {
         return $this->password
             && app('hash')->check($password, $this->password);
     }

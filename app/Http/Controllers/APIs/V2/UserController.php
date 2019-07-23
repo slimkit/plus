@@ -60,7 +60,7 @@ class UserController extends Controller
         $fetchBy = $request->query('fetch_by', 'id');
         $tags = $request->query('tags', []);
 
-        $users = $model
+        $users = $model->newQuery()
             ->when($since, function ($query) use ($since, $order) {
                 return $query->where('id', $order === 'asc' ? '>' : '<',
                     $since);
@@ -93,6 +93,10 @@ class UserController extends Controller
             ->orderby('id', $order)
             ->get();
         $users->load('extra');
+        $users->makeHidden([
+            'updated_at', 'last_login_ip', 'certification', 'register_ip', 'created_at', 'email_verified_at',
+            'phone_verified_at',
+        ]);
 
         return $response->json($model->getConnection()->transaction(function () use ($users, $user) {
             return $users->map(function (User $item) use ($user) {
@@ -117,12 +121,17 @@ class UserController extends Controller
     public function show(Request $request, string $user)
     {
         $field = username($user);
-        $user = User::withTrashed()
+        $user = User::query()
+            ->withTrashed()
             ->with('extra')
             ->where($field, $user)
-            ->firstOrFail();
+            ->first();
 
         $user->makeVisible($field);
+        $user->makeHidden([
+            'updated_at', 'last_login_ip', 'certification', 'register_ip', 'created_at', 'email_verified_at',
+            'phone_verified_at',
+        ]);
 
         // 我关注的处理
         $this->hasFollowing($request, $user);
