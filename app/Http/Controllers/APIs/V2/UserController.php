@@ -26,11 +26,11 @@ use Tymon\JWTAuth\JWTAuth;
 use Zhiyi\Plus\Models\User;
 use Illuminate\Http\Request;
 use Zhiyi\Plus\Models\Taggable;
-use function Zhiyi\Plus\setting;
-use function Zhiyi\Plus\username;
 use Zhiyi\Plus\Models\VerificationCode;
 use Zhiyi\Plus\Http\Requests\API2\StoreUserPost;
 use Illuminate\Contracts\Routing\ResponseFactory as ResponseFactoryContract;
+use function Zhiyi\Plus\setting;
+use function Zhiyi\Plus\username;
 
 class UserController extends Controller
 {
@@ -92,10 +92,9 @@ class UserController extends Controller
             ->limit($limit)
             ->orderby('id', $order)
             ->get();
-        $users->load(['certification']);
+        $users->load('extra');
 
-        return $response->json($model->getConnection()->transaction(function (
-        ) use ($users, $user) {
+        return $response->json($model->getConnection()->transaction(function () use ($users, $user) {
             return $users->map(function (User $item) use ($user) {
                 $item->following = $item->hasFollwing($user->id ?? 0);
                 $item->follower = $item->hasFollower($user->id ?? 0);
@@ -119,6 +118,7 @@ class UserController extends Controller
     {
         $field = username($user);
         $user = User::withTrashed()
+            ->with('extra')
             ->where($field, $user)
             ->firstOrFail();
 
@@ -190,8 +190,8 @@ class UserController extends Controller
         $user->roles()->sync($role);
 
         return $response->json([
-            'token' => $auth->fromUser($user),
-            'ttl' => config('jwt.ttl'),
+            'token'       => $auth->fromUser($user),
+            'ttl'         => config('jwt.ttl'),
             'refresh_ttl' => config('jwt.refresh_ttl'),
         ])->setStatusCode(201);
     }
