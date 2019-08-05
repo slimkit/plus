@@ -20,6 +20,8 @@ declare(strict_types=1);
 
 namespace Zhiyi\Component\ZhiyiPlus\PlusComponentNews\AdminControllers;
 
+use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Query\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Zhiyi\Plus\Notifications\System;
@@ -31,36 +33,39 @@ class NewsApplyLogController extends Controller
     /**
      * 删除申请列表.
      *
-     * @param  Request  $request
-     * @param  NewsApplyLog  $model
+     * @param Request $request
+     * @param NewsApplyLog $model
      *
      * @return mixed
      * @author BS <414606094@qq.com>
      */
     public function index(Request $request, NewsApplyLog $model)
     {
-        $limit = $request->query('limit', 15);
+        $limit = $request->query('limit', config('app.data_limit'));
         // $offset = $request->query('offset', 0);
         $key = $request->query('key');
         $user_id = $request->query('user_id');
         $news_id = $request->query('news_id');
-        $query = $model->when($user_id, function ($query) use ($user_id) {
-            return $query->where('user_id', $user_id);
-        })->when($news_id, function ($query) use ($news_id) {
-            return $query->where('news_id', $news_id);
-        })->whereHas('news', function ($query) use ($key) {
-            return $query->when($key, function ($query) use ($key) {
-                return $query->where('news.title', 'like', '%'.$key.'%');
-            })->withTrashed();
+        $query = $model->newQuery()
+            ->when($user_id, function (Builder $query) use ($user_id) {
+                return $query->where('user_id', $user_id);
+            })
+            ->when($news_id, function (Builder $query) use ($news_id) {
+                return $query->where('news_id', $news_id);
+            })
+            ->whereHas('news', function (\Illuminate\Database\Eloquent\Builder $query) use ($key) {
+                return $query->when($key, function (Builder $query) use ($key) {
+                    return $query->where('news.title', 'like', '%' . $key . '%');
+                })
+                    ->withTrashed();
         });
-        // $total = $query->count();
-        $datas = $query->limit($limit)->with([
-            'news' => function ($query) {
+        $data = $query->with([
+            'news' => function (HasOne $query) {
                 return $query->withTrashed();
             }, 'user',
-        ])->get();
+        ])->paginate($limit);
 
-        return response()->json($datas, 200);
+        return response()->json($data, 200);
     }
 
     public function accept(int $log)
