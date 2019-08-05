@@ -20,12 +20,12 @@ declare(strict_types=1);
 
 namespace Zhiyi\Component\ZhiyiPlus\PlusComponentNews\AdminControllers;
 
-use Illuminate\Database\Eloquent\Relations\HasOne;
-use Illuminate\Database\Query\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Zhiyi\Plus\Notifications\System;
+use Illuminate\Database\Query\Builder;
 use Zhiyi\Plus\Http\Controllers\Controller;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentNews\Models\NewsApplyLog;
 
 class NewsApplyLogController extends Controller
@@ -55,10 +55,10 @@ class NewsApplyLogController extends Controller
             })
             ->whereHas('news', function (\Illuminate\Database\Eloquent\Builder $query) use ($key) {
                 return $query->when($key, function (Builder $query) use ($key) {
-                    return $query->where('news.title', 'like', '%' . $key . '%');
+                    return $query->where('news.title', 'like', '%'.$key.'%');
                 })
                     ->withTrashed();
-        });
+            });
         $data = $query->with([
             'news' => function (HasOne $query) {
                 return $query->withTrashed();
