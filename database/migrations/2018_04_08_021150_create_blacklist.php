@@ -33,7 +33,6 @@ class CreateBlacklist extends Migration
             $table->integer('user_id')->unsigned()->comment('main user');
             $table->integer('target_id')->unsigned()->comment('blacked user id');
             $table->timestamps();
-            $table->index('user_id');
         });
     }
 
