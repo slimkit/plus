@@ -924,7 +924,7 @@ var comment = {
           var html = '<p class="comment_con" id="comment' + res.comment.id +
             '">'
           html += '<span class="tcolor">' + TS.USER.name + '：</span>' +
-            original_body + ''
+            res.comment.body + ''
           if (_this.support.top)
             html += '<a class="comment_del mouse" onclick="comment.pinneds(\'' +
               res.comment.commentable_type + '\', ' +
