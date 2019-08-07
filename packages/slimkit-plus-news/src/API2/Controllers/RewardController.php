@@ -21,7 +21,6 @@ declare(strict_types=1);
 namespace Zhiyi\Component\ZhiyiPlus\PlusComponentNews\API2\Controllers;
 
 use Illuminate\Http\Request;
-use Zhiyi\Plus\Models\GoldType;
 use Zhiyi\Plus\Models\CommonConfig;
 use Zhiyi\Plus\Models\CurrencyType;
 use Zhiyi\Plus\Models\WalletCharge;
@@ -71,7 +70,6 @@ class RewardController extends Controller
             ], 403);
         }
 
-        $userCount->total = $userUnreadCount + 1;
         $user->getConnection()->transaction(function () use ($user, $news, $charge, $targetUser, $amount) {
             // 扣除操作用户余额
             $user->wallet()->decrement('balance', $amount);
@@ -104,7 +102,7 @@ class RewardController extends Controller
                 $charge->status = 1;
                 $charge->save();
 
-                $target->notify(new SystemNotification(sprintf('%s打赏了你的资讯文章', $user->name), [
+                $targetUser->notify(new SystemNotification(sprintf('%s打赏了你的资讯文章', $user->name), [
                     'type' => 'reward:news',
                     'sender' => [
                         'id' => $user->id,
