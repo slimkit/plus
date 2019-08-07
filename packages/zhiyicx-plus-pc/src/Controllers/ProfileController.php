@@ -38,7 +38,7 @@ class ProfileController extends BaseController
         if (! $user || $user == $this->PlusData['TS']['id']) {
             $user = $request->user();
         } else {
-            $user = UserModel::where(username($user), $user)->with('tags')->first();
+            $user = UserModel::query()->where(username($user), $user)->with('tags')->first();
         }
         $this->PlusData['current'] = 'feeds';
         if ($request->isAjax) {
@@ -63,6 +63,7 @@ class ProfileController extends BaseController
             return response()->json([
                 'status' => true,
                 'after' => $after,
+                'count' => count($feeds['feeds']),
                 'data' => $html,
             ]);
         }

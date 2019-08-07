@@ -51,7 +51,7 @@ class NotificationController extends Controller
      */
     protected function getQueryType(Request $request, bool $getTypes = false)
     {
-        $type = $request->query('type');
+        $type = $request->input('type');
         $types = [
             'at' => AtNotification::class,
             'comment' => CommentNotification::class,
