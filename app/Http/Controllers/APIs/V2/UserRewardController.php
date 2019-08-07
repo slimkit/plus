@@ -20,10 +20,9 @@ declare(strict_types=1);
 
 namespace Zhiyi\Plus\Http\Controllers\APIs\V2;
 
-use Zhiyi\Plus\Models\CurrencyType;
 use Zhiyi\Plus\Models\User;
 use Illuminate\Http\Request;
-use Zhiyi\Plus\Models\GoldType;
+use Zhiyi\Plus\Models\CurrencyType;
 use Zhiyi\Plus\Models\WalletCharge;
 use Zhiyi\Plus\Notifications\System as SystemNotification;
 use Zhiyi\Plus\Packages\Currency\Processes\User as UserProcess;

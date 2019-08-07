@@ -334,7 +334,7 @@ function formatPinneds($data, $pinneds)
 function formatRepostable($feeds)
 {
     foreach ($feeds as &$feed) {
-        if (!isset($feed['repostable_type'])) {
+        if (! isset($feed['repostable_type'])) {
             continue;
         }
         $feed['repostable'] = [];

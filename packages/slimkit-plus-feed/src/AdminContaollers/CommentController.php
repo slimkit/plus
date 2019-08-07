@@ -21,18 +21,17 @@ declare(strict_types=1);
 namespace Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\AdminControllers;
 
 use DB;
-use Carbon\Carbon;
 use Exception;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Http\JsonResponse;
+use Carbon\Carbon;
 use Zhiyi\Plus\Models\User;
 use Illuminate\Http\Request;
 use Zhiyi\Plus\Models\Comment;
 use Zhiyi\Plus\Models\UserCount;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Database\QueryException;
 use Zhiyi\Plus\Http\Controllers\Controller;
-use Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\Feed;
 use Zhiyi\Plus\Notifications\System as SystemNotification;
+use Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\Feed;
 use Zhiyi\Plus\Packages\Currency\Processes\User as UserProcess;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\FeedPinned;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Traits\PaginatorPage;
@@ -239,11 +238,10 @@ class CommentController extends Controller
                 ],
                 'feed' => [
                     'id' => $comment->commentable_id,
-                    'type' => $comment->commentable_type
-                ]
+                    'type' => $comment->commentable_type,
+                ],
             ]));
             $comment->delete();
-
         } catch (QueryException $e) {
             DB::rollBack();
 
