@@ -42,29 +42,9 @@ class PcTableSeeder extends Seeder
             'order_sort' => 0,
         ]);
         Navigation::create([
-            'name' => '圈子',
-            'app_name' => 'group',
-            'url' => '/group',
-            'target' => '_self',
-            'status' => 1,
-            'position' => 0,
-            'parent_id' => 0,
-            'order_sort' => 0,
-        ]);
-        Navigation::create([
             'name' => '资讯',
             'app_name' => 'news',
             'url' => '/news',
-            'target' => '_self',
-            'status' => 1,
-            'position' => 0,
-            'parent_id' => 0,
-            'order_sort' => 0,
-        ]);
-        Navigation::create([
-            'name' => '问答',
-            'app_name' => 'question',
-            'url' => '/questions',
             'target' => '_self',
             'status' => 1,
             'position' => 0,
