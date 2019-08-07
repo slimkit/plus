@@ -18,6 +18,7 @@
         "@babel/core": "^7.5.5",
         "@babel/plugin-proposal-class-properties": "^7.5.5",
         "conventional-changelog-cli": "^2.0.23",
+        "@vue/babel-preset-app": "^3.9.2",
         "cross-env": "^5.1.5",
         "laravel-mix": "^4.1.2",
         "opencollective": "^1.0.3",
@@ -28,7 +29,7 @@
     },
     "dependencies": {
         "@slimkit/plus-editor": "^0.0.3",
-        "axios": "^0.18",
+        "axios": "^0.19.0",
         "bootstrap-sass": "^3.3.7",
         "chart.js": "^2.7.2",
         "echarts": "^4.1.0",

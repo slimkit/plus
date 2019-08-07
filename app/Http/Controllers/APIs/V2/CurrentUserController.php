@@ -168,6 +168,7 @@ class CurrentUserController extends Controller
         $offset = $request->query('offset', 0);
 
         $followers = $user->followers()
+            ->with('extra')
             ->offset($offset)
             ->limit($limit)
             ->get();
@@ -198,6 +199,7 @@ class CurrentUserController extends Controller
         $offset = $request->query('offset', 0);
 
         $followings = $user->followings()
+            ->with('extra')
             ->offset($offset)
             ->limit($limit)
             ->get();

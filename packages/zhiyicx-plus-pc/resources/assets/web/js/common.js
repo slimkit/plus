@@ -49,8 +49,8 @@ var ly = {
     layer.closeAll()
   },
   success: function (message, reload, url, close) {
-    reload = typeof (reload) == 'undefined' ? true : reload
-    close = typeof (close) == 'undefined' ? false : close
+    reload = typeof (reload) === 'undefined' ? true : reload
+    close = typeof (close) === 'undefined' ? false : close
 
     layer.msg(message, {
       icon: 1,
@@ -60,7 +60,7 @@ var ly = {
         layer.close(index)
       }
       if (reload) {
-        if (url == '' || typeof (url) == 'undefined') {
+        if (url === '' || typeof (url) === 'undefined') {
           url = location.href
         }
         location.href = url
@@ -68,8 +68,8 @@ var ly = {
     })
   },
   error: function (message, reload, url, close) {
-    reload = typeof (reload) == 'undefined' ? true : reload
-    close = typeof (close) == 'undefined' ? false : close
+    reload = typeof (reload) === 'undefined' ? true : reload
+    close = typeof (close) === 'undefined' ? false : close
 
     layer.msg(message, {
       icon: 2,
@@ -79,7 +79,7 @@ var ly = {
         layer.close(index)
       }
       if (reload) {
-        if (url == '' || typeof (url) == 'undefined') {
+        if (url === '' || typeof (url) === 'undefined') {
           url = location.href
         }
         location.href = url
@@ -89,13 +89,13 @@ var ly = {
   load: function (requestUrl, title, width, height, type, requestData) {
     var obj = this
     var ajaxType = 'GET'
-    if (load == 1) return false
+    if (load === 1) return false
     layer.closeAll()
     load = 1
-    if (undefined != type) {
+    if (undefined !== type) {
       ajaxType = type
     }
-    if (undefined == requestData) {
+    if (undefined === requestData) {
       var requestData = {}
     }
     axios({
@@ -216,7 +216,7 @@ var loader = {
     this.setting.nodata = option.nodata || 0 // 0显示，1不显示
     this.setting.callback = option.callback || null
     this.setting.nodatatype = option.nodatatype || 0 // 暂无更多样式？0-暂无相关内容，1-无搜索结果，换个词试试 ？
-    this.setting.nodatatext = this.setting.nodatatype == 1
+    this.setting.nodatatext = this.setting.nodatatype === 1
       ? '无搜索结果，换个词试试 ？'
       : '暂无相关内容'
     this.setting.selfname = option.selfname || 'loader'
@@ -226,47 +226,38 @@ var loader = {
 
     this.bindScroll()
 
-    if ($(this.setting.container).length > 0 && this.setting.canload == 0) {
+    if ($(this.setting.container).length > 0 && this.setting.canload === 0) {
       $(this.setting.loading).next('.loading').remove()
       $(this.setting.loading).next('.click_loading').remove()
       $(this.setting.loading).after(loadHtml)
       this.loadMore()
     }
-
-    // if (this.setting.loadtype == 2) {
-    //     var _this = this;
-    //     $(this.setting.loading).parent().off('click', '.click_loading a');
-    //     $(this.setting.loading).parent().on('click', '.click_loading a', function() {
-    //         _this.clickMore(this);
-    //     });
-    // }
   },
 
   bindScroll: function () {
     var _this = this
     $(window).bind('scroll resize', function () {
-      if (_this.setting.canload == 0) {
+      if (_this.setting.canload === 0) {
         var scrollTop = $(this).scrollTop()
         var scrollHeight = $(document).height()
         var windowHeight = $(this).height()
-        if (scrollTop + windowHeight == scrollHeight) {
+        if (scrollTop + windowHeight === scrollHeight) {
           if ($(_this.setting.container).length > 0) {
             // 一直加载更多
-            if (_this.setting.loadtype == 0) {
+            if (_this.setting.loadtype === 0) {
               $(_this.setting.loading).next('.loading').remove()
               $(_this.setting.loading).after(loadHtml)
               _this.loadMore()
             }
 
             // 加载三次点击加载更多
-            if (_this.setting.loadtype == 1) {
-              if ((_this.setting.loadcount % 3) != 0) {
+            if (this.setting.loadtype === 1) {
+              if ((this.setting.loadcount % 3) !== 0) {
                 $(_this.setting.loading).next('.loading').remove()
                 $(_this.setting.loading).after(loadHtml)
                 _this.loadMore()
               } else {
-                if ($(_this.setting.loading).next('.click_loading').length ==
-                  0) {
+                if ($(this.setting.loading).next('.click_loading').length === 0) {
                   $(_this.setting.loading).after(clickHtml)
                 }
               }
@@ -286,20 +277,20 @@ var loader = {
     axios.get(this.setting.url, { params: this.params })
       .then(function (response) {
         var res = response.data
-        if (res.data != '') {
+        if (res.data !== '' && res.count > 0) {
           _this.setting.canload = 0
 
           // 加载传参方式
-          if (_this.setting.paramtype == 0) {
+          if (_this.setting.paramtype === 0) {
             _this.params.after = res.after
-          } else if (_this.setting.paramtype == 1) {
+          } else if (_this.setting.paramtype === 1) {
             _this.params.offset = _this.setting.loadcount * _this.params.limit
           } else { // 热门动态
             _this.params.hot = res.after
           }
 
           var html = res.data
-          if (_this.setting.loadcount == 1) {
+          if (_this.setting.loadcount === 1) {
             $(_this.setting.container).html(html)
           } else {
             $(_this.setting.container).append(html)
@@ -307,14 +298,14 @@ var loader = {
           $(_this.setting.loading).next('.loading').remove()
 
           // 点击加载更多
-          if (_this.setting.loadtype == 2) {
+          if (_this.setting.loadtype === 2) {
             $(_this.setting.loading).after(_this.setting.clickHtml)
           }
 
           $('img.lazy').lazyload({ effect: 'fadeIn' })
         } else {
           _this.setting.canload = 1
-          if (_this.setting.loadcount == 1 && _this.setting.nodata == 0) {
+          if (_this.setting.loadcount === 1 && _this.setting.nodata === 0) {
             no_data(_this.setting.container, !_this.setting.nodatatype,
               _this.setting.nodatatext)
             $(_this.setting.loading).next('.loading').html('')
@@ -323,8 +314,15 @@ var loader = {
           }
         }
         // 若隐藏则显示
-        if ($(_this.setting.container).css('display') == 'none') {
+        if ($(_this.setting.container).css('display') === 'none') {
           $(_this.setting.container).show()
+        }
+
+        if (res.count < _this.params.limit) {
+          _this.setting.canload = 1
+          $(_this.setting.loading).
+          next('.click_loading').
+          html('没有更多了')
         }
 
         if (_this.setting.callback && typeof (_this.setting.callback) ==
@@ -333,9 +331,8 @@ var loader = {
         }
       })
       .catch(function (error) {
-        console.log(error)
-        return false
         showError(error.response.data)
+        return false
       })
   },
 
@@ -352,13 +349,13 @@ var loader = {
     axios.get(this.setting.url, { params: _this.params })
       .then(function (response) {
         var res = response.data
-        if (res.data != '') {
+        if (res.data !== '') {
           _this.setting.canload = 0
 
           // 加载传参方式
-          if (_this.setting.paramtype == 0) {
+          if (_this.setting.paramtype === 0) {
             _this.params.after = res.after
-          } else if (_this.setting.paramtype == 1) {
+          } else if (_this.setting.paramtype === 1) {
             _this.params.offset = _this.setting.loadcount * _this.params.limit
           } else { // 热门动态
             _this.params.hot = res.after
@@ -373,6 +370,13 @@ var loader = {
         } else {
           _this.setting.canload = 1
           $(_this.setting.loading).next('.click_loading').html('没有更多了')
+        }
+
+        if (res.count < _this.params.limit) {
+          _this.setting.canload = 1
+          $(_this.setting.loading).
+          next('.click_loading').
+          html('没有更多了')
         }
       })
       .catch(function (error) {
@@ -410,7 +414,7 @@ var urlToObject = function (url) {
 // 字符串长度计算
 var getLength = function (str, shortUrl) {
   str = str || ''
-  if (true == shortUrl) {
+  if (true === shortUrl) {
     // 一个URL当作十个字长度计算
     return Math.ceil(str.replace(
       /((news|telnet|nttp|file|http|ftp|https):\/\/){1}(([-A-Za-z0-9]+(\.[-A-Za-z0-9]+)*(\.[-A-Za-z]{2,5}))|([0-9]{1,3}(\.[0-9]{1,3}){3}))(:[0-9]*)?(\/[-A-Za-z0-9_\$\.\+\!\*\(\),;:@&=\?\/~\#\%]*)*/ig,
@@ -464,12 +468,13 @@ var checkNums = function (obj, len, show) {
 var follow = function (status, user_id, target, callback) {
   checkLogin()
   var _this = this
-  if (_this.lockStatus == 1) {
+  if (_this.lockStatus === 1) {
     return
   }
   _this.lockStatus = 1
+  status = parseInt(status)
   var url = '/api/v2/user/followings/' + user_id
-  if (status == 0) {
+  if (status === 0) {
     axios.put(url)
       .then(function (response) {
         callback(target)
@@ -496,12 +501,12 @@ var follow = function (status, user_id, target, callback) {
 var topic = function (status, topic_id, callback) {
   checkLogin()
   var _this = this
-  if (_this.lockStatus == 1) {
+  if (_this.lockStatus === 1) {
     return
   }
   _this.lockStatus = 1
   var url = '/api/v2/user/question-topics/' + topic_id
-  if (status == 0) {
+  if (status === 0) {
     axios.put(url)
       .then(function (response) {
         callback()
@@ -529,7 +534,7 @@ var lyNotice = function (msg) {
   var _this = $('.layui-layer-content')
   var lr = $('.ly-error')
 
-  if (typeof lr == 'undefined' || lr.length < 1) {
+  if (typeof lr === 'undefined' || lr.length < 1) {
     _this.append('<span class="ly-error"></span>')
     lr = $('.ly-error')
   }
@@ -551,7 +556,7 @@ var noticebox = function (msg, status, tourl) {
       _this.css('top', '62px')
     }
   }
-  if (status == 0) {
+  if (status === 0) {
     var html = '<div class="notice"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-warning"></use></svg> ' +
       msg + '</div>'
   } else {
@@ -560,7 +565,7 @@ var noticebox = function (msg, status, tourl) {
   }
   _this.html(html)
   _this.slideDown(200)
-  if (tourl == '') {
+  if (tourl === '') {
     setTimeout(function () {
       $('.noticebox').slideUp(200)
     }, 1500)
@@ -573,14 +578,14 @@ var noticebox = function (msg, status, tourl) {
 
 // 消息提示回调
 var noticebox_cb = function (tourl) {
-  window.location.href = tourl == 'refresh'
+  window.location.href = tourl === 'refresh'
     ? window.location.href
     : TS.SITE_URL + tourl
 }
 
 // 无数据提示dom
 var no_data = function (selector, type, txt) {
-  var image = type == 0
+  var image = type === 0
     ? TS.RESOURCE_URL + '/images/pic_default_content.png'
     : TS.RESOURCE_URL + '/images/pic_default_people.png'
   var html = '<div class="no_data_div"><div class="no_data"><img src="' +
@@ -871,7 +876,7 @@ var comment = {
     this.support.top = $(obj).data('top')
 
     var _this = this
-    if (_this.lockStatus == 1) {
+    if (_this.lockStatus === 1) {
       noticebox('请勿重复提交', 0)
       return
     }
@@ -879,7 +884,7 @@ var comment = {
       body: $.trim(_this.support.editor.val()) ||
         $.trim(_this.support.editor.text())
     }
-    if (formData.body == '') {
+    if (formData.body === '') {
       noticebox('评论内容不能为空', 0)
       return
     }
@@ -895,8 +900,8 @@ var comment = {
       })
 
     // 去除回复@
-    if (_this.support.to_uid > 0 && formData.body.indexOf('回复') != -1) {
-      if (formData.body == '回复 ' + this.support.to_uname + '：') {
+    if (_this.support.to_uid > 0 && formData.body.indexOf('回复') !== -1) {
+      if (formData.body === '回复 ' + this.support.to_uname + '：') {
         noticebox('回复内容不能为空', 0)
         return
       }
@@ -924,7 +929,7 @@ var comment = {
           var html = '<p class="comment_con" id="comment' + res.comment.id +
             '">'
           html += '<span class="tcolor">' + TS.USER.name + '：</span>' +
-            original_body + ''
+            res.comment.body + ''
           if (_this.support.top)
             html += '<a class="comment_del mouse" onclick="comment.pinneds(\'' +
               res.comment.commentable_type + '\', ' +
@@ -1000,7 +1005,7 @@ var comment = {
   delete: function (type, source_id, id) {
     var url = ''
     var _this = this
-    if (_this.lockStatus == 1) {
+    if (_this.lockStatus === 1) {
       noticebox('请勿重复提交', 0)
       return
     }
@@ -1041,13 +1046,13 @@ var comment = {
   },
   pinneds: function (type, source_id, id) {
     var url = ''
-    if (type == 'feeds') {
+    if (type === 'feeds') {
       layer.alert(buyTSInfo)
     }
-    if (type == 'news') {
+    if (type === 'news') {
       layer.alert(buyTSInfo)
     }
-    if (type == 'group-posts') {
+    if (type === 'group-posts') {
       url = '/api/v2/plus-group/currency-pinned/comments/' + id
       pinneds.show(url, 'pinned')
     }
@@ -1140,7 +1145,7 @@ var liked = {
   },
   like: function (row_id, cate, type) {
     var _this = this
-    if (_this.lockStatus == 1) {
+    if (_this.lockStatus === 1) {
       return
     }
     _this.lockStatus = 1
@@ -1165,7 +1170,7 @@ var liked = {
   },
   unlike: function (feed_id, page) {
     var _this = this
-    if (_this.lockStatus == 1) {
+    if (_this.lockStatus === 1) {
       return
     }
     _this.lockStatus = 1
@@ -1229,7 +1234,7 @@ var collected = {
   },
   collect: function (row_id, cate, type) {
     var _this = this
-    if (_this.lockStatus == 1) {
+    if (_this.lockStatus === 1) {
       return
     }
     _this.lockStatus = 1
@@ -1250,7 +1255,7 @@ var collected = {
   },
   uncollect: function (feed_id, page) {
     var _this = this
-    if (_this.lockStatus == 1) {
+    if (_this.lockStatus === 1) {
       return
     }
     _this.lockStatus = 1
@@ -1321,7 +1326,7 @@ var pinneds = {
       + '<div class="pinned_text">需要支付总金额：</div>'
       + '<div class="pinned_total"><span>0</span></div>'
       + '</div>'
-    if (type != 'pinned') {
+    if (type !== 'pinned') {
       html = '<div class="pinned_box">'
         + '<p class="confirm_title">置顶帖子</p>'
         + '<div class="pinned_text">设置帖子置顶天数</div>'
@@ -1334,7 +1339,7 @@ var pinneds = {
 
     ly.confirm(html, '', '', function () {
       var data = pinneds.payload.data = {}
-      if (type == 'pinned') {
+      if (type === 'pinned') {
         data.day = $('.pinned_spans .current').length > 0 ? $(
           '.pinned_spans .current').attr('days') : ''
         data.amount = $('.pinned_input input').val() * data.day
@@ -1445,7 +1450,7 @@ var reported = {
 
 // 更多操作
 var options = function (obj) {
-  if ($(obj).next('.options_div').css('display') == 'none') {
+  if ($(obj).next('.options_div').css('display') === 'none') {
     $('.options_div').hide()
     $(obj).next('.options_div').show()
   } else {
@@ -1455,10 +1460,10 @@ var options = function (obj) {
 
 // 存入搜索记录
 var setHistory = function (str) {
-  if (str == ' ') return false
+  if (str === ' ') return false
   if (localStorage.history) {
     hisArr = JSON.parse(localStorage.history)
-    if ($.inArray(str, hisArr) == -1) {
+    if ($.inArray(str, hisArr) === -1) {
       hisArr.unshift(str)
     }
   } else {
@@ -1482,7 +1487,7 @@ var getHistory = function () {
 
 // 删除记录
 var delHistory = function (str) {
-  if (str == 'all') {
+  if (str === 'all') {
     localStorage.history = ''
     $('.history').hide()
   } else {
@@ -1496,7 +1501,7 @@ var delHistory = function (str) {
 
 //验证登录
 var checkLogin = function () {
-  if (TS.MID == 0) {
+  if (TS.MID === 0) {
     window.location.href = TS.SITE_URL + '/auth/login'
     throw new Error('请登录')
   }
@@ -1515,7 +1520,7 @@ var formatConfirm = function (title, text) {
 var getParams = function (url, key) {
   var reg = new RegExp('(^|&)' + key + '=([^&]*)(&|$)')
   var r = url.match(reg)
-  if (r != null) return unescape(r[2])
+  if (r !== null) return unescape(r[2])
   return null
 }
 
@@ -1574,7 +1579,7 @@ function isNumber (keyCode) {
   if (keyCode >= 96 && keyCode <= 105)
     return true
   // Backspace, del, 左右方向键
-  if (keyCode == 8 || keyCode == 46 || keyCode == 37 || keyCode == 39)
+  if (keyCode === 8 || keyCode === 46 || keyCode === 37 || keyCode === 39)
     return true
 
   lyNotice('打赏金额必须为整数')
@@ -1595,7 +1600,7 @@ var thirdShare = function (type, url, title, pic, obj) {
       tourl += encodeURIComponent(url)
       tourl += '&title='
       tourl += title
-      if (pic != '') {
+      if (pic !== '') {
         tourl += '&pic='
         tourl += pic
       }
@@ -1604,7 +1609,7 @@ var thirdShare = function (type, url, title, pic, obj) {
       break
     case 2: // QQ
       // 获取真实图片地址
-      if (pic != '' && pic.indexOf('/api/v2/files') != -1) {
+      if (pic !== '' && pic.indexOf('/api/v2/files') !== -1) {
         axios.get(pic + '?json=1')
           .then(function (response) {
             pic = response.data.url
@@ -1631,7 +1636,7 @@ var thirdShare = function (type, url, title, pic, obj) {
       }
       break
     case 3: // 微信
-      if ($('.weixin_qrcode').length == 0) {
+      if ($('.weixin_qrcode').length === 0) {
         $('body').append('<div class="weixin_qrcode"></div>')
       }
       $('.weixin_qrcode').html('')
@@ -1706,12 +1711,12 @@ var getAvatar = function (user, width) {
 var getEvent = function () {
   if (window.event) {return window.event}
   func = getEvent.caller
-  while (func != null) {
+  while (func !== null) {
     var arg0 = func.arguments[0]
     if (arg0) {
-      if ((arg0.constructor == Event || arg0.constructor == MouseEvent
-        || arg0.constructor == KeyboardEvent)
-        || (typeof (arg0) == 'object' && arg0.preventDefault
+      if ((arg0.constructor === Event || arg0.constructor === MouseEvent
+        || arg0.constructor === KeyboardEvent)
+        || (typeof (arg0) === 'object' && arg0.preventDefault
           && arg0.stopPropagation)) {
         return arg0
       }
@@ -1906,7 +1911,6 @@ var repostable = {
 
     axios.post('/api/v2/feeds', data)
       .then(function (response) {
-        console.log(response.data.id)
         noticebox('发布成功', 1)
         layer.closeAll()
       })
@@ -1927,7 +1931,7 @@ var repostable = {
       axios.post(url)
         .then(function (response) {
           layer.closeAll()
-          if (tourl == '') {
+          if (tourl === '') {
             noticebox('支付成功', 1)
             location.href = url
           }
@@ -2092,7 +2096,7 @@ $(function () {
   }
 
   // 右侧边栏
-  if (TS.MID != 0) {
+  if (TS.MID !== 0) {
     var _code = '<div id="ms_fixed_wrap">'
       + '<dl id="ms_fixed">'
       +
@@ -2126,10 +2130,10 @@ $(function () {
 
   // 个人中心展开
   $('.nav_right').hover(function (e) {
-    if (e.type == 'mouseleave' && $('.nav_menu').css('display') == 'block') {
+    if (e.type === 'mouseleave' && $('.nav_menu').css('display') === 'block') {
       $('.nav_menu').hide()
     }
-    if (e.type == 'mouseenter' && $('.nav_menu').css('display') == 'none') {
+    if (e.type === 'mouseenter' && $('.nav_menu').css('display') === 'none') {
       $('.nav_menu').show()
     }
   })
@@ -2191,7 +2195,7 @@ $(function () {
   $('body').click(function (e) {
     var target = $(e.target)
     // 个人中心
-    if (!target.is('#menu_toggle') && target.parents('.nav_menu').length == 0) {
+    if (!target.is('#menu_toggle') && target.parents('.nav_menu').length === 0) {
       $('.nav_menu').hide()
     }
 
@@ -2208,7 +2212,7 @@ $(function () {
 
     // 顶部搜索
     if (!target.is('.head_search') && target.parents('.head_search').length ==
-      0 && target.parents('.nav_search').length == 0) {
+      0 && target.parents('.nav_search').length === 0) {
       $('.head_search').hide()
     }
 
@@ -2220,7 +2224,7 @@ $(function () {
     }
 
     if (!target.is('.u-share, .u-share-show') && !target.is('.u-share svg') &&
-      target.parents('.u-share-show').length == 0) {
+      target.parents('.u-share-show').length === 0) {
       $('.u-share-show').fadeOut()
     }
 
@@ -2247,9 +2251,9 @@ $(function () {
   // 显示隐藏评论操作
   $(document)
     .on('mouseover mouseout', '.comment_con, .reply_body', function (event) {
-      if (event.type == 'mouseover') {
+      if (event.type === 'mouseover') {
         $(this).find('a.mouse').show()
-      } else if (event.type == 'mouseout') {
+      } else if (event.type === 'mouseout') {
         $(this).find('a.mouse').hide()
       }
     })
@@ -2261,9 +2265,8 @@ $(function () {
   $('#head_search').keyup(function (event) {
     //利用event的timeStamp来标记时间，这样每次的keyup事件都会修改last的值
     head_last = event.timeStamp
-    console.log(head_last)
     setTimeout(function () {
-      if (head_last - event.timeStamp == 0) {
+      if (head_last - event.timeStamp === 0) {
         head_search()
       }
     }, 500)
@@ -2299,7 +2302,7 @@ $(function () {
   // 显示搜索选项
   function head_search () {
     var val = $.trim($('#head_search').val())
-    if (val == '') {
+    if (val === '') {
       $('.head_search').hide()
       $('.search_types').hide()
     } else {
@@ -2329,8 +2332,8 @@ $(function () {
     var siblings = $(this)
       .parent()
       .siblings()
-      .filter(function () {return $(this).css('display') != 'none'})
-    if (siblings.length == 0) {
+      .filter(function () {return $(this).css('display') !== 'none'})
+    if (siblings.length === 0) {
       $('.history').hide()
       $('head_search').hide()
     }
@@ -2410,7 +2413,7 @@ $(function () {
     var days = $(this).attr('days')
     var amount = $('.pinned_input input').val()
 
-    if (amount != '') $('.pinned_total span').html(days * amount)
+    if (amount !== '') $('.pinned_total span').html(days * amount)
   })
 
   $(document).on('focus keyup change', '.pinned_input input', function () {
@@ -2418,7 +2421,7 @@ $(function () {
       '.pinned_spans span.current').attr('days') : ''
     var amount = $(this).val()
 
-    if (days != '') $('.pinned_total span').html(days * amount)
+    if (days !== '') $('.pinned_total span').html(days * amount)
   })
 
   // 打赏弹窗
@@ -2433,7 +2436,7 @@ $(function () {
     checkLogin()
 
     var comment_box = $(this).parent().siblings('.comment_box')
-    if (comment_box.css('display') == 'none') {
+    if (comment_box.css('display') === 'none') {
       comment_box.show()
     } else {
       comment_box.hide()
@@ -2442,7 +2445,7 @@ $(function () {
 
   // 显示跳转详情文字
   $(document).on('mouseover mouseout', '.date', function (event) {
-    if (event.type == 'mouseover') {
+    if (event.type === 'mouseover') {
       var width = $(this).find('span').first().width()
       width = width < 60 ? 60 : width
       $(this).find('span').first().hide()
@@ -2450,7 +2453,7 @@ $(function () {
         .find('span')
         .last()
         .css({ display: 'inline-block', width: width })
-    } else if (event.type == 'mouseout') {
+    } else if (event.type === 'mouseout') {
       $(this).find('span').first().show()
       $(this).find('span').last().hide()
     }
@@ -2467,7 +2470,7 @@ $(function () {
     var html = '<div id="ms_chat_tips">' + name +
       '<div class="tips_triangle"></div></div>'
     var top = $(this).offset().top
-    if (event.type == 'mouseover') {
+    if (event.type === 'mouseover') {
       $(this).addClass('tips_current')
 
       $('#ms_fixed_wrap').after(html)
@@ -2483,9 +2486,9 @@ $(function () {
   document.onkeyup = function (e) {
     e = e || window.event
     // 回车
-    if (e.keyCode == 13) {
+    if (e.keyCode === 13) {
       var target = e.target || e.srcElment
-      if (target.id == 'head_search') { // 搜索
+      if (target.id === 'head_search') { // 搜索
         var val = $.trim($('#head_search').val())
         if (!val) {
           noticebox('请输入搜索内容', 0)
@@ -2493,13 +2496,13 @@ $(function () {
         }
         setHistory(val)
         window.location.href = '/search/1/' + val
-      } else if (target.id == 'l_login' || target.id == 'l_password') { // 登录
+      } else if (target.id === 'l_login' || target.id === 'l_password') { // 登录
         $('#login_btn').click()
       }
     }
 
     // ctrl + 回车发送消息
-    if (e.ctrlKey && e.keyCode == 13 && strLen($('#chat_text').val()) != 0) {
+    if (e.ctrlKey && e.keyCode === 13 && strLen($('#chat_text').val()) !== 0) {
       $('#chat_send').click()
     }
   }

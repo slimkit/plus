@@ -402,7 +402,6 @@ class FeedController extends Controller
     ) {
         $user = $request->user('api')->id ?? 0;
         $feed = $repository->find($feed);
-
         if ($feed->paidNode !== null
             && $feed->paidNode->paid($user) === false
         ) {
@@ -940,6 +939,7 @@ class FeedController extends Controller
             })
             ->with([
                 'pinnedComments',
+                'user'
             ])
             ->orderBy('id', 'desc')
             ->limit($limit)

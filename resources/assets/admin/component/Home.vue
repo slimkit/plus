@@ -32,6 +32,8 @@ $lefyNavWidth: 240px;
   .context-container {
     width: calc(100vw - #{$lefyNavWidth});
     margin-left: $lefyNavWidth;
+    height: 100vh;
+    border: none;
   }
 }
 </style>

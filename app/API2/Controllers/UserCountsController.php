@@ -47,11 +47,10 @@ class UserCountsController extends Controller
      */
     public function count(Request $request): JsonResponse
     {
-        $counts = UserCountModel::where('user_id', $request->user()->id)->get();
+        $counts = UserCountModel::query()->where('user_id', $request->user()->id)->get();
         $counts = $counts->keyBy('type')->map(function ($count) {
             return $count->total;
         });
-
         return (new UserCountsResource($counts->all()))
             ->response()
             ->setStatusCode(200);

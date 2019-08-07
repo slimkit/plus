@@ -22,6 +22,7 @@ namespace Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\API2;
 
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use Zhiyi\Plus\Models\CurrencyType;
 use Zhiyi\Plus\Models\GoldType;
 use Zhiyi\Plus\Models\CommonConfig;
 use Zhiyi\Plus\Models\WalletCharge;
@@ -43,7 +44,7 @@ class RewardController extends Controller
     {
         $walletConfig = $configModel->where('name', 'wallet:ratio')->first();
 
-        $this->goldName = GoldType::current('name');
+        $this->goldName = CurrencyType::current('name');
         $this->wallet_ratio = $walletConfig ? $walletConfig->value : 100;
     }
 

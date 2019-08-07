@@ -56,9 +56,7 @@ class BaseController extends Controller
             }
 
             // 站点配置
-            $config = Cache::get('config');
-
-            if (! $config) {
+            $config = Cache::remember('pc-config', 60, function () {
                 $config = [];
 
                 // 启动信息接口
@@ -98,12 +96,10 @@ class BaseController extends Controller
                 // 上传配置
                 $config['files'] = $config['files'] ?: ['upload_max_size' => '102400'];
 
-                // 缓存配置信息
-                Cache::forever('config', $config);
-            }
+                return $config;
+            });
 
             $this->PlusData['config'] = $config;
-
             // 公共地址
             $this->PlusData['routes']['api'] = asset('/api/v2');
             $this->PlusData['routes']['storage'] = asset('/api/v2/files').'/';

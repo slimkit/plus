@@ -22,7 +22,9 @@ namespace Zhiyi\Component\ZhiyiPlus\PlusComponentNews\API2\Controllers;
 
 use Carbon\Carbon;
 use Illuminate\Support\Str;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Throwable;
 use Zhiyi\Plus\Http\Controllers\Controller;
 use Zhiyi\Plus\Models\Comment as CommentModel;
 use Zhiyi\Plus\Models\WalletCharge as WalletChargeModel;
@@ -36,8 +38,8 @@ class CommentPinnedController extends Controller
     /**
      * 获取资讯评论当前用户审核列表.
      *
-     * @param \Illuminate\Http\Request $request
-     * @param \Zhiyi\Component\ZhiyiPlus\PlusComponentNews\Models\NewsPinned $model
+     * @param Request $request
+     * @param NewsPinnedModel $model
      * @return mixed
      * @author Seven Du <shiweidu@outlook.com>
      */
@@ -89,15 +91,16 @@ class CommentPinnedController extends Controller
 
     /**
      *  审核评论置顶.
-     *  @author Wayne < qiaobinloverabbi@gmail.com >
-     *  @param  Request           $request  [description]
-     *  @param  ResponseContract  $response [description]
-     *  @param  Carbon            $dateTime [description]
-     *  @param  WalletChargeModel $charge   [description]
-     *  @param  NewsModel         $news     [description]
-     *  @param  CommentModel      $comment  [description]
-     *  @param  NewsPinnedModel   $pinned   [description]
-     *  @return [type]                      [description]
+     * @param Request $request [description]
+     * @param ResponseContract $response [description]
+     * @param Carbon $dateTime [description]
+     * @param WalletChargeModel $charge [description]
+     * @param NewsModel $news [description]
+     * @param CommentModel $comment [description]
+     * @param NewsPinnedModel $pinned [description]
+     * @return JsonResponse [type]                      [description]
+     * @throws Throwable
+     * @author Wayne < qiaobinloverabbi@gmail.com >
      */
     public function accept(
         Request $request,
@@ -215,10 +218,10 @@ class CommentPinnedController extends Controller
     /**
      * 取消置顶.
      *
-     * @param \Illuminate\Http\Request $request
-     * @param \Illuminate\Contracts\Routing\ResponseFactory $response
-     * @param \Carbon\Carbon $dateTime
-     * @param \Zhiyi\Component\ZhiyiPlus\PlusComponentNews\Models\News $news
+     * @param Request $request
+     * @param ResponseContract $response
+     * @param Carbon $dateTime
+     * @param NewsModel $news
      * @return mixed
      * @author Seven Du <shiweidu@outlook.com>
      */

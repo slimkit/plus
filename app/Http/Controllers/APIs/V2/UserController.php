@@ -60,7 +60,7 @@ class UserController extends Controller
         $fetchBy = $request->query('fetch_by', 'id');
         $tags = $request->query('tags', []);
 
-        $users = $model
+        $users = $model->newQuery()
             ->when($since, function ($query) use ($since, $order) {
                 return $query->where('id', $order === 'asc' ? '>' : '<',
                     $since);
@@ -92,10 +92,13 @@ class UserController extends Controller
             ->limit($limit)
             ->orderby('id', $order)
             ->get();
-        $users->load(['certification']);
+        $users->load('extra');
+        $users->makeHidden([
+            'updated_at', 'last_login_ip', 'certification', 'register_ip', 'created_at', 'email_verified_at',
+            'phone_verified_at',
+        ]);
 
-        return $response->json($model->getConnection()->transaction(function (
-        ) use ($users, $user) {
+        return $response->json($model->getConnection()->transaction(function () use ($users, $user) {
             return $users->map(function (User $item) use ($user) {
                 $item->following = $item->hasFollwing($user->id ?? 0);
                 $item->follower = $item->hasFollower($user->id ?? 0);
@@ -118,11 +121,17 @@ class UserController extends Controller
     public function show(Request $request, string $user)
     {
         $field = username($user);
-        $user = User::withTrashed()
+        $user = User::query()
+            ->withTrashed()
+            ->with('extra')
             ->where($field, $user)
-            ->firstOrFail();
+            ->first();
 
         $user->makeVisible($field);
+        $user->makeHidden([
+            'updated_at', 'last_login_ip', 'certification', 'register_ip', 'created_at', 'email_verified_at',
+            'phone_verified_at',
+        ]);
 
         // 我关注的处理
         $this->hasFollowing($request, $user);
@@ -190,8 +199,8 @@ class UserController extends Controller
         $user->roles()->sync($role);
 
         return $response->json([
-            'token' => $auth->fromUser($user),
-            'ttl' => config('jwt.ttl'),
+            'token'       => $auth->fromUser($user),
+            'ttl'         => config('jwt.ttl'),
             'refresh_ttl' => config('jwt.refresh_ttl'),
         ])->setStatusCode(201);
     }
