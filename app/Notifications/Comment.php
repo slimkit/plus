@@ -35,7 +35,8 @@ class Comment extends Notification implements ShouldQueue
     /**
      * Create a new notification instance.
      *
-     * @return void
+     * @param CommentModel $comment
+     * @param UserModel $sender
      */
     public function __construct(CommentModel $comment, UserModel $sender)
     {
@@ -62,7 +63,7 @@ class Comment extends Notification implements ShouldQueue
      * Get the JPush representation of the notification.
      *
      * @param  mixed  $notifiable
-     * @return \Medz\Laravel\Notifications\JPush\Message
+     * @return JPushMessage
      */
     public function toJpush($notifiable): JPushMessage
     {
