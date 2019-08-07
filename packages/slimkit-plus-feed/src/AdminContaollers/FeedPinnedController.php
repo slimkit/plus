@@ -21,6 +21,7 @@ declare(strict_types=1);
 namespace Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\AdminControllers;
 
 use Carbon\Carbon;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Zhiyi\Plus\Http\Controllers\Controller;
 use Zhiyi\Plus\Notifications\System as SystemNotification;
@@ -146,14 +147,13 @@ class FeedPinnedController extends Controller
 
     /**
      * 撤销置顶.
-     * @param  Request    $request [description]
-     * @param  Feed       $feed    [description]
-     * @param  FeedPinned $pinned  [description]
-     * @return [type]              [description]
+     * @param Feed $feed [description]
+     * @param FeedPinned $pinned [description]
+     * @return JsonResponse [type]              [description]
      */
     public function destroy(Feed $feed, FeedPinned $pinned)
     {
-        $pinned->where('target', $feed->id)
+        $pinned->newQuery()->where('target', $feed->id)
             ->where('channel', 'feed')
             ->delete();
 
