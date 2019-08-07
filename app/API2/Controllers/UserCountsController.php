@@ -51,6 +51,7 @@ class UserCountsController extends Controller
         $counts = $counts->keyBy('type')->map(function ($count) {
             return $count->total;
         });
+
         return (new UserCountsResource($counts->all()))
             ->response()
             ->setStatusCode(200);

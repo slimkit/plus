@@ -939,7 +939,7 @@ class FeedController extends Controller
             })
             ->with([
                 'pinnedComments',
-                'user'
+                'user',
             ])
             ->orderBy('id', 'desc')
             ->limit($limit)
