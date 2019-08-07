@@ -44,7 +44,8 @@ $(function(){
         type: 'users',
         cate: 1,
         isAjax: true,
-        user: {{$user['id']}}
+        user: {{$user['id']}},
+        limit: 15
     };
 
     loader.init({

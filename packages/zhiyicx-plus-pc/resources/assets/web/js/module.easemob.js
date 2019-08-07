@@ -84,7 +84,7 @@ easemob = {
 
     /*设置未读消息定时器*/
     easemob.getUnreadMessage()
-    var unread_message_timeout = window.setInterval(easemob.getUnreadMessage,
+    var unread_message_timeout = window.setInterval(easemob.getUnreadMessage(),
       20000)
     easemob.getUnreadChats()
     var unread_chat_timeout = window.setInterval(easemob.getUnreadChats, 1000)
@@ -704,26 +704,36 @@ easemob = {
   },
 
   /*设置消息已读*/
-  setRead: function (type, cid) {
+  setRead: function(type, cid) {
     /*消息*/
-    if (type == 0) {
-      axios.patch('/api/v2/user/counts', { type: cid })
-        .then(function (response) {
-          var res = response.data.user
-          TS.UNREAD.comments = res.commented
-          TS.UNREAD.likes = res.liked
-          TS.UNREAD.mention = res.at
-          TS.UNREAD.notifications = res.system
-          TS.UNREAD.pinneds = parseInt(res['news-comment-pinned']) +
-            parseInt(res['feed-comment-pinned']) +
-            parseInt(res['post-comment-pinned']) + parseInt(res['post-pinned'])
-
-          easemob.setUnreadMes()
-        })
-        .catch(function (error) {
-          console.log(error)
-          showError(error.response.data)
-        })
+    if (type === 0) {
+      axios.patch(
+        '/api/v2/user/notifications',
+        { type: cid },
+        {
+          validateStatus: function(s) {
+            return s === 204
+          }
+        }
+      ).then(function() {
+        switch (cid) {
+          case 'comment':
+            TS.UNREAD.comments = 0
+            break
+          case 'like':
+            TS.UNREAD.liked = 0
+            break
+          case 'at':
+            TS.UNREAD.mention = 0
+            break
+          case 'system':
+            TS.UNREAD.notifications = 0
+            break
+        }
+        easemob.setUnreadMes()
+      }).catch(function(error) {
+        showError(error.response.data)
+      })
 
       TS.UNREAD[cid] = 0
       $('#ms_' + cid).find('.unread_div').remove()
@@ -733,7 +743,7 @@ easemob = {
       $('#ms_chat_' + cid).find('.unread_div').remove()
       $('#chat_' + cid).find('.chat_unread_div').remove()
       window.TS.dataBase.transaction('rw?', window.TS.dataBase.message,
-        function () {
+        function() {
           window.TS.dataBase.message.where({ cid: cid }).modify({
             read: 1
           })
@@ -744,7 +754,7 @@ easemob = {
   /*打开消息对话框*/
   openChatDialog: function (type, cid, uid) {
     /* 聊天消息*/
-    if (type == 0) {
+    if (type === 0) {
       easemob.setRead(1, cid)
       ly.load('/message?type=' + type + '&cid=' + cid + '&uid=' + uid, '',
         '810px', '572px')

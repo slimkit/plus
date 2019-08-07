@@ -76,6 +76,11 @@
     {{-- 环信 --}}
     <script src="{{ mix('easemob.min.js', 'assets/pc') }}"></script>
     <script src="{{ asset('assets/pc/js/module.easemob.js') }}"></script>
+    <script>
+      easemob.getUnreadMessage()
+      var unread_message_timeout = window.setInterval(easemob.getUnreadMessage,
+        20000)
+    </script>
     @yield('scripts')
 
     {{-- 统计代码 --}}
