@@ -32,19 +32,27 @@ class NewWalletController extends Controller
      */
     public function statistics()
     {
-        $expenditure = WalletOrder::where('type', -1)->select(DB::raw('count(id) as count, sum(amount) as sum'))->first();
-        $income = WalletOrder::where('type', 1)->select(DB::raw('count(id) as count, sum(amount) as sum'))->first();
+        $expenditure = WalletOrder::query()
+            ->where('type', -1)
+            ->where('state', 1)
+            ->select(DB::raw('count(id) as count, sum(amount) as sum'))
+            ->first();
+        $income = WalletOrder::query()
+            ->where('type', 1)
+            ->where('state', 1)
+            ->select(DB::raw('count(id) as count, sum(amount) as sum'))->first();
 
         return response()->json([
             'expenditure' => $expenditure,
-            'income' => $income,
+            'income'      => $income,
         ], 200);
     }
 
     /**
      * 新版钱包流水.
      *
-     * @param Request $request
+     * @param  Request  $request
+     *
      * @return \Illuminate\Http\JsonResponse
      */
     public function waters(Request $request)
@@ -60,9 +68,9 @@ class NewWalletController extends Controller
         $query->when($user, function ($query) use ($user) {
             return $query->where('owner_id', $user);
         })
-        ->when($state, function ($query) use ($state) {
-            return $query->where('state', $state);
-        });
+            ->when($state, function ($query) use ($state) {
+                return $query->where('state', $state);
+            });
 
         $count = $query->count();
         $items = $query->limit($limit)->offset($offset)->latest()->get();
