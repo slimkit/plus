@@ -73,7 +73,8 @@ class Process
      * @author BS <414606094@qq.com>
      */
     protected function checkCurrency(UserModel $user)
-    : UserModel {
+    : UserModel
+    {
         if (! $user->currency) {
             $user->currency = $user->currency()
                 ->create(['type' => $this->currency_type->get('id'), 'sum' => 0]);

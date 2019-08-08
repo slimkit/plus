@@ -22,12 +22,12 @@ namespace Zhiyi\Plus\Packages\Currency\Processes;
 
 use DB;
 use Illuminate\Http\Request;
+use function Zhiyi\Plus\setting;
 use Pingpp\Charge as PingppCharge;
 use Zhiyi\Plus\Packages\Currency\Order;
 use Zhiyi\Plus\Packages\Currency\Process;
 use Zhiyi\Plus\Models\CurrencyOrder as CurrencyOrderModel;
 use Zhiyi\Plus\Services\Wallet\Charge as WalletChargeService;
-use function Zhiyi\Plus\setting;
 
 class Recharge extends Process
 {
@@ -35,7 +35,8 @@ class Recharge extends Process
     protected $PingppPrefix = 'C';
 
     public function createOrder(int $owner_id, int $amount)
-    : CurrencyOrderModel {
+    : CurrencyOrderModel
+    {
         $user = $this->checkUser($owner_id);
         $ratio = setting('currency', 'settings')['recharge-ratio'] ?? 1;
 
@@ -96,7 +97,8 @@ class Recharge extends Process
      * @author BS <414606094@qq.com>
      */
     public function retrieve(CurrencyOrderModel $currencyOrderModel)
-    : bool {
+    : bool
+    {
         $pingppCharge = app(WalletChargeService::class)->query($currencyOrderModel->target_id);
 
         if ($pingppCharge['paid'] === true) {
@@ -115,7 +117,8 @@ class Recharge extends Process
      * @author BS <414606094@qq.com>
      */
     public function webhook(Request $request)
-    : bool {
+    : bool
+    {
         if ($this->verifyWebHook($request)) {
             $pingppCharge = $request->json('data.object');
             $service = app(WalletChargeService::class)->setPrefix($this->PingppPrefix);
@@ -141,7 +144,8 @@ class Recharge extends Process
      * @author BS <414606094@qq.com>
      */
     private function complete(CurrencyOrderModel $currencyOrderModel)
-    : bool {
+    : bool
+    {
         $currencyOrderModel->state = 1;
         $user = $this->checkUser($currencyOrderModel->user);
 
@@ -162,7 +166,8 @@ class Recharge extends Process
      * @author BS <414606094@qq.com>
      */
     protected function verifyWebHook(Request $request)
-    : bool {
+    : bool
+    {
         if ($request->json('type') !== 'charge.succeeded') {
             return false;
         }

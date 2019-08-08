@@ -155,7 +155,7 @@ class CurrencyNewsTest extends TestCase
             ->assertJsonStructure(['message']);
     }
 
-    /**
+    /*
      * 通过审核评论置顶.
      *
      * @return mixed
