@@ -13,7 +13,7 @@ env:
   - DB=postgres
 services:
   #  - mysql
-  - postgresql-9.6
+  - postgresql
 cache:
   directories:
     - $HOME/.composer/cache
