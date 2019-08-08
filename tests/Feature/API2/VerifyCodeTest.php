@@ -29,14 +29,13 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 class VerifyCodeTest extends TestCase
 {
     use DatabaseTransactions;
-
     protected $user;
 
     protected function setUp()
     {
         parent::setUp();
 
-        $this->user = factory(UserModel::class)->create(['phone' => '13730441111', 'email' => 'aaa@bbb.com']);
+        $this->user = factory(UserModel::class)->create(['phone' => '18908019700', 'email' => '182478966@qq.com']);
     }
 
     /**
@@ -47,6 +46,7 @@ class VerifyCodeTest extends TestCase
      */
     public function testGetVerifyCodeByPhone()
     {
+        $this->withoutExceptionHandling();
         $token = $this->guard()->login($this->user);
 
         $responseByPhone = $this->json('POST', 'api/v2/verifycodes?token='.$token, [
@@ -77,6 +77,7 @@ class VerifyCodeTest extends TestCase
      * Assert login response.
      *
      * @param $response
+     *
      * @return void
      */
     protected function assertLoginResponse($response)
@@ -91,7 +92,8 @@ class VerifyCodeTest extends TestCase
      *
      * @return \Illuminate\Contracts\Auth\Guard
      */
-    protected function guard(): Guard
+    protected function guard()
+    : Guard
     {
         return Auth::guard('api');
     }
