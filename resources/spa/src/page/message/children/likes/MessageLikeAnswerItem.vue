@@ -4,9 +4,9 @@
       <Avatar :user="user" />
       <section class="userInfo">
         <!-- eslint-disable-next-line vue/component-name-in-template-casing -->
-        <i18n path="message.like.liked" :places="{type: $t('article.type.answer')}">
+        <i18n path="message.like.liked" :slot-scope="{type: $t('article.type.answer')}">
           <span
-            place="user"
+            slot="user"
             :class="`${prefixCls}-item-top-link`"
             @click="viewUser(user.id)"
           >

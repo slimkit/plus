@@ -6,14 +6,14 @@
         <!-- eslint-disable-next-line vue/component-name-in-template-casing -->
         <i18n v-if="comment.reply_user" path="message.comment.reply">
           <RouterLink
-            place="user1"
+            slot="user1"
             :class="`${prefixCls}-item-top-link`"
             :to="`/users/${comment.user_id}`"
           >
             {{ comment.user.name }}
           </RouterLink>
           <RouterLink
-            place="user2"
+            slot="user2"
             :class="`${prefixCls}-item-top-link`"
             :to="`/users/${comment.reply_user}`"
           >
@@ -24,10 +24,10 @@
         <i18n
           v-else
           path="message.comment.commented"
-          :places="{type: $t('article.type.question')}"
+          :slot-scope="{type: $t('article.type.question')}"
         >
           <RouterLink
-            place="user"
+            slot="user"
             :class="`${prefixCls}-item-top-link`"
             :to="`/users/${comment.user_id}`"
           >

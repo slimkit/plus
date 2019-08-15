@@ -1,9 +1,11 @@
 import * as api from '@/api/feeds'
 import lstore from '@/plugins/lstore/lstore'
+import Vue from 'vue'
 
 export const TYPES = {
   SAVE_FEED_LIST: 'SAVE_FEED_LIST',
   SAVE_PINNED_LIST: 'SAVE_PINNED_LIST',
+  UPDATE_SINGLE_FEED: 'UPDATE_SINGLE_FEED',
 }
 
 const state = {
@@ -38,6 +40,12 @@ const mutations = {
     lstore.setData(`FEED_LIST_${type.toUpperCase()}`, list)
   },
 
+  [TYPES.UPDATE_SINGLE_FEED] (state, payload) {
+    const { data, type, index } = payload
+    const { list: { [type]: feedList = [] } = {} } = state
+    Vue.set(feedList, index, data)
+  },
+
   [TYPES.SAVE_PINNED_LIST] (state, payload) {
     const { list } = payload
     state.list.pinned = list
@@ -46,6 +54,36 @@ const mutations = {
 }
 
 const actions = {
+  /**
+   * 更新单条动态
+   * @param commit
+   * @param state
+   * @param payload
+   */
+  updateSingleFeed ({ commit, state }, payload) {
+    const { list: { pinned: pinnedFeeds, new: newFeeds, hot: hotFeeds, follow: followFeeds } } = state
+    const { id = 0, data } = payload
+    let pinnedFeed = pinnedFeeds.find(feed => (feed.id === id))
+    if (pinnedFeed >= 0) {
+      const pinned = Object.assign({}, { ...pinnedFeed, ...data })
+      commit(TYPES.UPDATE_SINGLE_FEED, { feed: pinned, index: pinnedFeed, type: 'pinned' })
+    }
+    let newFeed = newFeeds.findIndex(feed => (feed.id === id))
+    if (newFeed >= 0) {
+      const feed = Object.assign({}, { ...newFeeds[newFeed], ...data })
+      commit(TYPES.UPDATE_SINGLE_FEED, { type: 'new', data: feed, index: newFeed })
+    }
+    let hotFeed = hotFeeds.findIndex(feed => (feed.id === id))
+    if (hotFeed >= 0) {
+      const hot = Object.assign({}, { ...hotFeeds[hotFeed], ...data })
+      commit(TYPES.UPDATE_SINGLE_FEED, { type: 'hot', data: hot, index: hotFeed })
+    }
+    let followFeed = followFeeds.findIndex(feed => (feed.id === id))
+    if (followFeed >= 0) {
+      const follow = Object.assign({}, { ...followFeeds[followFeed], ...data })
+      commit(TYPES.UPDATE_SINGLE_FEED, { type: 'follow', data: follow, index: followFeed })
+    }
+  },
   /**
    * 获取最新动态列表
    * @author mutoe <mutoe@foxmail.com>

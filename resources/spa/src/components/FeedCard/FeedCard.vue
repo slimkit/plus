@@ -412,10 +412,14 @@ export default {
       api
         .postFeedComment(this.feedId, params)
         .then(comment => {
-          this.commentCount += 1
           comment.user = this.$store.state.CURRENTUSER
-          this.comments.unshift(comment)
-          if (this.comments.length > 5) this.comments.pop()
+          const comments = Object.assign([], this.comments)
+          comments.unshift(comment)
+          if (comments.length > 5) comments.pop()
+          this.$store.dispatch('feed/updateSingleFeed', {
+            id: this.feedId,
+            data: { comments, feed_comment_count: this.feed.feed_comment_count + 1 },
+          })
           this.$Message.success(this.$t('comment.success'))
           this.$bus.$emit('commentInput:close', true)
         })
@@ -425,8 +429,11 @@ export default {
     },
     deleteComment (commentId) {
       api.deleteFeedComment(this.feedId, commentId).then(() => {
-        this.feed.comments = this.feed.comments.filter(c => c.id !== commentId)
-        this.commentCount -= 1
+        const comments = Object.assign([], this.feed.comments.filter(c => c.id !== commentId))
+        this.$store.dispatch('feed/updateSingleFeed', {
+          id: this.feedId,
+          data: { comments, feed_comment_count: this.feed.feed_comment_count - 1 },
+        })
         this.$Message.success(this.$t('comment.delete.success'))
       })
     },

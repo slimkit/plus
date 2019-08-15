@@ -20,6 +20,7 @@ declare(strict_types=1);
 
 namespace Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\API2;
 
+use Cache;
 use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\Builder;
 use Zhiyi\Plus\Http\Controllers\Controller;
@@ -199,6 +200,7 @@ class FeedCommentController extends Controller
             $feed->comments()->save($comment);
             $feed->increment('feed_comment_count', 1);
             $user->extra()->firstOrCreate([])->increment('comments_count', 1);
+            Cache::forget(sprintf('Feed:%d:comments-preview', $feed->id));
         });
 
         // 发送消息通知

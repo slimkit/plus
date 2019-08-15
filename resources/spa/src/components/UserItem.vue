@@ -75,6 +75,8 @@ export default {
       }).then(follower => {
         this.user.follower = follower
         this.loading = false
+        this.user.extra.followers_count = follower ? this.user.extra.followers_count + 1 : this.user.extra.followers_count - 1
+        this.$store.commit('SAVE_USER', this.user)
       })
     },
   },

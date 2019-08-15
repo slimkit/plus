@@ -537,6 +537,8 @@ export default {
       }).then(follower => {
         this.relation = follower
         this.fetchFollow = false
+        this.user.extra.followers_count = follower ? this.user.extra.followers_count + 1 : this.user.extra.followers_count - 1
+        this.$store.commit('SAVE_USER', this.user)
       })
     },
     onRefresh () {
