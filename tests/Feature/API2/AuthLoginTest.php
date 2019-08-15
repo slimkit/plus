@@ -47,10 +47,23 @@ class AuthLoginTest extends TestCase
     {
         $response = $this->json('POST', 'api/v2/auth/login', [
             'login' => $this->user->id,
-            'password' => 'secret',
+            'password' => 'password',
         ]);
 
         $this->assertLoginResponse($response);
+    }
+
+    /**
+     * 使用错误的密码将返回403状态码
+     */
+    public function test_user_can_not_login_with_wrong_password()
+    {
+        $response = $this->json('POST', 'api/v2/auth/login', [
+            'login' => $this->user->id,
+            'password' => 'secret',
+        ]);
+
+        $response->assertStatus(403);
     }
 
     /**

@@ -65,9 +65,8 @@ class AuthController extends Controller
         $login = (string) $request->input('login', '');
         $code = $request->input('verifiable_code');
         $field = username($login);
-
         if ($code !== null && in_array($field, ['phone', 'email'])) {
-            $verify = VerificationCode::where('account', $login)
+            $verify = VerificationCode::query()->where('account', $login)
                 ->where('channel', $field == 'phone' ? 'sms' : 'mail')
                 ->where('code', $code)
                 ->byValid(120)
@@ -114,7 +113,7 @@ class AuthController extends Controller
                 return $this->respondWithToken($token);
             }
 
-            return $this->response()->json(['message' => '账号或密码不正确'], 422);
+            return $this->response()->json(['message' => '账号或密码不正确'], 403);
         } else {
             return $this->response()->json([
                 'message' => sprintf('%s还没有注册', $field == 'phone'
