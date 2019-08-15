@@ -27,6 +27,7 @@ use Medz\Laravel\Notifications\JPush\Sender;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Zhiyi\Plus\FileStorage\FileMetaInterface;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Zhiyi\Plus\Models\Relations\UserHasWalletCash;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -49,7 +50,8 @@ class User extends Authenticatable implements JWTSubject
         Relations\UserHasLike,
         Relations\UserHasCurrency,
         Relations\UserHasNewWallet,
-        Relations\UserHasBlackList;
+        Relations\UserHasBlackList,
+        UserHasWalletCash;
     use FileStorageEloquentAttributeTrait;
     /**
      * The attributes that are mass assignable.

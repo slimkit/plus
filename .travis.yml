@@ -9,11 +9,11 @@ php:
   - 7.2
   - 7.3
 env:
-  - DB=mysql
+  #  - DB=mysql
   - DB=postgres
 services:
-  - mysql
-  - postgres
+  #  - mysql
+  - postgresql
 cache:
   directories:
     - $HOME/.composer/cache

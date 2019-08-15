@@ -60,7 +60,7 @@ new Vue({
   router,
   i18n,
   created () {
-    WebIM.openWebIM()
+    process.env.VUE_APP_EASEMOB_APP_KEY && WebIM.openWebIM()
   },
   render: h => h(App),
 }).$mount('#app')

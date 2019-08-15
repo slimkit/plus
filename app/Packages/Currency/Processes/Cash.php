@@ -45,14 +45,14 @@ class Cash extends Process
         $amount = $amount - ($amount % $ratio);
 
         $title = '积分提取';
-        $body = sprintf('提取积分：%s%s%s', $amount, $this->currency_type->unit, $this->currency_type->name);
+        $body = sprintf('提取积分：%s%s%s', $amount, $this->currency_type['unit'], $this->currency_type['name']);
 
         $order = new CurrencyOrderModel();
         $order->owner_id = $user->id;
         $order->title = $title;
         $order->body = $body;
         $order->type = -1;
-        $order->currency = $this->currency_type->id;
+        $order->currency = $this->currency_type['id'];
         $order->target_type = Order::TARGET_TYPE_CASH;
         $order->target_id = 0;
         $order->amount = $amount;

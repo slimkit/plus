@@ -67,11 +67,13 @@ class Process
     /**
      * 检测用户货币模型，防止后续操作出现错误.
      *
-     * @param UserModel $user
+     * @param  UserModel  $user
+     *
      * @return UserModel
      * @author BS <414606094@qq.com>
      */
-    protected function checkCurrency(UserModel $user): UserModel
+    protected function checkCurrency(UserModel $user)
+    : UserModel
     {
         if (! $user->currency) {
             $user->currency = $user->currency()

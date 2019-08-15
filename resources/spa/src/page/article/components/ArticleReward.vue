@@ -6,10 +6,10 @@
       path="article.reward_count"
       class="reward-info"
       tag="p"
-      :places="{currencyUnit}"
+      :slot-scope="{currencyUnit}"
     >
-      <span place="count">{{ count | formatNum }}</span>
-      <span place="amount">{{ ~~amount }}</span>
+      <span slot="count">{{ count | formatNum }}</span>
+      <span slot="amount">{{ ~~amount }}</span>
     </i18n>
     <RouterLink
       v-if="list.length > 0"

@@ -133,7 +133,7 @@ class CommentPinnedController extends Controller
 
         $news->getConnection()->transaction(function () use ($response, $pinned, $comment, $user, $charge, $news) {
             $pinned->save();
-            $user->wallet()->increment('balance', $charge->amount);
+            $user->currency()->increment('sum', $charge->amount);
             $user->walletCharges()->save($charge);
         });
 
@@ -218,10 +218,13 @@ class CommentPinnedController extends Controller
     /**
      * 取消置顶.
      *
-     * @param Request $request
-     * @param ResponseContract $response
-     * @param Carbon $dateTime
-     * @param NewsModel $news
+     * @param  Request  $request
+     * @param  ResponseContract  $response
+     * @param  Carbon  $dateTime
+     * @param  NewsModel  $news
+     * @param $comment
+     * @param  NewsPinnedModel  $pinned
+     *
      * @return mixed
      * @author Seven Du <shiweidu@outlook.com>
      */

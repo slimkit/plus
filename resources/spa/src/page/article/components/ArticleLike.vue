@@ -23,7 +23,7 @@
     </RouterLink>
 
     <div class="article-info">
-      <span>{{ time | time2tips | t('article.posted_at') }}</span>
+      <span v-if="time">{{ time | time2tips | t('article.posted_at') }}</span>
       <span>{{ viewCount | formatNum | t('article.views_count') }}</span>
     </div>
   </div>

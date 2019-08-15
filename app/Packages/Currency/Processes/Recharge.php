@@ -34,20 +34,21 @@ class Recharge extends Process
     // ping++订单前缀标识
     protected $PingppPrefix = 'C';
 
-    public function createOrder(int $owner_id, int $amount): CurrencyOrderModel
+    public function createOrder(int $owner_id, int $amount)
+    : CurrencyOrderModel
     {
         $user = $this->checkUser($owner_id);
         $ratio = setting('currency', 'settings')['recharge-ratio'] ?? 1;
 
         $title = '积分充值';
-        $body = sprintf('充值积分：%s%s%s', $amount, $this->currency_type->unit, $this->currency_type->name);
+        $body = sprintf('充值积分：%s%s%s', $amount, $this->currency_type['unit'], $this->currency_type['name']);
 
         $order = new CurrencyOrderModel();
         $order->owner_id = $user->id;
         $order->title = $title;
         $order->body = $body;
         $order->type = 1;
-        $order->currency = $this->currency_type->id;
+        $order->currency = $this->currency_type['id'];
         $order->target_type = Order::TARGET_TYPE_RECHARGE;
         $order->amount = $amount * $ratio;
 
@@ -57,10 +58,11 @@ class Recharge extends Process
     /**
      * 创建充值订单.
      *
-     * @param int $owner_id
-     * @param int $amount
-     * @param string $type
-     * @param array $extra
+     * @param  int  $owner_id
+     * @param  int  $amount
+     * @param  string  $type
+     * @param  array  $extra
+     *
      * @return mixed
      * @author BS <414606094@qq.com>
      */
@@ -71,13 +73,14 @@ class Recharge extends Process
                 $order = $this->createOrder($owner_id, $amount);
                 $order->save();
                 $service = app(WalletChargeService::class)->setPrefix($this->PingppPrefix);
-                $pingppCharge = $service->createWithoutModel($order->id, $type, $order->amount, $order->title, $order->body, $extra);
+                $pingppCharge = $service->createWithoutModel($order->id, $type, $order->amount, $order->title,
+                    $order->body, $extra);
                 $order->target_id = $pingppCharge->id;
                 $order->save();
 
                 return [
                     'pingpp_order' => $pingppCharge,
-                    'order' => $order,
+                    'order'        => $order,
                 ];
             };
 
@@ -93,7 +96,8 @@ class Recharge extends Process
      * @return boolen
      * @author BS <414606094@qq.com>
      */
-    public function retrieve(CurrencyOrderModel $currencyOrderModel): bool
+    public function retrieve(CurrencyOrderModel $currencyOrderModel)
+    : bool
     {
         $pingppCharge = app(WalletChargeService::class)->query($currencyOrderModel->target_id);
 
@@ -107,11 +111,13 @@ class Recharge extends Process
     /**
      * 异步回调通知.
      *
-     * @param Request $request
+     * @param  Request  $request
+     *
      * @return boolen
      * @author BS <414606094@qq.com>
      */
-    public function webhook(Request $request): bool
+    public function webhook(Request $request)
+    : bool
     {
         if ($this->verifyWebHook($request)) {
             $pingppCharge = $request->json('data.object');
@@ -131,12 +137,14 @@ class Recharge extends Process
     /**
      * 完成充值操作.
      *
-     * @param PingppCharge $pingppCharge
-     * @param CurrencyOrderModel $currencyOrderModel
+     * @param  PingppCharge  $pingppCharge
+     * @param  CurrencyOrderModel  $currencyOrderModel
+     *
      * @return boolen
      * @author BS <414606094@qq.com>
      */
-    private function complete(CurrencyOrderModel $currencyOrderModel): bool
+    private function complete(CurrencyOrderModel $currencyOrderModel)
+    : bool
     {
         $currencyOrderModel->state = 1;
         $user = $this->checkUser($currencyOrderModel->user);
@@ -152,11 +160,13 @@ class Recharge extends Process
     /**
      * 验证回调信息.
      *
-     * @param Request $request
+     * @param  Request  $request
+     *
      * @return boolen
      * @author BS <414606094@qq.com>
      */
-    protected function verifyWebHook(Request $request): bool
+    protected function verifyWebHook(Request $request)
+    : bool
     {
         if ($request->json('type') !== 'charge.succeeded') {
             return false;
@@ -165,7 +175,8 @@ class Recharge extends Process
         $settings = setting('wallet', 'ping++', []);
         $signature = $request->headers->get('x-pingplusplus-signature');
         $pingPlusPlusPublicCertificate = $settings['public_key'] ?? null;
-        $signed = openssl_verify($request->getContent(), base64_decode($signature), $pingPlusPlusPublicCertificate, OPENSSL_ALGO_SHA256);
+        $signed = openssl_verify($request->getContent(), base64_decode($signature), $pingPlusPlusPublicCertificate,
+            OPENSSL_ALGO_SHA256);
 
         if (! $signed) {
             return false;
