@@ -111,7 +111,7 @@ class ProfileController extends BaseController
                 'status' => true,
                 'after' => $after,
                 'data' => $html,
-                'count' => count($news)
+                'count' => count($news),
             ]);
         }
         $user->follower = $user->hasFollower($request->user()->id);
@@ -147,7 +147,7 @@ class ProfileController extends BaseController
                 'status' => true,
                 'after' => $after,
                 'data' => $html,
-                'count' => count($feeds)
+                'count' => count($feeds),
             ]);
         }
         $user = $request->user()->toArray();
@@ -181,7 +181,7 @@ class ProfileController extends BaseController
                 'status' => true,
                 'after' => $after,
                 'data' => $html,
-                'count' => count($news)
+                'count' => count($news),
             ]);
         }
         $user = $request->user()->toArray();
@@ -216,7 +216,7 @@ class ProfileController extends BaseController
                 'status' => true,
                 'after' => $after,
                 'data' => $html,
-                'count' => count($answers)
+                'count' => count($answers),
             ]);
         }
         $user = $request->user()->toArray();
@@ -252,7 +252,7 @@ class ProfileController extends BaseController
                 'status' => true,
                 'after' => $after,
                 'data' => $html,
-                'count' => count($posts)
+                'count' => count($posts),
             ]);
         }
         $user = $request->user()->toArray();
@@ -334,7 +334,7 @@ class ProfileController extends BaseController
             return response()->json([
                 'data' => $html,
                 'after' => $after,
-                'count' => count($data['data'])
+                'count' => count($data['data']),
             ]);
         }
         $user->follower = $user->hasFollower($request->user()->id);

@@ -64,7 +64,7 @@ class NewsController extends BaseController
                 'status'  => true,
                 'data' => $newsData,
                 'after' => $after,
-                'count' => count($news['news'])
+                'count' => count($news['news']),
             ]);
         }
 
@@ -152,7 +152,7 @@ class NewsController extends BaseController
             'status'  => true,
             'data' => $commentData,
             'after' => $after,
-            'count' => count($comments)
+            'count' => count($comments),
         ]);
     }
 }
