@@ -20,6 +20,7 @@ declare(strict_types=1);
 
 namespace Zhiyi\Component\ZhiyiPlus\PlusComponentNews\AdminControllers;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Zhiyi\Plus\Notifications\System;
@@ -39,28 +40,30 @@ class NewsApplyLogController extends Controller
      */
     public function index(Request $request, NewsApplyLog $model)
     {
-        $limit = $request->query('limit', 15);
-        // $offset = $request->query('offset', 0);
+        $limit = $request->query('limit', config('app.data_limit'));
         $key = $request->query('key');
         $user_id = $request->query('user_id');
         $news_id = $request->query('news_id');
-        $query = $model->when($user_id, function ($query) use ($user_id) {
-            return $query->where('user_id', $user_id);
-        })->when($news_id, function ($query) use ($news_id) {
-            return $query->where('news_id', $news_id);
-        })->whereHas('news', function ($query) use ($key) {
-            return $query->when($key, function ($query) use ($key) {
-                return $query->where('news.title', 'like', '%'.$key.'%');
-            })->withTrashed();
-        });
-        // $total = $query->count();
-        $datas = $query->limit($limit)->with([
+        $query = $model->newQuery()
+            ->when($user_id, function (Builder $query) use ($user_id) {
+                return $query->where('user_id', $user_id);
+            })
+            ->when($news_id, function (Builder $query) use ($news_id) {
+                return $query->where('news_id', $news_id);
+            })
+            ->whereHas('news', function (Builder $query) use ($key) {
+                return $query->when($key, function (Builder $query) use ($key) {
+                    return $query->where('news.title', 'like', '%' . $key . '%');
+                })
+                    ->withTrashed();
+            });
+        $data = $query->with([
             'news' => function ($query) {
                 return $query->withTrashed();
             }, 'user',
-        ])->get();
+        ])->paginate($limit);
 
-        return response()->json($datas, 200);
+        return response()->json($data, 200);
     }
 
     public function accept(int $log)

@@ -58,9 +58,9 @@ export default {
             admin.get(this.URI, {
                 validateStatus: status => status === 200,
                 params
-            }).then(({ data: { data = [], current_page = 1, total = 0 } }) => {
+            }).then(({ data: { data = [], current_page = 1, last_page = 0 } }) => {
                 this.loading = false;
-                this.total = Math.ceil(total / params.limit);
+                this.total = last_page;
                 this.newsArray = data;
                 this.current_page = current_page;
             }).catch(({ response: { data = {} } = {} } = {}) => {

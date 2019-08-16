@@ -30,9 +30,9 @@
                 </tbody>
             </table>
         </div>
-        <div class="delete-list panel-footer" v-if='total > 1 '>
+        <div class="delete-list panel-footer" v-if='page.last_page > 1 '>
             <div class="row">
-                <ui-page class='col-sm-12 text-center' v-model="current_page" :last="total"></ui-page>
+                <ui-page class='col-sm-12 text-center' v-model="current_page" :last="page.last_page"></ui-page>
             </div>
         </div>
         <ui-alert :type="message.type" v-show="message.open">
@@ -52,14 +52,21 @@ export default {
                 open: false,
                 data: ''
             },
-            current_page: 0,
-            total: 0,
+            current_page: 1,
+            page: {
+              limit: 15,
+              page: 1
+            }
         })
     },
     watch: {
-        current_page(val) {
-            this.getList(this.$route.query);
-        },
+      current_page (val) {
+        this.$set(this, 'query', {
+          ...this.query,
+          page: val
+        })
+        this.getList()
+      },
     },
     methods: {
         publishMessage(data, type, ms = 5000) {
