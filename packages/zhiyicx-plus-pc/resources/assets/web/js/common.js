@@ -8,6 +8,7 @@ axios.defaults.baseURL = TS.SITE_URL
 axios.defaults.headers.common['Accept'] = 'application/json'
 axios.defaults.headers.common['Authorization'] = 'Bearer ' + TS.TOKEN
 axios.defaults.headers.common['X-CSRF-TOKEN'] = $('meta[name="_token"]')
+axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest'
   .attr('content')
 
 // 本地存储
