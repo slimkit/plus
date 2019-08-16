@@ -45,7 +45,7 @@
         <div class="form-group">
           <label for="password" class="col-sm-2 control-label">密码</label>
           <div class="col-sm-6">
-            <input type="password" autocomplete="new-password" class="form-control" id="password" aria-describedby="password-help-block" placeholder="请输入用户密码" v-model="password">
+            <input type="password" minlength="6" autocomplete="new-password" class="form-control" id="password" aria-describedby="password-help-block" placeholder="请输入用户密码" v-model="password">
           </div>
           <span class="col-sm-4 help-block" id="password-help-block">
             用户密码
@@ -88,6 +88,10 @@ const UserAddComponent = {
   }),
   methods: {
     createUser () {
+      if (this.password.length < 6) {
+        this.errorMessage = '密码长度不能小于6位'
+        return;
+      }
       this.adding = true;
       request.post(
         createRequestURI('users'),
