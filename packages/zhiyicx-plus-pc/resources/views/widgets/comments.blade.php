@@ -133,7 +133,9 @@
 @if ($position == 0)
 <script>
     $(function(){
-        var params = {};
+        var params = {
+          limit: 15
+        };
         var comments_type = '{{ $comments_type }}';
         var group_id = '{{$params['group_id'] ?? 0}}';
         if (group_id) {
