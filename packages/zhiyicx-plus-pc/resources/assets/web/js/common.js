@@ -7,8 +7,8 @@ var buyTSInfo = '开源版无此功能，需要使用此功能，请购买正版
 axios.defaults.baseURL = TS.SITE_URL
 axios.defaults.headers.common['Accept'] = 'application/json'
 axios.defaults.headers.common['Authorization'] = 'Bearer ' + TS.TOKEN
-axios.defaults.headers.common['X-CSRF-TOKEN'] = $('meta[name="_token"]')
-  .attr('content')
+axios.defaults.headers.common['X-CSRF-TOKEN'] = $('meta[name="_token"]').attr('content')
+axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest'
 
 // 本地存储
 var storeLocal = {
@@ -251,13 +251,13 @@ var loader = {
             }
 
             // 加载三次点击加载更多
-            if (this.setting.loadtype === 1) {
-              if ((this.setting.loadcount % 3) !== 0) {
+            if (_this.setting.loadtype === 1) {
+              if ((_this.setting.loadcount % 3) !== 0) {
                 $(_this.setting.loading).next('.loading').remove()
                 $(_this.setting.loading).after(loadHtml)
                 _this.loadMore()
               } else {
-                if ($(this.setting.loading).next('.click_loading').length === 0) {
+                if ($(_this.setting.loading).next('.click_loading').length === 0) {
                   $(_this.setting.loading).after(clickHtml)
                 }
               }

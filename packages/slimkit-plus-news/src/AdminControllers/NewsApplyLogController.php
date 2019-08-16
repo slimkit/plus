@@ -23,7 +23,7 @@ namespace Zhiyi\Component\ZhiyiPlus\PlusComponentNews\AdminControllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Zhiyi\Plus\Notifications\System;
-use Illuminate\Database\Query\Builder;
+use Illuminate\Database\Eloquent\Builder;
 use Zhiyi\Plus\Http\Controllers\Controller;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentNews\Models\NewsApplyLog;
@@ -42,7 +42,6 @@ class NewsApplyLogController extends Controller
     public function index(Request $request, NewsApplyLog $model)
     {
         $limit = $request->query('limit', config('app.data_limit'));
-        // $offset = $request->query('offset', 0);
         $key = $request->query('key');
         $user_id = $request->query('user_id');
         $news_id = $request->query('news_id');
@@ -53,7 +52,7 @@ class NewsApplyLogController extends Controller
             ->when($news_id, function (Builder $query) use ($news_id) {
                 return $query->where('news_id', $news_id);
             })
-            ->whereHas('news', function (\Illuminate\Database\Eloquent\Builder $query) use ($key) {
+            ->whereHas('news', function (Builder $query) use ($key) {
                 return $query->when($key, function (Builder $query) use ($key) {
                     return $query->where('news.title', 'like', '%'.$key.'%');
                 })

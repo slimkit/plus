@@ -50,22 +50,22 @@
 
   export default {
     name: 'news-delete-list',
-    data () {
-      return ({
-        page: {
-          data: []
-        },
-        message: {
-          type: 'error',
-          open: false,
-          data: ''
-        },
-        query: {
-          limit: 15,
-          page: 1
-        },
-        current_page: 1
-      })
+    data() {
+        return({
+            page: {
+              data: []
+            },
+            message: {
+                type: 'error',
+                open: false,
+                data: ''
+            },
+            query: {
+              limit: 15,
+              page: 1
+            },
+            current_page: 1,
+        })
     },
     watch: {
       current_page (val) {
