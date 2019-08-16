@@ -14,7 +14,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr v-for="apl in list" :key="`delete_apl_${apl.id}`" :class="statusToStyle(apl.status).cls">
+                    <tr v-for="apl in page.data" :key="`delete_apl_${apl.id}`" :class="statusToStyle(apl.status).cls">
                         <td>{{apl.id}}</td>
                         <td>{{apl.user.name}}</td>
                         <td>
@@ -46,17 +46,19 @@ export default {
     name: 'news-delete-list',
     data() {
         return({
-            list: [],
+            page: {
+              data: []
+            },
             message: {
                 type: 'error',
                 open: false,
                 data: ''
             },
-            current_page: 1,
-            page: {
+            query: {
               limit: 15,
               page: 1
-            }
+            },
+            current_page: 1,
         })
     },
     watch: {
