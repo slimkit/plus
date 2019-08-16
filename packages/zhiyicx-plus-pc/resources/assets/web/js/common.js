@@ -7,9 +7,8 @@ var buyTSInfo = '开源版无此功能，需要使用此功能，请购买正版
 axios.defaults.baseURL = TS.SITE_URL
 axios.defaults.headers.common['Accept'] = 'application/json'
 axios.defaults.headers.common['Authorization'] = 'Bearer ' + TS.TOKEN
-axios.defaults.headers.common['X-CSRF-TOKEN'] = $('meta[name="_token"]')
+axios.defaults.headers.common['X-CSRF-TOKEN'] = $('meta[name="_token"]').attr('content')
 axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest'
-  .attr('content')
 
 // 本地存储
 var storeLocal = {
