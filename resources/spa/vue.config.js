@@ -1,3 +1,8 @@
+const path = require('path')
+function resolve (dir) {
+  return path.join(__dirname, dir)
+}
+
 module.exports = {
   publicPath: process.env.BASE_URL || '/',
   lintOnSave: true,
@@ -13,12 +18,6 @@ module.exports = {
     },
   },
 
-  configureWebpack: {
-    output: {
-      chunkFilename: 'js/[name]-[chunkhash].js',
-    },
-  },
-
   chainWebpack: config => {
     config.plugin('html').tap(args => {
       args[0].chunksSortMode = 'none'
@@ -28,6 +27,9 @@ module.exports = {
       .rule('yaml').test(/\.ya?ml$/)
       .use('json-loader').loader('json-loader').end()
       .use('yaml-loader').loader('yaml-loader')
+    config.resolve.alias
+      .set('@', resolve('src'))
+    config.output.chunkFilename(`js/[name]-[chunkhash].js`)
   },
 
   devServer: {
