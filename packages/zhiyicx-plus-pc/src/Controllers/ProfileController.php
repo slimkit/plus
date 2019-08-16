@@ -28,10 +28,11 @@ class ProfileController extends BaseController
 {
     /**
      * 动态
-     * @author Foreach
-     * @param  Request     $request
-     * @param  string      $user [用户id 或用户名]
+     * @param Request $request
+     * @param string $user [用户id 或用户名]
      * @return mixed
+     * @throws \Throwable
+     * @author Foreach
      */
     public function feeds(Request $request, ?string $user = null)
     {
@@ -79,10 +80,11 @@ class ProfileController extends BaseController
 
     /**
      * 文章.
-     * @author 28youth
-     * @param  Request $request
-     * @param  string  $user [用户id 或用户名]
+     * @param Request $request
+     * @param string $user [用户id 或用户名]
      * @return mixed
+     * @throws \Throwable
+     * @author 28youth
      */
     public function news(Request $request, ?string $user = null)
     {
@@ -109,6 +111,7 @@ class ProfileController extends BaseController
                 'status' => true,
                 'after' => $after,
                 'data' => $html,
+                'count' => count($news)
             ]);
         }
         $user->follower = $user->hasFollower($request->user()->id);
@@ -120,9 +123,10 @@ class ProfileController extends BaseController
 
     /**
      * 收藏的动态
-     * @author 28youth
-     * @param  Request $request
+     * @param Request $request
      * @return mixed
+     * @throws \Throwable
+     * @author 28youth
      */
     public function collectFeeds(Request $request)
     {
@@ -143,6 +147,7 @@ class ProfileController extends BaseController
                 'status' => true,
                 'after' => $after,
                 'data' => $html,
+                'count' => count($feeds)
             ]);
         }
         $user = $request->user()->toArray();
@@ -154,9 +159,10 @@ class ProfileController extends BaseController
 
     /**
      * 收藏的文章.
-     * @author 28youth
-     * @param  Request $request
+     * @param Request $request
      * @return mixed
+     * @throws \Throwable
+     * @author 28youth
      */
     public function collectNews(Request $request)
     {
@@ -175,6 +181,7 @@ class ProfileController extends BaseController
                 'status' => true,
                 'after' => $after,
                 'data' => $html,
+                'count' => count($news)
             ]);
         }
         $user = $request->user()->toArray();
@@ -186,9 +193,10 @@ class ProfileController extends BaseController
 
     /**
      * 收藏的问答.
-     * @author 28youth
-     * @param  Request $request
+     * @param Request $request
      * @return mixed
+     * @throws \Throwable
+     * @author 28youth
      */
     public function collectQuestion(Request $request)
     {
@@ -208,6 +216,7 @@ class ProfileController extends BaseController
                 'status' => true,
                 'after' => $after,
                 'data' => $html,
+                'count' => count($answers)
             ]);
         }
         $user = $request->user()->toArray();
@@ -219,9 +228,10 @@ class ProfileController extends BaseController
 
     /**
      * 收藏的帖子.
-     * @author ZSYD
-     * @param  Request $request
+     * @param Request $request
      * @return mixed
+     * @throws \Throwable
+     * @author ZSYD
      */
     public function collectGroup(Request $request)
     {
@@ -242,6 +252,7 @@ class ProfileController extends BaseController
                 'status' => true,
                 'after' => $after,
                 'data' => $html,
+                'count' => count($posts)
             ]);
         }
         $user = $request->user()->toArray();
@@ -253,10 +264,11 @@ class ProfileController extends BaseController
 
     /**
      * 问答信息.
-     * @author 28youth
-     * @param  Request     $request
-     * @param  int $user_id [用户id]
+     * @param Request $request
+     * @param string|null $user
      * @return mixed
+     * @throws \Throwable
+     * @author 28youth
      */
     public function question(Request $request, ?string $user)
     {
@@ -322,6 +334,7 @@ class ProfileController extends BaseController
             return response()->json([
                 'data' => $html,
                 'after' => $after,
+                'count' => count($data['data'])
             ]);
         }
         $user->follower = $user->hasFollower($request->user()->id);
