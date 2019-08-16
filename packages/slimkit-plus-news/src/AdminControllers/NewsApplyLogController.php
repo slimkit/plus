@@ -20,10 +20,10 @@ declare(strict_types=1);
 
 namespace Zhiyi\Component\ZhiyiPlus\PlusComponentNews\AdminControllers;
 
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Zhiyi\Plus\Notifications\System;
+use Illuminate\Database\Eloquent\Builder;
 use Zhiyi\Plus\Http\Controllers\Controller;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentNews\Models\NewsApplyLog;
 
@@ -53,7 +53,7 @@ class NewsApplyLogController extends Controller
             })
             ->whereHas('news', function (Builder $query) use ($key) {
                 return $query->when($key, function (Builder $query) use ($key) {
-                    return $query->where('news.title', 'like', '%' . $key . '%');
+                    return $query->where('news.title', 'like', '%'.$key.'%');
                 })
                     ->withTrashed();
             });
