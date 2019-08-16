@@ -27,7 +27,7 @@ class Ads
     {
         $config = Cache::get('pc-config');
         // 获取具体广告位内容
-        $ads = api('GET', '/api/v2/advertisingspace/' . $config['ads_space'][$view['space']]['id'] . '/advertising');
+        $ads = api('GET', '/api/v2/advertisingspace/'.$config['ads_space'][$view['space']]['id'].'/advertising');
         $view->with('ads', $ads);
     }
 }
