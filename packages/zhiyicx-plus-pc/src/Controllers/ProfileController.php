@@ -42,7 +42,7 @@ class ProfileController extends BaseController
             $user = UserModel::query()->where(username($user), $user)->with('tags')->first();
         }
         $this->PlusData['current'] = 'feeds';
-        if ($request->isAjax) {
+        if ($request->ajax()) {
             $params = [
                 'type' => $request->query('type'),
                 'user' => $request->query('user'),
@@ -94,7 +94,7 @@ class ProfileController extends BaseController
         } else {
             $user = UserModel::where(username($user), $user)->with('tags')->first();
         }
-        if ($request->isAjax) {
+        if ($request->ajax()) {
             $params = [
                 'type' => $request->query('type'),
                 'after' => $request->query('after', 0),
@@ -131,7 +131,7 @@ class ProfileController extends BaseController
     public function collectFeeds(Request $request)
     {
         $this->PlusData['current'] = 'collect';
-        if ($request->isAjax) {
+        if ($request->ajax()) {
             $params = [
                 'offset' => $request->query('offset', 0),
                 'limit' => $request->query('limit'),
@@ -167,7 +167,7 @@ class ProfileController extends BaseController
     public function collectNews(Request $request)
     {
         $this->PlusData['current'] = 'collect';
-        if ($request->isAjax) {
+        if ($request->ajax()) {
             $params = [
                 'after' => $request->query('after', 0),
                 'limit' => $request->query('limit', 10),
@@ -201,7 +201,7 @@ class ProfileController extends BaseController
     public function collectQuestion(Request $request)
     {
         $this->PlusData['current'] = 'collect';
-        if ($request->isAjax) {
+        if ($request->ajax()) {
             $params = [
                 'after' => $request->query('after', 0),
                 'limit' => $request->query('limit', 10),
@@ -236,7 +236,7 @@ class ProfileController extends BaseController
     public function collectGroup(Request $request)
     {
         $this->PlusData['current'] = 'collect';
-        if ($request->isAjax) {
+        if ($request->ajax()) {
             $params = [
                 'offset' => $request->query('offset', 0),
                 'limit' => $request->query('limit', 10),
@@ -278,7 +278,7 @@ class ProfileController extends BaseController
             $user = UserModel::where(username($user), $user)->with('tags')->first();
         }
         $this->PlusData['current'] = 'question';
-        if ($request->isAjax) {
+        if ($request->ajax()) {
             $cate = $request->query('cate', 1);
             switch ($cate) {
                 case 1:
