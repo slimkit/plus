@@ -87,7 +87,7 @@
             </div>
 
             {{-- 聊天 --}}
-            <div class="chat_left @if($type != 0) hide" @endif" id="chat_left_message">
+            <div class="chat_left @if($type != 0) hide @endif" id="chat_left_message">
                 <div class="chat_search">
                     <svg class="icon chat_search_icon" aria-hidden="true">
                         <use xlink:href="#icon-search"></use>
