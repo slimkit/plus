@@ -144,8 +144,8 @@ export default {
         return false
       }
 
-      if (this.password.length === 0) {
-        this.err = this.$t('auth.error.password')
+      if (this.password.length < 6) {
+        this.err = this.$t('auth.error.password_min', { min: 6 })
         return false
       }
 
