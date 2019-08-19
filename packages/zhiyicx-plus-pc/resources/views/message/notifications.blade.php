@@ -36,7 +36,7 @@
                         @break
                         @case('group:audit')
                         <a href="{{route('pc:groupread', ['group_id'=>$noti['data']['group']['id']])}}">
-                            你创建的圈子「{{ $noti['data']['group']['name'] }}」已通过审核
+                            {{$noti['data']['contents']}}
                         </a>
                         @break
                         @case('group:exit')
