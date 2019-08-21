@@ -71,7 +71,7 @@ class User extends Authenticatable implements JWTSubject
      */
     protected $hidden
         = [
-            'password', 'remember_token', 'phone', 'email', 'pivot',
+            'password', 'remember_token', 'phone', 'email', 'pivot'
         ];
     /**
      * The accessors to append to the model's array form.
@@ -159,7 +159,7 @@ class User extends Authenticatable implements JWTSubject
     protected function getVerifiedAttribute()
     {
         $certification = Cache::rememberForever(sprintf('cache_for_certification_of_%d', $this->id), function () {
-            return $this->getRelation('certification');
+            return $this->getRelation('certification') ?? false;
         });
 
         if (! $certification || $certification->status !== 1) {

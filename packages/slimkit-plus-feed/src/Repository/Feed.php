@@ -210,13 +210,6 @@ class Feed
 
         if ($pinnedComments->count() < 5) {
             $ids = $pinnedComments->pluck('id')->filter()->all();
-            // $comments = $this->model->comments()
-            //     ->limit(5 - $pinnedComments->count())
-            //     ->when(! $ids->isEmpty(), function (Builder $query) use ($ids) {
-            //         return $query->whereNotIn('id', $ids);
-            //     })
-            //     ->orderBy('id', 'desc')
-            //     ->get();
             $comments = $this->model->comments->filter(function ($comment) use ($ids) {
                 return ! in_array($comment->id, $ids);
             });
