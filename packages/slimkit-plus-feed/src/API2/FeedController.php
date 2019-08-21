@@ -35,7 +35,6 @@ use Zhiyi\Plus\Http\Controllers\Controller;
 use Zhiyi\Plus\AtMessage\AtMessageHelperTrait;
 use Zhiyi\Plus\Models\FileWith as FileWithModel;
 use Zhiyi\Plus\Models\PaidNode as PaidNodeModel;
-use Illuminate\Database\Eloquent\Relations\HasOne;
 use Zhiyi\Plus\Models\FeedTopic as FeedTopicModel;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\Feed;

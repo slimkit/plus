@@ -95,7 +95,7 @@ class Feed
                         $this->model->load([
                             'images' => function (hasOne $hasOne) {
                                 $hasOne->with('file');
-                            }]
+                            }, ]
                         );
 
                         return $this->model->images;
