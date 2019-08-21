@@ -21,8 +21,6 @@ declare(strict_types=1);
 namespace Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\API2;
 
 use Batch;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasOne;
 use Throwable;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -37,6 +35,7 @@ use Zhiyi\Plus\Http\Controllers\Controller;
 use Zhiyi\Plus\AtMessage\AtMessageHelperTrait;
 use Zhiyi\Plus\Models\FileWith as FileWithModel;
 use Zhiyi\Plus\Models\PaidNode as PaidNodeModel;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Zhiyi\Plus\Models\FeedTopic as FeedTopicModel;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\Feed;
@@ -111,7 +110,7 @@ class FeedController extends Controller
                         'user',
                         'images' => function (HasOne $hasOne) {
                             $hasOne->with('file');
-                        }
+                        },
                     ])
                     ->join('feed_pinneds',
                         function (JoinClause $join) use ($datetime) {
@@ -187,7 +186,7 @@ class FeedController extends Controller
                 'user',
                 'images' => function (HasOne $hasOne) {
                     $hasOne->with('file');
-                }
+                },
             ])
             ->when($after,
                 function (Builder $query) use ($after) {

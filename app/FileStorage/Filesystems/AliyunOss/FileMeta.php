@@ -95,7 +95,6 @@ class FileMeta extends FileMetaAbstract
         $meta = $this->getFileMeta();
 
         return (int) ($meta->FileSize->value ?? $meta->{'content-length'});
-
     }
 
     /**
@@ -158,14 +157,14 @@ class FileMeta extends FileMetaAbstract
 
     protected function getFileMeta(): object
     {
-        if (!$this->metaData) {
+        if (! $this->metaData) {
             if (! $this->hasImage()) {
                 $this->metaData = Cache::rememberForever((string) $this->resource, function () {
                     return (object) $this->oss->getObjectMeta($this->bucket, $this->resource->getPath());
                 });
             }
 
-            $this->metaData =  Cache::rememberForever((string) $this->resource, function () {
+            $this->metaData = Cache::rememberForever((string) $this->resource, function () {
                 $url = $this->oss->signUrl($this->bucket, $this->resource->getPath(), 3600, 'GET', [
                     OssClient::OSS_PROCESS => 'image/info',
                 ]);
