@@ -108,9 +108,6 @@ class FeedController extends Controller
                             $builder->limit(10);
                         },
                         'user',
-                        'images' => function (HasOne $hasOne) {
-                            $hasOne->with('file');
-                        },
                     ])
                     ->join('feed_pinneds',
                         function (JoinClause $join) use ($datetime) {
@@ -184,9 +181,6 @@ class FeedController extends Controller
                     $builder->limit(10);
                 },
                 'user',
-                'images' => function (HasOne $hasOne) {
-                    $hasOne->with('file');
-                },
             ])
             ->when($after,
                 function (Builder $query) use ($after) {

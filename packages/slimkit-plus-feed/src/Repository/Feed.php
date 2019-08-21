@@ -24,6 +24,7 @@ use Carbon\Carbon;
 use function Zhiyi\Plus\setting;
 use Illuminate\Database\Eloquent\Collection;
 use Zhiyi\Plus\Models\FileWith as FileWithModel;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Contracts\Cache\Repository as CacheContract;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\Feed as FeedModel;
 
@@ -91,9 +92,13 @@ class Feed
                 ->remember(sprintf('feed:%s:images', $this->model->id),
                     $this->dateTime->copy()->addDays(7),
                     function () {
-                        return  $this->model->whenLoaded('images');
+                        $this->model->load([
+                            'images' => function (hasOne $hasOne) {
+                                $hasOne->with('file');
+                            }]
+                        );
 
-//                        return $this->model->images;
+                        return $this->model->images;
                     }));
 
         return $this->model->images;
