@@ -20,6 +20,7 @@ declare(strict_types=1);
 
 namespace Zhiyi\Plus\Models;
 
+use Cache;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Builder;
@@ -157,7 +158,9 @@ class User extends Authenticatable implements JWTSubject
      */
     protected function getVerifiedAttribute()
     {
-        $certification = $this->certification;
+        $certification = Cache::rememberForever(sprintf('cache_for_certification_of_%d', $this->id), function () {
+            return $this->getRelation('certification');
+        });
 
         if (! $certification || $certification->status !== 1) {
             return null;

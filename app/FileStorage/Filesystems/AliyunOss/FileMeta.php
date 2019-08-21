@@ -39,7 +39,7 @@ class FileMeta extends FileMetaAbstract
     protected $resource;
     protected $bucket;
     protected $dimension;
-    protected $cachedMeta;
+    protected $metaData;
 
     /**
      * Create a file meta.
@@ -78,15 +78,11 @@ class FileMeta extends FileMetaAbstract
             return $this->dimension;
         }
 
-        $url = $this->oss->signUrl($this->bucket, $this->resource->getPath(), 3600, 'GET', [
-            OssClient::OSS_PROCESS => 'image/info',
-        ]);
-        $result = file_get_contents($url);
-        $json = json_decode($result, false);
+        $meta = $this->getFileMeta();
 
-        return $this->dimension = new ImageDimension(
-            (float) $json->ImageWidth->value,
-            (float) $json->ImageHeight->value
+        return new ImageDimension(
+            (float) $meta->ImageWidth->value,
+            (float) $meta->ImageHeight->value
         );
     }
 
@@ -96,11 +92,10 @@ class FileMeta extends FileMetaAbstract
      */
     public function getSize(): int
     {
-        if (! $this->cachedMeta) {
-            $this->cachedMeta = $this->oss->getObjectMeta($this->bucket, $this->resource->getPath());
-        }
+        $meta = $this->getFileMeta();
 
-        return (int) $this->cachedMeta['content-length'];
+        return (int) ($meta->FileSize->value ?? $meta->{'content-length'});
+
     }
 
     /**
@@ -159,5 +154,27 @@ class FileMeta extends FileMetaAbstract
                 'image/webp',
             ];
         };
+    }
+
+    protected function getFileMeta(): object
+    {
+        if (!$this->metaData) {
+            if (! $this->hasImage()) {
+                $this->metaData = Cache::rememberForever((string) $this->resource, function () {
+                    return (object) $this->oss->getObjectMeta($this->bucket, $this->resource->getPath());
+                });
+            }
+
+            $this->metaData =  Cache::rememberForever((string) $this->resource, function () {
+                $url = $this->oss->signUrl($this->bucket, $this->resource->getPath(), 3600, 'GET', [
+                    OssClient::OSS_PROCESS => 'image/info',
+                ]);
+                $result = file_get_contents($url);
+
+                return json_decode($result, false);
+            });
+        }
+
+        return $this->metaData;
     }
 }

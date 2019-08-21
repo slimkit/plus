@@ -92,13 +92,9 @@ class Feed
                 ->remember(sprintf('feed:%s:images', $this->model->id),
                     $this->dateTime->copy()->addDays(7),
                     function () {
-                        $this->model->load([
-                            'images' => function ($query) {
-                                return $query->orderBy('id', 'asc');
-                            },
-                        ]);
+                        return  $this->model->whenLoaded('images');
 
-                        return $this->model->images;
+//                        return $this->model->images;
                     }));
 
         return $this->model->images;
