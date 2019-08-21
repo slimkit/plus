@@ -22,7 +22,6 @@ namespace Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Repository;
 
 use Carbon\Carbon;
 use function Zhiyi\Plus\setting;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Zhiyi\Plus\Models\FileWith as FileWithModel;
 use Illuminate\Contracts\Cache\Repository as CacheContract;

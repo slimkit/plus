@@ -71,7 +71,7 @@ class User extends Authenticatable implements JWTSubject
      */
     protected $hidden
         = [
-            'password', 'remember_token', 'phone', 'email', 'pivot'
+            'password', 'remember_token', 'phone', 'email', 'pivot',
         ];
     /**
      * The accessors to append to the model's array form.
