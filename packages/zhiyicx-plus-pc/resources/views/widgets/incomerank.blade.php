@@ -16,10 +16,10 @@
                             @endif
                         </a>
                     </div>
-                    <div class="income-name">
-                        <a class="name" href="{{ route('pc:mine', $income['id']) }}">{{$income['name']}}</a>
-                        <div class="answers-count">回答数：{{$income['extra']['answers_count']}}</div>
-                    </div>
+{{--                    <div class="income-name">--}}
+{{--                        <a class="name" href="{{ route('pc:mine', $income['id']) }}">{{$income['name']}}</a>--}}
+{{--                        <div class="answers-count">回答数：{{$income['extra']['answers_count']}}</div>--}}
+{{--                    </div>--}}
                 </li>
             @endforeach
     </ul>
