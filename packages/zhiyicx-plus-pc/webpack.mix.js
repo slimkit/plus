@@ -24,6 +24,8 @@ let webScripts = [
     'resources/assets/web/js/iconfont.js',
     'resources/assets/web/js/layer.js',
     'resources/assets/web/js/autosize.min.js',
+    'resources/assets/web/js/markdown-it.min.js',
+    'resources/assets/web/js/markdown-it-container.min.js',
 ];
 
 let webImScripts = [

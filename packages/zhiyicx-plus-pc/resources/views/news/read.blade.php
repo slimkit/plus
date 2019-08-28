@@ -1,5 +1,6 @@
 @php
-    use function Zhiyi\Component\ZhiyiPlus\PlusComponentPc\getTime;
+    use Michelf\MarkdownExtra;
+    use sixlive\ParsedownHighlight;use function Zhiyi\Component\ZhiyiPlus\PlusComponentPc\getTime;
     use function Zhiyi\Component\ZhiyiPlus\PlusComponentPc\getImageUrl;
     use function Zhiyi\Component\ZhiyiPlus\PlusComponentPc\formatMarkdown;
 @endphp
@@ -10,6 +11,7 @@
 
 @section('styles')
     <link rel="stylesheet" href="{{ asset('assets/pc/css/news.css') }}"/>
+    <link rel="stylesheet" href="{{ asset('assets/pc/css/default.min.css') }}"/>
     <link rel="stylesheet" href="{{ asset('assets/pc/markdown/pluseditor.css') }}"/>
 @endsection
 
@@ -92,8 +94,7 @@
                     </div>
                 @endif
 
-                <div class="detail_content markdown-body editormd-preview-container">
-                    {!! formatMarkdown($news['content']) !!}
+                <div id="markdown-body" class="detail_content markdown-body editormd-preview-container">
                 </div>
                 @if (!$news['audit_status'])
                     <div class="detail_share">
@@ -208,6 +209,19 @@
     <script src="{{ asset('assets/pc/js/qrcode.js') }}"></script>
     <script>
       $(function() {
+        var md = markdownit({
+          breaks: true,
+          html: false,
+          highlight: function (code) {
+            return hljs ? hljs.highlightAuto(code).value : code
+          },
+        })
+          .use(markdownitContainer, 'hljs-left') /* align left */
+          .use(markdownitContainer, 'hljs-center')/* align center */
+          .use(markdownitContainer, 'hljs-right')
+
+        $('#markdown-body').html(md.render(`{!!formatMarkdown($news['content'])!!}`))
+
         $('img.lazy').lazyload({ effect: 'fadeIn' })
 
         // 近期热点

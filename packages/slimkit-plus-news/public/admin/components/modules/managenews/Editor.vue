@@ -339,11 +339,9 @@ export default {
         this.txtInput = this.$refs.txtInput;
         this.pre = this.$refs.pre;
 
-        console.log(pre);
         this.clientHeight = `${document.documentElement.clientHeight - 50}px`;
 
         this.editor.addEventListener('keyup', ()=>{
-            console.log(12345678);
             pre.innerHtml = md.render(this.content);
             // this.$refs.pre.innerHtml = md.render(this.content);
         });

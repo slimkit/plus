@@ -97,7 +97,7 @@
     "aliyuncs/oss-sdk-php": "^2.3",
     "barryvdh/laravel-ide-helper": "^2.6",
     "doctrine/dbal": "^2.5",
-    "erusev/parsedown": "^1.7",
+    "erusev/parsedown": "1.8.0-beta-5",
     "ezyang/htmlpurifier": "^4.10",
     "fideloper/proxy": "^4.0",
     "fzaninotto/faker": "^1.7",
