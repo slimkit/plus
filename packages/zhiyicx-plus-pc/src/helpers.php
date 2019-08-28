@@ -19,7 +19,6 @@
 namespace Zhiyi\Component\ZhiyiPlus\PlusComponentPc;
 
 use Auth;
-use Highlight\Highlighter;
 use Session;
 use HTMLPurifier;
 use Carbon\Carbon;
