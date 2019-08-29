@@ -187,6 +187,8 @@ export function getNotificationDisplay (data) {
       body = data.comment.contents
       if (body.length > 12) body = body.slice(0, 12) + '...'
       return i18n.t(`message.system.pinned_feed_comment[${data.state === 'passed' ? 0 : 1}]`, { comment: body })
+    case 'delete:feed/comment':
+      return i18n.t('message.system.feed_comment_deleted', { comment: data.comment.contents })
 
     case 'reward:news':
       return i18n.t('message.system.reward_news', { news: data.news.title, user: data.sender.name, amount: data.amount + data.unit })
@@ -194,10 +196,13 @@ export function getNotificationDisplay (data) {
       body = data.comment.contents
       if (body.length > 12) body = body.slice(0, 12) + '...'
       return i18n.t(`message.system.pinned_news_comment[${data.state !== 'reject' ? 1 : 0}]`, { news: data.news.title, comment: body })
-
+    case 'news:reject':
+      return data.contents
+    case 'news:audit':
+      return data.contents
     case 'qa:answer-adoption':
     case 'question:answer':
-      body = data.answer.body
+      body = data.question.subject
       if (body.length > 12) body = body.slice(0, 12) + '...'
       return i18n.t('message.system.qa_adopt', { answer: body })
     case 'qa:reward':
@@ -231,7 +236,10 @@ export function getNotificationDisplay (data) {
       return i18n.t('message.system.report_post_comment', { user: data.sender.name, group: data.group.name, post: data.post.title, comment: data.comment.contents })
     case 'group:report-post':
       return i18n.t('message.system.report_post', { user: data.sender.name, group: data.group.name, post: data.post.title })
-
+    case 'group:report':
+      return i18n.t('message.system.group_report', { status: data.state === 'rejected' ? '拒绝了' : '通过了' })
+    case 'group:audit':
+      return data.contents
     case 'report':
       return i18n.t('message.system.report') + ': ' + data.subject
   }

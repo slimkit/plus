@@ -620,7 +620,7 @@ message:
     reward_feed: '{user}打赏了你的动态'
     pinned_feed_by_admin: '管理员置顶了你的动态'
     pinned_feed_comment: ['你的动态评论「{comment}」的置顶请求被通过', '你的动态评论「{comment}」的置顶请求被拒绝']
-
+    feed_comment_deleted: '你的动态评论「{comment}」已被删除'
     reward_news: '你的资讯《{news}》被{user}打赏了{amount}'
     pinned_news_comment: ['你的关于资讯《{news}》评论「{comment}」的置顶请求被通过', '你的关于资讯《{news}》评论「{comment}」的置顶请求被拒绝']
 
@@ -639,6 +639,7 @@ message:
     pinned_post_by_admin: '你的帖子「{post}」已被管理员置顶'
     report_post: '{user}举报了你的圈子「{group}」下的帖子「{post}」'
     report_post_comment: '{user}举报了你的帖子「{post}」下的评论「{comment}」'
+    group_report: '系统已经{status}你对帖子的举报'
 
     report: '你举报的内容平台已处理'
 

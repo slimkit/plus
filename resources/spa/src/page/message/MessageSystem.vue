@@ -103,6 +103,8 @@ export default {
         case 'group:report-comment':
         case 'group:report-post':
           url = `/groups/${data.group.id}/posts/${data.post.id}`; break
+        case 'group:audit':
+          url = `/groups/${data.group.id}`; break
       }
       this.$router.push(url)
     },
