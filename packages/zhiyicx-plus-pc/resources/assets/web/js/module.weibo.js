@@ -1,3 +1,5 @@
+import upload from '../../../../../../resources/spa/src/api/upload'
+
 var weibo = {};
 
 /**
@@ -21,7 +23,7 @@ weibo.afterUpload = function(image, f, task_id) {
 weibo.postFeed = function() {
     // 登录判断
     checkLogin();
-
+    if (uploadedTask > 0) return;
     // 付费免费
     var select = $('#feed_select').data('value');
     if (select == 'pay') {
