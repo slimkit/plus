@@ -20,10 +20,10 @@ namespace Zhiyi\Component\ZhiyiPlus\PlusComponentPc;
 
 use Auth;
 use Session;
-use HTMLPurifier;
+//use HTMLPurifier;
 use Carbon\Carbon;
 use GuzzleHttp\Client;
-use HTMLPurifier_Config;
+//use HTMLPurifier_Config;
 use Zhiyi\Plus\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
