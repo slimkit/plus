@@ -2,19 +2,33 @@
  * WebIMConfig
  * @type {Object}
  */
+const getUrl = () =>
+{
+  let apiUrl = (window.location.protocol === 'https:' ? 'https:' : 'http:') + process.env.VUE_APP_EASEMOB_API_URL
+  let xmppUrl = 'im-api-v2.easemob.com/ws'
+  if (window.location.href.indexOf(process.env.VUE_APP_API_HOST) !== -1) {
+    apiUrl = (window.location.protocol === 'https:' ? 'https:' : 'http:') + process.env.VUE_APP_EASEMOB_API_URL
+    xmppUrl = (window.location.protocol === 'https:' ? 'https:' : 'http:') + '//im-api-v2.easemob.com/ws'
+  }
+
+  return {
+    apiUrl: apiUrl,
+    xmppUrl: xmppUrl,
+  }
+}
 const config = {
   /*
    * XMPP server
    * 对于在console.easemob.com创建的appKey，固定为该值
    */
-  xmppURL: 'im-api.easemob.com',
+  xmppURL: getUrl().xmppUrl,
 
   /*
    * Backend REST API URL
    */
   // apiURL: (location.protocol === 'https:' ? 'https:' : 'http:') + '//a1.easemob.com',
   // ios must be https!!! by lwz
-  apiURL: process.env.VUE_APP_EASEMOB_API_URL,
+  apiURL: getUrl().apiUrl,
 
   /*
    * Application AppKey
