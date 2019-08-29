@@ -1,5 +1,7 @@
 import markdownIt from 'markdown-it'
 import plusImagePlugin from 'markdown-it-plus-image'
+import highlight from 'highlight.js'
+import container from 'markdown-it-container'
 import { baseURL } from '@/api'
 
 /**
@@ -8,8 +10,15 @@ import { baseURL } from '@/api'
  * @type {Object}
  */
 export const markdown = markdownIt({
+  breaks: true,
   html: true,
+  highlight: function (code) {
+    return highlight ? highlight.highlightAuto(code).value : code
+  },
 }).use(plusImagePlugin, `${baseURL}/files/`)
+  .use(container, 'hljs-left') /* align left */
+  .use(container, 'hljs-center')/* align center */
+  .use(container, 'hljs-right')
 
 /**
  * Markdown render.

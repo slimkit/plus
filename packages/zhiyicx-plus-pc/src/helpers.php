@@ -19,12 +19,14 @@
 namespace Zhiyi\Component\ZhiyiPlus\PlusComponentPc;
 
 use Auth;
-use Session;
 use HTMLPurifier;
+use HTMLPurifier_Config;
+use Session;
+//use HTMLPurifier;
 use Carbon\Carbon;
 use GuzzleHttp\Client;
-use HTMLPurifier_Config;
 use Illuminate\Support\Arr;
+//use HTMLPurifier_Config;
 use Zhiyi\Plus\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -289,20 +291,11 @@ function formatMarkdown($body)
     $body = preg_replace('/\@\!\[(.*?)\]\((\d+)\)/i',
         '![$1]('.getenv('APP_URL').'/api/v2/files/$2)', $body);
 
-    // $content = htmlspecialchars_decode(\Parsedown::instance()->setMarkupEscaped(true)->text($body));
-    // if (!strip_tags($content)) {
-    //     $content = preg_replace_callback('/\[\]\((.*?)\)/i', function($url){
-    //         return '<p><a href="'.$url[1].'">'.$url[1].'</a></p>';
-    //     }, $body);
-    // }
-
-    $config = HTMLPurifier_Config::createDefault();
-    $config->set('HTML.Allowed', 'br,a[href]');
-    $purifier = new HTMLPurifier($config);
-    $body = $purifier->purify($body);
-    $content = \Parsedown::instance()->text($body);
-
-    return $content;
+//    $config = HTMLPurifier_Config::createDefault();
+//    $config->set('HTML.Allowed', 'br,a[href],');
+//    $purifier = new HTMLPurifier($config);
+//    $body = $purifier->purify($body);
+    return $body;
 }
 
 /**

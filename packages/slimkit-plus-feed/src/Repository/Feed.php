@@ -22,9 +22,9 @@ namespace Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Repository;
 
 use Carbon\Carbon;
 use function Zhiyi\Plus\setting;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Zhiyi\Plus\Models\FileWith as FileWithModel;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Contracts\Cache\Repository as CacheContract;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\Feed as FeedModel;
 
@@ -93,10 +93,10 @@ class Feed
                     $this->dateTime->copy()->addDays(7),
                     function () {
                         $this->model->load([
-                            'images' => function ($query) {
-                                return $query->orderBy('id', 'asc');
-                            },
-                        ]);
+                            'images' => function (hasMany $hasOne) {
+                                $hasOne->with('file');
+                            }, ]
+                        );
 
                         return $this->model->images;
                     }));
@@ -214,13 +214,6 @@ class Feed
 
         if ($pinnedComments->count() < 5) {
             $ids = $pinnedComments->pluck('id')->filter()->all();
-            // $comments = $this->model->comments()
-            //     ->limit(5 - $pinnedComments->count())
-            //     ->when(! $ids->isEmpty(), function (Builder $query) use ($ids) {
-            //         return $query->whereNotIn('id', $ids);
-            //     })
-            //     ->orderBy('id', 'desc')
-            //     ->get();
             $comments = $this->model->comments->filter(function ($comment) use ($ids) {
                 return ! in_array($comment->id, $ids);
             });

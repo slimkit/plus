@@ -755,8 +755,8 @@ auth:
     password: 密码不正确
     phone: 请输入正确的手机号码
     email: 请输入正确的邮箱
-    password_min: 密码长度必须大于{0}位
-    password_max: 密码长度不得超过{0}位
+    password_min: 密码长度不能低于{min}位
+    password_max: 密码长度不得超过{max}位
   forgot:
     name: 忘记密码
     find: 找回密码

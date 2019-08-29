@@ -113,7 +113,7 @@ class AuthController extends Controller
                 return $this->respondWithToken($token);
             }
 
-            return $this->response()->json(['message' => '账号或密码不正确'], 403);
+            return $this->response()->json(['message' => '账号或密码不正确'], 422);
         } else {
             return $this->response()->json([
                 'message' => sprintf('%s还没有注册', $field == 'phone'
