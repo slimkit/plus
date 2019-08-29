@@ -19,12 +19,12 @@
 namespace Zhiyi\Component\ZhiyiPlus\PlusComponentPc;
 
 use Auth;
-use HTMLPurifier;
-use HTMLPurifier_Config;
 use Session;
-//use HTMLPurifier;
+use HTMLPurifier;
 use Carbon\Carbon;
+//use HTMLPurifier;
 use GuzzleHttp\Client;
+use HTMLPurifier_Config;
 use Illuminate\Support\Arr;
 //use HTMLPurifier_Config;
 use Zhiyi\Plus\Models\User;
