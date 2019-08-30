@@ -45,3 +45,11 @@ Route::group(['prefix' => 'plus-id'], function (RouteRegisterContract $route) {
     // login
     // $route->any('/clients/{client}/login', Web\AuthController::class.'@login');
 });
+
+Route::group(['prefix' => 'api/v2'], function (RouteRegisterContract $api) {
+	$api->group(['prefix' => '/plus-id'], function (RouteRegisterContract $api) {
+		$api->group(['middleware' => 'auth:api'], function (RouteRegisterContract $api) {
+			$api->get('/toShop/{client}', Web\ShopController::class.'@toShop');
+		});
+	});
+});
