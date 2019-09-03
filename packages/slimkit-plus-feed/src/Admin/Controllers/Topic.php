@@ -23,11 +23,11 @@ namespace Zhiyi\Plus\Packages\Feed\Admin\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Carbon;
-use Zhiyi\Plus\Notifications\System as SystemNotification;
 use function Zhiyi\Plus\setting;
 use Illuminate\Http\JsonResponse;
 use Zhiyi\Plus\Models\FeedTopic as TopicModel;
 use Zhiyi\Plus\API2\Controllers\Feed\Topic as Controller;
+use Zhiyi\Plus\Notifications\System as SystemNotification;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 use Zhiyi\Plus\Packages\Feed\Admin\Requests\ListAllTopics as ListTopicsRequest;
 
@@ -118,7 +118,7 @@ class Topic extends Controller
                 'contents' => $msg,
                 'topic' => [
                     'id' => $topic->id,
-                    'name' => $topic->name
+                    'name' => $topic->name,
                 ],
             ]));
         }
