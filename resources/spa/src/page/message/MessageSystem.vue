@@ -105,6 +105,8 @@ export default {
           url = `/groups/${data.group.id}/posts/${data.post.id}`; break
         case 'group:audit':
           url = `/groups/${data.group.id}`; break
+        case 'feed:topic:create:passed':
+          url = `/topic/${data.topic.id}`; break
       }
       this.$router.push(url)
     },

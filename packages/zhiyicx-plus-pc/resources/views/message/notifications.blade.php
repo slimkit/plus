@@ -60,6 +60,16 @@
                             @endif
                         </a>
                         @break
+                        @case('feed:topic:create:passed')
+                        <a href="{{route('pc:topicDetail', ['topic_id' => $noti['data']['topic']['id']])}}">
+                            {{$noti['data']['contents']}}
+                        </a>
+                        @break
+                        @case('feed:topic:create:failed')
+                        <a href="javascript:void(0)">
+                            {{$noti['data']['contents']}}
+                        </a>
+                        @break
                         @case('pinned:news/comment')
                         <a href="{{route('pc:newsread', ['news'=>$noti['data']['news']['id']])}}">
                             @if($noti['data']['state'] === 'rejected')
@@ -72,14 +82,14 @@
                         </a>
                         @break
                         @case('news:delete:reject')
-                            <a href="{{route('pc:newsread', ['news'=>$noti['data']['news']['id']])}}">
-                                你申请删除资讯「{{ $noti['data']['news']['title']}}」的请求已被拒绝
-                            </a>
+                        <a href="{{route('pc:newsread', ['news'=>$noti['data']['news']['id']])}}">
+                            你申请删除资讯「{{ $noti['data']['news']['title']}}」的请求已被拒绝
+                        </a>
                         @break
                         @case('news:delete:accept')
-                            <a href="javascript:void(0)">
-                                你申请删除资讯「{{ $noti['data']['news']['title']}}」的请求已被通过
-                            </a>
+                        <a href="javascript:void(0)">
+                            你申请删除资讯「{{ $noti['data']['news']['title']}}」的请求已被通过
+                        </a>
                         @break
                         @case('user-currency:cash')
                         @if($noti['data']['state'] === 'rejected')

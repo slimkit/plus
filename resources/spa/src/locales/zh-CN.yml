@@ -642,6 +642,8 @@ message:
     group_report: '系统已经{status}你对帖子的举报'
 
     report: '你举报的内容平台已处理'
+    feed_topic_passed: '创建话题「{name}」的申请已被通过'
+    feed_topic_failed: '创建话题「{name}」的申请已被拒绝'
 
   comment:
     name: 收到的评论

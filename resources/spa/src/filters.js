@@ -69,14 +69,14 @@ export function formatDate (date, fmt = 'yyyy/MM/dd hh:mm') {
   if (/(y+)/.test(fmt)) {
     fmt = fmt.replace(
       RegExp.$1,
-      (date.getFullYear() + '').substr(4 - RegExp.$1.length)
+      (date.getFullYear() + '').substr(4 - RegExp.$1.length),
     )
   }
   for (const k in o) {
     if (new RegExp('(' + k + ')').test(fmt)) {
       fmt = fmt.replace(
         RegExp.$1,
-        RegExp.$1.length === 1 ? o[k] : ('00' + o[k]).substr(('' + o[k]).length)
+        RegExp.$1.length === 1 ? o[k] : ('00' + o[k]).substr(('' + o[k]).length),
       )
     }
   }
@@ -101,20 +101,25 @@ export const time2tips = date => {
   const offset = (new Date().getTime() - time) / 1000
   if (offset < 60) return i18n.t('date.in_minute')
   if (offset < 3600) return i18n.t('date.minutes_ago', { min: ~~(offset / 60) })
-  if (offset < 3600 * 24) return i18n.t('date.hours_ago', { hour: ~~(offset / 3600) })
+  if (offset < 3600 * 24) {
+    return i18n.t('date.hours_ago',
+      { hour: ~~(offset / 3600) })
+  }
   // 根据 time 获取到 "16:57"
   let timeStr, dateStr
   try {
     timeStr = time.toTimeString().match(/^\d{2}:\d{2}/)[0]
-    dateStr = time
-      .toLocaleDateString() // > "2018/10/19"
+    dateStr = time.toLocaleDateString() // > "2018/10/19"
       .replace(/^\d{4}\/(\d{2})\/(\d{2})/, '$1-$2') // > 10-19
   } catch (e) {
     console.warn('time2tips error: ', { date, time }) // eslint-disable-line no-console
     return ''
   }
   if (offset < 3600 * 24 * 2) return i18n.t('date.yesterday', { time: timeStr })
-  if (offset < 3600 * 24 * 9) return i18n.t('date.days_ago', { day: ~~(offset / 3600 / 24) })
+  if (offset < 3600 * 24 * 9) {
+    return i18n.t('date.days_ago',
+      { day: ~~(offset / 3600 / 24) })
+  }
 
   return dateStr
 }
@@ -126,13 +131,13 @@ export const time2tips = date => {
 export const formatNum = (a = 0) => {
   return (
     a > 0 &&
-      (a > 99999999 && (a = Math.floor(a / 1e8) + '亿'),
-      a > 9999 &&
-        (a =
-          a > 99999999
-            ? Math.floor(a / 1e8) + '亿'
-            : Math.floor(a / 1e4) + '万')),
-    a
+    (a > 99999999 && (a = Math.floor(a / 1e8) + '亿'),
+    a > 9999 &&
+    (a =
+      a > 99999999
+        ? Math.floor(a / 1e8) + '亿'
+        : Math.floor(a / 1e4) + '万')),
+      a
   )
 }
 
@@ -173,11 +178,17 @@ export function getNotificationDisplay (data) {
     case 'reward':
       return i18n.t('message.system.reward_user', { user: data.sender.name })
     case 'user-certification':
-      return i18n.t(`message.system.certificate[${data.state !== 'reject' ? 1 : 0}]`, { reason: data.contents })
+      return i18n.t(
+        `message.system.certificate[${data.state !== 'reject' ? 1 : 0}]`,
+        { reason: data.contents })
     case 'user-currency:cash':
-      return i18n.t(`message.system.user_cash[${data.state === 'rejected' ? 1 : 0}]`, { reason: data.contents })
+      return i18n.t(
+        `message.system.user_cash[${data.state === 'rejected' ? 1 : 0}]`,
+        { reason: data.contents })
     case 'user-cash':
-      return i18n.t(`message.system.user_cash_wallet[${data.state === 'rejected' ? 1 : 0}]`, { reason: data.contents })
+      return i18n.t(
+        `message.system.user_cash_wallet[${data.state === 'rejected' ? 1 : 0}]`,
+        { reason: data.contents })
 
     case 'reward:feeds':
       return i18n.t('message.system.reward_feed', { user: data.sender.name })
@@ -186,16 +197,27 @@ export function getNotificationDisplay (data) {
     case 'pinned:feed/comment':
       body = data.comment.contents
       if (body.length > 12) body = body.slice(0, 12) + '...'
-      return i18n.t(`message.system.pinned_feed_comment[${data.state === 'passed' ? 0 : 1}]`, { comment: body })
+      return i18n.t(
+        `message.system.pinned_feed_comment[${data.state === 'passed'
+          ? 0
+          : 1}]`, { comment: body })
     case 'delete:feed/comment':
-      return i18n.t('message.system.feed_comment_deleted', { comment: data.comment.contents })
+      return i18n.t('message.system.feed_comment_deleted',
+        { comment: data.comment.contents })
 
     case 'reward:news':
-      return i18n.t('message.system.reward_news', { news: data.news.title, user: data.sender.name, amount: data.amount + data.unit })
+      return i18n.t('message.system.reward_news', {
+        news: data.news.title,
+        user: data.sender.name,
+        amount: data.amount + data.unit,
+      })
     case 'pinned:news/comment':
       body = data.comment.contents
       if (body.length > 12) body = body.slice(0, 12) + '...'
-      return i18n.t(`message.system.pinned_news_comment[${data.state !== 'reject' ? 1 : 0}]`, { news: data.news.title, comment: body })
+      return i18n.t(
+        `message.system.pinned_news_comment[${data.state !== 'reject'
+          ? 1
+          : 0}]`, { news: data.news.title, comment: body })
     case 'news:reject':
       return data.contents
     case 'news:audit':
@@ -208,39 +230,73 @@ export function getNotificationDisplay (data) {
     case 'qa:reward':
       return i18n.t('message.system.reward_qa', { user: data.sender.name })
     case 'qa:invitation':
-      return i18n.t('message.system.qa_invitation', { user: data.sender.name, question: data.question.subject })
+      return i18n.t('message.system.qa_invitation',
+        { user: data.sender.name, question: data.question.subject })
     case 'qa:question-topic:accept':
-      return i18n.t('message.system.qa_topic_passed', { topic: data.topic.name })
+      return i18n.t('message.system.qa_topic_passed',
+        { topic: data.topic.name })
     case 'qa:question-topic:reject':
-      return i18n.t('message.system.qa_topic_reject', { topic: data.topic_application.name })
+      return i18n.t('message.system.qa_topic_reject',
+        { topic: data.topic_application.name })
     case 'qa:question-excellent:accept':
-      return i18n.t('message.system.qa_excellent[0]', { question: data.application.question.subject })
+      return i18n.t('message.system.qa_excellent[0]',
+        { question: data.application.question.subject })
     case 'qa:question-excellent:reject':
-      return i18n.t('message.system.qa_excellent[1]', { question: data.application.question.subject })
+      return i18n.t('message.system.qa_excellent[1]',
+        { question: data.application.question.subject })
 
     case 'group:join':
-      if (data.state) return i18n.t(`message.system.group_join[${data.state === 'passed' ? 0 : 1}]`, { group: data.group.name })
-      return i18n.t('message.system.group_join[2]', { group: data.group.name, user: data.user.name })
+      if (data.state) {
+        return i18n.t(
+          `message.system.group_join[${data.state === 'passed' ? 0 : 1}]`,
+          { group: data.group.name })
+      }
+      return i18n.t('message.system.group_join[2]',
+        { group: data.group.name, user: data.user.name })
     case 'group:transform':
-      return i18n.t('message.system.group_transform', { user: data.user.name, group: data.group.name })
+      return i18n.t('message.system.group_transform',
+        { user: data.user.name, group: data.group.name })
     case 'group:post-reward':
-      return i18n.t('message.system.reward_post', { user: data.sender.name, post: data.post.title })
+      return i18n.t('message.system.reward_post',
+        { user: data.sender.name, post: data.post.title })
     case 'group:comment-pinned':
     case 'group:send-comment-pinned':
-      return i18n.t(`message.system.pinned_post_comment[${data.state !== 'reject' ? 1 : 0}]`, { post: data.post.title })
+      return i18n.t(
+        `message.system.pinned_post_comment[${data.state !== 'reject'
+          ? 1
+          : 0}]`, { post: data.post.title })
     case 'group:post-pinned':
-      return i18n.t(`message.system.pinned_post[${data.state !== 'rejected' ? 0 : 1}]`, { post: data.post.title })
+      return i18n.t(
+        `message.system.pinned_post[${data.state !== 'rejected' ? 0 : 1}]`,
+        { post: data.post.title })
     case 'group:pinned-admin':
-      return i18n.t('message.system.pinned_post_by_admin', { post: data.post.title })
+      return i18n.t('message.system.pinned_post_by_admin',
+        { post: data.post.title })
     case 'group:report-comment':
-      return i18n.t('message.system.report_post_comment', { user: data.sender.name, group: data.group.name, post: data.post.title, comment: data.comment.contents })
+      return i18n.t('message.system.report_post_comment', {
+        user: data.sender.name,
+        group: data.group.name,
+        post: data.post.title,
+        comment: data.comment.contents,
+      })
     case 'group:report-post':
-      return i18n.t('message.system.report_post', { user: data.sender.name, group: data.group.name, post: data.post.title })
+      return i18n.t('message.system.report_post', {
+        user: data.sender.name,
+        group: data.group.name,
+        post: data.post.title,
+      })
     case 'group:report':
-      return i18n.t('message.system.group_report', { status: data.state === 'rejected' ? '拒绝了' : '通过了' })
+      return i18n.t('message.system.group_report',
+        { status: data.state === 'rejected' ? '拒绝了' : '通过了' })
     case 'group:audit':
       return data.contents
     case 'report':
       return i18n.t('message.system.report') + ': ' + data.subject
+    case 'feed:topic:create:passed':
+      return i18n.t('message.system.feed_topic_passed',
+        { name: data.topic.name })
+    case 'feed:topic:create:failed':
+      return i18n.t('message.system.feed_topic_failed',
+        { name: data.topic.name })
   }
 }
