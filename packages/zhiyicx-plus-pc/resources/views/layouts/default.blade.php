@@ -59,7 +59,7 @@
         @if($config['common']['qq_consult']['enable'] ?? false)
         <div class="qq_consult">
             <a href="//wpa.qq.com/msgrd?v=3&uin={{ $config['common']['qq_consult']['uin'] ?? '' }}&site=qq&menu=yes" target="_blank">产品咨询</a>
-            <a href="http://thinksns-demo.zhiyicx.com" target="_blank">ThinkSNS 官网</a>
+            <a href="http://thinksns.zhiyicx.com" target="_blank">ThinkSNS 官网</a>
         </div>
         @endif
     </div>
