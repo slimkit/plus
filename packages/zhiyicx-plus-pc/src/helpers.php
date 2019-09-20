@@ -18,15 +18,13 @@
 
 namespace Zhiyi\Component\ZhiyiPlus\PlusComponentPc;
 
+use Arr;
 use Auth;
 use Session;
 use HTMLPurifier;
 use Carbon\Carbon;
-//use HTMLPurifier;
 use GuzzleHttp\Client;
 use HTMLPurifier_Config;
-use Illuminate\Support\Arr;
-//use HTMLPurifier_Config;
 use Zhiyi\Plus\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;

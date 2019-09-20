@@ -2,6 +2,7 @@ var loadHtml = '<div class=\'loading\'><img src=\'' + TS.RESOURCE_URL +
   '/images/three-dots.svg\' class=\'load\'></div>'
 var confirmTxt = '<svg class="icon" aria-hidden="true"><use xlink:href="#icon-warning"></use></svg> '
 var initNums = 255
+var uploadedTask = 0;
 var buyTSInfo = '开源版无此功能，需要使用此功能，请购买正版授权源码，详情访问www.thinksns.com，也可直接咨询：QQ3515923610；电话：17311245680。'
 
 axios.defaults.baseURL = TS.SITE_URL
@@ -177,11 +178,14 @@ var fileUpload = {
     var reader = new FileReader()
     reader.onload = function (e) {
       var hash = md5(e.target.result)
+      uploadedTask++
       axios.get('/api/v2/files/uploaded/' + hash)
         .then(function (response) {
+          uploadedTask--
           if (response.data.id > 0) callback(image, f, response.data.id)
         })
         .catch(function (error) {
+          uploadedTask--
           error.response.status === 404 && _this.uploadFile(image, f, callback)
         })
     }
@@ -190,11 +194,14 @@ var fileUpload = {
   uploadFile: function (image, f, callback) {
     var formDatas = new FormData()
     formDatas.append('file', f)
+    uploadedTask++
     axios.post('/api/v2/files', formDatas)
       .then(function (response) {
+        uploadedTask--
         if (response.data.id > 0) callback(image, f, response.data.id)
       })
       .catch(function (error) {
+        uploadedTask--
         showError(error.response)
       })
   }

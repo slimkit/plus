@@ -228,7 +228,7 @@
     })
 
     //当最大化的时候事件绑定----原图
-    me.delegate('.showbig', 'click', function() {
+    me.unbind('click').delegate('.showbig', 'click', function() {
       window.open(option.data[current_i].img)
     })
 

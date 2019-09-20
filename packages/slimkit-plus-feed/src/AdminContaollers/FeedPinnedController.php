@@ -128,11 +128,12 @@ class FeedPinnedController extends Controller
             $pinned->save();
         } else {
             $pinned = FeedPinned::find($pinned);
+            $date = new Carbon($pinned->expires_at);
+            $datetime = $date->addDay($time);
+            $pinned->day = $datetime->diffInDays(Carbon::now());
+            $pinned->expires_at = $datetime->toDateTimeString();
         }
-        $date = new Carbon($pinned->expires_at);
-        $datetime = $date->addDay($time);
-        $pinned->day = $datetime->diffInDays(Carbon::now());
-        $pinned->expires_at = $datetime->toDateTimeString();
+
         $pinned->save();
 
         $pinned->user->notify(new SystemNotification('你的动态被管理员设置为置顶', [
