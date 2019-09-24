@@ -1,4 +1,4 @@
-import upload from '../../../../../../resources/spa/src/api/upload'
+// import upload from '../../../../../../resources/spa/src/api/upload'
 
 var weibo = {};
 
