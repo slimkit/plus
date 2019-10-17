@@ -20,8 +20,8 @@ declare(strict_types=1);
 
 namespace Zhiyi\Plus\Http\Controllers\APIs\V2;
 
-use Image;
 use Cache;
+use Image;
 use Carbon\Carbon;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
@@ -64,7 +64,7 @@ class FilesController extends Controller
             $extra['blur'] = (int) config('image.blur', 96);
         }
 
-        $url = Cache::remember(sprintf('file_url_%d_%s', $fileWith->id, implode('_', $extra)), 50, function () use ($fileWith, $cdn, $extra){
+        $url = Cache::remember(sprintf('file_url_%d_%s', $fileWith->id, implode('_', $extra)), 50, function () use ($fileWith, $cdn, $extra) {
             return $cdn->make($fileWith->file, $extra);
         });
 
