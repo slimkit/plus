@@ -27,8 +27,8 @@ use GuzzleHttp\Client;
 use HTMLPurifier_Config;
 use Zhiyi\Plus\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\Artisan;
+use Route;
+use Artisan;
 
 /**
  * [formatContent 动态列表内容处理].
@@ -124,11 +124,12 @@ function inapi(
 /**
  * [api].
  *
- * @param  string  $method  [请求方式]
- * @param  string  $url  [地址]
- * @param  array  $params  [参数]
+ * @param string $method [请求方式]
+ * @param string $url [地址]
+ * @param array $params [参数]
  *
- * @return
+ * @return mixed
+ * @throws \GuzzleHttp\Exception\GuzzleException
  * @author Foreach
  */
 function api($method = 'POST', $url = '', $params = [])
@@ -295,7 +296,7 @@ function formatMarkdown($body)
 /**
  * @param  [string] $body [内容]
  *
- * @return [string] [html]
+ * @return string
  * @author Foreach
  */
 function formatList($body)
@@ -316,22 +317,20 @@ function formatList($body)
  *
  * @param  [type] $id [用户id]
  *
- * @return
+ * @return array
  * @author Foreach
  */
-function getUserInfo($id)
+function getUserInfo($id): array
 {
-    return User::find($id)->toArray();
+    return User::query()->find($id)->toArray();
 }
 
 /**
  * [setPinneds 置顶数据组装].
  *
- * @param  [type] $data    [列表数据]
- * @param  [type] $pinneds [置顶数据]
- * @param  [type] $k       [键名]
- *
- * @return [type]        [description]
+ * @param $data
+ * @param $pinneds
+ * @return mixed
  * @author Foreach
  */
 function formatPinneds($data, $pinneds)

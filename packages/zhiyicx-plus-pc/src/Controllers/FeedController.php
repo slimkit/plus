@@ -33,6 +33,7 @@ class FeedController extends BaseController
      * @param Request $request
      * @return mixed
      * @throws Throwable
+     * @throws \GuzzleHttp\Exception\GuzzleException
      * @author Foreach
      */
     public function feeds(Request $request)
@@ -116,6 +117,7 @@ class FeedController extends BaseController
      * 动态详情.
      * @param Feed $feed
      * @return mixed
+     * @throws \GuzzleHttp\Exception\GuzzleException
      * @author Foreach
      */
     public function read(Feed $feed)
@@ -137,6 +139,7 @@ class FeedController extends BaseController
      * @param int $feed_id [动态id]
      * @return JsonResponse
      * @throws Throwable
+     * @throws \GuzzleHttp\Exception\GuzzleException
      * @author Foreach
      */
     public function comments(Request $request, int $feed_id)
