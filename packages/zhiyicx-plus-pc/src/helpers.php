@@ -20,6 +20,8 @@ namespace Zhiyi\Component\ZhiyiPlus\PlusComponentPc;
 
 use Arr;
 use Auth;
+use Route;
+use Artisan;
 use Session;
 use HTMLPurifier;
 use Carbon\Carbon;
@@ -27,8 +29,6 @@ use GuzzleHttp\Client;
 use HTMLPurifier_Config;
 use Zhiyi\Plus\Models\User;
 use Illuminate\Http\Request;
-use Route;
-use Artisan;
 
 /**
  * [formatContent 动态列表内容处理].
