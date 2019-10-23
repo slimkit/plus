@@ -23,7 +23,6 @@ namespace Zhiyi\Component\ZhiyiPlus\PlusComponentMusic\AdminControllers;
 use Illuminate\Http\Request;
 use Zhiyi\Plus\Http\Controllers\Controller;
 use Zhiyi\Plus\Cdn\UrlManager as CdnUrlManager;
-use Zhiyi\Plus\Models\File;
 use Zhiyi\Plus\Models\FileWith as FileWithModel;
 use function Zhiyi\Component\ZhiyiPlus\PlusComponentMusic\view;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentMusic\Models\MusicSinger;

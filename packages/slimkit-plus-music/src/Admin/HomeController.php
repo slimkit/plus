@@ -291,10 +291,11 @@ class HomeController extends Controller
         $specials = $special->get();
         $singers = $singer->get();
         $old = $request->old();
+
         return view('musicAdd', [
             'specials' => $specials,
             'singers' => $singers,
-            'old' => $old
+            'old' => $old,
         ]);
     }
 
@@ -321,7 +322,7 @@ class HomeController extends Controller
             'singer.required' => '请填写歌曲所属歌手',
             'title.required' => '请填写名称',
             'title.max' => '名称不能超过20个字',
-            'special.required' => '请选择专辑'
+            'special.required' => '请选择专辑',
         ]);
         if ($validator->fails()) {
             return redirect()->route('music:store')
@@ -339,7 +340,7 @@ class HomeController extends Controller
         $fileWith = $this->makeFileWith($request);
 
         try {
-            $music->getConnection()->transaction(function() use ($music, $request, $paidNodes, $fileWith) {
+            $music->getConnection()->transaction(function () use ($music, $request, $paidNodes, $fileWith) {
                 $music->saveOrFail();
                 if ($request->input('special')) {
                     $music->musicSpecials()->attach($request->input('special'));
