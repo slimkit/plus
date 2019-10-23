@@ -18,8 +18,8 @@
 
 namespace Zhiyi\Component\ZhiyiPlus\PlusComponentPc\AdminControllers;
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
+use Illuminate\Http\Request;
 use Zhiyi\Plus\Auth\JWTAuthToken;
 use Zhiyi\Plus\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;

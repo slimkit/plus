@@ -20,9 +20,9 @@ declare(strict_types=1);
 
 namespace SlimKit\PlusAroundAmap\API\Controllers;
 
+use Illuminate\Support\Arr;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
-use Illuminate\Support\Arr;
 use Zhiyi\Plus\Support\Configuration;
 use GuzzleHttp\Client as GuzzleHttpClient;
 use Illuminate\Contracts\Routing\ResponseFactory;

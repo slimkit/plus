@@ -18,8 +18,8 @@
 
 namespace Zhiyi\Component\ZhiyiPlus\PlusComponentPc\Controllers;
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
+use Illuminate\Http\Request;
 use function Zhiyi\Plus\username;
 use Zhiyi\Plus\Models\User as UserModel;
 use function Zhiyi\Component\ZhiyiPlus\PlusComponentPc\api;

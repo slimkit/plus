@@ -21,8 +21,8 @@ declare(strict_types=1);
 namespace Zhiyi\Plus\Packages\Wallet\Types;
 
 use DB;
-use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
+use Illuminate\Http\Request;
 use function Zhiyi\Plus\setting;
 use Zhiyi\Plus\Packages\Wallet\Order;
 use Zhiyi\Plus\Models\User as UserModel;

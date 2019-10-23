@@ -20,8 +20,8 @@ declare(strict_types=1);
 
 namespace Zhiyi\Plus\FileStorage;
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use Illuminate\Http\Request;
 use Zhiyi\Plus\AppInterface;
 use Illuminate\Support\Carbon;
 use Symfony\Component\HttpFoundation\Response;

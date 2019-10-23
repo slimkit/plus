@@ -20,9 +20,9 @@ declare(strict_types=1);
 
 namespace Zhiyi\Plus\Console\Commands;
 
+use Illuminate\Support\Str;
 use Illuminate\Console\Command;
 use Illuminate\Config\Repository;
-use Illuminate\Support\Str;
 use Symfony\Component\Finder\Finder;
 
 class PackageCreateCommand extends Command
