@@ -30,7 +30,7 @@
         <div class="form-group">
             <label for="" class="col-sm-2 control-label">上传歌曲</label>
             <div class="col-sm-6">
-                <input type="file" placeholder="{{isset($old['storage']) ? '以上传，无需再次上传' : ''}}" name="file"
+                <input type="file" placeholder="{{isset($old['storage']) ? '已上传，无需再次上传' : ''}}" name="file"
                        class="projectfile" id="projectfile" accept="audio/*" data-preview-file-type="audio" value=""/>
                 <input type="hidden" name="storage" value="{{$old['storage'] ?? 0}}" id="storage"/>
                 <p class="text-info">支持MP3格式文件，大小不超过10m</p>

@@ -209,10 +209,10 @@ function cacheClear()
 
 /**
  * [getAvatar 获取头像].
- * @author Foreach
  * @param  [type]  $user  [用户数组]
- * @param  int $width [宽度]
- * @return [string]
+ * @param int $width [宽度]
+ * @return string [string]
+ * @author Foreach
  */
 function getAvatar($user, $width = 0)
 {
@@ -244,9 +244,9 @@ function getAvatar($user, $width = 0)
 
 /**
  * [formatMarkdown 转换markdown].
- * @author Foreach
  * @param  [string] $body [内容]
- * @return [string] [html]
+ * @return string|string[]|null
+ * @author Foreach
  */
 function formatMarkdown($body)
 {

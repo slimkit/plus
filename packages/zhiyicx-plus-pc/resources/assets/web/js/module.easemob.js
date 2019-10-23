@@ -81,13 +81,6 @@ easemob = {
     }
     easemob.users = _.keyBy(TS.EASEMOB_USERS, 'id')
     easemob.setOuterCon()
-
-    /*设置未读消息定时器*/
-    easemob.getUnreadMessage()
-    var unread_message_timeout = window.setInterval(easemob.getUnreadMessage(),
-      20000)
-    easemob.getUnreadChats()
-    var unread_chat_timeout = window.setInterval(easemob.getUnreadChats, 1000)
   },
 
   // 更新用户信息

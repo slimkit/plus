@@ -271,7 +271,7 @@ class MessageController extends BaseController
         $data['notifications'] = api('GET', '/api/v2/user/notifications',
             ['page' => $page, 'limit' => $limit, 'type' => 'system'])['data'];
         // 设置已读
-        // dd($data['notifications']);
+
         api('PATCH', '/api/v2/user/notifications');
         $return = '';
         if (! empty($data['notifications'])) {

@@ -21,6 +21,7 @@ declare(strict_types=1);
 namespace Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\API2;
 
 use Batch;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Throwable;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -146,7 +147,7 @@ class FeedController extends Controller
             return $feed;
         });
 
-        Batch::update($feedModel->getTable(), $updateValues, 'id');
+        Batch::update($feedModel, $updateValues, 'id');
 
         return $feeds;
     }

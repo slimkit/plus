@@ -113,13 +113,9 @@ class BaseController extends Controller
 
     /**
      * 操作提示.
-     * @author ZsyD
-     * @param  int    $status  [状态]
-     * @param  string $url     [跳转链接]
-     * @param  string $message [信息]
-     * @param  string $content [内容]
-     * @param  int    $time    [跳转时间]
+     * @param Request $request
      * @return mixed
+     * @author ZsyD
      */
     public function notice(Request $request)
     {
@@ -152,7 +148,7 @@ class BaseController extends Controller
                 return response()->redirectTo(route('pc:mine', ['user' => $reportable_id]), 302);
                 break;
             case 'comments': // 评论部分暂时跳转到所属资源的详情页
-                $comment = CommentModel::find($reportable_id);
+                $comment = CommentModel::query()->find($reportable_id);
                 if (! $comment) {
                     return abort(404);
                 }

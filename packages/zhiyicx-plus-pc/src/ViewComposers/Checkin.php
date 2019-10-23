@@ -19,14 +19,14 @@
 namespace Zhiyi\Component\ZhiyiPlus\PlusComponentPc\ViewComposers;
 
 use Illuminate\View\View;
-use Illuminate\Support\Facades\Cache;
+use Cache;
 use function Zhiyi\Component\ZhiyiPlus\PlusComponentPc\api;
 
 class CheckIn
 {
     public function compose(View $view)
     {
-        $config = Cache::get('config');
+        $config = Cache::get('pc-config');
 
         if ($config['bootstrappers']['checkin']['switch']) {
             $data = api('GET', '/api/v2/user/checkin');
