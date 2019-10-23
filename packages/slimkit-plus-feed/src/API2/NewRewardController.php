@@ -21,6 +21,7 @@ declare(strict_types=1);
 namespace Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\API2;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 use Zhiyi\Plus\Models\CurrencyType;
 use Illuminate\Support\Facades\Cache;
 use Zhiyi\Plus\Http\Controllers\Controller;
@@ -106,7 +107,7 @@ class NewRewardController extends Controller
             ], 403);
         }
 
-        $feedTitle = str_limit($feed->feed_content, 100, '...');
+        $feedTitle = Str::limit($feed->feed_content, 100, '...');
         $feedTitle = ($feedTitle ? "“${feedTitle}”" : '');
 
         $pay = $process->prepayment($user, $amount, $target->id,

@@ -19,6 +19,7 @@
 namespace Zhiyi\Component\ZhiyiPlus\PlusComponentPc\AdminControllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
 use Zhiyi\Plus\Auth\JWTAuthToken;
 use Zhiyi\Plus\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
@@ -64,8 +65,8 @@ class HomeController extends Controller
 
         foreach ($components as $component => $info) {
             $info = (array) $info;
-            $installer = array_get($info, 'installer');
-            $installed = array_get($info, 'installed', false);
+            $installer = Arr::get($info, 'installer');
+            $installed = Arr::get($info, 'installed', false);
 
             if (! $installed || ! $installer) {
                 continue;

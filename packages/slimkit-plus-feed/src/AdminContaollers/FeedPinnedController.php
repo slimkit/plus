@@ -23,6 +23,7 @@ namespace Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\AdminControllers;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Str;
 use Zhiyi\Plus\Http\Controllers\Controller;
 use Zhiyi\Plus\Notifications\System as SystemNotification;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\Feed;
@@ -81,7 +82,7 @@ class FeedPinnedController extends Controller
     {
         $body = sprintf(
             '动态《%s》的置顶申请已被驳回，退还%s积分',
-            str_limit($pinned->feed->feed_content, 100),
+            Str::limit($pinned->feed->feed_content, 100),
             $pinned->amount
         );
 

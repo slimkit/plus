@@ -21,6 +21,7 @@ declare(strict_types=1);
 namespace Zhiyi\Plus\Http\Controllers\APIs\V2;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
 use Zhiyi\Plus\Models\User as UserModel;
 use Zhiyi\Plus\Models\Taggable as TaggableModel;
 use Zhiyi\Plus\Models\UserExtra as UserExtraModel;
@@ -205,7 +206,7 @@ class FindUserController extends Controller
         // $recommends = $users = [];
 
         $tags = $currentUser->tags()->select('tag_id')->get();
-        $tags = array_pluck($tags, 'tag_id');
+        $tags = Arr::pluck($tags, 'tag_id');
         // 根据用户标签获取用户
         $users = $taggable->whereIn('tag_id', $tags)
             ->where('taggable_id', '<>', $currentUser->id)

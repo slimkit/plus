@@ -20,6 +20,7 @@ declare(strict_types=1);
 
 namespace Zhiyi\Plus\Http\Controllers\APIs\V2;
 
+use Illuminate\Support\Arr;
 use Zhiyi\Plus\Http\Requests\API2\StoreWalletRecharge;
 use Illuminate\Contracts\Routing\ResponseFactory as ContractResponse;
 
@@ -39,7 +40,7 @@ class WalletRechargeApplePayController extends WalletRechargeController
         $charge = $this->createCharge($model);
 
         $model->charge_id = $charge['id'];
-        $model->transaction_no = array_get($charge, 'credential.applepay_upacp.tn');
+        $model->transaction_no = Arr::get($charge, 'credential.applepay_upacp.tn');
         $model->saveOrFail();
 
         return $response

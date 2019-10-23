@@ -23,6 +23,7 @@ namespace Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\AdminControllers;
 use DB;
 use Exception;
 use Carbon\Carbon;
+use Illuminate\Support\Str;
 use Zhiyi\Plus\Models\User;
 use Illuminate\Http\Request;
 use Zhiyi\Plus\Models\Comment;
@@ -268,7 +269,7 @@ class CommentController extends Controller
 
         $pinned->user->sendNotifyMessage(
             'feed-comment:pass',
-            sprintf('你的评论《%s》已被管理员设置为置顶', str_limit($pinned->comment->body, 100)
+            sprintf('你的评论《%s》已被管理员设置为置顶', Str::limit($pinned->comment->body, 100)
         ),
         [
             'comment' => $comment,
@@ -299,7 +300,7 @@ class CommentController extends Controller
             $pinned->expires_at = $datetime->toDateTimeString();
 
             $pinned->save();
-            $pinned->user->sendNotifyMessage('feed-comment:pass', sprintf('你的评论《%s》已被管理员设置为置顶', str_limit($pinned->comment->body, 100)), [
+            $pinned->user->sendNotifyMessage('feed-comment:pass', sprintf('你的评论《%s》已被管理员设置为置顶', Str::limit($pinned->comment->body, 100)), [
                 'comment' => $comment,
                 'pinned' => $pinned,
             ]);
@@ -313,7 +314,7 @@ class CommentController extends Controller
             $pinnedNode->user_id = $comment->user_id;
             $pinnedNode->save();
 
-            $pinnedNode->user->sendNotifyMessage('feed-comment:pass', sprintf('你的评论《%s》已被管理员设置为置顶', str_limit($pinnedNode->comment->body, 100)), [
+            $pinnedNode->user->sendNotifyMessage('feed-comment:pass', sprintf('你的评论《%s》已被管理员设置为置顶', Str::limit($pinnedNode->comment->body, 100)), [
                 'comment' => $comment,
                 'pinned' => $pinnedNode,
             ]);

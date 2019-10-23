@@ -4,11 +4,11 @@
     "type": "library",
     "license": "MIT",
     "require": {
-        "php": ">=7.0",
-        "illuminate/console": "5.7.*",
-        "illuminate/contracts": "5.7.*",
-        "illuminate/database": "5.7.*",
-        "illuminate/support": "5.7.*"
+        "php": ">=7.2.0",
+        "illuminate/console": "5.8.*",
+        "illuminate/contracts": "5.8.*",
+        "illuminate/database": "5.8.*",
+        "illuminate/support": "5.8.*"
     },
     "autoload": {
         "psr-4": {
@@ -28,5 +28,5 @@
             ]
         }
     },
-    "version": "2.3.1"
+    "version": "2.3.2"
 }

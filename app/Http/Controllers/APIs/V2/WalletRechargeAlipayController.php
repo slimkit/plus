@@ -20,6 +20,7 @@ declare(strict_types=1);
 
 namespace Zhiyi\Plus\Http\Controllers\APIs\V2;
 
+use Illuminate\Support\Arr;
 use Zhiyi\Plus\Http\Requests\API2\StoreWalletRecharge;
 use Illuminate\Contracts\Routing\ResponseFactory as ContractResponse;
 
@@ -85,7 +86,7 @@ class WalletRechargeAlipayController extends WalletRechargeController
 
         if (! is_array($extra)) {
             $this->app->abort(422, '请求参数不合法');
-        } elseif (! array_get($extra, 'success_url')) {
+        } elseif (! Arr::get($extra, 'success_url')) {
             $this->app->abort(422, 'extra.success_url 必须存在');
         }
 
@@ -114,7 +115,7 @@ class WalletRechargeAlipayController extends WalletRechargeController
 
         if (! is_array($extra)) {
             $this->app->abort(422, '请求参数不合法');
-        } elseif (! array_get($extra, 'success_url')) {
+        } elseif (! Arr::get($extra, 'success_url')) {
             $this->app->abort(422, 'extra.success_url 必须存在');
         }
 

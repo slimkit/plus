@@ -21,6 +21,7 @@ declare(strict_types=1);
 namespace Zhiyi\Plus\Http\Controllers\APIs\V2;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
 use function Zhiyi\Plus\setting;
 use Zhiyi\Plus\Services\Wallet\Charge as ChargeService;
 use Zhiyi\Plus\Models\WalletCharge as WalletChargeModel;
@@ -75,13 +76,13 @@ class PingPlusPlusChargeWebHooks
      */
     protected function resolveChargeAccount($charge, $default = null)
     {
-        $channel = array_get($charge, 'channel');
+        $channel = Arr::get($charge, 'channel');
         // 支付宝渠道
         if (in_array($channel, ['alipay', 'alipay_wap', 'alipay_pc_direct', 'alipay_qr'])) {
-            return array_get($charge, 'extra.buyer_account', $default); // 支付宝付款账号
+            return Arr::get($charge, 'extra.buyer_account', $default); // 支付宝付款账号
         // 微信渠道
         } elseif (in_array($channel, ['wx', 'wx_pub', 'wx_pub_qr', 'wx_wap', 'wx_lite'])) {
-            return array_get($charge, 'extra.open_id', $default); // 用户唯一 open_id
+            return Arr::get($charge, 'extra.open_id', $default); // 用户唯一 open_id
         }
 
         return $default;

@@ -22,6 +22,7 @@ namespace Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\API2;
 
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 use Zhiyi\Plus\Http\Controllers\Controller;
 use Zhiyi\Plus\Models\Comment as CommentModel;
 use Zhiyi\Plus\Models\UserCount as UserCountModel;
@@ -159,7 +160,7 @@ class PinnedController extends Controller
                 $charge->action = 0;
                 $charge->amount = $pinned->amount;
                 $charge->subject = '动态申请置顶';
-                $charge->body = sprintf('申请置顶动态《%s》', str_limit($feed->feed_content, 100));
+                $charge->body = sprintf('申请置顶动态《%s》', Str::limit($feed->feed_content, 100));
                 $charge->status = 1;
 
                 return $this->app->call([$this, 'save'], [

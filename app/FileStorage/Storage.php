@@ -21,6 +21,7 @@ declare(strict_types=1);
 namespace Zhiyi\Plus\FileStorage;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 use Zhiyi\Plus\AppInterface;
 use Illuminate\Support\Carbon;
 use Symfony\Component\HttpFoundation\Response;
@@ -151,7 +152,7 @@ class Storage implements StorageInterface
         $path = (new Carbon)->format('Y/m/d');
         $ext = pathinfo($filename, PATHINFO_EXTENSION);
 
-        return sprintf('%s/%s%s', $path, str_random(64), $ext ? '.'.$ext : '');
+        return sprintf('%s/%s%s', $path, Str::random(64), $ext ? '.'.$ext : '');
     }
 
     /**

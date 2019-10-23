@@ -21,6 +21,7 @@ declare(strict_types=1);
 namespace Zhiyi\Plus\Http\Controllers\APIs\V2;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 use Zhiyi\Plus\Http\Requests\API2\StoreWalletRecharge;
 use Zhiyi\Plus\Models\WalletCharge as WalletChargeModel;
 use Zhiyi\Plus\Services\Wallet\Charge as WalletChargeService;
@@ -95,7 +96,7 @@ class WalletRechargeController extends Controller
      */
     protected function resolveStore(string $type)
     {
-        return $this->app->call([$this, camel_case($type.'_store')]);
+        return $this->app->call([$this, Str::camel($type.'_store')]);
     }
 
     /**

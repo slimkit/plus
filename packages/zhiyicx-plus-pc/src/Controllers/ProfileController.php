@@ -19,6 +19,7 @@
 namespace Zhiyi\Component\ZhiyiPlus\PlusComponentPc\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
 use function Zhiyi\Plus\username;
 use Zhiyi\Plus\Models\User as UserModel;
 use function Zhiyi\Component\ZhiyiPlus\PlusComponentPc\api;
@@ -209,7 +210,7 @@ class ProfileController extends BaseController
             $answers = api('GET', '/api/v2/user/question-answer/collections', $params);
 
             $after = last($answers)['id'] ?? 0;
-            $data['datas'] = array_pluck($answers, 'collectible');
+            $data['datas'] = Arr::pluck($answers, 'collectible');
             $html = view('pcview::templates.answer', $data, $this->PlusData)->render();
 
             return response()->json([

@@ -21,6 +21,7 @@ declare(strict_types=1);
 namespace Slimkit\PlusAppversion\Handlers;
 
 use Illuminate\Console\Command;
+use Illuminate\Support\Str;
 use Slimkit\PlusAppversion\Support\Path;
 use Illuminate\Contracts\Foundation\Application as ApplicationContract;
 
@@ -101,7 +102,7 @@ class DevPackageHandler extends \Zhiyi\Plus\Support\PackageHandler
 
             return $name;
         });
-        $name = ucfirst(camel_case($name));
+        $name = ucfirst(Str::camel($name));
         $filename = $path.'/'.$name.'Seeder.php';
 
         if (file_exists($filename)) {
@@ -135,8 +136,8 @@ class DevPackageHandler extends \Zhiyi\Plus\Support\PackageHandler
 
             return $modelName;
         });
-        $modelName = ucfirst(camel_case($modelName));
-        $table = str_plural(strtolower(snake_case($modelName)));
+        $modelName = ucfirst(Str::camel($modelName));
+        $table = Str::plural(strtolower(Str::snake($modelName)));
         $table = $command->getOutput()->ask('Enter the table name', $table, function ($table) {
             if (! preg_match('/^[a-z0-9_]+$/is', $table)) {
                 throw new \InvalidArgumentException(

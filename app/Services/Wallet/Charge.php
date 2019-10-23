@@ -20,6 +20,7 @@ declare(strict_types=1);
 
 namespace Zhiyi\Plus\Services\Wallet;
 
+use Illuminate\Support\Str;
 use function Zhiyi\Plus\setting;
 use Pingpp\Pingpp as PingppInit;
 use Pingpp\Charge as PingppCharge;
@@ -252,7 +253,7 @@ class Charge
     public function checkRechargeArgs(string $type, array $extra): bool
     {
         if (in_array($type, $this->allowType)) {
-            return $this->{camel_case('check_'.$type.'_extra')}($extra);
+            return $this->{Str::camel('check_'.$type.'_extra')}($extra);
         }
 
         return false;

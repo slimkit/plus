@@ -20,6 +20,8 @@ declare(strict_types=1);
 
 namespace SlimKit\PlusID\Support;
 
+use Illuminate\Support\Arr;
+
 class URL
 {
     /**
@@ -87,9 +89,9 @@ class URL
     public function __construct(string $uri)
     {
         $parts = parse_url(urldecode($uri));
-        if (array_get($parts, 'scheme') === 'http' && ! array_get($parts, 'port')) {
+        if (Arr::get($parts, 'scheme') === 'http' && ! Arr::get($parts, 'port')) {
             $this->port = 80;
-        } elseif (array_get($parts, 'scheme') === 'https' && ! array_get($parts, 'port')) {
+        } elseif (Arr::get($parts, 'scheme') === 'https' && ! Arr::get($parts, 'port')) {
             $this->port = 443;
         }
 

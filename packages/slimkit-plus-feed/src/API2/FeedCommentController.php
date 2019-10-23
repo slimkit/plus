@@ -23,6 +23,7 @@ namespace Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\API2;
 use Cache;
 use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Str;
 use Zhiyi\Plus\Http\Controllers\Controller;
 use Zhiyi\Plus\AtMessage\AtMessageHelperTrait;
 use Zhiyi\Plus\Models\Comment as CommentModel;
@@ -147,7 +148,7 @@ class FeedCommentController extends Controller
                 $process = new UserProcess();
                 $process->reject(0, $pinnedComment->amount, $user->id,
                     '评论申请置顶退款', sprintf('退还在动态《%s》申请置顶的评论的款项',
-                        str_limit($feed->feed_content, 100)));
+                        Str::limit($feed->feed_content, 100)));
                 $userCount = UserCountModel::firstOrNew([
                     'user_id' => $feed->user_id,
                     'type'    => 'user-feed-comment-pinned',

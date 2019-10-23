@@ -20,6 +20,8 @@ declare(strict_types=1);
 
 namespace Zhiyi\Plus\Support;
 
+use Illuminate\Support\Str;
+
 abstract class PackageHandler
 {
     /**
@@ -73,7 +75,7 @@ abstract class PackageHandler
             $handle = substr($handle, 0, -6);
         }
 
-        return str_replace('_', '-', snake_case($handle));
+        return str_replace('_', '-', Str::snake($handle));
     }
 
     /**
@@ -89,7 +91,7 @@ abstract class PackageHandler
             $handle = substr($handle, 0, -6);
         }
 
-        return camel_case(str_replace('-', '_', $handle.'_handle'));
+        return Str::camel(str_replace('-', '_', $handle.'_handle'));
     }
 
     /**

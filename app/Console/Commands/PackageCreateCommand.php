@@ -22,6 +22,7 @@ namespace Zhiyi\Plus\Console\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Config\Repository;
+use Illuminate\Support\Str;
 use Symfony\Component\Finder\Finder;
 
 class PackageCreateCommand extends Command
@@ -181,7 +182,7 @@ class PackageCreateCommand extends Command
         $name = str_replace('.', '', $name);
         $name = str_replace('-', '_', $name);
 
-        return ucfirst(camel_case($name));
+        return ucfirst(Str::camel($name));
     }
 
     /**
