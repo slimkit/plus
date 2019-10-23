@@ -47,6 +47,7 @@ abstract class CdnUrlGenerator implements FileUrlGeneratorContract
      * Set file data model.
      *
      * @param \Zhiyi\Plus\Models\File $file
+     * @return CdnUrlGenerator
      * @author Seven Du <shiweidu@outlook.com>
      */
     protected function setFile(File $file)

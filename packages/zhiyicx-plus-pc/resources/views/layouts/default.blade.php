@@ -77,9 +77,14 @@
     <script src="{{ mix('easemob.min.js', 'assets/pc') }}"></script>
     <script src="{{ asset('assets/pc/js/module.easemob.js') }}"></script>
     <script>
-      easemob.getUnreadMessage()
-      var unread_message_timeout = window.setInterval(easemob.getUnreadMessage,
-        20000)
+      if(TS['id']) {
+          /*设置未读消息定时器*/
+          easemob.getUnreadMessage()
+          var unread_message_timeout = window.setInterval(easemob.getUnreadMessage(),
+              20000)
+          easemob.getUnreadChats()
+          var unread_chat_timeout = window.setInterval(easemob.getUnreadChats, 1000)
+      }
     </script>
     @yield('scripts')
 

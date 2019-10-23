@@ -20,6 +20,7 @@ declare(strict_types=1);
 
 namespace Zhiyi\Plus\Http\Controllers\APIs\V2;
 
+use Cache;
 use Image;
 use Carbon\Carbon;
 use Illuminate\Support\Str;
@@ -40,7 +41,7 @@ class FilesController extends Controller
      *
      * @param \Illuminate\Http\Request $request
      * @param \Illuminate\Contracts\Routing\ResponseFactory $response
-     * @param \Zhiyi\Plus\Cdn\UrlManager $manager
+     * @param CdnUrlManager $cdn
      * @param \Zhiyi\Plus\Models\FileWith $fileWith
      * @return mixed
      * @author Seven Du <shiweidu@outlook.com>
@@ -63,7 +64,9 @@ class FilesController extends Controller
             $extra['blur'] = (int) config('image.blur', 96);
         }
 
-        $url = $cdn->make($fileWith->file, $extra);
+        $url = Cache::remember(sprintf('file_url_%d_%s', $fileWith->id, implode('_', $extra)), 50, function () use ($fileWith, $cdn, $extra) {
+            return $cdn->make($fileWith->file, $extra);
+        });
 
         return $request->query('json') !== null
             ? $response->json(['url' => $url])->setStatusCode(200)
@@ -74,8 +77,8 @@ class FilesController extends Controller
      * 解决用户是否购买过处理.
      *
      * @param \Zhiyi\Plus\Models\User|null $user
-     * @param \Zhiyi\Plus\Models\PaidNode  $pay
-     * @return void
+     * @param PaidNodeModel $node
+     * @return bool
      * @author Seven Du <shiweidu@outlook.com>
      */
     protected function resolveUserPaid($user, PaidNodeModel $node): bool

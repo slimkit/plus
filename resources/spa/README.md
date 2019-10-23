@@ -8,7 +8,6 @@
 
 使用现代 Web 技术 [Vue.js](https://github.com/vuejs/vue) 编写的 [Plus(ThinkSNS+)](https://github.com/slimkit/plus) 浏览器单页客户端。
 
-
 [![GitHub release](https://img.shields.io/github/release/slimkit/plus-small-screen-client.svg?style=flat-square)](https://github.com/slimkit/plus-small-screen-client/releases)
 [![Build Status](https://img.shields.io/travis/com/slimkit/plus-small-screen-client/master.svg?style=flat-square)](https://travis-ci.com/slimkit/plus-small-screen-client)
 [![QQ Group](https://img.shields.io/badge/QQ%20Group-651240785-red.svg?longCache=true&style=flat-square)](//shang.qq.com/wpa/qunwpa?idkey=01b61bdf8a7efc2a40ab4caab2d14793f340e5fe5d09aa0c2c17f3115a579678)
@@ -56,7 +55,7 @@
 
 - `serve` 用于开发，修改代码后会自动 Hot Reload
 - `build` 用于正式部署的打包，执行完成后会多出一个 `dist/` 目录
-- `lint`  用于代码检查和风格修复
+- `lint` 用于代码检查和风格修复
 
 ## 第三方可选功能
 
@@ -68,7 +67,7 @@
 
 使用时请填写 `.env` 文件中的以下两行
 
-``` ini
+```ini
 # MobLink 唤起APP
 VUE_APP_MOBLINK_ENABLE=true          # MobLink 引导启动 APP 开关
 VUE_APP_MOBLINK_KEY=xxxxxxxxxxxx     # MobLink APP KEY
@@ -78,11 +77,100 @@ VUE_APP_MOBLINK_KEY=xxxxxxxxxxxx     # MobLink APP KEY
 
 使用时请修改 `.env` 文件中的以下部分以唤起 QQ 在线资讯
 
-``` ini
+```ini
 # QQ 在线咨询
 VUE_APP_QQ_CONSULT_ENALBE=true       # QQ 咨询开关
 VUE_APP_QQ_CONSULT_UIN=10000         # QQ 号码 （需要先开通在线状态）
 VUE_APP_QQ_CONSULT_LABEL=在线咨询      # 标签文本
+```
+
+## 目录结构
+
+```
+.
+├── dist 已经编译好的静态资源
+│   ├── css
+│   ├── img
+│   ├── js
+│   └── libs
+├── public 公共内容
+│   └── libs
+├── scripts vue编译时需要的命令
+├── src 主目录，操作都在这里
+│   ├── api api目录
+│   ├── components 组件目录
+│   │   ├── FeedCard 动态相关组件
+│   │   ├── common 页面中使用的公共组件
+│   │   ├── form 提交表单的公共组件
+│   │   ├── reference
+│   │   ├── style
+│   │   │   └── pswp
+│   │   ├── tabs tab相关的组件
+│   │   └── vendor 三方登录组件
+│   ├── console 控制台样式
+│   ├── constants 常量
+│   ├── directives 指令目录
+│   ├── easemob 环信相关
+│   ├── icons icon相关
+│   ├── images 图片相关
+│   ├── locales 多语言相关
+│   ├── page 页面目录
+│   │   ├── article
+│   │   │   └── components
+│   │   ├── checkin 签到
+│   │   ├── common 公共页面
+│   │   ├── feed 动态
+│   │   ├── find 发现
+│   │   ├── group 圈子
+│   │   │   └── components
+│   │   ├── message 消息
+│   │   │   ├── children
+│   │   │   │   ├── audits
+│   │   │   │   ├── comments
+│   │   │   │   └── likes
+│   │   │   ├── components
+│   │   │   └── list
+│   │   ├── news 资讯
+│   │   │   └── components
+│   │   ├── post 发布页面
+│   │   │   └── components
+│   │   ├── profile 个人主页
+│   │   │   ├── children
+│   │   │   ├── collection
+│   │   │   └── components
+│   │   ├── question 问答
+│   │   │   └── components
+│   │   ├── rank 排行榜
+│   │   │   ├── children
+│   │   │   ├── components
+│   │   │   └── lists
+│   │   ├── sign 登录
+│   │   ├── topic 话题
+│   │   │   └── components
+│   │   └── wechat
+│   ├── plugins 插件
+│   │   ├── imgCropper
+│   │   ├── lstore
+│   │   ├── message
+│   │   │   └── style
+│   │   └── message-box
+│   ├── routers 路由目录
+│   ├── stores vuex目录
+│   │   ├── easemob
+│   │   └── module
+│   │       ├── easemob
+│   │       ├── post
+│   │       └── rank
+│   ├── style 样式
+│   ├── util 工具库
+│   ├── utils 工具库
+│   └── vendor 三方组件
+│       └── easemob
+└── tests 测试
+    └── unit
+        └── components
+            └── common
+
 ```
 
 ## License

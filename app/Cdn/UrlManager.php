@@ -72,6 +72,7 @@ class UrlManager implements UrlFactoryContract
      *
      * @param \Zhiyi\Plus\Models\File $file
      * @param array $extra
+     * @param string $driver
      * @return string
      * @author Seven Du <shiweidu@outlook.com>
      */
