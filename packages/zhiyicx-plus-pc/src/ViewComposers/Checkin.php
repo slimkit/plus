@@ -18,8 +18,8 @@
 
 namespace Zhiyi\Component\ZhiyiPlus\PlusComponentPc\ViewComposers;
 
-use Illuminate\View\View;
 use Cache;
+use Illuminate\View\View;
 use function Zhiyi\Component\ZhiyiPlus\PlusComponentPc\api;
 
 class CheckIn
