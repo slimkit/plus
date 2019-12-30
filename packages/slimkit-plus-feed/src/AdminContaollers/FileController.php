@@ -20,11 +20,11 @@ declare(strict_types=1);
 
 namespace Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\AdminControllers;
 
-use Illuminate\Http\Request;
-use Zhiyi\Plus\Http\Controllers\Controller;
-use Zhiyi\Plus\Cdn\UrlManager as CdnUrlManager;
-use Zhiyi\Plus\Models\FileWith as FileWithModel;
 use Illuminate\Contracts\Routing\ResponseFactory as ResponseContract;
+use Illuminate\Http\Request;
+use Zhiyi\Plus\Cdn\UrlManager as CdnUrlManager;
+use Zhiyi\Plus\Http\Controllers\Controller;
+use Zhiyi\Plus\Models\FileWith as FileWithModel;
 
 class FileController extends Controller
 {

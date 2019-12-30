@@ -21,18 +21,18 @@ declare(strict_types=1);
 namespace Zhiyi\Plus\Models;
 
 use Cache;
-use Tymon\JWTAuth\Contracts\JWTSubject;
-use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Builder;
-use Medz\Laravel\Notifications\JPush\Sender;
-use Illuminate\Database\Eloquent\SoftDeletes;
-use Zhiyi\Plus\FileStorage\FileMetaInterface;
-use Illuminate\Database\Eloquent\Relations\HasOne;
-use Zhiyi\Plus\Models\Relations\UserHasWalletCash;
-use Illuminate\Database\Eloquent\Relations\MorphToMany;
-use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\MorphToMany;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
+use Medz\Laravel\Notifications\JPush\Sender;
+use Tymon\JWTAuth\Contracts\JWTSubject;
+use Zhiyi\Plus\FileStorage\FileMetaInterface;
 use Zhiyi\Plus\FileStorage\Traits\EloquentAttributeTrait as FileStorageEloquentAttributeTrait;
+use Zhiyi\Plus\Models\Relations\UserHasWalletCash;
 
 class User extends Authenticatable implements JWTSubject
 {

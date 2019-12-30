@@ -20,11 +20,11 @@ declare(strict_types=1);
 
 namespace Zhiyi\Plus\Packages\Wallet;
 
-use JsonSerializable;
-use Zhiyi\Plus\Models\User as UserModel;
-use Illuminate\Contracts\Support\Jsonable;
 use Illuminate\Contracts\Support\Arrayable;
+use Illuminate\Contracts\Support\Jsonable;
+use JsonSerializable;
 use Zhiyi\Plus\Models\NewWallet as WalletModel;
+use Zhiyi\Plus\Models\User as UserModel;
 
 class Wallet implements Arrayable, Jsonable, JsonSerializable
 {

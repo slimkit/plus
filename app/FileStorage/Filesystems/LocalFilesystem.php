@@ -20,19 +20,19 @@ declare(strict_types=1);
 
 namespace Zhiyi\Plus\FileStorage\Filesystems;
 
+use Illuminate\Contracts\Auth\Guard;
+use Illuminate\Contracts\Filesystem\Filesystem as FilesystemContract;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
-use function Zhiyi\Plus\setting;
-use Zhiyi\Plus\FileStorage\Task;
-use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Support\Facades\Auth;
 use Intervention\Image\Facades\Image;
-use Zhiyi\Plus\FileStorage\TaskInterface;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
+use Symfony\Component\HttpFoundation\Response;
 use Zhiyi\Plus\FileStorage\FileMetaInterface;
 use Zhiyi\Plus\FileStorage\ResourceInterface;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\BinaryFileResponse;
-use Illuminate\Contracts\Filesystem\Filesystem as FilesystemContract;
+use Zhiyi\Plus\FileStorage\Task;
+use Zhiyi\Plus\FileStorage\TaskInterface;
+use function Zhiyi\Plus\setting;
 
 class LocalFilesystem implements FilesystemInterface
 {

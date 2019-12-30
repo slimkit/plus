@@ -21,12 +21,12 @@ declare(strict_types=1);
 namespace Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Repository;
 
 use Carbon\Carbon;
-use function Zhiyi\Plus\setting;
-use Illuminate\Database\Eloquent\Collection;
-use Zhiyi\Plus\Models\FileWith as FileWithModel;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Contracts\Cache\Repository as CacheContract;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\Feed as FeedModel;
+use Zhiyi\Plus\Models\FileWith as FileWithModel;
+use function Zhiyi\Plus\setting;
 
 class Feed
 {

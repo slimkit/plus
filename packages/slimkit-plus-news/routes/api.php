@@ -18,8 +18,8 @@ declare(strict_types=1);
  * +----------------------------------------------------------------------+
  */
 
-use Illuminate\Support\Facades\Route;
 use Illuminate\Contracts\Routing\Registrar as RouteContract;
+use Illuminate\Support\Facades\Route;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentNews\API2\Controllers as API2;
 
 /*

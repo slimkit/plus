@@ -20,12 +20,12 @@ declare(strict_types=1);
 
 namespace Zhiyi\Component\ZhiyiPlus\PlusComponentNews\AdminControllers;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Zhiyi\Plus\Notifications\System;
-use Illuminate\Database\Eloquent\Builder;
-use Zhiyi\Plus\Http\Controllers\Controller;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentNews\Models\NewsApplyLog;
+use Zhiyi\Plus\Http\Controllers\Controller;
+use Zhiyi\Plus\Notifications\System;
 
 class NewsApplyLogController extends Controller
 {

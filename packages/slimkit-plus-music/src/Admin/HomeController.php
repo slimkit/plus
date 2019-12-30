@@ -22,17 +22,17 @@ namespace Zhiyi\Component\ZhiyiPlus\PlusComponentMusic\AdminControllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
-use Zhiyi\Plus\Http\Controllers\Controller;
-use Zhiyi\Plus\Cdn\UrlManager as CdnUrlManager;
-use Zhiyi\Plus\Models\FileWith as FileWithModel;
-use Zhiyi\Plus\Models\PaidNode as PaidNodeModel;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentMusic\Models\Music;
-use function Zhiyi\Component\ZhiyiPlus\PlusComponentMusic\view;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentMusic\Models\MusicSinger;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentMusic\Models\MusicSpecial;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentMusic\Requests\MusicAdd as MusicAddRequest;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentMusic\Requests\SpecialAdd as SpecialAddRequest;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentMusic\Requests\SpecialUpdate as SpecialUpdateRequest;
+use function Zhiyi\Component\ZhiyiPlus\PlusComponentMusic\view;
+use Zhiyi\Plus\Cdn\UrlManager as CdnUrlManager;
+use Zhiyi\Plus\Http\Controllers\Controller;
+use Zhiyi\Plus\Models\FileWith as FileWithModel;
+use Zhiyi\Plus\Models\PaidNode as PaidNodeModel;
 
 class HomeController extends Controller
 {

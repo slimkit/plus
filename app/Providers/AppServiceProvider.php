@@ -20,15 +20,15 @@ declare(strict_types=1);
 
 namespace Zhiyi\Plus\Providers;
 
-use Zhiyi\Plus\Models\User;
-use Illuminate\Support\Facades\Schema;
-use Zhiyi\Plus\Observers\UserObserver;
-use Illuminate\Support\ServiceProvider;
-use function Zhiyi\Plus\validateUsername;
-use Zhiyi\Plus\Packages\Wallet\TypeManager;
 use Illuminate\Http\Resources\Json\Resource;
-use function Zhiyi\Plus\validateChinaPhoneNumber;
+use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\ServiceProvider;
+use Zhiyi\Plus\Models\User;
+use Zhiyi\Plus\Observers\UserObserver;
 use Zhiyi\Plus\Packages\Wallet\TargetTypeManager;
+use Zhiyi\Plus\Packages\Wallet\TypeManager;
+use function Zhiyi\Plus\validateChinaPhoneNumber;
+use function Zhiyi\Plus\validateUsername;
 
 class AppServiceProvider extends ServiceProvider
 {

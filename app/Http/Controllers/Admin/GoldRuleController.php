@@ -21,9 +21,9 @@ declare(strict_types=1);
 namespace Zhiyi\Plus\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
+use Zhiyi\Plus\Http\Controllers\Controller;
 use Zhiyi\Plus\Models\Ability;
 use Zhiyi\Plus\Models\GoldRule;
-use Zhiyi\Plus\Http\Controllers\Controller;
 
 class GoldRuleController extends Controller
 {

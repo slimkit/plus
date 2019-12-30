@@ -22,9 +22,9 @@ namespace Zhiyi\Plus\API2\Controllers\User\Message;
 
 use Illuminate\Http\Response;
 use Zhiyi\Plus\API2\Controllers\Controller;
-use Zhiyi\Plus\Models\AtMessage as AtMessageModel;
 use Zhiyi\Plus\API2\Requests\User\Message\ListAtMessageLine;
 use Zhiyi\Plus\API2\Resources\User\Message\AtMessage as AtMessageResource;
+use Zhiyi\Plus\Models\AtMessage as AtMessageModel;
 
 class At extends Controller
 {

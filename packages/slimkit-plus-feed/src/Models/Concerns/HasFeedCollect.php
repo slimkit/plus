@@ -20,9 +20,9 @@ declare(strict_types=1);
 
 namespace Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\Concerns;
 
-use Zhiyi\Plus\Models\User;
 use Illuminate\Support\Facades\Cache;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\CacheName\CacheKeys;
+use Zhiyi\Plus\Models\User;
 
 trait HasFeedCollect
 {

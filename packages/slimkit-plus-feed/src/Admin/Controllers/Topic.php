@@ -20,16 +20,16 @@ declare(strict_types=1);
 
 namespace Zhiyi\Plus\Packages\Feed\Admin\Controllers;
 
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Carbon;
-use function Zhiyi\Plus\setting;
-use Illuminate\Http\JsonResponse;
-use Zhiyi\Plus\Models\FeedTopic as TopicModel;
-use Zhiyi\Plus\API2\Controllers\Feed\Topic as Controller;
-use Zhiyi\Plus\Notifications\System as SystemNotification;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
+use Zhiyi\Plus\API2\Controllers\Feed\Topic as Controller;
+use Zhiyi\Plus\Models\FeedTopic as TopicModel;
+use Zhiyi\Plus\Notifications\System as SystemNotification;
 use Zhiyi\Plus\Packages\Feed\Admin\Requests\ListAllTopics as ListTopicsRequest;
+use function Zhiyi\Plus\setting;
 
 class Topic extends Controller
 {

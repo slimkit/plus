@@ -20,8 +20,8 @@ declare(strict_types=1);
 
 namespace Zhiyi\Plus\FileStorage\Validators\Rulers;
 
-use Zhiyi\Plus\AppInterface;
 use Illuminate\Contracts\Validation\Factory as ValidationFactoryContract;
+use Zhiyi\Plus\AppInterface;
 
 class ValidatorRulesRegister
 {

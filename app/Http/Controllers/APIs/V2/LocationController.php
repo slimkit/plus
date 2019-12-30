@@ -20,10 +20,10 @@ declare(strict_types=1);
 
 namespace Zhiyi\Plus\Http\Controllers\APIs\V2;
 
+use Illuminate\Contracts\Routing\ResponseFactory as ResponseFactoryContract;
 use Illuminate\Http\Request;
 use Zhiyi\Plus\Models\Area as AreaModel;
 use Zhiyi\Plus\Models\CommonConfig as ConfigModel;
-use Illuminate\Contracts\Routing\ResponseFactory as ResponseFactoryContract;
 
 class LocationController extends Controller
 {

@@ -20,13 +20,13 @@ declare(strict_types=1);
 
 namespace Zhiyi\Plus\Http\Controllers\APIs\V2;
 
-use Zhiyi\Plus\CacheNames;
-use Zhiyi\Plus\Models\User;
-use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
-use Zhiyi\Plus\Models\CurrencyType;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
+use Zhiyi\Plus\CacheNames;
 use Zhiyi\Plus\Http\Middleware\VerifyUserPassword;
+use Zhiyi\Plus\Models\CurrencyType;
+use Zhiyi\Plus\Models\User;
 use Zhiyi\Plus\Notifications\System as SystemNotification;
 use Zhiyi\Plus\Packages\Currency\Processes\User as UserProcess;
 

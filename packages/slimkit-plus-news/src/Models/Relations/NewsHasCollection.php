@@ -20,9 +20,9 @@ declare(strict_types=1);
 
 namespace Zhiyi\Component\ZhiyiPlus\PlusComponentNews\Models\Relations;
 
-use Zhiyi\Plus\Models\User;
 use Illuminate\Support\Facades\Cache;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentNews\Models\NewsCollection;
+use Zhiyi\Plus\Models\User;
 
 trait NewsHasCollection
 {

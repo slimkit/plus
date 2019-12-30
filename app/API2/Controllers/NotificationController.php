@@ -20,17 +20,17 @@ declare(strict_types=1);
 
 namespace Zhiyi\Plus\API2\Controllers;
 
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Illuminate\Http\JsonResponse;
-use Zhiyi\Plus\Utils\DateTimeToIso8601ZuluString;
-use Zhiyi\Plus\Notifications\At as AtNotification;
-use Zhiyi\Plus\Notifications\Like as LikeNotification;
-use Zhiyi\Plus\Notifications\Follow as FollowNotification;
-use Zhiyi\Plus\Notifications\System as SystemNotification;
-use Zhiyi\Plus\Notifications\Comment as CommentNotification;
-use Zhiyi\Plus\API2\Resources\Notification as NotificationResource;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
+use Zhiyi\Plus\API2\Resources\Notification as NotificationResource;
+use Zhiyi\Plus\Notifications\At as AtNotification;
+use Zhiyi\Plus\Notifications\Comment as CommentNotification;
+use Zhiyi\Plus\Notifications\Follow as FollowNotification;
+use Zhiyi\Plus\Notifications\Like as LikeNotification;
+use Zhiyi\Plus\Notifications\System as SystemNotification;
+use Zhiyi\Plus\Utils\DateTimeToIso8601ZuluString;
 
 class NotificationController extends Controller
 {

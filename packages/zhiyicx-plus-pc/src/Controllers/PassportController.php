@@ -19,17 +19,17 @@
 namespace Zhiyi\Component\ZhiyiPlus\PlusComponentPc\Controllers;
 
 use Auth;
+use Gregwar\Captcha\CaptchaBuilder;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth as Authorize;
+use Illuminate\Validation\ValidationException;
 use Session;
 use Tymon\JWTAuth\JWT;
 use Tymon\JWTAuth\JWTAuth;
-use Zhiyi\Plus\Models\User;
-use Illuminate\Http\Request;
-use function Zhiyi\Plus\username;
-use Gregwar\Captcha\CaptchaBuilder;
-use Zhiyi\Plus\Models\VerificationCode;
-use Illuminate\Validation\ValidationException;
-use Illuminate\Support\Facades\Auth as Authorize;
 use function Zhiyi\Component\ZhiyiPlus\PlusComponentPc\api;
+use Zhiyi\Plus\Models\User;
+use Zhiyi\Plus\Models\VerificationCode;
+use function Zhiyi\Plus\username;
 
 class PassportController extends BaseController
 {

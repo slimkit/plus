@@ -20,8 +20,8 @@ declare(strict_types=1);
 
 namespace Slimkit\PlusAroundAmap\Models;
 
-use Zhiyi\Plus\Models\User;
 use Illuminate\Database\Eloquent\Model;
+use Zhiyi\Plus\Models\User;
 
 class AroundAmap extends Model
 {

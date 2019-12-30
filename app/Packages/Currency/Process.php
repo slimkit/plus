@@ -20,8 +20,8 @@ declare(strict_types=1);
 
 namespace Zhiyi\Plus\Packages\Currency;
 
-use Zhiyi\Plus\Models\User as UserModel;
 use Zhiyi\Plus\Models\CurrencyType as CurrencyTypeModel;
+use Zhiyi\Plus\Models\User as UserModel;
 
 class Process
 {

@@ -21,10 +21,10 @@ declare(strict_types=1);
 namespace Zhiyi\Plus\Packages\Currency\Processes;
 
 use DB;
-use function Zhiyi\Plus\setting;
+use Zhiyi\Plus\Models\CurrencyOrder as CurrencyOrderModel;
 use Zhiyi\Plus\Packages\Currency\Order;
 use Zhiyi\Plus\Packages\Currency\Process;
-use Zhiyi\Plus\Models\CurrencyOrder as CurrencyOrderModel;
+use function Zhiyi\Plus\setting;
 
 class Cash extends Process
 {

@@ -18,12 +18,12 @@
 
 namespace Zhiyi\Component\ZhiyiPlus\PlusComponentPc\AdminControllers;
 
-use Illuminate\Http\Request;
-use Zhiyi\Plus\Support\Configuration;
 use Illuminate\Contracts\Config\Repository;
-use Zhiyi\Plus\Http\Controllers\Controller;
-use Zhiyi\Component\ZhiyiPlus\PlusComponentPc\Models\Navigation;
+use Illuminate\Http\Request;
 use function Zhiyi\Component\ZhiyiPlus\PlusComponentPc\cacheClear;
+use Zhiyi\Component\ZhiyiPlus\PlusComponentPc\Models\Navigation;
+use Zhiyi\Plus\Http\Controllers\Controller;
+use Zhiyi\Plus\Support\Configuration;
 
 class ConfigController extends Controller
 {

@@ -20,12 +20,12 @@ declare(strict_types=1);
 
 namespace Zhiyi\Plus\Http\Controllers\APIs\V2;
 
+use Illuminate\Contracts\Routing\ResponseFactory as ResponseFactoryContract;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
-use Zhiyi\Plus\Models\FileWith as FileWithModel;
-use Zhiyi\Plus\Models\Certification as CertificationModel;
-use Illuminate\Contracts\Routing\ResponseFactory as ResponseFactoryContract;
 use Zhiyi\Plus\Http\Requests\API2\UserCertification as UserCertificationRequest;
+use Zhiyi\Plus\Models\Certification as CertificationModel;
+use Zhiyi\Plus\Models\FileWith as FileWithModel;
 
 class UserCertificationController extends Controller
 {

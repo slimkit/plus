@@ -20,16 +20,16 @@ declare(strict_types=1);
 
 namespace Zhiyi\Component\ZhiyiPlus\PlusComponentNews\API2\Controllers;
 
+use Illuminate\Contracts\Foundation\Application as ApplicationContract;
+use Illuminate\Contracts\Routing\ResponseFactory as ResponseContract;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
+use Zhiyi\Component\ZhiyiPlus\PlusComponentNews\Models\News as NewsModel;
+use Zhiyi\Component\ZhiyiPlus\PlusComponentNews\Models\NewsPinned as NewsPinnedModel;
 use Zhiyi\Plus\Http\Controllers\Controller;
 use Zhiyi\Plus\Models\Comment as CommentModel;
 use Zhiyi\Plus\Models\UserCount as UserCountModel;
 use Zhiyi\Plus\Models\WalletCharge as WalletChargeModel;
-use Illuminate\Contracts\Routing\ResponseFactory as ResponseContract;
-use Illuminate\Contracts\Foundation\Application as ApplicationContract;
-use Zhiyi\Component\ZhiyiPlus\PlusComponentNews\Models\News as NewsModel;
-use Zhiyi\Component\ZhiyiPlus\PlusComponentNews\Models\NewsPinned as NewsPinnedModel;
 
 class PinnedController extends Controller
 {

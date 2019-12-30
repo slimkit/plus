@@ -20,8 +20,8 @@ declare(strict_types=1);
 
 namespace Zhiyi\Plus\Observers;
 
-use Zhiyi\Plus\Models\Comment;
 use Illuminate\Support\Facades\Cache;
+use Zhiyi\Plus\Models\Comment;
 
 class CommentObserver
 {

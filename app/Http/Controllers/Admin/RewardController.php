@@ -20,11 +20,11 @@ declare(strict_types=1);
 
 namespace Zhiyi\Plus\Http\Controllers\Admin;
 
-use DB;
 use Carbon\Carbon;
+use DB;
 use Illuminate\Http\Request;
-use Zhiyi\Plus\Models\Reward;
 use Zhiyi\Plus\Http\Controllers\Controller;
+use Zhiyi\Plus\Models\Reward;
 
 class RewardController extends Controller
 {

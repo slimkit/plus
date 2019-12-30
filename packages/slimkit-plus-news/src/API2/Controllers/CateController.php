@@ -21,9 +21,9 @@ declare(strict_types=1);
 namespace Zhiyi\Component\ZhiyiPlus\PlusComponentNews\API2\Controllers;
 
 use Illuminate\Http\Request;
-use Zhiyi\Plus\Http\Controllers\Controller;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentNews\Models\NewsCate;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentNews\Models\NewsCateFollow;
+use Zhiyi\Plus\Http\Controllers\Controller;
 
 class CateController extends Controller
 {

@@ -22,8 +22,8 @@ namespace Zhiyi\Plus\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
 use Tymon\JWTAuth\Facades\JWTAuth;
-use Zhiyi\Plus\Support\ManageRepository;
 use Zhiyi\Plus\Http\Controllers\Controller;
+use Zhiyi\Plus\Support\ManageRepository;
 
 class HomeController extends Controller
 {

@@ -20,8 +20,8 @@ declare(strict_types=1);
 
 namespace Zhiyi\Plus\Http\Controllers\APIs\V2;
 
-use Zhiyi\Plus\Models\TagCategory as TagCategoryModel;
 use Illuminate\Contracts\Routing\ResponseFactory as ResponseFactoryContract;
+use Zhiyi\Plus\Models\TagCategory as TagCategoryModel;
 
 class TagController extends Controller
 {

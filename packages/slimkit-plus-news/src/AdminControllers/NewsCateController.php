@@ -22,10 +22,10 @@ namespace Zhiyi\Component\ZhiyiPlus\PlusComponentNews\AdminControllers;
 
 use DB;
 use Illuminate\Http\Request;
-use Zhiyi\Plus\Http\Controllers\Controller;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentNews\Models\News;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentNews\Models\NewsCate;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentNews\Models\NewsCollection;
+use Zhiyi\Plus\Http\Controllers\Controller;
 
 /**
  * 资讯分类管理.

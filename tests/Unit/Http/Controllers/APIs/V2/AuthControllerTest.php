@@ -20,13 +20,13 @@ declare(strict_types=1);
 
 namespace Zhiyi\Plus\Tests\Unit\Http\Controllers\APIs\V2;
 
-use Tymon\JWTAuth\JWTGuard;
-use Zhiyi\Plus\Models\User;
-use Illuminate\Http\Request;
-use Zhiyi\Plus\Tests\TestCase;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Contracts\Auth\Guard;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
+use Tymon\JWTAuth\JWTGuard;
 use Zhiyi\Plus\Http\Controllers\APIs\V2\AuthController;
+use Zhiyi\Plus\Models\User;
+use Zhiyi\Plus\Tests\TestCase;
 
 class AuthControllerTest extends TestCase
 {

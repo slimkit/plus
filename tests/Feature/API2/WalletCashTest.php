@@ -20,11 +20,11 @@ declare(strict_types=1);
 
 namespace Zhiyi\Plus\Tests\Feature\API2;
 
-use Zhiyi\Plus\Tests\TestCase;
-use function Zhiyi\Plus\setting;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Zhiyi\Plus\Models\User as UserModel;
 use Zhiyi\Plus\Models\WalletCash as WalletCashModel;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
+use function Zhiyi\Plus\setting;
+use Zhiyi\Plus\Tests\TestCase;
 
 class WalletCashTest extends TestCase
 {

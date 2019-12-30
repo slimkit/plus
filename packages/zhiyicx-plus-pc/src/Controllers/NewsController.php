@@ -19,8 +19,8 @@
 namespace Zhiyi\Component\ZhiyiPlus\PlusComponentPc\Controllers;
 
 use Illuminate\Http\Request;
-use function Zhiyi\Component\ZhiyiPlus\PlusComponentPc\api;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentNews\Models\News;
+use function Zhiyi\Component\ZhiyiPlus\PlusComponentPc\api;
 use function Zhiyi\Component\ZhiyiPlus\PlusComponentPc\formatPinneds;
 
 class NewsController extends BaseController

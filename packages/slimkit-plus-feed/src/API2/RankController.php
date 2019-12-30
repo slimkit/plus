@@ -20,12 +20,12 @@ declare(strict_types=1);
 
 namespace Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\API2;
 
-use DB;
 use Carbon\Carbon;
-use Illuminate\Http\Request;
-use Zhiyi\Plus\Http\Controllers\Controller;
+use DB;
 use Illuminate\Contracts\Routing\ResponseFactory as ResponseContract;
+use Illuminate\Http\Request;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\Feed as FeedModel;
+use Zhiyi\Plus\Http\Controllers\Controller;
 
 class RankController extends Controller
 {

@@ -21,11 +21,11 @@ declare(strict_types=1);
 namespace Zhiyi\Plus\Services\Wallet;
 
 use Illuminate\Support\Str;
-use function Zhiyi\Plus\setting;
-use Pingpp\Pingpp as PingppInit;
 use Pingpp\Charge as PingppCharge;
-use Zhiyi\Plus\Models\WalletOrder as WalletOrderModel;
+use Pingpp\Pingpp as PingppInit;
 use Zhiyi\Plus\Models\WalletCharge as WalletChargeModel;
+use Zhiyi\Plus\Models\WalletOrder as WalletOrderModel;
+use function Zhiyi\Plus\setting;
 
 class Charge
 {

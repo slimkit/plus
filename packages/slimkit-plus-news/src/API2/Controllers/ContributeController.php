@@ -20,20 +20,20 @@ declare(strict_types=1);
 
 namespace Zhiyi\Component\ZhiyiPlus\PlusComponentNews\API2\Controllers;
 
-use Throwable;
-use Illuminate\Http\Request;
-use Zhiyi\Plus\Utils\Markdown;
-use function Zhiyi\Plus\setting;
-use Zhiyi\Plus\Models\Tag as TagModel;
-use Zhiyi\Plus\Concerns\FindMarkdownFileTrait;
-use Zhiyi\Plus\Models\FileWith as FileWithModel;
-use Zhiyi\Plus\Http\Middleware\VerifyUserPassword;
-use Zhiyi\Plus\Packages\Currency\Processes\User as UserProcess;
 use Illuminate\Contracts\Foundation\Application as ApplicationContract;
-use Zhiyi\Component\ZhiyiPlus\PlusComponentNews\Models\News as NewsModel;
 use Illuminate\Contracts\Routing\ResponseFactory as ResponseFactoryContract;
-use Zhiyi\Component\ZhiyiPlus\PlusComponentNews\Models\NewsCate as NewsCateModel;
+use Illuminate\Http\Request;
+use Throwable;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentNews\API2\Requests\StoreContribute as StoreContributeRequest;
+use Zhiyi\Component\ZhiyiPlus\PlusComponentNews\Models\News as NewsModel;
+use Zhiyi\Component\ZhiyiPlus\PlusComponentNews\Models\NewsCate as NewsCateModel;
+use Zhiyi\Plus\Concerns\FindMarkdownFileTrait;
+use Zhiyi\Plus\Http\Middleware\VerifyUserPassword;
+use Zhiyi\Plus\Models\FileWith as FileWithModel;
+use Zhiyi\Plus\Models\Tag as TagModel;
+use Zhiyi\Plus\Packages\Currency\Processes\User as UserProcess;
+use function Zhiyi\Plus\setting;
+use Zhiyi\Plus\Utils\Markdown;
 
 class ContributeController extends Controller
 {

@@ -20,13 +20,13 @@ declare(strict_types=1);
 
 namespace Zhiyi\Plus\Http\Controllers\APIs\V2;
 
-use Zhiyi\Plus\Models\User;
-use Illuminate\Http\Request;
-use function Zhiyi\Plus\username;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Contracts\Auth\Guard;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Zhiyi\Plus\Models\User;
 use Zhiyi\Plus\Models\VerificationCode;
+use function Zhiyi\Plus\username;
 
 class AuthController extends Controller
 {

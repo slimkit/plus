@@ -21,14 +21,14 @@ declare(strict_types=1);
 namespace Zhiyi\Component\ZhiyiPlus\PlusComponentMusic\AdminControllers;
 
 use Illuminate\Http\Request;
-use Zhiyi\Plus\Http\Controllers\Controller;
-use Zhiyi\Plus\Cdn\UrlManager as CdnUrlManager;
-use Zhiyi\Plus\Models\FileWith as FileWithModel;
-use function Zhiyi\Component\ZhiyiPlus\PlusComponentMusic\view;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentMusic\Models\MusicSinger;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentMusic\Models\MusicSinger as MusicSingerModel;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentMusic\Requests\SingerAdd as SingerAddRequest;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentMusic\Requests\SingerUpdate as SingerUpdateRequest;
+use function Zhiyi\Component\ZhiyiPlus\PlusComponentMusic\view;
+use Zhiyi\Plus\Cdn\UrlManager as CdnUrlManager;
+use Zhiyi\Plus\Http\Controllers\Controller;
+use Zhiyi\Plus\Models\FileWith as FileWithModel;
 
 class SingerController extends Controller
 {

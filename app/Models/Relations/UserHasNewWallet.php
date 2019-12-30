@@ -20,8 +20,8 @@ declare(strict_types=1);
 
 namespace Zhiyi\Plus\Models\Relations;
 
-use Zhiyi\Plus\Models\NewWallet;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Zhiyi\Plus\Models\NewWallet;
 
 trait UserHasNewWallet
 {

@@ -21,10 +21,10 @@ declare(strict_types=1);
 namespace Zhiyi\Plus\FileStorage;
 
 use Illuminate\Http\Request;
-use Zhiyi\Plus\AppInterface;
 use Illuminate\Support\Manager;
-use function Zhiyi\Plus\setting;
+use Zhiyi\Plus\AppInterface;
 use Zhiyi\Plus\FileStorage\Channels\ChannelInterface;
+use function Zhiyi\Plus\setting;
 
 class ChannelManager extends Manager
 {

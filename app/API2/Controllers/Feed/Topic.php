@@ -20,22 +20,22 @@ declare(strict_types=1);
 
 namespace Zhiyi\Plus\API2\Controllers\Feed;
 
+use Illuminate\Database\Eloquent\Builder as EloquentBuilder;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Carbon;
-use function Zhiyi\Plus\setting;
-use Illuminate\Http\JsonResponse;
-use Illuminate\Database\Eloquent\Model;
-use Zhiyi\Plus\API2\Controllers\Controller;
-use Zhiyi\Plus\Models\FeedTopic as FeedTopicModel;
-use Zhiyi\Plus\API2\Resources\Feed\Topic as TopicResource;
-use Illuminate\Database\Eloquent\Builder as EloquentBuilder;
-use Zhiyi\Plus\API2\Requests\Feed\TopicIndex as IndexRequest;
-use Zhiyi\Plus\API2\Requests\Feed\EditTopic as EditTopicRequest;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Zhiyi\Plus\Models\FeedTopicUserLink as FeedTopicUserLinkModel;
-use Zhiyi\Plus\API2\Requests\Feed\CreateTopic as CreateTopicRequest;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
+use Zhiyi\Plus\API2\Controllers\Controller;
+use Zhiyi\Plus\API2\Requests\Feed\CreateTopic as CreateTopicRequest;
+use Zhiyi\Plus\API2\Requests\Feed\EditTopic as EditTopicRequest;
+use Zhiyi\Plus\API2\Requests\Feed\TopicIndex as IndexRequest;
+use Zhiyi\Plus\API2\Resources\Feed\Topic as TopicResource;
+use Zhiyi\Plus\Models\FeedTopic as FeedTopicModel;
+use Zhiyi\Plus\Models\FeedTopicUserLink as FeedTopicUserLinkModel;
+use function Zhiyi\Plus\setting;
 
 class Topic extends Controller
 {

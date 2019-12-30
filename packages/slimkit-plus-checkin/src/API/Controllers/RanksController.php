@@ -20,11 +20,11 @@ declare(strict_types=1);
 
 namespace SlimKit\PlusCheckIn\API\Controllers;
 
+use Illuminate\Contracts\Routing\ResponseFactory as ResponseFactoryContract;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use Zhiyi\Plus\Models\User as UserModel;
 use Zhiyi\Plus\Models\UserExtra as UserExtraModel;
-use Illuminate\Contracts\Routing\ResponseFactory as ResponseFactoryContract;
 
 class RanksController extends Controller
 {

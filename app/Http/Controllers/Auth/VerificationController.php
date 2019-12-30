@@ -20,8 +20,8 @@ declare(strict_types=1);
 
 namespace Zhiyi\Plus\Http\Controllers\Auth;
 
-use Zhiyi\Plus\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\VerifiesEmails;
+use Zhiyi\Plus\Http\Controllers\Controller;
 
 class VerificationController extends Controller
 {

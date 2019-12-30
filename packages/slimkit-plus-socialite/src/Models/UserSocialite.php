@@ -20,9 +20,9 @@ declare(strict_types=1);
 
 namespace SlimKit\PlusSocialite\Models;
 
-use Zhiyi\Plus\Models\User;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
+use Zhiyi\Plus\Models\User;
 
 class UserSocialite extends Model
 {

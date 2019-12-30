@@ -21,11 +21,11 @@ declare(strict_types=1);
 namespace Zhiyi\Plus\Http\Controllers\APIs\V2;
 
 use Illuminate\Http\Request;
-use Zhiyi\Plus\Packages\Wallet\Order;
-use Zhiyi\Plus\Packages\Wallet\TypeManager;
+use Zhiyi\Plus\Http\Requests\API2\NewStoreWalletRecharge;
 use Zhiyi\Plus\Http\Requests\API2\StoreTransform;
 use Zhiyi\Plus\Models\WalletOrder as WalletOrderModel;
-use Zhiyi\Plus\Http\Requests\API2\NewStoreWalletRecharge;
+use Zhiyi\Plus\Packages\Wallet\Order;
+use Zhiyi\Plus\Packages\Wallet\TypeManager;
 
 class NewWalletRechargeController extends Controller
 {

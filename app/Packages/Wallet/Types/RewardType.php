@@ -21,8 +21,8 @@ declare(strict_types=1);
 namespace Zhiyi\Plus\Packages\Wallet\Types;
 
 use Zhiyi\Plus\Models\User;
-use Zhiyi\Plus\Packages\Wallet\Order;
 use Zhiyi\Plus\Models\WalletOrder as WalletOrderModel;
+use Zhiyi\Plus\Packages\Wallet\Order;
 use Zhiyi\Plus\Packages\Wallet\TargetTypes\RewardTarget;
 
 class RewardType extends Type

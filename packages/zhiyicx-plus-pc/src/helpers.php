@@ -255,6 +255,7 @@ function formatMarkdown($body)
     $body = preg_replace('/\@\!\[(.*?)\]\((\d+)\)/i', '![$1]('.getenv('APP_URL').'/api/v2/files/$2)', $body);
 
     $body = MarkdownExtra::defaultTransform($body);
+
     return $body;
 }
 

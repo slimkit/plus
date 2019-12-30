@@ -18,13 +18,13 @@
 
 namespace Zhiyi\Plus\Tests\Unit\Packages\Wallet;
 
-use JsonSerializable;
-use Zhiyi\Plus\Tests\TestCase;
-use Zhiyi\Plus\Packages\Wallet\Wallet;
-use Zhiyi\Plus\Models\User as UserModel;
-use Illuminate\Contracts\Support\Jsonable;
 use Illuminate\Contracts\Support\Arrayable;
+use Illuminate\Contracts\Support\Jsonable;
+use JsonSerializable;
 use Zhiyi\Plus\Models\NewWallet as WalletModel;
+use Zhiyi\Plus\Models\User as UserModel;
+use Zhiyi\Plus\Packages\Wallet\Wallet;
+use Zhiyi\Plus\Tests\TestCase;
 
 class WalletTest extends TestCase
 {

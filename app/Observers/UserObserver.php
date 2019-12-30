@@ -18,8 +18,8 @@
 
 namespace Zhiyi\Plus\Observers;
 
-use Zhiyi\Plus\Models\User;
 use Zhiyi\Plus\Models\Famous;
+use Zhiyi\Plus\Models\User;
 
 class UserObserver
 {

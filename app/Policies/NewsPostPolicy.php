@@ -18,9 +18,9 @@
 
 namespace Zhiyi\Plus\Policies;
 
-use Zhiyi\Plus\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentNews\Models\News;
+use Zhiyi\Plus\Models\User;
 
 class NewsPostPolicy
 {

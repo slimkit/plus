@@ -20,12 +20,12 @@ declare(strict_types=1);
 
 namespace Zhiyi\Plus\Http\Controllers\APIs\V2;
 
-use Illuminate\Support\Str;
+use Illuminate\Contracts\Foundation\Application as ApplicationContract;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 use Zhiyi\Plus\Http\Requests\API2\StoreWalletRecharge;
 use Zhiyi\Plus\Models\WalletCharge as WalletChargeModel;
 use Zhiyi\Plus\Services\Wallet\Charge as WalletChargeService;
-use Illuminate\Contracts\Foundation\Application as ApplicationContract;
 
 class WalletRechargeController extends Controller
 {

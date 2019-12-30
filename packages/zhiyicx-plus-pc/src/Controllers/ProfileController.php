@@ -18,12 +18,12 @@
 
 namespace Zhiyi\Component\ZhiyiPlus\PlusComponentPc\Controllers;
 
-use Illuminate\Support\Arr;
 use Illuminate\Http\Request;
-use function Zhiyi\Plus\username;
-use Zhiyi\Plus\Models\User as UserModel;
+use Illuminate\Support\Arr;
 use function Zhiyi\Component\ZhiyiPlus\PlusComponentPc\api;
 use function zhiyi\Component\ZhiyiPlus\PlusComponentPc\formatRepostable;
+use Zhiyi\Plus\Models\User as UserModel;
+use function Zhiyi\Plus\username;
 
 class ProfileController extends BaseController
 {

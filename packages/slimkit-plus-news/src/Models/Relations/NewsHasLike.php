@@ -20,9 +20,9 @@ declare(strict_types=1);
 
 namespace Zhiyi\Component\ZhiyiPlus\PlusComponentNews\Models\Relations;
 
+use Illuminate\Support\Facades\Cache;
 use Zhiyi\Plus\Models\Like;
 use Zhiyi\Plus\Models\User;
-use Illuminate\Support\Facades\Cache;
 
 trait NewsHasLike
 {

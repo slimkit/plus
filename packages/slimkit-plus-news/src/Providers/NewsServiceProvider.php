@@ -20,14 +20,14 @@ declare(strict_types=1);
 
 namespace Zhiyi\Component\ZhiyiPlus\PlusComponentNews\Providers;
 
+use Illuminate\Database\Eloquent\Relations\Relation;
+use Illuminate\Support\ServiceProvider;
+use Zhiyi\Component\ZhiyiPlus\PlusComponentNews\Models\News;
 use Zhiyi\Plus\Models\User;
 use function Zhiyi\Plus\setting;
-use Illuminate\Support\ServiceProvider;
-use Zhiyi\Plus\Support\ManageRepository;
 use Zhiyi\Plus\Support\BootstrapAPIsEventer;
+use Zhiyi\Plus\Support\ManageRepository;
 use Zhiyi\Plus\Support\PinnedsNotificationEventer;
-use Illuminate\Database\Eloquent\Relations\Relation;
-use Zhiyi\Component\ZhiyiPlus\PlusComponentNews\Models\News;
 
 class NewsServiceProvider extends ServiceProvider
 {

@@ -21,9 +21,9 @@ declare(strict_types=1);
 namespace Zhiyi\Component\ZhiyiPlus\PlusComponentNews\AdminControllers;
 
 use Illuminate\Http\Request;
+use Zhiyi\Plus\Http\Controllers\Controller;
 use function Zhiyi\Plus\setting;
 use Zhiyi\Plus\Support\Configuration;
-use Zhiyi\Plus\Http\Controllers\Controller;
 
 class NewsConfigController extends Controller
 {

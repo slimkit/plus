@@ -21,22 +21,22 @@ declare(strict_types=1);
 namespace Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models;
 
 use Carbon\Carbon;
-use Zhiyi\Plus\Models\User;
-use Zhiyi\Plus\Models\Report;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Zhiyi\Plus\Models\BlackList;
 use Zhiyi\Plus\Models\Comment;
+use Zhiyi\Plus\Models\FeedTopic as FeedTopicModel;
+use Zhiyi\Plus\Models\FeedTopicLink as FeedTopicLinkModel;
 use Zhiyi\Plus\Models\FileWith;
 use Zhiyi\Plus\Models\PaidNode;
-use Zhiyi\Plus\Models\BlackList;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Database\Eloquent\Relations\HasOne;
-use Zhiyi\Plus\Models\FeedTopic as FeedTopicModel;
-use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\MorphMany;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Zhiyi\Plus\Models\FeedTopicLink as FeedTopicLinkModel;
+use Zhiyi\Plus\Models\Report;
+use Zhiyi\Plus\Models\User;
 
 class Feed extends Model
 {
