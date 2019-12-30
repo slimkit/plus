@@ -19,15 +19,16 @@
 namespace Zhiyi\Component\ZhiyiPlus\PlusComponentPc;
 
 use Auth;
-use Session;
-use HTMLPurifier;
 use Carbon\Carbon;
 use GuzzleHttp\Client;
+use HTMLPurifier;
 use HTMLPurifier_Config;
-use Zhiyi\Plus\Models\User;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Artisan;
+use Michelf\MarkdownExtra;
+use Request;
+use Route;
+use Session;
+use Zhiyi\Plus\Models\User;
 
 /**
  * [formatContent 动态列表内容处理].
@@ -253,10 +254,7 @@ function formatMarkdown($body)
     // 图片替换
     $body = preg_replace('/\@\!\[(.*?)\]\((\d+)\)/i', '![$1]('.getenv('APP_URL').'/api/v2/files/$2)', $body);
 
-    $config = HTMLPurifier_Config::createDefault();
-    $config->set('HTML.Allowed', 'br,a[href],');
-    $purifier = new HTMLPurifier($config);
-//    $body = $purifier->purify($body);
+    $body = MarkdownExtra::defaultTransform($body);
     return $body;
 }
 
