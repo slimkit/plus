@@ -4,7 +4,7 @@
   "author": "Seven Du <shiweidu@outlook.com>",
   "license": "Apache-2.0",
   "dependencies": {
-    "vuepress": "^0.14.4"
+    "vuepress": "^1.5.0"
   },
   "scripts": {
     "dev": "vuepress dev .",
