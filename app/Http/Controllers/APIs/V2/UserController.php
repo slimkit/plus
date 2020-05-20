@@ -20,17 +20,17 @@ declare(strict_types=1);
 
 namespace Zhiyi\Plus\Http\Controllers\APIs\V2;
 
-use Throwable;
-use RuntimeException;
-use Tymon\JWTAuth\JWTAuth;
-use Zhiyi\Plus\Models\User;
+use Illuminate\Contracts\Routing\ResponseFactory as ResponseFactoryContract;
 use Illuminate\Http\Request;
+use RuntimeException;
+use Throwable;
+use Tymon\JWTAuth\JWTAuth;
+use Zhiyi\Plus\Http\Requests\API2\StoreUserPost;
 use Zhiyi\Plus\Models\Taggable;
+use Zhiyi\Plus\Models\User;
+use Zhiyi\Plus\Models\VerificationCode;
 use function Zhiyi\Plus\setting;
 use function Zhiyi\Plus\username;
-use Zhiyi\Plus\Models\VerificationCode;
-use Zhiyi\Plus\Http\Requests\API2\StoreUserPost;
-use Illuminate\Contracts\Routing\ResponseFactory as ResponseFactoryContract;
 
 class UserController extends Controller
 {

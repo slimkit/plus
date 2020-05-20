@@ -20,8 +20,8 @@ declare(strict_types=1);
 
 namespace Slimkit\PlusAppversion\Providers;
 
-use Zhiyi\Plus\Support\PackageHandler;
 use Illuminate\Support\ServiceProvider;
+use Zhiyi\Plus\Support\PackageHandler;
 
 class AppServiceProvider extends ServiceProvider
 {

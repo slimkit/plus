@@ -20,10 +20,10 @@ declare(strict_types=1);
 
 namespace Zhiyi\Plus\Models;
 
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Notifications\Notifiable;
 
 class VerificationCode extends Model
 {

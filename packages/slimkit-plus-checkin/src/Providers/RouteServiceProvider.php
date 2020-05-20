@@ -20,10 +20,10 @@ declare(strict_types=1);
 
 namespace SlimKit\PlusCheckIn\Providers;
 
-use function Zhiyi\Plus\setting;
 use Illuminate\Support\ServiceProvider;
-use Zhiyi\Plus\Support\ManageRepository;
+use function Zhiyi\Plus\setting;
 use Zhiyi\Plus\Support\BootstrapAPIsEventer;
+use Zhiyi\Plus\Support\ManageRepository;
 
 class RouteServiceProvider extends ServiceProvider
 {

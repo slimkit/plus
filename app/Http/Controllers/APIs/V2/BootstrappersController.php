@@ -20,12 +20,12 @@ declare(strict_types=1);
 
 namespace Zhiyi\Plus\Http\Controllers\APIs\V2;
 
-use function Zhiyi\Plus\setting;
+use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Http\JsonResponse;
+use Zhiyi\Plus\Models\AdvertisingSpace;
 use Zhiyi\Plus\Models\CommonConfig;
 use Zhiyi\Plus\Models\CurrencyType;
-use Zhiyi\Plus\Models\AdvertisingSpace;
-use Illuminate\Contracts\Support\Arrayable;
+use function Zhiyi\Plus\setting;
 use Zhiyi\Plus\Support\BootstrapAPIsEventer;
 
 class BootstrappersController extends Controller

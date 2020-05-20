@@ -20,9 +20,9 @@ declare(strict_types=1);
 
 namespace Zhiyi\Plus\Http\Controllers\APIs\V2;
 
+use Illuminate\Contracts\Routing\ResponseFactory as ContractResponse;
 use Illuminate\Http\Request;
 use Zhiyi\Plus\Models\UserCount;
-use Illuminate\Contracts\Routing\ResponseFactory as ContractResponse;
 
 // use Illuminate\Notifications\DatabaseNotification as NotificationModel;
 

@@ -20,9 +20,9 @@ declare(strict_types=1);
 
 namespace Zhiyi\Plus\Console\Commands;
 
-use Illuminate\Support\Str;
-use Illuminate\Console\Command;
 use Illuminate\Config\Repository;
+use Illuminate\Console\Command;
+use Illuminate\Support\Str;
 use Symfony\Component\Finder\Finder;
 
 class PackageCreateCommand extends Command
@@ -153,8 +153,7 @@ class PackageCreateCommand extends Command
      * @return \Symfony\Component\Finder\Finder
      * @author Seven Du <shiweidu@outlook.com>
      */
-    protected function findStub()
-    : Finder
+    protected function findStub(): Finder
     {
         $finder = new Finder();
 
@@ -172,8 +171,7 @@ class PackageCreateCommand extends Command
      * @return string
      * @author Seven Du <shiweidu@outlook.com>
      */
-    protected function formatNamespace(string $namespace)
-    : string
+    protected function formatNamespace(string $namespace): string
     {
         $namespace = ltrim($namespace, '\\');
         $namespace = rtrim($namespace, '\\');
@@ -192,8 +190,7 @@ class PackageCreateCommand extends Command
      * @return string
      * @author Seven Du <shiweidu@outlook.com>
      */
-    protected function cameCase(string $name)
-    : string
+    protected function cameCase(string $name): string
     {
         $name = str_replace('.', '', $name);
         $name = str_replace('-', '_', $name);
@@ -207,8 +204,7 @@ class PackageCreateCommand extends Command
      * @return string
      * @author Seven Du <shiweidu@outlook.com>
      */
-    protected function questionName()
-    : string
+    protected function questionName(): string
     {
         return $this->getOutput()
             ->ask('Package name (<vendor>/<name>)', null, function ($name) {

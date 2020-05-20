@@ -20,9 +20,9 @@ declare(strict_types=1);
 
 namespace Zhiyi\Plus\Packages\Currency\Processes;
 
+use Zhiyi\Plus\Models\CurrencyOrder as CurrencyOrderModel;
 use Zhiyi\Plus\Packages\Currency\Order;
 use Zhiyi\Plus\Packages\Currency\Process;
-use Zhiyi\Plus\Models\CurrencyOrder as CurrencyOrderModel;
 
 class Common extends Process
 {
@@ -45,8 +45,7 @@ class Common extends Process
         int $type,
         string $title,
         string $body
-    )
-    : CurrencyOrderModel {
+    ): CurrencyOrderModel {
         $user = $this->checkUser($owner_id);
 
         $order = new CurrencyOrderModel();

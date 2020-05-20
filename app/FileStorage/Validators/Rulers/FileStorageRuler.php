@@ -50,8 +50,7 @@ class FileStorageRuler implements RulerInterface
      *
      * @return bool
      */
-    public function handle(array $params)
-    : bool
+    public function handle(array $params): bool
     {
         try {
             return (bool) $this->storage

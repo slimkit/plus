@@ -20,11 +20,11 @@ declare(strict_types=1);
 
 namespace Zhiyi\Plus\Tests\Feature\API2;
 
-use Zhiyi\Plus\Tests\TestCase;
 use Illuminate\Contracts\Auth\Guard;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Support\Facades\Auth;
 use Zhiyi\Plus\Models\User as UserModel;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Zhiyi\Plus\Tests\TestCase;
 
 class VerifyCodeTest extends TestCase
 {
@@ -92,8 +92,7 @@ class VerifyCodeTest extends TestCase
      *
      * @return \Illuminate\Contracts\Auth\Guard
      */
-    protected function guard()
-    : Guard
+    protected function guard(): Guard
     {
         return Auth::guard('api');
     }

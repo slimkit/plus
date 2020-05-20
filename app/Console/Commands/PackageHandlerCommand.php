@@ -20,10 +20,10 @@ declare(strict_types=1);
 
 namespace Zhiyi\Plus\Console\Commands;
 
-use RuntimeException;
 use Illuminate\Console\Command;
-use Zhiyi\Plus\Support\PackageHandler;
+use RuntimeException;
 use Symfony\Component\Console\Input\InputArgument;
+use Zhiyi\Plus\Support\PackageHandler;
 
 class PackageHandlerCommand extends Command
 {

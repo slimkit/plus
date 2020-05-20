@@ -20,13 +20,13 @@ declare(strict_types=1);
 
 namespace Zhiyi\Plus\Http\Controllers\APIs\V2;
 
-use Zhiyi\Plus\Models\User;
-use Illuminate\Http\Request;
-use function Zhiyi\Plus\username;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Contracts\Auth\Guard;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Zhiyi\Plus\Models\User;
 use Zhiyi\Plus\Models\VerificationCode;
+use function Zhiyi\Plus\username;
 
 class AuthController extends Controller
 {
@@ -45,8 +45,7 @@ class AuthController extends Controller
      *
      * @return \Illuminate\Contracts\Auth\Guard
      */
-    public function guard()
-    : Guard
+    public function guard(): Guard
     {
         return Auth::guard('api');
     }
@@ -59,8 +58,7 @@ class AuthController extends Controller
      * @return \Illuminate\Http\JsonResponse
      * @author Seven Du <shiweidu@outlook.com>
      */
-    public function login(Request $request)
-    : JsonResponse
+    public function login(Request $request): JsonResponse
     {
         $login = (string) $request->input('login', '');
         $code = $request->input('verifiable_code');
@@ -128,8 +126,7 @@ class AuthController extends Controller
      * @return \Illuminate\Http\JsonResponse
      * @author Seven Du <shiweidu@outlook.com>
      */
-    public function logout()
-    : JsonResponse
+    public function logout(): JsonResponse
     {
         $this->guard()->logout();
 
@@ -142,8 +139,7 @@ class AuthController extends Controller
      * @return \Illuminate\Http\JsonResponse
      * @author Seven Du <shiweidu@outlook.com>
      */
-    public function refresh()
-    : JsonResponse
+    public function refresh(): JsonResponse
     {
         return $this->respondWithToken(
             $this->guard()->refresh()
@@ -157,8 +153,7 @@ class AuthController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    protected function respondWithToken(string $token)
-    : JsonResponse
+    protected function respondWithToken(string $token): JsonResponse
     {
         $this->guard()->user()->update([
             'last_login_ip' => request()->ip(),

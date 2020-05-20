@@ -20,8 +20,8 @@ declare(strict_types=1);
 
 namespace Zhiyi\Plus\Tests\Unit\Support;
 
-use Zhiyi\Plus\Tests\TestCase;
 use Zhiyi\Plus\Support\Configuration;
+use Zhiyi\Plus\Tests\TestCase;
 
 class ConfigurationTest extends TestCase
 {

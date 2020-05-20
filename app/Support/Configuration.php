@@ -21,11 +21,11 @@ declare(strict_types=1);
 namespace Zhiyi\Plus\Support;
 
 use Illuminate\Config\Repository;
+use Illuminate\Contracts\Config\Repository as RepositoryContract;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Filesystem\Filesystem;
 use Symfony\Component\Yaml\Dumper;
 use Symfony\Component\Yaml\Parser;
-use Illuminate\Filesystem\Filesystem;
-use Illuminate\Contracts\Foundation\Application;
-use Illuminate\Contracts\Config\Repository as RepositoryContract;
 
 class Configuration
 {

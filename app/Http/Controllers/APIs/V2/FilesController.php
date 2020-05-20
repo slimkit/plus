@@ -21,18 +21,18 @@ declare(strict_types=1);
 namespace Zhiyi\Plus\Http\Controllers\APIs\V2;
 
 use Cache;
-use Image;
 use Carbon\Carbon;
-use Illuminate\Support\Str;
+use Illuminate\Contracts\Routing\ResponseFactory as ResponseContract;
 use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
-use Zhiyi\Plus\Models\File as FileModel;
-use Zhiyi\Plus\Models\User as UserModel;
+use Illuminate\Support\Str;
+use Image;
 use Zhiyi\Plus\Cdn\UrlManager as CdnUrlManager;
+use Zhiyi\Plus\Http\Requests\API2\StoreUploadFile as StoreUploadFileRequest;
+use Zhiyi\Plus\Models\File as FileModel;
 use Zhiyi\Plus\Models\FileWith as FileWithModel;
 use Zhiyi\Plus\Models\PaidNode as PaidNodeModel;
-use Illuminate\Contracts\Routing\ResponseFactory as ResponseContract;
-use Zhiyi\Plus\Http\Requests\API2\StoreUploadFile as StoreUploadFileRequest;
+use Zhiyi\Plus\Models\User as UserModel;
 
 class FilesController extends Controller
 {

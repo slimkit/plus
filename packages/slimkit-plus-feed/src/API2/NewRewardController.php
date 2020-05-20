@@ -20,16 +20,16 @@ declare(strict_types=1);
 
 namespace Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\API2;
 
-use Illuminate\Support\Str;
-use Illuminate\Http\Request;
-use Zhiyi\Plus\Models\CurrencyType;
-use Illuminate\Support\Facades\Cache;
-use Zhiyi\Plus\Http\Controllers\Controller;
-use Zhiyi\Plus\Http\Middleware\VerifyUserPassword;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Zhiyi\Plus\Notifications\System as SystemNotification;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Str;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\CacheNames;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\Feed;
+use Zhiyi\Plus\Http\Controllers\Controller;
+use Zhiyi\Plus\Http\Middleware\VerifyUserPassword;
+use Zhiyi\Plus\Models\CurrencyType;
+use Zhiyi\Plus\Notifications\System as SystemNotification;
 use Zhiyi\Plus\Packages\Currency\Processes\User as UserProcess;
 
 class NewRewardController extends Controller
@@ -121,15 +121,15 @@ class NewRewardController extends Controller
             $feed->reward($user, $amount);
             $target->notify(new SystemNotification(sprintf('%s打赏了你的动态',
                 $user->name), [
-                'type'    => 'reward:feeds',
-                'sender'  => [
-                    'id'   => $user->id,
-                    'name' => $user->name,
-                ],
-                'amount'  => $amount,
-                'unit'    => $goldName,
-                'feed_id' => $feed->id,
-            ]));
+                    'type'    => 'reward:feeds',
+                    'sender'  => [
+                        'id'   => $user->id,
+                        'name' => $user->name,
+                    ],
+                    'amount'  => $amount,
+                    'unit'    => $goldName,
+                    'feed_id' => $feed->id,
+                ]));
 
             Cache::forget(sprintf(CacheNames::REWARD_FEED_LOCK, $feed->id,
                 $user->id));

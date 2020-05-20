@@ -20,11 +20,11 @@ declare(strict_types=1);
 
 namespace Zhiyi\Plus\Http\Controllers\APIs\V2;
 
-use Illuminate\Http\Request;
-use Zhiyi\Plus\Models\User as UserModel;
-use Zhiyi\Plus\EaseMobIm\EaseMobController;
-use Zhiyi\Plus\Models\VerificationCode as VerificationCodeModel;
 use Illuminate\Contracts\Routing\ResponseFactory as ResponseFactoryContract;
+use Illuminate\Http\Request;
+use Zhiyi\Plus\EaseMobIm\EaseMobController;
+use Zhiyi\Plus\Models\User as UserModel;
+use Zhiyi\Plus\Models\VerificationCode as VerificationCodeModel;
 
 class ResetPasswordController extends Controller
 {

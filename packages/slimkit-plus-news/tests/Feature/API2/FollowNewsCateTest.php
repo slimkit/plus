@@ -20,10 +20,10 @@ declare(strict_types=1);
 
 namespace Zhiyi\Component\ZhiyiPlus\PlusComponentNews\Feature\API2;
 
-use Zhiyi\Plus\Tests\TestCase;
-use Zhiyi\Plus\Models\User as UserModel;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentNews\Models\NewsCate as NewsCateModel;
+use Zhiyi\Plus\Models\User as UserModel;
+use Zhiyi\Plus\Tests\TestCase;
 
 class FollowNewsCateTest extends TestCase
 {

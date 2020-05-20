@@ -20,9 +20,9 @@ declare(strict_types=1);
 
 namespace SlimKit\PlusCheckIn\Providers;
 
-use Zhiyi\Plus\Models\User;
-use Illuminate\Support\ServiceProvider;
 use Illuminate\Database\Eloquent\Relations\Relation;
+use Illuminate\Support\ServiceProvider;
+use Zhiyi\Plus\Models\User;
 
 class ModelServiceProvider extends ServiceProvider
 {

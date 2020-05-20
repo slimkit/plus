@@ -17,9 +17,9 @@
  */
 
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
+use Faker\Generator as Faker;
 use Illuminate\Support\Str;
 use Zhiyi\Plus\Models\User;
-use Faker\Generator as Faker;
 
 /*
 |--------------------------------------------------------------------------

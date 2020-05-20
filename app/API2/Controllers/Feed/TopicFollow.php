@@ -23,9 +23,9 @@ namespace Zhiyi\Plus\API2\Controllers\Feed;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Carbon;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Zhiyi\Plus\API2\Controllers\Controller;
 use Zhiyi\Plus\Models\FeedTopic as FeedTopicModel;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class TopicFollow extends Controller
 {
@@ -50,8 +50,7 @@ class TopicFollow extends Controller
         Request $request,
         FeedTopicModel $model,
         int $topicID
-    )
-    : Response {
+    ): Response {
         // Fetch the request authentication user model.
         $user = $request->user();
 
@@ -110,8 +109,7 @@ class TopicFollow extends Controller
         Request $request,
         FeedTopicModel $model,
         int $topicID
-    )
-    : Response {
+    ): Response {
         // Fetch the request authentication user model.
         $user = $request->user();
 

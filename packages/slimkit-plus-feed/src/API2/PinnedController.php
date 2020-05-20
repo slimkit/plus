@@ -21,16 +21,16 @@ declare(strict_types=1);
 namespace Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\API2;
 
 use Carbon\Carbon;
-use Illuminate\Support\Str;
+use Illuminate\Contracts\Foundation\Application as ApplicationContract;
+use Illuminate\Contracts\Routing\ResponseFactory as ResponseContract;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
+use Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\Feed as FeedModel;
+use Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\FeedPinned as FeedPinnedModel;
 use Zhiyi\Plus\Http\Controllers\Controller;
 use Zhiyi\Plus\Models\Comment as CommentModel;
 use Zhiyi\Plus\Models\UserCount as UserCountModel;
 use Zhiyi\Plus\Models\WalletCharge as WalletChargeModel;
-use Illuminate\Contracts\Routing\ResponseFactory as ResponseContract;
-use Illuminate\Contracts\Foundation\Application as ApplicationContract;
-use Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\Feed as FeedModel;
-use Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\FeedPinned as FeedPinnedModel;
 
 class PinnedController extends Controller
 {

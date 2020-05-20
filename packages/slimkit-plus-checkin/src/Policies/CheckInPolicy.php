@@ -20,9 +20,9 @@ declare(strict_types=1);
 
 namespace SlimKit\PlusCheckIn\Policies;
 
-use Zhiyi\Plus\Models\User;
 use Illuminate\Support\Facades\Cache;
 use SlimKit\PlusCheckIn\CacheName\CheckInCacheName;
+use Zhiyi\Plus\Models\User;
 
 class CheckInPolicy
 {
@@ -34,8 +34,7 @@ class CheckInPolicy
      * @return bool
      * @author Seven Du <shiweidu@outlook.com>
      */
-    public function create(User $user)
-    : bool
+    public function create(User $user): bool
     {
         $date = $user->freshTimestamp()->format('Y-m-d');
 

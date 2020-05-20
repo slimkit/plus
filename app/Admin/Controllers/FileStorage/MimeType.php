@@ -20,11 +20,11 @@ declare(strict_types=1);
 
 namespace Zhiyi\Plus\Admin\Controllers\FileStorage;
 
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use function Zhiyi\Plus\setting;
-use Illuminate\Http\JsonResponse;
 use Symfony\Component\HttpFoundation\File\MimeType\MimeTypeExtensionGuesser;
+use function Zhiyi\Plus\setting;
 
 class MimeType extends MimeTypeExtensionGuesser
 {
@@ -67,7 +67,7 @@ class MimeType extends MimeTypeExtensionGuesser
 
         $setting = setting('file-storage');
         $setting->set('task-create-validate', array_merge((array) $setting->get('task-create-validate', []), array_filter([
-           'file-mime-types' => $mimeTypes,
+            'file-mime-types' => $mimeTypes,
         ])));
 
         return new Response('', Response::HTTP_NO_CONTENT);

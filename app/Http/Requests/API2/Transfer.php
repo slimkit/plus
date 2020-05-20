@@ -20,9 +20,9 @@ declare(strict_types=1);
 
 namespace Zhiyi\Plus\Http\Requests\API2;
 
+use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 use Zhiyi\Plus\Packages\Wallet\Wallet;
-use Illuminate\Foundation\Http\FormRequest;
 
 class Transfer extends FormRequest
 {

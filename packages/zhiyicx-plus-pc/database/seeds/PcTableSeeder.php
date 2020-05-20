@@ -17,8 +17,8 @@
  */
 
 use Illuminate\Database\Seeder;
-use Zhiyi\Plus\Models\AdvertisingSpace;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentPc\Models\Navigation;
+use Zhiyi\Plus\Models\AdvertisingSpace;
 
 class PcTableSeeder extends Seeder
 {

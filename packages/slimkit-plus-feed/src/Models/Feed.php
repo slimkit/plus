@@ -21,22 +21,22 @@ declare(strict_types=1);
 namespace Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models;
 
 use Carbon\Carbon;
-use Zhiyi\Plus\Models\User;
-use Zhiyi\Plus\Models\Report;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Zhiyi\Plus\Models\BlackList;
 use Zhiyi\Plus\Models\Comment;
+use Zhiyi\Plus\Models\FeedTopic as FeedTopicModel;
+use Zhiyi\Plus\Models\FeedTopicLink as FeedTopicLinkModel;
 use Zhiyi\Plus\Models\FileWith;
 use Zhiyi\Plus\Models\PaidNode;
-use Zhiyi\Plus\Models\BlackList;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Database\Eloquent\Relations\HasOne;
-use Zhiyi\Plus\Models\FeedTopic as FeedTopicModel;
-use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\MorphMany;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Zhiyi\Plus\Models\FeedTopicLink as FeedTopicLinkModel;
+use Zhiyi\Plus\Models\Report;
+use Zhiyi\Plus\Models\User;
 
 class Feed extends Model
 {
@@ -63,8 +63,8 @@ class Feed extends Model
             'user_id',
         ];
     protected $hidden = [
-            'feed_client_id',
-        ];
+        'feed_client_id',
+    ];
 
     /**
      * The relations to eager load on every query.
@@ -199,8 +199,7 @@ class Feed extends Model
      *
      * @return Builder
      */
-    public function scopeByUserId(Builder $query, int $userId)
-    : Builder
+    public function scopeByUserId(Builder $query, int $userId): Builder
     {
         return $query->where('user_id', $userId);
     }
@@ -214,8 +213,7 @@ class Feed extends Model
      * @return Builder
      * @author bs<414606094@qq.com>
      */
-    public function scopeByFeedId(Builder $query, int $feedId)
-    : Builder
+    public function scopeByFeedId(Builder $query, int $feedId): Builder
     {
         return $query->where('id', $feedId);
     }
@@ -228,8 +226,7 @@ class Feed extends Model
      * @return Builder
      * @author bs<414606094@qq.com>
      */
-    public function scopeByAudit(Builder $query)
-    : Builder
+    public function scopeByAudit(Builder $query): Builder
     {
         return $query->where('audit_status', 1);
     }
@@ -260,8 +257,7 @@ class Feed extends Model
      *
      * @return BelongsToMany
      */
-    public function topics()
-    : BelongsToMany
+    public function topics(): BelongsToMany
     {
         $table = (new FeedTopicLinkModel)->getTable();
 
@@ -272,8 +268,7 @@ class Feed extends Model
             ->select('id', 'name');
     }
 
-    public function makeHotValue($model = null)
-    : int
+    public function makeHotValue($model = null): int
     {
         if (! $model instanceof static) {
             $model = $this;

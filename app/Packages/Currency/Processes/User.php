@@ -22,10 +22,10 @@ namespace Zhiyi\Plus\Packages\Currency\Processes;
 
 use DB;
 use Exception;
-use Zhiyi\Plus\Packages\Currency\Order;
-use Zhiyi\Plus\Models\User as UserModel;
-use Zhiyi\Plus\Packages\Currency\Process;
 use Zhiyi\Plus\Models\CurrencyOrder as CurrencyOrderModel;
+use Zhiyi\Plus\Models\User as UserModel;
+use Zhiyi\Plus\Packages\Currency\Order;
+use Zhiyi\Plus\Packages\Currency\Process;
 
 class User extends Process
 {

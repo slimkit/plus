@@ -21,8 +21,8 @@ declare(strict_types=1);
 namespace SlimKit\PlusCheckIn\API\Middleware;
 
 use Closure;
-use function Zhiyi\Plus\setting;
 use Illuminate\Auth\Access\AuthorizationException;
+use function Zhiyi\Plus\setting;
 
 class CheckInSwitch
 {

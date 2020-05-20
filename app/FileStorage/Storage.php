@@ -20,11 +20,11 @@ declare(strict_types=1);
 
 namespace Zhiyi\Plus\FileStorage;
 
-use Illuminate\Support\Str;
 use Illuminate\Http\Request;
-use Zhiyi\Plus\AppInterface;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Str;
 use Symfony\Component\HttpFoundation\Response;
+use Zhiyi\Plus\AppInterface;
 use Zhiyi\Plus\FileStorage\Channels\ChannelInterface;
 use Zhiyi\Plus\FileStorage\Validators\ValidatorInterface;
 
@@ -64,8 +64,7 @@ class Storage implements StorageInterface
      *
      * @return TaskInterface
      */
-    public function createTask(Request $request)
-    : TaskInterface
+    public function createTask(Request $request): TaskInterface
     {
         // validate the base rules.
         $this
@@ -92,8 +91,7 @@ class Storage implements StorageInterface
      *
      * @return \Zhiyi\Plus\FileMetaInterface
      */
-    public function meta(ResourceInterface $resource)
-    : FileMetaInterface
+    public function meta(ResourceInterface $resource): FileMetaInterface
     {
         return $this->getChannel($resource)->meta();
     }
@@ -106,8 +104,7 @@ class Storage implements StorageInterface
      *
      * @return string
      */
-    public function response(ResourceInterface $resource, ?string $rule = null)
-    : Response
+    public function response(ResourceInterface $resource, ?string $rule = null): Response
     {
         return $this->getChannel($resource)->response($rule);
     }
@@ -119,8 +116,7 @@ class Storage implements StorageInterface
      *
      * @return bool
      */
-    public function delete(ResourceInterface $resource)
-    : ?bool
+    public function delete(ResourceInterface $resource): ?bool
     {
         return $this->getChannel($resource)->delete();
     }
@@ -133,8 +129,7 @@ class Storage implements StorageInterface
      *
      * @return bool
      */
-    public function put(ResourceInterface $resource, $content)
-    : bool
+    public function put(ResourceInterface $resource, $content): bool
     {
         return $this->getChannel($resource)->put($content);
     }
@@ -146,8 +141,7 @@ class Storage implements StorageInterface
      *
      * @return void
      */
-    public function callback(ResourceInterface $resource)
-    : void
+    public function callback(ResourceInterface $resource): void
     {
         $this->getChannel($resource)->callback();
     }
@@ -159,8 +153,7 @@ class Storage implements StorageInterface
      *
      * @return ChannelInterface
      */
-    public function getChannel(ResourceInterface $resource)
-    : ChannelInterface
+    public function getChannel(ResourceInterface $resource): ChannelInterface
     {
         $channel = $this->channelManager->driver($resource->getChannel());
         $channel->setResource($resource);
@@ -175,8 +168,7 @@ class Storage implements StorageInterface
      *
      * @return string
      */
-    public function makePath(string $filename)
-    : string
+    public function makePath(string $filename): string
     {
         $path = (new Carbon)->format('Y/m/d');
         $ext = pathinfo($filename, PATHINFO_EXTENSION);
@@ -189,16 +181,14 @@ class Storage implements StorageInterface
      *
      * @return ValidatorInterface
      */
-    public function getCreateTaskValidator()
-    : Validators\ValidatorInterface
+    public function getCreateTaskValidator(): Validators\ValidatorInterface
     {
         return $this->app->make(
             Validators\CreateTaskValidator::class
         );
     }
 
-    public function createResource(...$params)
-    : ResourceInterface
+    public function createResource(...$params): ResourceInterface
     {
         return new Resource(...$params);
     }

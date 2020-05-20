@@ -21,34 +21,34 @@ declare(strict_types=1);
 namespace Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\API2;
 
 use Batch;
-use Throwable;
 use Carbon\Carbon;
-use Illuminate\Support\Str;
-use Illuminate\Http\Request;
-use function Zhiyi\Plus\setting;
-use Zhiyi\Plus\Models\UserCount;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Cache;
-use Zhiyi\Plus\Models\User as UserModel;
+use Illuminate\Contracts\Foundation\Application as ApplicationContract;
+use Illuminate\Contracts\Routing\ResponseFactory as ResponseContract;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Query\JoinClause;
-use Zhiyi\Plus\Http\Controllers\Controller;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
+use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
+use Throwable;
+use Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\FormRequest\API2\StoreFeedPost as StoreFeedPostRequest;
+use Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\Feed;
+use Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\Feed as FeedModel;
+use Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\FeedPinned;
+use Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\FeedVideo;
+use Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Repository\Feed as FeedRepository;
 use Zhiyi\Plus\AtMessage\AtMessageHelperTrait;
+use Zhiyi\Plus\Http\Controllers\Controller;
+use Zhiyi\Plus\Models\FeedTopic as FeedTopicModel;
+use Zhiyi\Plus\Models\FeedTopicUserLink as FeedTopicUserLinkModel;
 use Zhiyi\Plus\Models\FileWith as FileWithModel;
 use Zhiyi\Plus\Models\PaidNode as PaidNodeModel;
-use Zhiyi\Plus\Models\FeedTopic as FeedTopicModel;
-use Illuminate\Database\Eloquent\Relations\MorphMany;
-use Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\Feed;
+use Zhiyi\Plus\Models\User as UserModel;
+use Zhiyi\Plus\Models\UserCount;
 use Zhiyi\Plus\Packages\Currency\Processes\User as UserProcess;
-use Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\FeedVideo;
-use Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\FeedPinned;
-use Zhiyi\Plus\Models\FeedTopicUserLink as FeedTopicUserLinkModel;
-use Illuminate\Contracts\Routing\ResponseFactory as ResponseContract;
-use Illuminate\Contracts\Foundation\Application as ApplicationContract;
-use Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\Feed as FeedModel;
-use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
-use Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Repository\Feed as FeedRepository;
-use Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\FormRequest\API2\StoreFeedPost as StoreFeedPostRequest;
+use function Zhiyi\Plus\setting;
 
 class FeedController extends Controller
 {
@@ -439,11 +439,9 @@ class FeedController extends Controller
      *
      * @return array
      */
-    private function makeFeedLinkTopics(StoreFeedPostRequest $request)
-    : array
+    private function makeFeedLinkTopics(StoreFeedPostRequest $request): array
     {
-        $topics = array_map(function ($item)
-        : ?int {
+        $topics = array_map(function ($item): ?int {
             if (is_numeric($item) || $item == (int) $item) {
                 return (int) $item;
             }
@@ -481,8 +479,7 @@ class FeedController extends Controller
      *
      * @return void
      */
-    private function linkFeedToTopics(array $topics, FeedModel $feed)
-    : void
+    private function linkFeedToTopics(array $topics, FeedModel $feed): void
     {
         if (empty($topics)) {
             return;
@@ -504,8 +501,7 @@ class FeedController extends Controller
     private function touchUserFollowBindFeedCount(
         UserModel $user,
         array $topics
-    )
-    : void {
+    ): void {
         if (empty($topics)) {
             return;
         }
@@ -794,8 +790,7 @@ class FeedController extends Controller
      * @return FeedModel
      * @author Seven Du <shiweidu@outlook.com>
      */
-    protected function fillFeedBaseData(Request $request, FeedModel $feed)
-    : FeedModel
+    protected function fillFeedBaseData(Request $request, FeedModel $feed): FeedModel
     {
         $baseFormInputs = $request->only([
             'feed_content', 'feed_from', 'feed_mark',

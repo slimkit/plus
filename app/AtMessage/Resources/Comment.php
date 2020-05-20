@@ -20,10 +20,10 @@ declare(strict_types=1);
 
 namespace Zhiyi\Plus\AtMessage\Resources;
 
-use Zhiyi\Plus\Models\User as UserModel;
-use Zhiyi\Plus\Types\Models as ModelTypes;
 use Zhiyi\Plus\AtMessage\ResourceInterface;
 use Zhiyi\Plus\Models\Comment as CommentModel;
+use Zhiyi\Plus\Models\User as UserModel;
+use Zhiyi\Plus\Types\Models as ModelTypes;
 
 class Comment implements ResourceInterface
 {

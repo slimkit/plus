@@ -20,12 +20,12 @@ declare(strict_types=1);
 
 namespace Zhiyi\Plus\Models\Relations;
 
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Support\Facades\Cache;
+use Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\CacheName\CacheKeys;
 use Zhiyi\Plus\Models\User;
 use Zhiyi\Plus\Models\Wallet;
-use Illuminate\Support\Facades\Cache;
-use Illuminate\Database\Eloquent\Relations\HasOne;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\CacheName\CacheKeys;
 
 trait PaidNodeHasUser
 {
@@ -68,8 +68,7 @@ trait PaidNodeHasUser
      * @return bool
      * @author Seven Du <shiweidu@outlook.com>
      */
-    public function paid(int $user, bool $filter = true)
-    : bool
+    public function paid(int $user, bool $filter = true): bool
     {
         if ($filter === true && $this->user_id === $user) {
             return true;

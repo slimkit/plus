@@ -20,11 +20,11 @@ declare(strict_types=1);
 
 namespace Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\Relations;
 
+use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Illuminate\Support\Facades\Cache;
+use Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\CacheName\CacheKeys;
 use Zhiyi\Plus\Models\Like;
 use Zhiyi\Plus\Models\User;
-use Illuminate\Support\Facades\Cache;
-use Illuminate\Database\Eloquent\Relations\MorphMany;
-use Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\CacheName\CacheKeys;
 
 trait FeedHasLike
 {
@@ -47,8 +47,7 @@ trait FeedHasLike
      * @return bool
      * @author Seven Du <shiweidu@outlook.com>
      */
-    public function liked($user)
-    : bool
+    public function liked($user): bool
     {
         if ($user instanceof User) {
             $user = $user->id;

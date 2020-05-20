@@ -20,9 +20,9 @@ declare(strict_types=1);
 
 namespace Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\FormRequest\API2;
 
-use Illuminate\Validation\Rule;
-use Illuminate\Support\Facades\Cache;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Validation\Rule;
 
 class StoreFeedComment extends FormRequest
 {

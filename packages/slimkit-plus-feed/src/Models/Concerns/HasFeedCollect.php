@@ -20,9 +20,9 @@ declare(strict_types=1);
 
 namespace Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\Concerns;
 
-use Zhiyi\Plus\Models\User;
 use Illuminate\Support\Facades\Cache;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\CacheName\CacheKeys;
+use Zhiyi\Plus\Models\User;
 
 trait HasFeedCollect
 {
@@ -47,8 +47,7 @@ trait HasFeedCollect
      * @return bool
      * @author Seven Du <shiweidu@outlook.com>
      */
-    public function collected(int $user)
-    : bool
+    public function collected(int $user): bool
     {
         $status = Cache::rememberForever(sprintf(CacheKeys::COLLECTED,
             $this->id, $user), function () use ($user) {

@@ -20,9 +20,9 @@ declare(strict_types=1);
 
 namespace Zhiyi\Plus\Notifications\Messages;
 
-use Overtrue\EasySms\Message;
-use Overtrue\EasySms\Contracts\GatewayInterface;
 use Illuminate\Config\Repository as ConfigRepository;
+use Overtrue\EasySms\Contracts\GatewayInterface;
+use Overtrue\EasySms\Message;
 
 class VerificationCodeMessage extends Message
 {

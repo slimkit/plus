@@ -20,8 +20,8 @@ declare(strict_types=1);
 
 namespace SlimKit\PlusAroundAmap\Admin\Controllers;
 
-use Zhiyi\Plus\Support\Configuration;
 use SlimKit\PlusAroundAmap\Admin\Requests\StoreAmapRequest;
+use Zhiyi\Plus\Support\Configuration;
 
 class HomeController
 {

@@ -20,8 +20,8 @@ declare(strict_types=1);
 
 namespace Zhiyi\Plus\Http\Requests\API2;
 
-use Illuminate\Support\Facades\Config;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Config;
 
 class StoreUploadFile extends FormRequest
 {

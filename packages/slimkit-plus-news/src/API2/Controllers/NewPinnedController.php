@@ -22,13 +22,13 @@ namespace Zhiyi\Component\ZhiyiPlus\PlusComponentNews\API2\Controllers;
 
 use Carbon\Carbon;
 use Illuminate\Http\Request;
-use Zhiyi\Plus\Http\Controllers\Controller;
-use Zhiyi\Plus\Models\Comment as CommentModel;
-use Zhiyi\Plus\Http\Middleware\VerifyUserPassword;
-use Zhiyi\Plus\Models\UserCount as UserCountModel;
-use Zhiyi\Plus\Packages\Currency\Processes\User as UserProcess;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentNews\Models\News as NewsModel;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentNews\Models\NewsPinned as NewsPinnedModel;
+use Zhiyi\Plus\Http\Controllers\Controller;
+use Zhiyi\Plus\Http\Middleware\VerifyUserPassword;
+use Zhiyi\Plus\Models\Comment as CommentModel;
+use Zhiyi\Plus\Models\UserCount as UserCountModel;
+use Zhiyi\Plus\Packages\Currency\Processes\User as UserProcess;
 
 class NewPinnedController extends Controller
 {

@@ -20,12 +20,12 @@ declare(strict_types=1);
 
 namespace Zhiyi\Plus\API2\Controllers\Feed;
 
-use Illuminate\Http\JsonResponse;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Http\JsonResponse;
 use Zhiyi\Plus\API2\Controllers\Controller;
-use Zhiyi\Plus\Models\FeedTopicUserLink as FeedTopicUserLinkModel;
 use Zhiyi\Plus\API2\Requests\Feed\ListParticipantsForATopic as ListParticipantsForATopicRequest;
 use Zhiyi\Plus\API2\Resources\Feed\TopicParticipantCollection as TopicParticipantCollectionResponse;
+use Zhiyi\Plus\Models\FeedTopicUserLink as FeedTopicUserLinkModel;
 
 class TopicParticipant extends Controller
 {

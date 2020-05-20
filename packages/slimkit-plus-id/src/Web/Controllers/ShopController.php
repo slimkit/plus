@@ -21,9 +21,9 @@ declare(strict_types=1);
 namespace SlimKit\PlusID\Web\Controllers;
 
 use Carbon\Carbon;
-use Zhiyi\Plus\Models\User;
 use Illuminate\Http\Request;
 use SlimKit\PlusID\Models\Client as ClientModel;
+use Zhiyi\Plus\Models\User;
 
 class ShopController
 {

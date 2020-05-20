@@ -20,9 +20,9 @@ declare(strict_types=1);
 
 namespace Zhiyi\Plus\API2\Controllers;
 
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
-use Illuminate\Http\JsonResponse;
 use Zhiyi\Plus\API2\Resources\UserCountsResource;
 use Zhiyi\Plus\Models\UserCount as UserCountModel;
 

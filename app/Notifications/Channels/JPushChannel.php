@@ -20,8 +20,8 @@ declare(strict_types=1);
 
 namespace Zhiyi\Plus\Notifications\Channels;
 
-use Zhiyi\Plus\Services\Push;
 use Illuminate\Notifications\Notification;
+use Zhiyi\Plus\Services\Push;
 
 class JPushChannel
 {

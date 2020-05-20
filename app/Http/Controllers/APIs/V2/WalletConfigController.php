@@ -21,9 +21,9 @@ declare(strict_types=1);
 namespace Zhiyi\Plus\Http\Controllers\APIs\V2;
 
 use Closure;
+use Illuminate\Contracts\Routing\ResponseFactory;
 use Illuminate\Support\Collection;
 use Zhiyi\Plus\Models\CommonConfig;
-use Illuminate\Contracts\Routing\ResponseFactory;
 
 class WalletConfigController extends Controller
 {

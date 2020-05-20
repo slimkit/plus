@@ -21,9 +21,9 @@ declare(strict_types=1);
 namespace Zhiyi\Plus\FileStorage\Channels;
 
 use Illuminate\Http\Request;
-use Zhiyi\Plus\FileStorage\ResourceInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Zhiyi\Plus\FileStorage\Filesystems\FilesystemInterface;
+use Zhiyi\Plus\FileStorage\ResourceInterface;
 
 abstract class AbstractChannel implements ChannelInterface
 {

@@ -20,16 +20,16 @@ declare(strict_types=1);
 
 namespace Zhiyi\Component\ZhiyiPlus\PlusComponentNews\Models;
 
-use Zhiyi\Plus\Models\Tag;
-use Zhiyi\Plus\Models\User;
-use Zhiyi\Plus\Models\Report;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Collection;
+use Zhiyi\Plus\Models\BlackList;
 use Zhiyi\Plus\Models\Comment;
 use Zhiyi\Plus\Models\FileWith;
-use Zhiyi\Plus\Models\BlackList;
-use Illuminate\Support\Collection;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletes;
+use Zhiyi\Plus\Models\Report;
+use Zhiyi\Plus\Models\Tag;
+use Zhiyi\Plus\Models\User;
 
 class News extends Model
 {

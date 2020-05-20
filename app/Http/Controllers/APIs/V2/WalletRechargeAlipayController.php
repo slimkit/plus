@@ -20,9 +20,9 @@ declare(strict_types=1);
 
 namespace Zhiyi\Plus\Http\Controllers\APIs\V2;
 
+use Illuminate\Contracts\Routing\ResponseFactory as ContractResponse;
 use Illuminate\Support\Arr;
 use Zhiyi\Plus\Http\Requests\API2\StoreWalletRecharge;
-use Illuminate\Contracts\Routing\ResponseFactory as ContractResponse;
 
 class WalletRechargeAlipayController extends WalletRechargeController
 {

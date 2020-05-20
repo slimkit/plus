@@ -21,9 +21,9 @@ declare(strict_types=1);
 namespace Zhiyi\Plus\Packages\Wallet\TargetTypes;
 
 use DB;
-use function Zhiyi\Plus\setting;
-use Zhiyi\Plus\Packages\Wallet\Wallet;
 use Zhiyi\Plus\Packages\Currency\Processes\Recharge;
+use Zhiyi\Plus\Packages\Wallet\Wallet;
+use function Zhiyi\Plus\setting;
 
 class TransformCurrencyTarget extends Target
 {

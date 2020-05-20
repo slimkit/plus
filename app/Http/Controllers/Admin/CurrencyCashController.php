@@ -22,12 +22,12 @@ namespace Zhiyi\Plus\Http\Controllers\Admin;
 
 use DB;
 use Illuminate\Http\Request;
-use Zhiyi\Plus\Models\WalletOrder;
-use Zhiyi\Plus\Packages\Wallet\Order;
 use Zhiyi\Plus\Http\Controllers\Controller;
 use Zhiyi\Plus\Models\CurrencyOrder as OrderModel;
 use Zhiyi\Plus\Models\NewWallet as NewWalletModel;
+use Zhiyi\Plus\Models\WalletOrder;
 use Zhiyi\Plus\Notifications\System as SystemNotification;
+use Zhiyi\Plus\Packages\Wallet\Order;
 
 class CurrencyCashController extends Controller
 {

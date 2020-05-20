@@ -20,10 +20,10 @@ declare(strict_types=1);
 
 namespace Slimkit\PlusAppversion\Handlers;
 
-use Illuminate\Support\Str;
 use Illuminate\Console\Command;
-use Slimkit\PlusAppversion\Support\Path;
 use Illuminate\Contracts\Foundation\Application as ApplicationContract;
+use Illuminate\Support\Str;
+use Slimkit\PlusAppversion\Support\Path;
 
 class DevPackageHandler extends \Zhiyi\Plus\Support\PackageHandler
 {

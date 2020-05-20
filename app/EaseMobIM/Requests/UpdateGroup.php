@@ -20,8 +20,8 @@ declare(strict_types=1);
 
 namespace Zhiyi\Plus\EaseMobIm;
 
-use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class UpdateGroup extends FormRequest
 {

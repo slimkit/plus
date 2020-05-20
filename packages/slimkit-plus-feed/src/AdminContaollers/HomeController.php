@@ -22,11 +22,11 @@ namespace Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\AdminControllers;
 
 use Carbon\Carbon;
 use Illuminate\Http\Request;
-use Zhiyi\Plus\Models\Comment;
-use function Zhiyi\Plus\setting;
-use Zhiyi\Plus\Http\Controllers\Controller;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\Feed;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\FeedPinned;
+use Zhiyi\Plus\Http\Controllers\Controller;
+use Zhiyi\Plus\Models\Comment;
+use function Zhiyi\Plus\setting;
 
 class HomeController extends Controller
 {

@@ -21,8 +21,8 @@ declare(strict_types=1);
 namespace Zhiyi\Plus\Notifications;
 
 use Illuminate\Bus\Queueable;
-use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Notifications\Notification;
 use Zhiyi\Plus\Notifications\Channels\JPushChannel;
 
 class UserNotification extends Notification implements ShouldQueue

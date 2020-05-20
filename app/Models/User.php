@@ -21,18 +21,18 @@ declare(strict_types=1);
 namespace Zhiyi\Plus\Models;
 
 use Cache;
-use Tymon\JWTAuth\Contracts\JWTSubject;
-use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Builder;
-use Medz\Laravel\Notifications\JPush\Sender;
-use Illuminate\Database\Eloquent\SoftDeletes;
-use Zhiyi\Plus\FileStorage\FileMetaInterface;
-use Illuminate\Database\Eloquent\Relations\HasOne;
-use Zhiyi\Plus\Models\Relations\UserHasWalletCash;
-use Illuminate\Database\Eloquent\Relations\MorphToMany;
-use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\MorphToMany;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
+use Medz\Laravel\Notifications\JPush\Sender;
+use Tymon\JWTAuth\Contracts\JWTSubject;
+use Zhiyi\Plus\FileStorage\FileMetaInterface;
 use Zhiyi\Plus\FileStorage\Traits\EloquentAttributeTrait as FileStorageEloquentAttributeTrait;
+use Zhiyi\Plus\Models\Relations\UserHasWalletCash;
 
 class User extends Authenticatable implements JWTSubject
 {
@@ -130,8 +130,7 @@ class User extends Authenticatable implements JWTSubject
         return [];
     }
 
-    protected function getAvatarAttribute(?string $resource)
-    : ?FileMetaInterface
+    protected function getAvatarAttribute(?string $resource): ?FileMetaInterface
     {
         if (! $resource) {
             return null;
@@ -140,8 +139,7 @@ class User extends Authenticatable implements JWTSubject
         return $this->getFileStorageResourceMeta($resource);
     }
 
-    protected function getBgAttribute(?string $resource)
-    : ?FileMetaInterface
+    protected function getBgAttribute(?string $resource): ?FileMetaInterface
     {
         if (! $resource) {
             return null;
@@ -238,8 +236,7 @@ class User extends Authenticatable implements JWTSubject
      * @author Seven Du <shiweidu@outlook.com>
      * @homepage http://medz.cn
      */
-    public function scopeByPhone(Builder $query, string $phone)
-    : Builder
+    public function scopeByPhone(Builder $query, string $phone): Builder
     {
         return $query->where('phone', $phone);
     }
@@ -255,8 +252,7 @@ class User extends Authenticatable implements JWTSubject
      * @author Seven Du <shiweidu@outlook.com>
      * @homepage http://medz.cn
      */
-    public function scopeByName(Builder $query, string $name)
-    : Builder
+    public function scopeByName(Builder $query, string $name): Builder
     {
         return $query->where('name', $name);
     }
@@ -270,8 +266,7 @@ class User extends Authenticatable implements JWTSubject
      * @return Illuminate\Database\Eloquent\Builder
      * @author Seven Du <shiweidu@outlook.com>
      */
-    public function scopeByEmail(Builder $query, string $email)
-    : Builder
+    public function scopeByEmail(Builder $query, string $email): Builder
     {
         return $query->where('email', $email);
     }
@@ -286,8 +281,7 @@ class User extends Authenticatable implements JWTSubject
      * @author Seven Du <shiweidu@outlook.com>
      * @homepage http://medz.cn
      */
-    public function createPassword(string $password)
-    : self
+    public function createPassword(string $password): self
     {
         $this->password = app('hash')->make($password);
 
@@ -304,8 +298,7 @@ class User extends Authenticatable implements JWTSubject
      *
      * @return bool 验证结果true or false
      */
-    public function verifyPassword(string $password)
-    : bool
+    public function verifyPassword(string $password): bool
     {
         return $this->password
             && app('hash')->check($password, $this->password);
@@ -343,8 +336,7 @@ class User extends Authenticatable implements JWTSubject
      *
      * @return BelongsToMany
      */
-    public function feedTopics()
-    : BelongsToMany
+    public function feedTopics(): BelongsToMany
     {
         $table = (new FeedTopicUserLink)->getTable();
 

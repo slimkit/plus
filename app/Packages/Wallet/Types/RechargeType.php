@@ -21,14 +21,14 @@ declare(strict_types=1);
 namespace Zhiyi\Plus\Packages\Wallet\Types;
 
 use DB;
-use Illuminate\Support\Arr;
 use Illuminate\Http\Request;
-use function Zhiyi\Plus\setting;
-use Zhiyi\Plus\Packages\Wallet\Order;
+use Illuminate\Support\Arr;
 use Zhiyi\Plus\Models\User as UserModel;
 use Zhiyi\Plus\Models\WalletOrder as WalletOrderModel;
+use Zhiyi\Plus\Packages\Wallet\Order;
 use Zhiyi\Plus\Packages\Wallet\TargetTypes\RechargeTarget;
 use Zhiyi\Plus\Services\Wallet\Charge as WalletChargeService;
+use function Zhiyi\Plus\setting;
 
 class RechargeType extends Type
 {

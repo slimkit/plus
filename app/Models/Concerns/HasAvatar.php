@@ -20,13 +20,13 @@ declare(strict_types=1);
 
 namespace Zhiyi\Plus\Models\Concerns;
 
-use Image;
-use Illuminate\Support\Arr;
-use Zhiyi\Plus\Cdn\Refresh;
-use Illuminate\Support\Carbon;
-use Illuminate\Http\UploadedFile;
-use Illuminate\Support\Facades\Cache;
 use Illuminate\Filesystem\FilesystemManager;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Cache;
+use Image;
+use Zhiyi\Plus\Cdn\Refresh;
 use Zhiyi\Plus\Contracts\Cdn\UrlFactory as CdnUrlFactoryContract;
 
 trait HasAvatar

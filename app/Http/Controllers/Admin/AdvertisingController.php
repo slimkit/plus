@@ -22,9 +22,9 @@ namespace Zhiyi\Plus\Http\Controllers\Admin;
 
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Zhiyi\Plus\Http\Controllers\Controller;
 use Zhiyi\Plus\Models\Advertising;
 use Zhiyi\Plus\Models\AdvertisingSpace;
-use Zhiyi\Plus\Http\Controllers\Controller;
 
 class AdvertisingController extends Controller
 {

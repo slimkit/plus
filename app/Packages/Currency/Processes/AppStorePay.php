@@ -20,11 +20,11 @@ namespace Zhiyi\Plus\Packages\Currency\Processes;
 
 use DB;
 use GuzzleHttp\Client;
-use function Zhiyi\Plus\setting;
-use Zhiyi\Plus\Packages\Currency\Order;
-use Zhiyi\Plus\Packages\Currency\Process;
 use Zhiyi\Plus\Models\CommonConfig as CommonConfigModel;
 use Zhiyi\Plus\Models\CurrencyOrder as CurrencyOrderModel;
+use Zhiyi\Plus\Packages\Currency\Order;
+use Zhiyi\Plus\Packages\Currency\Process;
+use function Zhiyi\Plus\setting;
 
 class AppStorePay extends Process
 {

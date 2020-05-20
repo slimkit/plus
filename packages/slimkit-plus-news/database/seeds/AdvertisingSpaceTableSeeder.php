@@ -110,14 +110,14 @@ class AdvertisingSpaceTableSeeder extends Seeder
             ],
             'message' => [
                 'news:analog' => [
-                   'image.required' => '广告图链接不能为空',
-                   'image.url' => '广告图链接无效',
-                   'link.required' => '广告链接不能为空',
-                   'link.url' => '广告链接无效',
-                   'time.required' => '广告资讯时间必填',
-                   'time.date' => '时间格式错误',
-                   'from.required' => '广告资讯来源必填',
-                   'title.required' => '广告资讯标题必填',
+                    'image.required' => '广告图链接不能为空',
+                    'image.url' => '广告图链接无效',
+                    'link.required' => '广告链接不能为空',
+                    'link.url' => '广告链接无效',
+                    'time.required' => '广告资讯时间必填',
+                    'time.date' => '时间格式错误',
+                    'from.required' => '广告资讯来源必填',
+                    'title.required' => '广告资讯标题必填',
                 ],
             ],
         ]);

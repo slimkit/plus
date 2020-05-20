@@ -21,19 +21,19 @@ declare(strict_types=1);
 namespace Slimkit\PlusAppversion\Admin\Controllers;
 
 use Carbon\Carbon;
+use Illuminate\Contracts\Routing\ResponseFactory as ResponseContract;
 use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
-use Tymon\JWTAuth\Facades\JWTAuth;
-use Zhiyi\Plus\Support\Configuration;
 use Illuminate\Support\Facades\Storage;
-use Zhiyi\Plus\Models\File as FileModel;
-use Zhiyi\Plus\Models\User as UserModel;
-use Zhiyi\Plus\Http\Controllers\Controller;
-use Slimkit\PlusAppversion\Models\ClientVersion;
-use Zhiyi\Plus\Models\FileWith as FileWithModel;
 use Slimkit\PlusAppversion\API\Requests\ApkUpload;
+use Slimkit\PlusAppversion\Models\ClientVersion;
 use Slimkit\PlusAppversion\Requests\StoreClientVersion;
-use Illuminate\Contracts\Routing\ResponseFactory as ResponseContract;
+use Tymon\JWTAuth\Facades\JWTAuth;
+use Zhiyi\Plus\Http\Controllers\Controller;
+use Zhiyi\Plus\Models\File as FileModel;
+use Zhiyi\Plus\Models\FileWith as FileWithModel;
+use Zhiyi\Plus\Models\User as UserModel;
+use Zhiyi\Plus\Support\Configuration;
 
 class HomeController extends Controller
 {

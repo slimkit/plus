@@ -20,13 +20,13 @@ declare(strict_types=1);
 
 namespace SlimKit\PlusAroundAmap\API\Controllers;
 
-use Illuminate\Support\Arr;
-use Illuminate\Http\Request;
-use Illuminate\Routing\Controller;
-use Zhiyi\Plus\Support\Configuration;
 use GuzzleHttp\Client as GuzzleHttpClient;
 use Illuminate\Contracts\Routing\ResponseFactory;
+use Illuminate\Http\Request;
+use Illuminate\Routing\Controller;
+use Illuminate\Support\Arr;
 use SlimKit\PlusAroundAmap\Models\AroundAmap as AroundAmapModel;
+use Zhiyi\Plus\Support\Configuration;
 
 class HomeController extends Controller
 {
@@ -128,11 +128,11 @@ class HomeController extends Controller
         $sig = md5(urldecode(http_build_query($prams, '', '&')).$this->_amap_sig);
         $prams['sig'] = $sig;
         $result = json_decode($this->http->post($this->_create_uri, [
-                'form_params' => $prams,
-                'headers' => [
-                    'Content-Type' => 'application/x-www-form-urlencoded',
-                ],
-            ])
+            'form_params' => $prams,
+            'headers' => [
+                'Content-Type' => 'application/x-www-form-urlencoded',
+            ],
+        ])
             ->getBody()
             ->getContents(), true);
 
@@ -181,11 +181,11 @@ class HomeController extends Controller
         $sig = md5(urldecode(http_build_query($prams, '', '&')).$this->_amap_sig);
         $prams['sig'] = $sig;
         $result = json_decode($this->http->post($this->_update_uri, [
-                'form_params' => $prams,
-                'headers' => [
-                    'Content-Type' => 'application/x-www-form-urlencoded',
-                ],
-            ])
+            'form_params' => $prams,
+            'headers' => [
+                'Content-Type' => 'application/x-www-form-urlencoded',
+            ],
+        ])
             ->getBody()
             ->getContents(), true);
         if ($result['status'] === 1) {
@@ -208,15 +208,15 @@ class HomeController extends Controller
         $aroundAmap = $around->find($user->id);
         $_id = $aroundAmap['_id'];
         $parmas = [
-        'ids' => $_id,
-        'key' => $this->_amap_key,
-        'tableid' => $this->_amap_tableId,
+            'ids' => $_id,
+            'key' => $this->_amap_key,
+            'tableid' => $this->_amap_tableId,
         ];
         $sig = md5(urldecode(http_build_query($parmas, '', '&')).$this->_amap_sig);
         $parmas['sig'] = $sig;
         $result = json_decode($this->http->post($this->_delete_uri, [
-        'form_params' => $parmas,
-        'headers' => [
+            'form_params' => $parmas,
+            'headers' => [
                 'Content-Type' => 'application/x-www-form-urlencoded',
             ],
         ])

@@ -20,9 +20,9 @@ declare(strict_types=1);
 
 namespace Zhiyi\Plus\Http\Controllers\APIs\V2;
 
+use Zhiyi\Plus\Http\Requests\API2\Transfer as TransferRequest;
 use Zhiyi\Plus\Packages\Wallet\Order;
 use Zhiyi\Plus\Packages\Wallet\TypeManager;
-use Zhiyi\Plus\Http\Requests\API2\Transfer as TransferRequest;
 
 class TransferController extends Controller
 {

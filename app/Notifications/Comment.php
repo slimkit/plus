@@ -19,11 +19,11 @@
 namespace Zhiyi\Plus\Notifications;
 
 use Illuminate\Bus\Queueable;
-use Zhiyi\Plus\Models\User as UserModel;
-use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
-use Zhiyi\Plus\Models\Comment as CommentModel;
+use Illuminate\Notifications\Notification;
 use Medz\Laravel\Notifications\JPush\Message as JPushMessage;
+use Zhiyi\Plus\Models\Comment as CommentModel;
+use Zhiyi\Plus\Models\User as UserModel;
 
 class Comment extends Notification implements ShouldQueue
 {

@@ -16,9 +16,9 @@
  * +----------------------------------------------------------------------+
  */
 
-use Zhiyi\Plus\Models\Role;
-use Zhiyi\Plus\Models\Ability;
 use Illuminate\Database\Seeder;
+use Zhiyi\Plus\Models\Ability;
+use Zhiyi\Plus\Models\Role;
 
 class AbilitySeeder extends Seeder
 {

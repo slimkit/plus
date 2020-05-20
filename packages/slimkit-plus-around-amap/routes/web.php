@@ -18,9 +18,9 @@ declare(strict_types=1);
  * +----------------------------------------------------------------------+
  */
 
+use Illuminate\Contracts\Routing\Registrar as RouteRegisterContract;
 use Illuminate\Support\Facades\Route;
 use SlimKit\PlusAroundAmap\Web\Controllers as Web;
-use Illuminate\Contracts\Routing\Registrar as RouteRegisterContract;
 
 /*
 |--------------------------------------------------------------------------

@@ -20,11 +20,11 @@ declare(strict_types=1);
 
 namespace Zhiyi\Plus\Cdn;
 
-use Zhiyi\Plus\Models\File;
-use Zhiyi\Plus\Support\CdnUrlGenerator;
+use Illuminate\Contracts\Foundation\Application as ApplicationContract;
 use Zhiyi\Plus\Contracts\Cdn\UrlFactory as UrlFactoryContract;
 use Zhiyi\Plus\Contracts\Cdn\UrlGenerator as UrlGeneratorContract;
-use Illuminate\Contracts\Foundation\Application as ApplicationContract;
+use Zhiyi\Plus\Models\File;
+use Zhiyi\Plus\Support\CdnUrlGenerator;
 
 class UrlManager implements UrlFactoryContract
 {

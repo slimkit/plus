@@ -18,11 +18,11 @@
 
 namespace Zhiyi\Plus\Tests\Unit\Packages\Wallet\Types;
 
-use Zhiyi\Plus\Tests\TestCase;
-use Zhiyi\Plus\Packages\Wallet\Order;
-use Zhiyi\Plus\Packages\Wallet\Types\UserType;
 use Zhiyi\Plus\Models\WalletOrder as WalletOrderModel;
+use Zhiyi\Plus\Packages\Wallet\Order;
 use Zhiyi\Plus\Packages\Wallet\TargetTypes\UserTarget;
+use Zhiyi\Plus\Packages\Wallet\Types\UserType;
+use Zhiyi\Plus\Tests\TestCase;
 
 class UserTypeTest extends TestCase
 {

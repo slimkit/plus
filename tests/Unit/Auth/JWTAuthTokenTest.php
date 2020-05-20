@@ -18,9 +18,9 @@
 
 namespace Zhiyi\Plus\Tests\Unit\Auth;
 
-use Zhiyi\Plus\Tests\TestCase;
-use Zhiyi\Plus\Models\User as UserModel;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Zhiyi\Plus\Models\User as UserModel;
+use Zhiyi\Plus\Tests\TestCase;
 
 class JWTAuthTokenTest extends TestCase
 {

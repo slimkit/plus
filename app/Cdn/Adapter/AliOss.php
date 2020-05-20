@@ -20,8 +20,8 @@ declare(strict_types=1);
 
 namespace Zhiyi\Plus\Cdn\Adapter;
 
-use OSS\OssClient;
 use Illuminate\Support\Arr;
+use OSS\OssClient;
 use Zhiyi\Plus\Cdn\Refresh;
 use Zhiyi\Plus\Contracts\Cdn\UrlGenerator as FileUrlGeneratorContract;
 
@@ -73,8 +73,7 @@ class AliOss implements FileUrlGeneratorContract
      * @return string
      * @author Seven Du <shiweidu@outlook.com>
      */
-    public function url(string $filename, array $extra = [])
-    : string
+    public function url(string $filename, array $extra = []): string
     {
         // 过滤目录分隔符.
         $filename = $this->filterSlash($filename);
@@ -127,8 +126,7 @@ class AliOss implements FileUrlGeneratorContract
      * @return string
      * @author BS <414606094@qq.com>
      */
-    protected function makeSignURL(string $filename, array $extra)
-    : string
+    protected function makeSignURL(string $filename, array $extra): string
     {
         return $this->client->signUrl(
             $this->bucket,
@@ -148,8 +146,7 @@ class AliOss implements FileUrlGeneratorContract
      * @return string
      * @author Seven Du <shiweidu@outlook.com>
      */
-    protected function makePublicURL(string $filename, array $extra)
-    : string
+    protected function makePublicURL(string $filename, array $extra): string
     {
         return $this->resolveQueryString(
             sprintf('%s/%s', $this->getBaseURI(), $filename),
@@ -166,8 +163,7 @@ class AliOss implements FileUrlGeneratorContract
      * @return array
      * @author BS <414606094@qq.com>
      */
-    protected function getProcess(string $filename, array $extra)
-    : array
+    protected function getProcess(string $filename, array $extra): array
     {
         if ($this->isImage($filename)) {
             $width = max(0, intval(Arr::get($extra, 'width', 0)));
@@ -226,8 +222,7 @@ class AliOss implements FileUrlGeneratorContract
      * @return bool
      * @author Seven Du <shiweidu@outlook.com>
      */
-    protected function isImage(string $filename)
-    : bool
+    protected function isImage(string $filename): bool
     {
         return in_array(app('files')->extension($filename),
             ['psd', 'png', 'jpg', 'jpeg', 'webp', 'bmp', 'gif', 'tiff']);
@@ -243,8 +238,7 @@ class AliOss implements FileUrlGeneratorContract
      * @throws \Exception
      * @author Seven Du <shiweidu@outlook.com>
      */
-    protected function resolveQueryString(string $url, array $query = [])
-    : string
+    protected function resolveQueryString(string $url, array $query = []): string
     {
         // -1 表示获取全部。
         $pares = parse_url($url, -1);
@@ -274,8 +268,7 @@ class AliOss implements FileUrlGeneratorContract
     protected function mergeHttpQueryString(
         string $query1 = '',
         string $query2 = ''
-    )
-    : string {
+    ): string {
         // default query string.
         $query = $query1 ?: '';
         if ($query1 && $query2) {
@@ -295,8 +288,7 @@ class AliOss implements FileUrlGeneratorContract
      * @return string
      * @author Seven Du <shiweidu@outlook.com>
      */
-    protected function filterSlash(string $filename)
-    : string
+    protected function filterSlash(string $filename): string
     {
         // 将 windows 系统目录分隔符也去除.
         $filename = str_replace('\\', '/',
@@ -322,8 +314,7 @@ class AliOss implements FileUrlGeneratorContract
      * @return string
      * @author Seven Du <shiweidu@outlook.com>
      */
-    protected function getBaseURI(string $endpoint = '')
-    : string
+    protected function getBaseURI(string $endpoint = ''): string
     {
         $endpoint = $this->isCname ? $this->endpoint
             : $this->bucket.'.'.$this->endpoint;
@@ -345,8 +336,7 @@ class AliOss implements FileUrlGeneratorContract
      * @return string
      * @author Seven Du <shiweidu@outlook.com>
      */
-    protected function getScheme()
-    : string
+    protected function getScheme(): string
     {
         if ($this->ssl === true) {
             return 'https';

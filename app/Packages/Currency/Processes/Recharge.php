@@ -22,20 +22,19 @@ namespace Zhiyi\Plus\Packages\Currency\Processes;
 
 use DB;
 use Illuminate\Http\Request;
-use function Zhiyi\Plus\setting;
 use Pingpp\Charge as PingppCharge;
+use Zhiyi\Plus\Models\CurrencyOrder as CurrencyOrderModel;
 use Zhiyi\Plus\Packages\Currency\Order;
 use Zhiyi\Plus\Packages\Currency\Process;
-use Zhiyi\Plus\Models\CurrencyOrder as CurrencyOrderModel;
 use Zhiyi\Plus\Services\Wallet\Charge as WalletChargeService;
+use function Zhiyi\Plus\setting;
 
 class Recharge extends Process
 {
     // ping++订单前缀标识
     protected $PingppPrefix = 'C';
 
-    public function createOrder(int $owner_id, int $amount)
-    : CurrencyOrderModel
+    public function createOrder(int $owner_id, int $amount): CurrencyOrderModel
     {
         $user = $this->checkUser($owner_id);
         $ratio = setting('currency', 'settings')['recharge-ratio'] ?? 1;
@@ -96,8 +95,7 @@ class Recharge extends Process
      * @return boolen
      * @author BS <414606094@qq.com>
      */
-    public function retrieve(CurrencyOrderModel $currencyOrderModel)
-    : bool
+    public function retrieve(CurrencyOrderModel $currencyOrderModel): bool
     {
         $pingppCharge = app(WalletChargeService::class)->query($currencyOrderModel->target_id);
 
@@ -116,8 +114,7 @@ class Recharge extends Process
      * @return boolen
      * @author BS <414606094@qq.com>
      */
-    public function webhook(Request $request)
-    : bool
+    public function webhook(Request $request): bool
     {
         if ($this->verifyWebHook($request)) {
             $pingppCharge = $request->json('data.object');
@@ -143,8 +140,7 @@ class Recharge extends Process
      * @return boolen
      * @author BS <414606094@qq.com>
      */
-    private function complete(CurrencyOrderModel $currencyOrderModel)
-    : bool
+    private function complete(CurrencyOrderModel $currencyOrderModel): bool
     {
         $currencyOrderModel->state = 1;
         $user = $this->checkUser($currencyOrderModel->user);
@@ -165,8 +161,7 @@ class Recharge extends Process
      * @return boolen
      * @author BS <414606094@qq.com>
      */
-    protected function verifyWebHook(Request $request)
-    : bool
+    protected function verifyWebHook(Request $request): bool
     {
         if ($request->json('type') !== 'charge.succeeded') {
             return false;

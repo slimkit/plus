@@ -20,11 +20,11 @@ declare(strict_types=1);
 
 namespace Zhiyi\Plus\Http\Controllers\Admin;
 
-use DB;
 use Carbon\Carbon;
+use DB;
 use Illuminate\Http\Request;
-use Zhiyi\Plus\Models\Reward;
 use Zhiyi\Plus\Http\Controllers\Controller;
+use Zhiyi\Plus\Models\Reward;
 
 class RewardController extends Controller
 {
@@ -224,11 +224,11 @@ class RewardController extends Controller
     protected function getRewardavelTypes()
     {
         return [
-           'feeds' => '动态打赏',
-           'news'  => '资讯打赏',
-           'users' => '用户打赏',
-           'question-answers' => '问答打赏',
-           'group-posts' => '圈子帖子打赏',
+            'feeds' => '动态打赏',
+            'news'  => '资讯打赏',
+            'users' => '用户打赏',
+            'question-answers' => '问答打赏',
+            'group-posts' => '圈子帖子打赏',
         ];
     }
 

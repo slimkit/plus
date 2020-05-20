@@ -16,10 +16,10 @@
  * +----------------------------------------------------------------------+
  */
 
-use Zhiyi\Plus\EaseMobIm;
-use Illuminate\Support\Facades\Route;
-use Zhiyi\Plus\Http\Controllers\APIs\V2 as API2;
 use Illuminate\Contracts\Routing\Registrar as RouteContract;
+use Illuminate\Support\Facades\Route;
+use Zhiyi\Plus\EaseMobIm;
+use Zhiyi\Plus\Http\Controllers\APIs\V2 as API2;
 
 Route::any('/develop', \Zhiyi\Plus\Http\Controllers\DevelopController::class.'@index');
 

@@ -20,8 +20,8 @@ namespace Zhiyi\Plus\Http\Controllers\Admin;
 
 use DB;
 use Illuminate\Http\Request;
-use Zhiyi\Plus\Models\WalletOrder;
 use Zhiyi\Plus\Http\Controllers\Controller;
+use Zhiyi\Plus\Models\WalletOrder;
 
 class NewWalletController extends Controller
 {

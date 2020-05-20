@@ -20,8 +20,8 @@ declare(strict_types=1);
 
 namespace Zhiyi\Plus\Packages\Currency;
 
-use Zhiyi\Plus\Models\User as UserModel;
 use Zhiyi\Plus\Models\CurrencyType as CurrencyTypeModel;
+use Zhiyi\Plus\Models\User as UserModel;
 
 class Process
 {
@@ -72,8 +72,7 @@ class Process
      * @return UserModel
      * @author BS <414606094@qq.com>
      */
-    protected function checkCurrency(UserModel $user)
-    : UserModel
+    protected function checkCurrency(UserModel $user): UserModel
     {
         if (! $user->currency) {
             $user->currency = $user->currency()

@@ -21,9 +21,9 @@ declare(strict_types=1);
 namespace Zhiyi\Component\ZhiyiPlus\PlusComponentNews\AdminControllers;
 
 use Illuminate\Http\Request;
-use Zhiyi\Plus\Models\FileWith;
-use Zhiyi\Plus\Http\Controllers\Controller;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentNews\Models\NewsRecommend;
+use Zhiyi\Plus\Http\Controllers\Controller;
+use Zhiyi\Plus\Models\FileWith;
 
 /**
  * 资讯推荐管理.

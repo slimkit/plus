@@ -21,8 +21,8 @@ declare(strict_types=1);
 namespace Zhiyi\Plus\EaseMobIm;
 
 use GuzzleHttp\Client;
-use Zhiyi\Plus\Models\User;
 use Illuminate\Http\Request;
+use Zhiyi\Plus\Models\User;
 use function Zhiyi\Plus\setting;
 
 class EaseMobController

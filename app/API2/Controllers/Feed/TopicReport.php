@@ -22,9 +22,9 @@ namespace Zhiyi\Plus\API2\Controllers\Feed;
 
 use Illuminate\Http\Response;
 use Zhiyi\Plus\API2\Controllers\Controller;
-use Zhiyi\Plus\Models\Report as ReportModel;
-use Zhiyi\Plus\Models\FeedTopic as FeedTopicModel;
 use Zhiyi\Plus\API2\Requests\Feed\ReportATopic as ReportATopicRequest;
+use Zhiyi\Plus\Models\FeedTopic as FeedTopicModel;
+use Zhiyi\Plus\Models\Report as ReportModel;
 
 class TopicReport extends Controller
 {

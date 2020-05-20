@@ -21,15 +21,15 @@ declare(strict_types=1);
 namespace Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\API2;
 
 use Carbon\Carbon;
-use Illuminate\Support\Str;
 use Illuminate\Http\Request;
-use Zhiyi\Plus\Http\Controllers\Controller;
-use Zhiyi\Plus\Models\Comment as CommentModel;
-use Zhiyi\Plus\Http\Middleware\VerifyUserPassword;
-use Zhiyi\Plus\Models\UserCount as UserCountModel;
-use Zhiyi\Plus\Packages\Currency\Processes\User as UserProcess;
+use Illuminate\Support\Str;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\Feed as FeedModel;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\FeedPinned as FeedPinnedModel;
+use Zhiyi\Plus\Http\Controllers\Controller;
+use Zhiyi\Plus\Http\Middleware\VerifyUserPassword;
+use Zhiyi\Plus\Models\Comment as CommentModel;
+use Zhiyi\Plus\Models\UserCount as UserCountModel;
+use Zhiyi\Plus\Packages\Currency\Processes\User as UserProcess;
 
 /**
  * 积分申请置顶控制器.

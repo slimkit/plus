@@ -21,15 +21,15 @@ declare(strict_types=1);
 namespace Zhiyi\Plus\FileStorage\Filesystems\AliyunOss;
 
 use Closure;
-use OSS\OssClient;
 use OSS\Core\MimeTypes;
-use Zhiyi\Plus\Models\User;
-use Zhiyi\Plus\FileStorage\ImageDimension;
+use OSS\OssClient;
 use Zhiyi\Plus\FileStorage\FileMetaAbstract;
+use Zhiyi\Plus\FileStorage\ImageDimension;
+use Zhiyi\Plus\FileStorage\ImageDimensionInterface;
 use Zhiyi\Plus\FileStorage\Pay\PayInterface;
 use Zhiyi\Plus\FileStorage\ResourceInterface;
 use Zhiyi\Plus\FileStorage\Traits\HasImageTrait;
-use Zhiyi\Plus\FileStorage\ImageDimensionInterface;
+use Zhiyi\Plus\Models\User;
 
 class FileMeta extends FileMetaAbstract
 {

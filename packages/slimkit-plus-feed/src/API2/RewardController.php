@@ -21,14 +21,14 @@ declare(strict_types=1);
 namespace Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\API2;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
+use Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\CacheNames;
+use Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\Feed;
+use Zhiyi\Plus\Http\Controllers\Controller;
 use Zhiyi\Plus\Models\CommonConfig;
 use Zhiyi\Plus\Models\CurrencyType;
 use Zhiyi\Plus\Models\WalletCharge;
-use Illuminate\Support\Facades\Cache;
-use Zhiyi\Plus\Http\Controllers\Controller;
 use Zhiyi\Plus\Notifications\System as SystemNotification;
-use Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\CacheNames;
-use Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\Feed;
 
 class RewardController extends Controller
 {
@@ -135,15 +135,15 @@ class RewardController extends Controller
 
                     $feed->user->notify(new SystemNotification(sprintf('%s打赏了你的动态',
                         $user->name), [
-                        'type'    => 'reward:feeds',
-                        'sender'  => [
-                            'id'   => $user->id,
-                            'name' => $user->name,
-                        ],
-                        'amount'  => $amount,
-                        'unit'    => $this->goldName,
-                        'feed_id' => $feed->id,
-                    ]));
+                            'type'    => 'reward:feeds',
+                            'sender'  => [
+                                'id'   => $user->id,
+                                'name' => $user->name,
+                            ],
+                            'amount'  => $amount,
+                            'unit'    => $this->goldName,
+                            'feed_id' => $feed->id,
+                        ]));
                 }
             });
             Cache::forget(sprintf(CacheNames::REWARD_FEED_LOCK, $feed->id,

@@ -23,8 +23,8 @@ namespace Zhiyi\Plus\Packages\Music\API\Controllers;
 use DB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
-use Zhiyi\Plus\Http\Controllers\Controller;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentMusic\Models\MusicSpecial;
+use Zhiyi\Plus\Http\Controllers\Controller;
 
 class MusicCollectionController extends Controller
 {

@@ -21,11 +21,11 @@ declare(strict_types=1);
 namespace Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models;
 
 use DB;
-use Zhiyi\Plus\Models\User;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
-use Zhiyi\Plus\Models\Comment as CommentModel;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Zhiyi\Plus\Models\Comment as CommentModel;
+use Zhiyi\Plus\Models\User;
 
 class FeedPinned extends Model
 {

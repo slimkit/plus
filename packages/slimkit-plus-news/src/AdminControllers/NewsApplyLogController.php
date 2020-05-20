@@ -20,13 +20,13 @@ declare(strict_types=1);
 
 namespace Zhiyi\Component\ZhiyiPlus\PlusComponentNews\AdminControllers;
 
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Zhiyi\Plus\Notifications\System;
-use Illuminate\Database\Eloquent\Builder;
-use Zhiyi\Plus\Http\Controllers\Controller;
-use Illuminate\Database\Eloquent\Relations\HasOne;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentNews\Models\NewsApplyLog;
+use Zhiyi\Plus\Http\Controllers\Controller;
+use Zhiyi\Plus\Notifications\System;
 
 class NewsApplyLogController extends Controller
 {
@@ -76,12 +76,12 @@ class NewsApplyLogController extends Controller
             $log->save();
             $log->user->notify(new System(sprintf('资讯《%s》的删除申请已被通过',
                 $log->news->title), [
-                'type' => 'news:delete:accept',
-                'news' => [
-                    'id' => $log->news_id,
-                    'title' => $log->news->title,
-                ],
-            ]));
+                    'type' => 'news:delete:accept',
+                    'news' => [
+                        'id' => $log->news_id,
+                        'title' => $log->news->title,
+                    ],
+                ]));
         });
 
         return response()->json('', 204);

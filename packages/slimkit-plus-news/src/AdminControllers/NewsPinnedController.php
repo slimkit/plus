@@ -22,11 +22,11 @@ namespace Zhiyi\Component\ZhiyiPlus\PlusComponentNews\AdminControllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
+use Zhiyi\Component\ZhiyiPlus\PlusComponentNews\Models\News;
+use Zhiyi\Component\ZhiyiPlus\PlusComponentNews\Models\NewsPinned;
 use Zhiyi\Plus\Http\Controllers\Controller;
 use Zhiyi\Plus\Models\UserCount as UserCountModel;
-use Zhiyi\Component\ZhiyiPlus\PlusComponentNews\Models\News;
 use Zhiyi\Plus\Packages\Currency\Processes\User as UserProcess;
-use Zhiyi\Component\ZhiyiPlus\PlusComponentNews\Models\NewsPinned;
 
 class NewsPinnedController extends Controller
 {

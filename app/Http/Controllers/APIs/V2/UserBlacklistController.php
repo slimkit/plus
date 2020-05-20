@@ -20,8 +20,8 @@ namespace Zhiyi\Plus\Http\Controllers\APIs\V2;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
-use Zhiyi\Plus\Models\User as UserModel;
 use Zhiyi\Plus\Models\BlackList as UserBlacklistModel;
+use Zhiyi\Plus\Models\User as UserModel;
 
 class UserBlacklistController extends Controller
 {

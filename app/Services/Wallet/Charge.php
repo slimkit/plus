@@ -21,11 +21,11 @@ declare(strict_types=1);
 namespace Zhiyi\Plus\Services\Wallet;
 
 use Illuminate\Support\Str;
-use function Zhiyi\Plus\setting;
-use Pingpp\Pingpp as PingppInit;
 use Pingpp\Charge as PingppCharge;
-use Zhiyi\Plus\Models\WalletOrder as WalletOrderModel;
+use Pingpp\Pingpp as PingppInit;
 use Zhiyi\Plus\Models\WalletCharge as WalletChargeModel;
+use Zhiyi\Plus\Models\WalletOrder as WalletOrderModel;
+use function Zhiyi\Plus\setting;
 
 class Charge
 {
@@ -204,8 +204,7 @@ class Charge
      * @return string
      * @author Seven Du <shiweidu@outlook.com>
      */
-    public function formatChargeId(int $chargeId)
-    : string
+    public function formatChargeId(int $chargeId): string
     {
         return $this->getPrefix().str_pad(strval($chargeId), 19, '0',
                 STR_PAD_LEFT);
@@ -219,8 +218,7 @@ class Charge
      * @return int
      * @author Seven Du <shiweidu@outlook.com>
      */
-    public function unformatChargeId(string $chargeId)
-    : int
+    public function unformatChargeId(string $chargeId): int
     {
         return intval(
             ltrim(
@@ -235,8 +233,7 @@ class Charge
      * @return string
      * @author Seven Du <shiweidu@outlook.com>
      */
-    public function getPrefix()
-    : string
+    public function getPrefix(): string
     {
         return $this->prefix;
     }
@@ -268,8 +265,7 @@ class Charge
      * @return boolen
      * @author BS <414606094@qq.com>
      */
-    public function checkRechargeArgs(string $type, array $extra)
-    : bool
+    public function checkRechargeArgs(string $type, array $extra): bool
     {
         if (in_array($type, $this->allowType)) {
             return $this->{Str::camel('check_'.$type.'_extra')}($extra);
@@ -278,44 +274,37 @@ class Charge
         return false;
     }
 
-    protected function checkApplepayUpacpExtra()
-    : bool
+    protected function checkApplepayUpacpExtra(): bool
     {
         return true;
     }
 
-    protected function checkAlipayExtra()
-    : bool
+    protected function checkAlipayExtra(): bool
     {
         return true;
     }
 
-    protected function checkAlipayWapExtra(array $extra)
-    : bool
+    protected function checkAlipayWapExtra(array $extra): bool
     {
         return array_key_exists('success_url', $extra);
     }
 
-    protected function checkAlipayPcDirectExtra(array $extra)
-    : bool
+    protected function checkAlipayPcDirectExtra(array $extra): bool
     {
         return array_key_exists('success_url', $extra);
     }
 
-    protected function checkAlipayQrExtra(array $extra)
-    : bool
+    protected function checkAlipayQrExtra(array $extra): bool
     {
         return array_key_exists('success_url', $extra);
     }
 
-    protected function checkWxExtra()
-    : bool
+    protected function checkWxExtra(): bool
     {
         return true;
     }
 
-    protected function checkWxWapExtra(array $extra)
-    : bool
+    protected function checkWxWapExtra(array $extra): bool
     {
         return array_key_exists('success_url', $extra);
     }

@@ -20,8 +20,8 @@ declare(strict_types=1);
 
 namespace Zhiyi\Plus\Models\Relations;
 
-use Zhiyi\Plus\Models\User;
 use Zhiyi\Plus\Models\Reward;
+use Zhiyi\Plus\Models\User;
 
 trait UserHasReward
 {

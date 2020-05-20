@@ -20,11 +20,11 @@ declare(strict_types=1);
 
 namespace Zhiyi\Plus\Http\Controllers\Admin;
 
-use Illuminate\Http\Request;
-use Zhiyi\Plus\Models\WalletCharge;
-use Illuminate\Database\Eloquent\Builder;
-use Zhiyi\Plus\Http\Controllers\Controller;
 use Illuminate\Contracts\Routing\ResponseFactory as ContractResponse;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Http\Request;
+use Zhiyi\Plus\Http\Controllers\Controller;
+use Zhiyi\Plus\Models\WalletCharge;
 
 class WalletChargeController extends Controller
 {

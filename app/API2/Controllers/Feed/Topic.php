@@ -20,22 +20,22 @@ declare(strict_types=1);
 
 namespace Zhiyi\Plus\API2\Controllers\Feed;
 
+use Illuminate\Database\Eloquent\Builder as EloquentBuilder;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Carbon;
-use function Zhiyi\Plus\setting;
-use Illuminate\Http\JsonResponse;
-use Illuminate\Database\Eloquent\Model;
-use Zhiyi\Plus\API2\Controllers\Controller;
-use Zhiyi\Plus\Models\FeedTopic as FeedTopicModel;
-use Zhiyi\Plus\API2\Resources\Feed\Topic as TopicResource;
-use Illuminate\Database\Eloquent\Builder as EloquentBuilder;
-use Zhiyi\Plus\API2\Requests\Feed\TopicIndex as IndexRequest;
-use Zhiyi\Plus\API2\Requests\Feed\EditTopic as EditTopicRequest;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Zhiyi\Plus\Models\FeedTopicUserLink as FeedTopicUserLinkModel;
-use Zhiyi\Plus\API2\Requests\Feed\CreateTopic as CreateTopicRequest;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
+use Zhiyi\Plus\API2\Controllers\Controller;
+use Zhiyi\Plus\API2\Requests\Feed\CreateTopic as CreateTopicRequest;
+use Zhiyi\Plus\API2\Requests\Feed\EditTopic as EditTopicRequest;
+use Zhiyi\Plus\API2\Requests\Feed\TopicIndex as IndexRequest;
+use Zhiyi\Plus\API2\Resources\Feed\Topic as TopicResource;
+use Zhiyi\Plus\Models\FeedTopic as FeedTopicModel;
+use Zhiyi\Plus\Models\FeedTopicUserLink as FeedTopicUserLinkModel;
+use function Zhiyi\Plus\setting;
 
 class Topic extends Controller
 {
@@ -55,8 +55,7 @@ class Topic extends Controller
             ->only(['create', 'update']);
     }
 
-    public function listTopicsOnlyHot(Request $request, FeedTopicModel $model)
-    : JsonResponse
+    public function listTopicsOnlyHot(Request $request, FeedTopicModel $model): JsonResponse
     {
         $user = $request->user('api');
         $topics = $model
@@ -87,8 +86,7 @@ class Topic extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function index(IndexRequest $request, FeedTopicModel $model)
-    : JsonResponse
+    public function index(IndexRequest $request, FeedTopicModel $model): JsonResponse
     {
         if ($request->query('only') === 'hot') {
             return $this->listTopicsOnlyHot($request, $model);
@@ -150,8 +148,7 @@ class Topic extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function create(CreateTopicRequest $request)
-    : JsonResponse
+    public function create(CreateTopicRequest $request): JsonResponse
     {
         // Create feed topic module
         $topic = new FeedTopicModel;
@@ -218,8 +215,7 @@ class Topic extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function update(EditTopicRequest $request, FeedTopicModel $topic)
-    : Response
+    public function update(EditTopicRequest $request, FeedTopicModel $topic): Response
     {
         $this->authorize('update', $topic);
 
@@ -248,8 +244,7 @@ class Topic extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function show(FeedTopicModel $topic)
-    : JsonResponse
+    public function show(FeedTopicModel $topic): JsonResponse
     {
         if ($topic->status !== FeedTopicModel::REVIEW_PASSED) {
             throw new NotFoundHttpException('话题不存在或者还没有通过审核');

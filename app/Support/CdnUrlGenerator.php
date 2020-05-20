@@ -20,8 +20,8 @@ declare(strict_types=1);
 
 namespace Zhiyi\Plus\Support;
 
-use Zhiyi\Plus\Models\File;
 use Zhiyi\Plus\Contracts\Cdn\UrlGenerator as FileUrlGeneratorContract;
+use Zhiyi\Plus\Models\File;
 
 abstract class CdnUrlGenerator implements FileUrlGeneratorContract
 {

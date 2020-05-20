@@ -20,11 +20,11 @@ declare(strict_types=1);
 
 namespace Zhiyi\Plus\FileStorage\Providers;
 
-use Zhiyi\Plus\AppInterface;
-use Zhiyi\Plus\FileStorage\Storage;
 use Illuminate\Support\ServiceProvider;
+use Zhiyi\Plus\AppInterface;
 use Zhiyi\Plus\FileStorage\ChannelManager;
 use Zhiyi\Plus\FileStorage\Http\MakeRoutes;
+use Zhiyi\Plus\FileStorage\Storage;
 use Zhiyi\Plus\FileStorage\StorageInterface;
 use Zhiyi\Plus\FileStorage\Validators\Rulers\ValidatorRulesRegister;
 

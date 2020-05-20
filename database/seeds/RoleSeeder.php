@@ -16,8 +16,8 @@
  * +----------------------------------------------------------------------+
  */
 
-use Zhiyi\Plus\Models\Role;
 use Illuminate\Database\Seeder;
+use Zhiyi\Plus\Models\Role;
 use function Zhiyi\Plus\setting;
 
 class RoleSeeder extends Seeder

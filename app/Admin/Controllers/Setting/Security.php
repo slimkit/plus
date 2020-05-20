@@ -20,11 +20,11 @@ declare(strict_types=1);
 
 namespace Zhiyi\Plus\Admin\Controllers\Setting;
 
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use function Zhiyi\Plus\setting;
-use Illuminate\Http\JsonResponse;
 use Zhiyi\Plus\Admin\Controllers\Controller;
+use function Zhiyi\Plus\setting;
 
 class Security extends Controller
 {

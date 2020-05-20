@@ -20,9 +20,9 @@ declare(strict_types=1);
 
 namespace Zhiyi\Plus\FileStorage\Validators;
 
-use Validator;
-use Illuminate\Http\Request;
 use Illuminate\Foundation\Validation\ValidatesRequests;
+use Illuminate\Http\Request;
+use Validator;
 
 abstract class AbstractValidator implements ValidatorInterface
 {

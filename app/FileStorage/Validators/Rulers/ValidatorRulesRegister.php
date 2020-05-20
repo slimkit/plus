@@ -20,8 +20,8 @@ declare(strict_types=1);
 
 namespace Zhiyi\Plus\FileStorage\Validators\Rulers;
 
-use Zhiyi\Plus\AppInterface;
 use Illuminate\Contracts\Validation\Factory as ValidationFactoryContract;
+use Zhiyi\Plus\AppInterface;
 
 class ValidatorRulesRegister
 {
@@ -66,8 +66,7 @@ class ValidatorRulesRegister
      *
      * @return void
      */
-    public function register()
-    : void
+    public function register(): void
     {
         $app = $this->app;
         foreach ($this->rules as $ruleName => $rulerClassname) {

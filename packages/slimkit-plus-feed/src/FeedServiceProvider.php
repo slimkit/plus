@@ -20,13 +20,13 @@ declare(strict_types=1);
 
 namespace Zhiyi\Component\ZhiyiPlus\PlusComponentFeed;
 
-use function Zhiyi\Plus\setting;
-use Illuminate\Support\ServiceProvider;
-use Zhiyi\Plus\Support\ManageRepository;
-use Zhiyi\Plus\Support\BootstrapAPIsEventer;
-use Zhiyi\Plus\Support\PinnedsNotificationEventer;
 use Illuminate\Database\Eloquent\Relations\Relation;
+use Illuminate\Support\ServiceProvider;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\Feed;
+use function Zhiyi\Plus\setting;
+use Zhiyi\Plus\Support\BootstrapAPIsEventer;
+use Zhiyi\Plus\Support\ManageRepository;
+use Zhiyi\Plus\Support\PinnedsNotificationEventer;
 
 class FeedServiceProvider extends ServiceProvider
 {

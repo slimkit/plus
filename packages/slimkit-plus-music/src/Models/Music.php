@@ -20,11 +20,11 @@ declare(strict_types=1);
 
 namespace Zhiyi\Component\ZhiyiPlus\PlusComponentMusic\Models;
 
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Zhiyi\Plus\Models\Comment;
 use Zhiyi\Plus\Models\FileWith;
 use Zhiyi\Plus\Models\PaidNode;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Music extends Model
 {

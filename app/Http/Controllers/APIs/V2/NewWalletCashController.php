@@ -20,11 +20,11 @@ declare(strict_types=1);
 
 namespace Zhiyi\Plus\Http\Controllers\APIs\V2;
 
-use Illuminate\Http\Request;
-use Zhiyi\Plus\Packages\Wallet\Order;
 use Illuminate\Database\Eloquent\Builder;
-use Zhiyi\Plus\Packages\Wallet\TypeManager;
+use Illuminate\Http\Request;
 use Zhiyi\Plus\Http\Requests\API2\NewStoreUserWallerCashPost;
+use Zhiyi\Plus\Packages\Wallet\Order;
+use Zhiyi\Plus\Packages\Wallet\TypeManager;
 
 class NewWalletCashController extends Controller
 {

@@ -20,10 +20,10 @@ declare(strict_types=1);
 
 namespace Zhiyi\Plus\Http\Controllers\Admin;
 
-use Illuminate\Http\Response;
 use Illuminate\Http\JsonResponse;
-use Zhiyi\Plus\Support\Configuration;
+use Illuminate\Http\Response;
 use Zhiyi\Plus\Http\Requests\Admin\UpdateCorsRequest;
+use Zhiyi\Plus\Support\Configuration;
 
 class CorsController
 {

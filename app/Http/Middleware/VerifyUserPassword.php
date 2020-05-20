@@ -21,11 +21,11 @@ declare(strict_types=1);
 namespace Zhiyi\Plus\Http\Middleware;
 
 use Closure;
-use Illuminate\Http\Request;
-use function Zhiyi\Plus\setting;
 use Illuminate\Contracts\Auth\Guard;
+use Illuminate\Http\Request;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
+use function Zhiyi\Plus\setting;
 
 class VerifyUserPassword
 {

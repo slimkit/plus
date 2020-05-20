@@ -20,8 +20,8 @@ declare(strict_types=1);
 
 namespace Zhiyi\Plus\Packages\Wallet;
 
-use RuntimeException;
 use Illuminate\Support\Manager;
+use RuntimeException;
 use Zhiyi\Plus\Packages\Wallet\Types\Type;
 
 class TypeManager extends Manager

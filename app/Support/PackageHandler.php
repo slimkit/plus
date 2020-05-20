@@ -70,8 +70,7 @@ abstract class PackageHandler
      * @return string
      * @author Seven Du <shiweidu@outlook.com>
      */
-    public function formatHandleToDisplay(string $handle)
-    : string
+    public function formatHandleToDisplay(string $handle): string
     {
         if (strtolower(substr($handle, -6)) === 'handle') {
             $handle = substr($handle, 0, -6);
@@ -88,8 +87,7 @@ abstract class PackageHandler
      * @return string
      * @author Seven Du <shiweidu@outlook.com>
      */
-    public function formatHandleToMethod(string $handle)
-    : string
+    public function formatHandleToMethod(string $handle): string
     {
         if (strtolower(substr($handle, -6)) === 'handle') {
             $handle = substr($handle, 0, -6);
@@ -104,8 +102,7 @@ abstract class PackageHandler
      * @return array
      * @author Seven Du <shiweidu@outlook.com>
      */
-    public function methods()
-    : array
+    public function methods(): array
     {
         if (! $this->methods) {
             $this->methods = [];

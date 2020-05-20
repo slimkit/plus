@@ -18,13 +18,13 @@
 
 namespace Zhiyi\Component\ZhiyiPlus\PlusComponentPc\Controllers;
 
-use Zhiyi\Plus\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
-use Zhiyi\Plus\Http\Controllers\Controller;
-use Zhiyi\Plus\Models\Comment as CommentModel;
 use function Zhiyi\Component\ZhiyiPlus\PlusComponentPc\api;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentPc\Models\Navigation;
+use Zhiyi\Plus\Http\Controllers\Controller;
+use Zhiyi\Plus\Models\Comment as CommentModel;
+use Zhiyi\Plus\Models\User;
 
 class BaseController extends Controller
 {

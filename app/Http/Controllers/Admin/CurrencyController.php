@@ -21,12 +21,12 @@ declare(strict_types=1);
 namespace Zhiyi\Plus\Http\Controllers\Admin;
 
 use DB;
-use Zhiyi\Plus\Models\User;
 use Illuminate\Http\Request;
-use function Zhiyi\Plus\setting;
 use Zhiyi\Plus\Http\Controllers\Controller;
 use Zhiyi\Plus\Models\CurrencyOrder as OrderModel;
+use Zhiyi\Plus\Models\User;
 use Zhiyi\Plus\Packages\Currency\Processes\Common;
+use function Zhiyi\Plus\setting;
 
 class CurrencyController extends Controller
 {

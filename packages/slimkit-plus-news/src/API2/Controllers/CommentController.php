@@ -22,13 +22,13 @@ namespace Zhiyi\Component\ZhiyiPlus\PlusComponentNews\API2\Controllers;
 
 use Carbon\Carbon;
 use Illuminate\Http\Request;
-use Zhiyi\Plus\Models\Comment;
-use Zhiyi\Plus\Http\Controllers\Controller;
-use Zhiyi\Plus\AtMessage\AtMessageHelperTrait;
-use Zhiyi\Component\ZhiyiPlus\PlusComponentNews\Models\News;
-use Zhiyi\Plus\Notifications\Comment as CommentNotification;
-use Zhiyi\Component\ZhiyiPlus\PlusComponentNews\Models\NewsPinned;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentNews\API2\Requests\StoreNewsComment;
+use Zhiyi\Component\ZhiyiPlus\PlusComponentNews\Models\News;
+use Zhiyi\Component\ZhiyiPlus\PlusComponentNews\Models\NewsPinned;
+use Zhiyi\Plus\AtMessage\AtMessageHelperTrait;
+use Zhiyi\Plus\Http\Controllers\Controller;
+use Zhiyi\Plus\Models\Comment;
+use Zhiyi\Plus\Notifications\Comment as CommentNotification;
 
 class CommentController extends Controller
 {

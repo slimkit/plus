@@ -22,8 +22,8 @@ namespace Zhiyi\Plus\API2\Controllers;
 
 use Illuminate\Http\JsonResponse;
 use Zhiyi\Plus\API2\Requests\ListAllComments;
-use Zhiyi\Plus\Models\Comment as CommentModel;
 use Zhiyi\Plus\API2\Resources\Comment as CommentResource;
+use Zhiyi\Plus\Models\Comment as CommentModel;
 
 class Comment extends Controller
 {
