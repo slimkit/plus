@@ -47,8 +47,7 @@ trait FeedHasLike
      * @return bool
      * @author Seven Du <shiweidu@outlook.com>
      */
-    public function liked($user)
-    : bool
+    public function liked($user): bool
     {
         if ($user instanceof User) {
             $user = $user->id;

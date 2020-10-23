@@ -34,8 +34,7 @@ class CheckInPolicy
      * @return bool
      * @author Seven Du <shiweidu@outlook.com>
      */
-    public function create(User $user)
-    : bool
+    public function create(User $user): bool
     {
         $date = $user->freshTimestamp()->format('Y-m-d');
 

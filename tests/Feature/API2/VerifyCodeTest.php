@@ -92,8 +92,7 @@ class VerifyCodeTest extends TestCase
      *
      * @return \Illuminate\Contracts\Auth\Guard
      */
-    protected function guard()
-    : Guard
+    protected function guard(): Guard
     {
         return Auth::guard('api');
     }

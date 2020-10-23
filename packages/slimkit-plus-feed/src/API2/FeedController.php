@@ -439,11 +439,9 @@ class FeedController extends Controller
      *
      * @return array
      */
-    private function makeFeedLinkTopics(StoreFeedPostRequest $request)
-    : array
+    private function makeFeedLinkTopics(StoreFeedPostRequest $request): array
     {
-        $topics = array_map(function ($item)
-        : ?int {
+        $topics = array_map(function ($item): ?int {
             if (is_numeric($item) || $item == (int) $item) {
                 return (int) $item;
             }
@@ -481,8 +479,7 @@ class FeedController extends Controller
      *
      * @return void
      */
-    private function linkFeedToTopics(array $topics, FeedModel $feed)
-    : void
+    private function linkFeedToTopics(array $topics, FeedModel $feed): void
     {
         if (empty($topics)) {
             return;
@@ -504,8 +501,7 @@ class FeedController extends Controller
     private function touchUserFollowBindFeedCount(
         UserModel $user,
         array $topics
-    )
-    : void {
+    ): void {
         if (empty($topics)) {
             return;
         }
@@ -794,8 +790,7 @@ class FeedController extends Controller
      * @return FeedModel
      * @author Seven Du <shiweidu@outlook.com>
      */
-    protected function fillFeedBaseData(Request $request, FeedModel $feed)
-    : FeedModel
+    protected function fillFeedBaseData(Request $request, FeedModel $feed): FeedModel
     {
         $baseFormInputs = $request->only([
             'feed_content', 'feed_from', 'feed_mark',

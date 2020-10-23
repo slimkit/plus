@@ -75,11 +75,11 @@ class NewsApplyLogController extends Controller
             $log->save();
             $log->user->notify(new System(sprintf('资讯《%s》的删除申请已被通过',
                 $log->news->title), [
-                'type' => 'news:delete:accept',
-                'news' => [
-                    'id' => $log->news_id,
-                    'title' => $log->news->title,
-                ],
+                    'type' => 'news:delete:accept',
+                    'news' => [
+                        'id' => $log->news_id,
+                        'title' => $log->news->title,
+                    ],
             ]));
         });
 

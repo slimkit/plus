@@ -55,8 +55,7 @@ class Topic extends Controller
             ->only(['create', 'update']);
     }
 
-    public function listTopicsOnlyHot(Request $request, FeedTopicModel $model)
-    : JsonResponse
+    public function listTopicsOnlyHot(Request $request, FeedTopicModel $model): JsonResponse
     {
         $user = $request->user('api');
         $topics = $model
@@ -87,8 +86,7 @@ class Topic extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function index(IndexRequest $request, FeedTopicModel $model)
-    : JsonResponse
+    public function index(IndexRequest $request, FeedTopicModel $model): JsonResponse
     {
         if ($request->query('only') === 'hot') {
             return $this->listTopicsOnlyHot($request, $model);
@@ -150,8 +148,7 @@ class Topic extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function create(CreateTopicRequest $request)
-    : JsonResponse
+    public function create(CreateTopicRequest $request): JsonResponse
     {
         // Create feed topic module
         $topic = new FeedTopicModel;
@@ -218,8 +215,7 @@ class Topic extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function update(EditTopicRequest $request, FeedTopicModel $topic)
-    : Response
+    public function update(EditTopicRequest $request, FeedTopicModel $topic): Response
     {
         $this->authorize('update', $topic);
 
@@ -248,8 +244,7 @@ class Topic extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function show(FeedTopicModel $topic)
-    : JsonResponse
+    public function show(FeedTopicModel $topic): JsonResponse
     {
         if ($topic->status !== FeedTopicModel::REVIEW_PASSED) {
             throw new NotFoundHttpException('话题不存在或者还没有通过审核');

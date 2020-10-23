@@ -68,8 +68,7 @@ trait PaidNodeHasUser
      * @return bool
      * @author Seven Du <shiweidu@outlook.com>
      */
-    public function paid(int $user, bool $filter = true)
-    : bool
+    public function paid(int $user, bool $filter = true): bool
     {
         if ($filter === true && $this->user_id === $user) {
             return true;

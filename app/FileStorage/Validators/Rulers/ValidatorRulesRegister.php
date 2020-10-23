@@ -66,8 +66,7 @@ class ValidatorRulesRegister
      *
      * @return void
      */
-    public function register()
-    : void
+    public function register(): void
     {
         $app = $this->app;
         foreach ($this->rules as $ruleName => $rulerClassname) {

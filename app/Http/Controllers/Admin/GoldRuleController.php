@@ -150,11 +150,11 @@ class GoldRuleController extends Controller
     private function msg()
     {
         $message = [
-          'name.required' => '名称必须填写',
-          'alias.required' => '别名必须填写',
-          'alias.unique' => '规则已经存在',
-          'incremental.required' => '增量必须填写',
-          'desc.required' => '描述必须填写',
+            'name.required' => '名称必须填写',
+            'alias.required' => '别名必须填写',
+            'alias.unique' => '规则已经存在',
+            'incremental.required' => '增量必须填写',
+            'desc.required' => '描述必须填写',
         ];
 
         return $message;

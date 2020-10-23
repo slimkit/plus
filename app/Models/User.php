@@ -130,8 +130,7 @@ class User extends Authenticatable implements JWTSubject
         return [];
     }
 
-    protected function getAvatarAttribute(?string $resource)
-    : ?FileMetaInterface
+    protected function getAvatarAttribute(?string $resource): ?FileMetaInterface
     {
         if (! $resource) {
             return null;
@@ -140,8 +139,7 @@ class User extends Authenticatable implements JWTSubject
         return $this->getFileStorageResourceMeta($resource);
     }
 
-    protected function getBgAttribute(?string $resource)
-    : ?FileMetaInterface
+    protected function getBgAttribute(?string $resource): ?FileMetaInterface
     {
         if (! $resource) {
             return null;
@@ -238,8 +236,7 @@ class User extends Authenticatable implements JWTSubject
      * @author Seven Du <shiweidu@outlook.com>
      * @homepage http://medz.cn
      */
-    public function scopeByPhone(Builder $query, string $phone)
-    : Builder
+    public function scopeByPhone(Builder $query, string $phone): Builder
     {
         return $query->where('phone', $phone);
     }
@@ -255,8 +252,7 @@ class User extends Authenticatable implements JWTSubject
      * @author Seven Du <shiweidu@outlook.com>
      * @homepage http://medz.cn
      */
-    public function scopeByName(Builder $query, string $name)
-    : Builder
+    public function scopeByName(Builder $query, string $name): Builder
     {
         return $query->where('name', $name);
     }
@@ -270,8 +266,7 @@ class User extends Authenticatable implements JWTSubject
      * @return Illuminate\Database\Eloquent\Builder
      * @author Seven Du <shiweidu@outlook.com>
      */
-    public function scopeByEmail(Builder $query, string $email)
-    : Builder
+    public function scopeByEmail(Builder $query, string $email): Builder
     {
         return $query->where('email', $email);
     }
@@ -286,8 +281,7 @@ class User extends Authenticatable implements JWTSubject
      * @author Seven Du <shiweidu@outlook.com>
      * @homepage http://medz.cn
      */
-    public function createPassword(string $password)
-    : self
+    public function createPassword(string $password): self
     {
         $this->password = app('hash')->make($password);
 
@@ -304,8 +298,7 @@ class User extends Authenticatable implements JWTSubject
      *
      * @return bool 验证结果true or false
      */
-    public function verifyPassword(string $password)
-    : bool
+    public function verifyPassword(string $password): bool
     {
         return $this->password
             && app('hash')->check($password, $this->password);
@@ -343,8 +336,7 @@ class User extends Authenticatable implements JWTSubject
      *
      * @return BelongsToMany
      */
-    public function feedTopics()
-    : BelongsToMany
+    public function feedTopics(): BelongsToMany
     {
         $table = (new FeedTopicUserLink)->getTable();
 

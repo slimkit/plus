@@ -100,7 +100,7 @@ class UserBlacklistController extends Controller
             ->offset($offset)
             ->get();
 
-        $blacks = $blacks->map(function ($black) use ($user) {
+        $blacks = $blacks->map(function ($black) {
             $black->user->blacked = true;
 
             return $black->user;

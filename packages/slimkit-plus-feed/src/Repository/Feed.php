@@ -137,8 +137,7 @@ class Feed
      * @return FeedModel
      * @author Seven Du <shiweidu@outlook.com>
      */
-    public function format(int $user = 0)
-    : FeedModel
+    public function format(int $user = 0): FeedModel
     {
         $this->model->setRelation('images',
             $this->model->images->map(function (FileWithModel $item) use ($user

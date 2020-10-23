@@ -50,8 +50,7 @@ class TopicFollow extends Controller
         Request $request,
         FeedTopicModel $model,
         int $topicID
-    )
-    : Response {
+    ): Response {
         // Fetch the request authentication user model.
         $user = $request->user();
 
@@ -110,8 +109,7 @@ class TopicFollow extends Controller
         Request $request,
         FeedTopicModel $model,
         int $topicID
-    )
-    : Response {
+    ): Response {
         // Fetch the request authentication user model.
         $user = $request->user();
 

@@ -68,7 +68,7 @@ class UserRewardController extends Controller
             ], 500);
         }
 
-        $user->getConnection()->transaction(function () use ($user, $target, $amount, $userCount, $processer) {
+        $user->getConnection()->transaction(function () use ($user, $target, $amount , $processer) {
             $processer->prepayment($user->id, $amount, $target->id, sprintf('打赏用户“%s”', $target->name), sprintf('打赏用户“%s”，积分扣除%s', $target->name, $amount));
             $processer->receivables($target->id, $amount, $user->id, sprintf('“%s”打赏了你', $user->name), sprintf('用户“%s”打赏了你”，积分增加%s', $user->name, $amount));
 

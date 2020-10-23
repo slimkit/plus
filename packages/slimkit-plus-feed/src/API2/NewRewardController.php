@@ -121,23 +121,23 @@ class NewRewardController extends Controller
             $feed->reward($user, $amount);
             $target->notify(new SystemNotification(sprintf('%s打赏了你的动态',
                 $user->name), [
-                'type'    => 'reward:feeds',
-                'sender'  => [
-                    'id'   => $user->id,
-                    'name' => $user->name,
-                ],
-                'amount'  => $amount,
-                'unit'    => $goldName,
-                'feed_id' => $feed->id,
+                    'type'    => 'reward:feeds',
+                    'sender'  => [
+                        'id'   => $user->id,
+                        'name' => $user->name,
+                    ],
+                    'amount'  => $amount,
+                    'unit'    => $goldName,
+                    'feed_id' => $feed->id,
             ]));
 
             Cache::forget(sprintf(CacheNames::REWARD_FEED_LOCK, $feed->id,
-                $user->id));
+                    $user->id));
 
             return response()->json(['message' => '打赏成功'], 201);
         } else {
             Cache::forget(sprintf(CacheNames::REWARD_FEED_LOCK, $feed->id,
-                $user->id));
+                    $user->id));
 
             return response()->json(['message' => '打赏失败'], 500);
         }

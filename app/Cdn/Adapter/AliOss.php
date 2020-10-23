@@ -80,7 +80,7 @@ class AliOss implements FileUrlGeneratorContract
      * @return string
      * @author Seven Du <shiweidu@outlook.com>
      */
-    public function url(string $filename, array $extra = []):string
+    public function url(string $filename, array $extra = []): string
     {
         // 过滤目录分隔符.
         $filename = $this->filterSlash($filename);

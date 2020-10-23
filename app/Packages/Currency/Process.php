@@ -72,8 +72,7 @@ class Process
      * @return UserModel
      * @author BS <414606094@qq.com>
      */
-    protected function checkCurrency(UserModel $user)
-    : UserModel
+    protected function checkCurrency(UserModel $user): UserModel
     {
         if (! $user->currency) {
             $user->currency = $user->currency()

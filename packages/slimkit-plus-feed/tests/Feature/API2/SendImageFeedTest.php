@@ -68,7 +68,7 @@ class SendImageFeedTest extends TestCase
             ->actingAs($user, 'api')
             ->json('POST', '/api/v2/files', [
                 'file' => UploadedFile::fake()->image('test.jpg')->size(0.00),
-                ]
+            ]
             )
             ->decodeResponseJson();
 

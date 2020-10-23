@@ -33,11 +33,11 @@ class UserLikeController extends Controller
         $user = $request->user();
 
         $likes = $model->with([
-                'likeable',
-                'user' => function ($query) {
-                    return $query->withTrashed();
-                },
-            ])
+            'likeable',
+            'user' => function ($query) {
+                return $query->withTrashed();
+            },
+        ])
             ->where('target_user', $user->id)
             ->when($after, function ($query) use ($after) {
                 return $query->where('id', '<', $after);

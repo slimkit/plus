@@ -224,11 +224,11 @@ class RewardController extends Controller
     protected function getRewardavelTypes()
     {
         return [
-           'feeds' => '动态打赏',
-           'news'  => '资讯打赏',
-           'users' => '用户打赏',
-           'question-answers' => '问答打赏',
-           'group-posts' => '圈子帖子打赏',
+            'feeds' => '动态打赏',
+            'news'  => '资讯打赏',
+            'users' => '用户打赏',
+            'question-answers' => '问答打赏',
+            'group-posts' => '圈子帖子打赏',
         ];
     }
 

@@ -136,14 +136,14 @@ class RewardController extends Controller
 
                     $feed->user->notify(new SystemNotification(sprintf('%s打赏了你的动态',
                         $user->name), [
-                        'type'    => 'reward:feeds',
-                        'sender'  => [
-                            'id'   => $user->id,
-                            'name' => $user->name,
-                        ],
-                        'amount'  => $amount,
-                        'unit'    => $this->goldName,
-                        'feed_id' => $feed->id,
+                            'type'    => 'reward:feeds',
+                            'sender'  => [
+                                'id'   => $user->id,
+                                'name' => $user->name,
+                            ],
+                            'amount'  => $amount,
+                            'unit'    => $this->goldName,
+                            'feed_id' => $feed->id,
                     ]));
                 }
             });

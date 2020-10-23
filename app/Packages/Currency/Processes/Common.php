@@ -45,8 +45,7 @@ class Common extends Process
         int $type,
         string $title,
         string $body
-    )
-    : CurrencyOrderModel {
+    ): CurrencyOrderModel {
         $user = $this->checkUser($owner_id);
 
         $order = new CurrencyOrderModel();

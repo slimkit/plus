@@ -47,8 +47,7 @@ trait HasFeedCollect
      * @return bool
      * @author Seven Du <shiweidu@outlook.com>
      */
-    public function collected(int $user)
-    : bool
+    public function collected(int $user): bool
     {
         $status = Cache::rememberForever(sprintf(CacheKeys::COLLECTED,
             $this->id, $user), function () use ($user) {

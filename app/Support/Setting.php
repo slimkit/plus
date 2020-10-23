@@ -57,8 +57,7 @@ class Setting
      *
      * @return self
      */
-    public function new(?string $namespace = null)
-    : self
+    public function new(?string $namespace = null): self
     {
         return new static($this->model,
             $namespace ? $namespace : $this->namespace);
@@ -118,8 +117,7 @@ class Setting
      * @return void
      * @throws \Throwable
      */
-    public function set($name, $contents = null)
-    : void
+    public function set($name, $contents = null): void
     {
         if (is_array($name)) {
             $callbale = [$this, __METHOD__];

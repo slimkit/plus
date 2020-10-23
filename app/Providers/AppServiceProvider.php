@@ -125,8 +125,7 @@ class AppServiceProvider extends ServiceProvider
      * @return bool
      * @author Seven Du <shiweidu@outlook.com>
      */
-    protected function validateDisplayLength(string $value, array $parameters)
-    : bool
+    protected function validateDisplayLength(string $value, array $parameters): bool
     {
         preg_match_all('/[a-zA-Z0-9_]/', $value, $single);
         $length = count($single[0]) / 2
@@ -143,8 +142,7 @@ class AppServiceProvider extends ServiceProvider
      *
      * @return bool
      */
-    protected function validateDisplayWidth(string $value, array $parameters)
-    : bool
+    protected function validateDisplayWidth(string $value, array $parameters): bool
     {
         $number = strlen(mb_convert_encoding($value, 'GB18030', 'UTF-8'));
 
@@ -159,8 +157,7 @@ class AppServiceProvider extends ServiceProvider
      *
      * @return bool
      */
-    private function validateBetween(float $number, array $parameters)
-    : bool
+    private function validateBetween(float $number, array $parameters): bool
     {
         if (empty($parameters)) {
             throw new \InvalidArgumentException('Parameters must be passed');

@@ -67,7 +67,7 @@ class MimeType extends MimeTypeExtensionGuesser
 
         $setting = setting('file-storage');
         $setting->set('task-create-validate', array_merge((array) $setting->get('task-create-validate', []), array_filter([
-           'file-mime-types' => $mimeTypes,
+            'file-mime-types' => $mimeTypes,
         ])));
 
         return new Response('', Response::HTTP_NO_CONTENT);
