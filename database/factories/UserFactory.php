@@ -19,7 +19,6 @@
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
 use Faker\Generator as Faker;
 use Illuminate\Support\Str;
-use Zhiyi\Plus\Models\User;
 
 /*
 |--------------------------------------------------------------------------
@@ -42,7 +41,6 @@ $factory->define(User::class, function (Faker $faker) {
         'password' => $password ?: $password = bcrypt('password'),
         'email_verified_at' => now(),
         'phone_verified_at' => now(),
-        // password
-        'remember_token'    => Str::random(10),
+        'remember_token' => Str::random(10),
     ];
 });

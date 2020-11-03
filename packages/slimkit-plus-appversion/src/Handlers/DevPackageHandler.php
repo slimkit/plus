@@ -135,32 +135,28 @@ class DevPackageHandler extends \Zhiyi\Plus\Support\PackageHandler
      */
     public function makeModelHandle(Command $command)
     {
-        $modelName = $command->getOutput()
-            ->ask('Enter the Model name', null, function ($modelName) {
-                if (! preg_match('/^[a-zA-Z0-9]+$/is', $modelName)) {
-                    throw new \InvalidArgumentException(
-                        'The name '.$modelName
-                        .' is invalid, matching: [a-zA-Z0-9]'
-                    );
-                }
+        $modelName = $command->getOutput()->ask('Enter the Model name', null, function ($modelName) {
+            if (! preg_match('/^[a-zA-Z0-9]+$/is', $modelName)) {
+                throw new \InvalidArgumentException(
+                    'The name '.$modelName.' is invalid, matching: [a-zA-Z0-9]'
+                );
+            }
 
-                return $modelName;
-            });
+            return $modelName;
+        });
         $modelName = ucfirst(Str::camel($modelName));
         $table = Str::plural(strtolower(Str::snake($modelName)));
-        $table = $command->getOutput()
-            ->ask('Enter the table name', $table, function ($table) {
-                if (! preg_match('/^[a-z0-9_]+$/is', $table)) {
-                    throw new \InvalidArgumentException(
-                        'The name '.$table.' is invalid, matching: [a-z0-9_]'
-                    );
-                }
+        $table = $command->getOutput()->ask('Enter the table name', $table, function ($table) {
+            if (! preg_match('/^[a-z0-9_]+$/is', $table)) {
+                throw new \InvalidArgumentException(
+                    'The name '.$table.' is invalid, matching: [a-z0-9_]'
+                );
+            }
 
-                return $table;
-            });
+            return $table;
+        });
 
-        $makeMigration
-            = $command->confirm('Create the migration of this model');
+        $makeMigration = $command->confirm('Create the migration of this model');
         $filename = dirname(__DIR__).'/Models/'.$modelName.'.php';
 
         if (file_exists($filename)) {

@@ -863,14 +863,14 @@ class FeedController extends Controller
             ) { // 存在未审核的置顶申请时退款
                 $process->reject(0, $pinned->amount, $user->id, '动态申请置顶退款',
                     sprintf('退还申请置顶动态《%s》的款项',
-                        str_limit($feed->feed_content, 100)));
+                        Str::limit($feed->feed_content, 100)));
             }
             $pinnedComments = $feed->pinnedingComments()
                 ->get();
             $pinnedComments->map(function ($comment) use ($process, $feed) {
                 $process->reject(0, $comment->amount, $comment->user_id,
                     '评论申请置顶退款', sprintf('退还在动态《%s》申请评论置顶的款项',
-                        str_limit($feed->feed_content, 100)));
+                        Str::limit($feed->feed_content, 100)));
                 $comment->delete();
             });
             // 更新未被操作的评论置顶

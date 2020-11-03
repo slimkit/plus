@@ -95,6 +95,7 @@
                 @endif
 
                 <div id="markdown-body" class="detail_content markdown-body editormd-preview-container">
+                    {!! formatMarkdown($news['content']) !!}
                 </div>
                 @if (!$news['audit_status'])
                     <div class="detail_share">
@@ -209,18 +210,18 @@
     <script src="{{ asset('assets/pc/js/qrcode.js') }}"></script>
     <script>
       $(function() {
-        var md = markdownit({
-          breaks: true,
-          html: false,
-          highlight: function (code) {
-            return hljs ? hljs.highlightAuto(code).value : code
-          },
-        })
-          .use(markdownitContainer, 'hljs-left') /* align left */
-          .use(markdownitContainer, 'hljs-center')/* align center */
-          .use(markdownitContainer, 'hljs-right')
+        {{--var md = markdownit({--}}
+        {{--  breaks: true,--}}
+        {{--  html: false,--}}
+        {{--  highlight: function (code) {--}}
+        {{--    return hljs ? hljs.highlightAuto(code).value : code--}}
+        {{--  },--}}
+        {{--})--}}
+        {{--  .use(markdownitContainer, 'hljs-left') /* align left */--}}
+        {{--  .use(markdownitContainer, 'hljs-center')/* align center */--}}
+        {{--  .use(markdownitContainer, 'hljs-right')--}}
 
-        $('#markdown-body').html(md.render(`{!!formatMarkdown($news['content'])!!}`))
+        {{--$('#markdown-body').html(md.render(`{!!formatMarkdown($news['content'])!!}`))--}}
 
         $('img.lazy').lazyload({ effect: 'fadeIn' })
 

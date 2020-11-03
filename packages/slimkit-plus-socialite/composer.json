@@ -4,8 +4,12 @@
     "type": "library",
     "license": "MIT",
     "require": {
-        "php": ">=7.0",
-        "guzzlehttp/guzzle": "^6.3"
+        "php": ">=7.2",
+        "guzzlehttp/guzzle": "^6.3",
+        "illuminate/console": "5.8.*",
+        "illuminate/contracts": "5.8.*",
+        "illuminate/database": "5.8.*",
+        "illuminate/support": "5.8.*"
     },
     "autoload": {
         "psr-4": {

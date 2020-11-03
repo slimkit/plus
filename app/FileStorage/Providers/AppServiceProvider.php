@@ -20,6 +20,7 @@ declare(strict_types=1);
 
 namespace Zhiyi\Plus\FileStorage\Providers;
 
+use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Support\ServiceProvider;
 use Zhiyi\Plus\AppInterface;
 use Zhiyi\Plus\FileStorage\ChannelManager;

@@ -103,7 +103,7 @@ class WalletRechargeController extends Controller
      */
     protected function resolveStore(string $type)
     {
-        return $this->app->call([$this, StrAlias::camel($type.'_store')]);
+        return $this->app->call([$this, Str::camel($type.'_store')]);
     }
 
     /**

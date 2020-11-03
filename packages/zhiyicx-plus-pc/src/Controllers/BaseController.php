@@ -25,6 +25,7 @@ use Zhiyi\Component\ZhiyiPlus\PlusComponentPc\Models\Navigation;
 use Zhiyi\Plus\Http\Controllers\Controller;
 use Zhiyi\Plus\Models\Comment as CommentModel;
 use Zhiyi\Plus\Models\User;
+use function Zhiyi\Plus\setting;
 
 class BaseController extends Controller
 {
@@ -78,8 +79,15 @@ class BaseController extends Controller
                 $config['nav_bottom'] = Navigation::byPid(0)->byPos(1)->byStatus(1)->get();
 
                 // 环信
-                $easemob = $repository->get('easemob');
-                $config['easemob_key'] = $easemob['app_key'];
+                $easemob = setting('user', 'vendor:easemob') + [
+                  'open' => false,
+                  'appKey' => '',
+                  'clientId' => '',
+                  'clientSecret' => '',
+                  'registerType' => 0,
+                ];
+
+                $config['easemob_key'] = $easemob['appKey'];
 
                 // 小助手
                 if (isset($config['bootstrappers']['im:helper'])) {

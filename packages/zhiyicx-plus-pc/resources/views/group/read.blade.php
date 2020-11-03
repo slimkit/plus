@@ -9,6 +9,7 @@
 @endsection
 
 @php
+    use Illuminate\Support\Str;
     use function Zhiyi\Component\ZhiyiPlus\PlusComponentPc\getAvatar;
     use Illuminate\Support\Str;
 @endphp

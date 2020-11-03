@@ -24,6 +24,7 @@ use Cache;
 use Illuminate\Contracts\Routing\ResponseFactory as ResponseFactoryContract;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\FormRequest\API2\StoreFeedComment as CommentFormRequest;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\Feed as FeedModel;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\FeedPinned;
@@ -147,7 +148,7 @@ class FeedCommentController extends Controller
                 $process = new UserProcess();
                 $process->reject(0, $pinnedComment->amount, $user->id,
                     '评论申请置顶退款', sprintf('退还在动态《%s》申请置顶的评论的款项',
-                        str_limit($feed->feed_content, 100)));
+                        Str::limit($feed->feed_content, 100)));
                 $userCount = UserCountModel::firstOrNew([
                     'user_id' => $feed->user_id,
                     'type'    => 'user-feed-comment-pinned',

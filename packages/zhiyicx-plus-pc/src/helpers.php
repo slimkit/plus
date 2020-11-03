@@ -25,7 +25,8 @@ use Carbon\Carbon;
 use GuzzleHttp\Client;
 use HTMLPurifier;
 use HTMLPurifier_Config;
-use Illuminate\Http\Request;
+use Michelf\MarkdownExtra;
+use Request;
 use Route;
 use Session;
 use Zhiyi\Plus\Models\User;
@@ -286,10 +287,8 @@ function formatMarkdown($body)
     $body = preg_replace('/\@\!\[(.*?)\]\((\d+)\)/i',
         '![$1]('.getenv('APP_URL').'/api/v2/files/$2)', $body);
 
-//    $config = HTMLPurifier_Config::createDefault();
-//    $config->set('HTML.Allowed', 'br,a[href],');
-//    $purifier = new HTMLPurifier($config);
-//    $body = $purifier->purify($body);
+    $body = MarkdownExtra::defaultTransform($body);
+
     return $body;
 }
 

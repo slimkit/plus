@@ -22,6 +22,7 @@ namespace Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\API2;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Str;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\CacheNames;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\Feed;
 use Zhiyi\Plus\Http\Controllers\Controller;
@@ -100,7 +101,7 @@ class RewardController extends Controller
                 // 扣除操作用户余额
                 $user->wallet()->decrement('balance', $amount);
 
-                $feed_title = str_limit($feed->feed_content, 100, '...');
+                $feed_title = Str::limit($feed->feed_content, 100, '...');
                 $feed_title = $feed_title ? "“${feed_title}”" : '';
                 // 扣费记录
                 $userCharge = clone $charge;

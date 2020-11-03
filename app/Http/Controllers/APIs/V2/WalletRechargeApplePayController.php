@@ -43,8 +43,7 @@ class WalletRechargeApplePayController extends WalletRechargeController
         $charge = $this->createCharge($model);
 
         $model->charge_id = $charge['id'];
-        $model->transaction_no = Arr::get($charge,
-            'credential.applepay_upacp.tn');
+        $model->transaction_no = Arr::get($charge, 'credential.applepay_upacp.tn');
         $model->saveOrFail();
 
         return $response
