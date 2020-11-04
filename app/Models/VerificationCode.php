@@ -20,6 +20,7 @@ declare(strict_types=1);
 
 namespace Zhiyi\Plus\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Builder;
@@ -27,7 +28,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class VerificationCode extends Model
 {
-    use Notifiable, SoftDeletes;
+    use Notifiable, SoftDeletes, HasFactory;
 
     /**
      * Get the notification routing information for the given driver.

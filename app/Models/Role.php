@@ -23,10 +23,12 @@ namespace Zhiyi\Plus\Models;
 // use Illuminate\Cache\TaggableStore;
 // use Illuminate\Support\Facades\Cache;
 // use Illuminate\Support\Facades\Config;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Role extends Model
 {
+    use HasFactory;
     /**
      * Get all abilities of the role.
      *
@@ -53,7 +55,7 @@ class Role extends Model
      * Get or check The role ability.
      *
      * @param string $ability
-     * @return false|\User\Plus\Models\Ability
+     * @return false|Ability
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function ability(string $ability)

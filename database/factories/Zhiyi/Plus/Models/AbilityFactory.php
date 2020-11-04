@@ -15,11 +15,17 @@
  * | Homepage: www.thinksns.com                                           |
  * +----------------------------------------------------------------------+
  */
+namespace Database\Factories;
+use Illuminate\Database\Eloquent\Factories\Factory;
+use Zhiyi\Plus\Models\Ability;
 
-use Faker\Generator as Faker;
+class AbilityFactory extends Factory {
+    protected $model = Ability::class;
 
-$factory->define(Zhiyi\Plus\Models\File::class, function (Faker $faker) {
-    return [
-        //
-    ];
-});
+    public function definition()
+    {
+        return [
+            //
+        ];
+    }
+}

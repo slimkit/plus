@@ -5,7 +5,7 @@
 <div class="m-uchead profile_top">
     <div class="profile_top_cover" style="background-image: url({{ $user['bg'] ? $user['bg']['url'] : asset('assets/pc/images/default_cover.jpg') }});background-repeat: no-repeat;background-size: cover;"> </div>
 
-    @if ($user['id'] == $TS['id'])
+    @if ($user['id'] === ($TS['id'] ?? 0))
         <input type="file" name="cover" style="display:none" id="cover">
         <span class="change_cover" onclick="$('#cover').click()">更换封面</span>
     @endif
@@ -25,7 +25,7 @@
                 @if($user['location'])
                 <span>{{$user['location'] ?? ''}}</span>&nbsp;&nbsp;|
                 @endif
-                @if ($user['id'] == $TS['id'])
+                @if ($user['id'] === ($TS['id'] ?? 0))
                 &nbsp;<svg class="icon" aria-hidden="true"><use xlink:href="#icon-currency"></use></svg>{{$user['currency']['sum'] ?? '0'}} {{ $config['bootstrappers']['site']['currency_name']['name'] }}
                 @endif
             </div>
@@ -41,7 +41,7 @@
 
     {{-- 个人中心导航栏 --}}
     <div class="profile_nav clearfix">
-        @if ($TS['id'] == $user['id'])
+        @if (($TS['id'] ?? 0) === $user['id'])
             <ul class="profile_nav_list clearfix">
                 <li @if($current == 'feeds') class="active" @endif><a href="{{ route('pc:mine', $user['id']) }}">主页</a></li>
 

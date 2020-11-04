@@ -36,8 +36,8 @@ class FollowNewsCateTest extends TestCase
      */
     public function testFollowNewsCate()
     {
-        $user = factory(UserModel::class)->create();
-        $cates = factory(NewsCateModel::class, 3)->create();
+        $user = UserModel::factory()->create();
+        $cates = NewsCateModel::factory(3)->create();
 
         $response = $this
             ->actingAs($user, 'api')

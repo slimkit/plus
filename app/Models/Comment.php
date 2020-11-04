@@ -20,10 +20,12 @@ declare(strict_types=1);
 
 namespace Zhiyi\Plus\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Comment extends Model
 {
+    use HasFactory;
     /**
      * Has commentable.
      *

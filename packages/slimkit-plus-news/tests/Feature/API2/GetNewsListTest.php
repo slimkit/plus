@@ -39,9 +39,9 @@ class GetNewsListTest extends TestCase
     public function setUp()
     {
         parent::setUp();
-        $this->user = factory(UserModel::class)->create();
-        $this->cate = factory(NewsCateModel::class)->create();
-        $this->news = factory(NewsModel::class, 10)->create([
+        $this->user = UserModel::factory()->create();
+        $this->cate = NewsCateModel::factory()->create();
+        $this->news = NewsModel::factory(10)->create([
             'title' => 'test',
             'user_id' => $this->user->id,
             'cate_id' => $this->cate->id,

@@ -15,7 +15,7 @@
  * | Homepage: www.thinksns.com                                           |
  * +----------------------------------------------------------------------+
  */
-
+namespace Database\Seeders;
 use Zhiyi\Plus\Models\Role;
 use Zhiyi\Plus\Models\User;
 use Illuminate\Database\Seeder;
@@ -41,7 +41,7 @@ class UsersTableSeeder extends Seeder
      */
     protected function createFounderUser()
     {
-        $user = User::create(['name' => 'root', 'password' => bcrypt('root')]);
+        $user = User::query()->create(['name' => 'root', 'password' => bcrypt('root')]);
         $user->roles()->sync(
             Role::where('non_delete', 1)->get()
         );

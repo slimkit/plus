@@ -15,18 +15,18 @@
  * | Homepage: www.thinksns.com                                           |
  * +----------------------------------------------------------------------+
  */
+namespace Database\Factories\Zhiyi\Plus\Models\Zhiyi\Plus\Models\Zhiyi\Plus\Models\Zhiyi\Plus\Models\Zhiyi\Plus\Models\Zhiyi\Plus\Models\Zhiyi\Plus\Models\Zhiyi\Plus\Models\Zhiyi\Plus\Models;
 
-use Faker\Generator as Faker;
+use Illuminate\Database\Eloquent\Factories\Factory;
+use Zhiyi\Plus\Models\File;
 
-$factory->define(Zhiyi\Plus\Models\Advertising::class, function (Faker $faker) {
-    return [
-        'space_id' => 1,
-        'title' => '测试标题',
-        'type' => 'image',
-        'data' => [
-            'image' => 'http://xxx/xxx.jpg',
-            'url' => 'http://www.xxxxx.com',
-        ],
-        'sort' => 0,
-    ];
-});
+class FileFactory extends Factory {
+    protected $model = File::class;
+
+    public function definition()
+    {
+        return [
+            //
+        ];
+    }
+}

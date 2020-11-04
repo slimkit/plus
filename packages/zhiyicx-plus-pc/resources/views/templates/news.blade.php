@@ -7,12 +7,12 @@ use function Zhiyi\Component\ZhiyiPlus\PlusComponentPc\getImageUrl;
      @foreach($news as $item)
      <div class="news_item">
           <div class="news_img">
-               <a href="{{ route('pc:newsread', ['news_id' => $item['id']]) }}">
+               <a href="{{ route('pc:newsread', ['news' => $item['id']]) }}">
                     <img class="lazy" width="230" height="163" data-original="{{ getImageUrl($item['image'], 230, 163)}}"/>
                </a>
           </div>
           <div class="news_word">
-               <a class="news_title" href="{{ route('pc:newsread', ['news_id' => $item['id']]) }}">
+               <a class="news_title" href="{{ route('pc:newsread', ['news' => $item['id']]) }}">
                     {{ $item['title'] }}
                </a>
                <p>{{ $item['subject'] }}</p>

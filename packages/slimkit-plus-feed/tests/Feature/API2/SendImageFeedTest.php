@@ -38,14 +38,14 @@ class SendImageFeedTest extends TestCase
      */
     protected function createUser(): UserModel
     {
-        $user = factory(UserModel::class)->create();
+        $user = UserModel::factory()->create();
         $ability = AbilityModel::where('name', 'feed-post')->firstOr(function () {
-            return factory(AbilityModel::class)->create([
+            return AbilityModel::factory()->create([
                 'name' => 'feed-post',
             ]);
         });
-        $role = factory(RoleModel::class)
-            ->create([
+        $role = RoleModel::factory()
+            ->make([
                 'name' => 'test',
             ]);
         $role
@@ -104,7 +104,7 @@ class SendImageFeedTest extends TestCase
      */
     public function testSendNotSendAbility()
     {
-        $user = factory(UserModel::class)->create();
+        $user = UserModel::factory()->create();
 
         $response = $this
             ->actingAs($user, 'api')

@@ -16,17 +16,26 @@
  * +----------------------------------------------------------------------+
  */
 
-use Faker\Generator as Faker;
+namespace Database\Factories\Zhiyi\Plus\Models;
 
-$factory->define(Zhiyi\Plus\Models\WalletCash::class, function (Faker $faker) {
-    static $user_id;
+use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Str;
+use Zhiyi\Plus\Models\User;
 
-    return [
-        'user_id' => $user_id,
-        'type' => 'alipay',
-        'account' => '1212121212',
-        'value' => random_int(1, 999999),
-        'status' => rand(0, 2),
-        'remark' => '',
-    ];
-});
+class UserFactory extends Factory {
+    protected $model = User::class;
+
+    public function definition()
+    {
+        return [
+            'name' => $this->faker->name,
+            'email' => $this->faker->unique()->safeEmail,
+            'phone' => $this->faker->unique()->phoneNumber,
+            'email_verified_at' => now(),
+            'phone_verified_at' => now(),
+            'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi',
+            // password
+            'remember_token' => Str::random(10),
+        ];
+    }
+}

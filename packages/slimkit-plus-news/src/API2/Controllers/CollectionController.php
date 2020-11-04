@@ -94,7 +94,7 @@ class CollectionController extends Controller
         $user->newsCollections->map(function ($collection) use ($user) {
             $collection->has_collect = $collection->collected($user);
             $collection->has_like = $collection->liked($user);
-            $collection->addHidden('pinned', 'pivot');
+            $collection->makeHidden('pinned', 'pivot');
 
             return $collection;
         });

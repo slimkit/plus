@@ -15,11 +15,18 @@
  * | Homepage: www.thinksns.com                                           |
  * +----------------------------------------------------------------------+
  */
+namespace Database\Factories\Zhiyi\Plus\Models\Zhiyi\Plus\Models\Zhiyi\Plus\Models\Zhiyi\Plus\Models\Zhiyi\Plus\Models;
 
-use Faker\Generator as Faker;
+use Illuminate\Database\Eloquent\Factories\Factory;
+use Zhiyi\Plus\Models\Role;
 
-$factory->define(Zhiyi\Plus\Models\Sensitive::class, function (Faker $faker) {
-    return [
-        //
-    ];
-});
+class RoleFactory extends Factory {
+    protected $model = Role::class;
+
+    public function definition()
+    {
+        return [
+            //
+        ];
+    }
+}

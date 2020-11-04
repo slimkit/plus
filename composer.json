@@ -92,26 +92,25 @@
         }
     ],
     "require": {
-        "php": "^7.3|^8.0",
+        "php": "^7.3|^7.4|^8.0",
+        "aliyuncs/oss-sdk-php": "^2.4",
+        "doctrine/dbal": "^2.12",
+        "erusev/parsedown": "^1.7",
+        "ezyang/htmlpurifier": "^4.13",
         "fideloper/proxy": "^4.4",
         "fruitcake/laravel-cors": "^2.0",
-        "guzzlehttp/guzzle": "^7.0.1",
+        "guzzlehttp/guzzle": "^6.5",
+        "intervention/image": "^2.5",
+        "jenssegers/agent": "^2.6",
+        "jpush/jpush": "^3.6",
         "laravel/framework": "^8.12",
         "laravel/tinker": "^2.5",
-        "aliyuncs/oss-sdk-php": "^2.3",
-        "doctrine/dbal": "^2.5",
-        "erusev/parsedown": "^1.7",
-        "ezyang/htmlpurifier": "^4.10",
-        "fzaninotto/faker": "^1.7",
-        "intervention/image": "^2.3",
-        "jenssegers/agent": "^2.6",
-        "jpush/jpush": "^3.5",
-        "laravel/telescope": "^2.0",
-        "league/html-to-markdown": "^4.6",
+        "laravel/ui": "^3.0",
+        "league/html-to-markdown": "^4.10",
         "league/omnipay": "^3.0",
         "lokielse/omnipay-alipay": "^3.0",
         "lokielse/omnipay-wechatpay": "^3.0",
-        "medz/cors": "^1.3",
+        "medz/cors": "^1.5",
         "medz/gb-t-2260": "^1.0",
         "medz/laravel-jpush-notification-channel": "^1.0",
         "overtrue/easy-sms": "^1.0",
@@ -125,24 +124,25 @@
         "slimkit/plus-music": "2.3.0",
         "slimkit/plus-news": "2.3.0",
         "slimkit/plus-socialite": "2.3.0",
-        "symfony/finder": "^4.0",
-        "symfony/yaml": "^4.0",
-        "tymon/jwt-auth": "1.0.0-rc.4.1",
+        "symfony/finder": "^5.1",
+        "symfony/yaml": "^5.1",
+        "tymon/jwt-auth": "^1.0",
         "zhiyicx/plus-pc": "2.3.0"
     },
     "require-dev": {
-        "beyondcode/laravel-dump-server": "^1.0",
+        "beyondcode/laravel-dump-server": "^1.6",
         "codacy/coverage": "^1.4",
-        "filp/whoops": "^2.0",
+        "filp/whoops": "^2.9",
         "facade/ignition": "^2.5",
-        "fakerphp/faker": "^1.9.1",
-        "mockery/mockery": "^1.4.2",
-        "nunomaduro/collision": "^5.0",
-        "phpunit/phpunit": "^9.3.3"
+        "fakerphp/faker": "^1.10",
+        "mockery/mockery": "^1.4",
+        "nunomaduro/collision": "^5.1",
+        "phpunit/phpunit": "^9.3.3",
+        "laravel/telescope": "^4.2"
     },
     "config": {
         "platform": {
-            "php": "7.1.3"
+            "php": "7.4"
         },
         "optimize-autoloader": true,
         "preferred-install": "dist",
@@ -160,12 +160,8 @@
         "files": [
             "app/helpers.php"
         ],
-        "classmap": [
-            "database/seeds",
-            "database/factories"
-        ],
         "psr-4": {
-            "Zhiyi\\Plus\\": "app/"
+            "Zhiyi\\Plus\\": "app/",
             "Database\\Factories\\": "database/factories/",
             "Database\\Seeders\\": "database/seeders/"
         }

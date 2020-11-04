@@ -15,11 +15,18 @@
  * | Homepage: www.thinksns.com                                           |
  * +----------------------------------------------------------------------+
  */
+namespace Database\Factories\Zhiyi\Plus\Models\Zhiyi\Plus\Models\Zhiyi\Plus\Models;
+use Illuminate\Database\Eloquent\Factories\Factory;
+use Zhiyi\Plus\Models\TagCategory;
 
-use Faker\Generator as Faker;
+class TagCategoryFactory extends Factory {
+    protected $model = TagCategory::class;
 
-$factory->define(Zhiyi\Plus\Model\UserCount::class, function (Faker $faker) {
-    return [
-        //
-    ];
-});
+    public function definition()
+    {
+        return [
+            'name' => $this->faker->firstName,
+            'weight' => $this->faker->numberBetween(100, 999),
+        ];
+    }
+}

@@ -20,12 +20,14 @@ declare(strict_types=1);
 
 namespace Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Zhiyi\Plus\Models\User;
 use Illuminate\Database\Eloquent\Model;
 use Zhiyi\Plus\Models\Comment as CommentModel;
 
 class FeedPinned extends Model
 {
+    use HasFactory;
     /**
      * Has user.
      *

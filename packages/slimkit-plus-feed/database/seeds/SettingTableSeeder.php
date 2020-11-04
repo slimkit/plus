@@ -18,7 +18,7 @@ declare(strict_types=1);
  * +----------------------------------------------------------------------+
  */
 
-namespace SlimKit\Plus\Packages\Feed\Seeds;
+namespace Slimkit\Feed\Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use function Zhiyi\Plus\setting;

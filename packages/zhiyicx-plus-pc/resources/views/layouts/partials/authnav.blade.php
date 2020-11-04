@@ -11,7 +11,7 @@
                         @if(isset($config['bootstrappers']['registerSettings']['type']) && $config['bootstrappers']['registerSettings']['type'] == 'all')
                             <a href="{{ route('pc:register', ['type'=>'phone']) }}" class="font16 ">注册</a>
                         @endif
-                    @elseif(!($TS ?? false))
+                    @elseif(!($TS ?? 0))
                     <a href="{{ route('login') }}" class="font16 ">登录</a>
                     <a href="{{ route('pc:feeds') }}" class="font16 ">随便看看</a>
                     @endif

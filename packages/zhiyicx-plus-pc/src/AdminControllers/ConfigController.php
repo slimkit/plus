@@ -215,7 +215,7 @@ class ConfigController extends Controller
     /**
      * 清除站点缓存.
      *
-     * @return cacheclear
+     * @return \Illuminate\Http\JsonResponse
      */
     public function cacheclear()
     {

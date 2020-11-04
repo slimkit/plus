@@ -35,7 +35,7 @@ class GetNewsCategoriesTest extends TestCase
      */
     public function testLoggedGetNewsCategories()
     {
-        $user = factory(UserModel::class)->create();
+        $user = UserModel::factory()->create();
 
         $response = $this
             ->actingAs($user, 'api')

@@ -41,7 +41,7 @@
 	    <div class="qa-toolbar feed_datas font14">
 			<a class="follow gcolor J-watched" data-id="{{ $data['id'] }}" status="{{(int) (isset($TS) && $data['watched'])}}">
 				<svg class="icon" aria-hidden="true"><use xlink:href="#icon-follow"></use></svg>
-				<span class="watched">{{ (isset($TS) && $data['watched']) ? '已关注' : '关注' }}</span>
+				<span class="watched">{{ ($TS['id'] ?? 0) && $data['watched']) ? '已关注' : '关注' }}</span>
 			</a>
 			{{--<a class="follow gcolor" onclick="question.watched.init({{$data['id']}});" id="J-watched{{$data['id']}}" status="{{(int) (isset($TS) && $data['watched'])}}">--}}
 				{{--<svg class="icon" aria-hidden="true"><use xlink:href="#icon-follow"></use></svg>--}}

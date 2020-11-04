@@ -18,7 +18,7 @@ declare(strict_types=1);
  * +----------------------------------------------------------------------+
  */
 
-namespace Zhiyi\Plus\Packages\Feed\Admin\Requests;
+namespace Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Admin\Requests;
 
 use Zhiyi\Plus\API2\Requests\Request;
 

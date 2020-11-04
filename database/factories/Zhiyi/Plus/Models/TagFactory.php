@@ -15,11 +15,17 @@
  * | Homepage: www.thinksns.com                                           |
  * +----------------------------------------------------------------------+
  */
+namespace Database\Factories\Zhiyi\Plus\Models\Zhiyi\Plus\Models;
+use Illuminate\Database\Eloquent\Factories\Factory;
+use Zhiyi\Plus\Models\Tag;
 
-use Faker\Generator as Faker;
+class TagFactory extends Factory {
+    protected $model = Tag::class;
 
-$factory->define(Zhiyi\Plus\Models\Role::class, function (Faker $faker) {
-    return [
-        //
-    ];
-});
+    public function definition()
+    {
+        return [
+            'name' => $this->faker->unique()->firstName,
+        ];
+    }
+}

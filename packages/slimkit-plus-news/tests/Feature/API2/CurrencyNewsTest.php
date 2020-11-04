@@ -41,8 +41,8 @@ class CurrencyNewsTest extends TestCase
      */
     public function testPublishNews()
     {
-        $user = factory(UserModel::class)->create();
-        $cate = factory(NewsCateModel::class)->create();
+        $user = UserModel::factory()->create();
+        $cate = NewsCateModel::factory()->create(););
         $user->currency()->updateOrCreate([], ['sum' => 9999]);
         $user->certification()->updateOrCreate([], [
             'certification_name' => 'user',
@@ -74,8 +74,8 @@ class CurrencyNewsTest extends TestCase
      */
     protected function createTags()
     {
-        $cate = factory(TagCateModel::class)->create();
-        $tags = factory(TagModel::class, 3)->create([
+        $cate = TagCateModel::factory()->create(););
+        $tags = TagModel::factory(3)->create([
             'tag_category_id' => $cate->id,
         ]);
 
@@ -89,14 +89,14 @@ class CurrencyNewsTest extends TestCase
      */
     public function testCurrencyPinnedNews()
     {
-        $user = factory(UserModel::class)->create();
+        $user = UserModel::factory()->create();
         $user->currency()->update([
             'sum' => 1000,
             'type' => 1,
         ]);
 
-        $cate = factory(NewsCateModel::class)->create();
-        $news = factory(NewsModel::class)->create([
+        $cate = NewsCateModel::factory()->create(););
+        $news = NewsModel::factory()->create([
             'title' => 'test',
             'user_id' => $user->id,
             'cate_id' => $cate->id,
@@ -121,22 +121,22 @@ class CurrencyNewsTest extends TestCase
      */
     public function testPinnedNewsComment()
     {
-        $user = factory(UserModel::class)->create();
-        $other = factory(UserModel::class)->create();
+        $user = UserModel::factory()->create();
+        $other = UserModel::factory()->create();
         $other->currency()->update([
             'sum' => 1000,
             'type' => 1,
         ]);
 
-        $cate = factory(NewsCateModel::class)->create();
-        $news = factory(NewsModel::class)->create([
+        $cate = NewsCateModel::factory()->create(););
+        $news = NewsModel::factory()->create([
             'title' => 'test',
             'user_id' => $user->id,
             'cate_id' => $cate->id,
             'audit_status' => 1,
         ]);
 
-        $comment = factory(CommentModel::class)->create([
+        $comment = CommentModel::factory()->create([
             'user_id' => $other->id,
             'target_user' => 0,
             'body' => 'test',
@@ -163,18 +163,18 @@ class CurrencyNewsTest extends TestCase
      */
     public function testAuditNewsCommentPinned()
     {
-        $user = factory(UserModel::class)->create();
-        $other = factory(UserModel::class)->create();
+        $user = UserModel::factory()->create();
+        $other = UserModel::factory()->create();
 
-        $cate = factory(NewsCateModel::class)->create();
-        $news = factory(NewsModel::class)->create([
+        $cate = NewsCateModel::factory()->create(););
+        $news = NewsModel::factory()->create([
             'title' => 'test',
             'user_id' => $user->id,
             'cate_id' => $cate->id,
             'audit_status' => 1,
         ]);
 
-        $comment = factory(CommentModel::class)->create([
+        $comment = CommentModel::factory()->create([
             'user_id' =>    $user->id,
             'target_user' => 0,
             'body' => 'test',
@@ -211,18 +211,18 @@ class CurrencyNewsTest extends TestCase
      */
     public function testRejectNewsCommentPinned()
     {
-        $user = factory(UserModel::class)->create();
-        $other = factory(UserModel::class)->create();
+        $user = UserModel::factory()->create();
+        $other = UserModel::factory()->create();
 
-        $cate = factory(NewsCateModel::class)->create();
-        $news = factory(NewsModel::class)->create([
+        $cate = NewsCateModel::factory()->create(););
+        $news = NewsModel::factory()->create([
             'title' => 'test',
             'user_id' => $user->id,
             'cate_id' => $cate->id,
             'audit_status' => 1,
         ]);
 
-        $comment = factory(CommentModel::class)->create([
+        $comment = CommentModel::factory()->create([
             'user_id' =>    $user->id,
             'target_user' => 0,
             'body' => 'test',

@@ -16,7 +16,7 @@
         </h3>
         @if (isset($post['answer']) && $post['answer'])
         <div class="m-subtt">
-            @if ($post['answer']['anonymity'] && ($post['answer']['user_id'] !== $TS['id']))
+            @if ($post['answer']['anonymity'] && (($TS['id'] ?? 0) !== $post['answer']['user_id']))
                 <img src="{{ asset('assets/pc/images/ico_anonymity_60.png') }}" width="24" height="24" />
                 <span class="u-name">（匿名）</span>
             @else

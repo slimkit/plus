@@ -18,7 +18,7 @@ declare(strict_types=1);
  * +----------------------------------------------------------------------+
  */
 
-namespace Zhiyi\Plus\Packages\Music\Seeds;
+namespace SlimKit\PlusMusic\Database\Seeders;
 
 use Illuminate\Database\Seeder;
 

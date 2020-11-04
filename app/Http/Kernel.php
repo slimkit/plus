@@ -21,6 +21,9 @@ declare(strict_types=1);
 namespace Zhiyi\Plus\Http;
 
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
+use Illuminate\Foundation\Http\Middleware\CheckForMaintenanceMode;
+use Illuminate\Routing\Middleware\SubstituteBindings;
+use Zhiyi\Plus\Http\Middleware\PreventRequestsDuringMaintenance;
 
 class Kernel extends HttpKernel
 {
@@ -33,10 +36,10 @@ class Kernel extends HttpKernel
      */
     protected $middleware = [
         \Medz\Cors\Laravel\Middleware\Cors::class,
-        \Zhiyi\Plus\Http\Middleware\CheckForMaintenanceMode::class,
+        CheckForMaintenanceMode::class,
         // \App\Http\Middleware\TrustHosts::class,
         \Fruitcake\Cors\HandleCors::class,
-        \App\Http\Middleware\PreventRequestsDuringMaintenance::class,
+        PreventRequestsDuringMaintenance::class,
         \Illuminate\Foundation\Http\Middleware\ValidatePostSize::class,
         \Zhiyi\Plus\Http\Middleware\TrimStrings::class,
         \Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull::class,
@@ -62,7 +65,6 @@ class Kernel extends HttpKernel
         'api' => [
             'cors-should',
             'throttle:120,1',
-            'bindings',
             'throttle:api',
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
         ],
@@ -93,5 +95,6 @@ class Kernel extends HttpKernel
         'sensitive'  => \Zhiyi\Plus\Http\Middleware\DisposeSensitive::class,
         'operation'  => \Zhiyi\Plus\Http\Middleware\SensitiveOperation::class,
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
+        'bindings' => SubstituteBindings::class
     ];
 }

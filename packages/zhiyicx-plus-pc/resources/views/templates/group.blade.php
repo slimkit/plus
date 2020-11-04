@@ -37,7 +37,7 @@
                         @endif
                     @else
                         @php
-                            $joined = (bool) GroupMember::where('user_id', $TS['id'])->where('group_id', $item['id'])->count();
+                            $joined = (bool) GroupMember::where('user_id', $TS['id'])->where('group_id', $item['id'])->exists();
                         @endphp
 
                         @if ($joined)

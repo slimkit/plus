@@ -89,18 +89,21 @@ class VerifyCodeController extends Controller
     /**
      * Send phone or email verification code.
      *
-     * @param string $account
-     * @param string $type
+     * @param  string  $account
+     * @param  string  $channel
+     * @param  array  $data
      * @return mixed
      * @author Seven Du <shiweidu@outlook.com>
      */
     protected function send(string $account, string $channel = '', array $data = [])
     {
         $this->validateSent($account);
-
         $data['account'] = $account;
         $data['channel'] = $channel;
-        $model = factory(VerificationCode::class)->create($data);
+        VerificationCode::query()->where('channel', $channel)
+            ->where('account', $account)
+            ->delete();
+        $model = VerificationCode::factory()->create($data);
         $model->notify(
              new \Zhiyi\Plus\Notifications\VerificationCode($model)
         );
@@ -115,14 +118,14 @@ class VerifyCodeController extends Controller
      */
     protected function validateSent(string $account)
     {
-        $vaildSecond = config('app.env') == 'production' ? 60 : 6;
-        $verify = VerificationCode::where('account', $account)
-            ->byValid($vaildSecond)
+        $validSecond = config('app.env') == 'production' ? 60 : 6;
+        $verify = VerificationCode::query()->where('account', $account)
+            ->byValid($validSecond)
             ->orderBy('id', 'desc')
             ->first();
 
         if ($verify) {
-            abort(403, sprintf('还需要%d秒后才能获取', $verify->makeSurplusSecond($vaildSecond)));
+            abort(403, sprintf('还需要%d秒后才能获取', $verify->makeSurplusSecond($validSecond)));
         }
     }
 }

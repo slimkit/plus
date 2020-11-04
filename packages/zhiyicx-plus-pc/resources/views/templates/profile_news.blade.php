@@ -38,16 +38,16 @@ use function Zhiyi\Component\ZhiyiPlus\PlusComponentPc\getAvatar;
     <div class="news_bottom mt20">
         @if ($post['audit_status'] == 0)
         <div class="feed_datas relative">
-            <span class="collect" id="J-collect{{$post['id']}}" rel="{{$post['collection_count']}}" status="{{(int) $post['has_collect']}}">
+            <span class="collect" id="J-collect{{$post['id']}}" rel="{{$post['collection_count'] ?? 0}}" status="{{(int) $post['has_collect']}}">
                 @if($post['has_collect'])
                 <a href="javascript:;" onclick="collected.init({{$post['id']}}, 'news', 1);" class="act">
                     <svg class="icon" aria-hidden="true"><use xlink:href="#icon-collect"></use></svg>
-                    <font>{{$post['collection_count']}}</font>
+                    <font>{{$post['collection_count'] ?? 0}}</font>
                 </a>
                 @else
                 <a href="javascript:;" onclick="collected.init({{$post['id']}}, 'news', 1);">
                     <svg class="icon" aria-hidden="true"><use xlink:href="#icon-collect"></use></svg>
-                    <font>{{$post['collection_count']}}</font>
+                    <font>{{$post['collection_count'] ?? 0}}</font>
                 </a>
                 @endif
             </span>
@@ -58,7 +58,7 @@ use function Zhiyi\Component\ZhiyiPlus\PlusComponentPc\getAvatar;
             <span class="view">
                 <svg class="icon" aria-hidden="true"><use xlink:href="#icon-chakan"></use></svg> {{$post['hits']}}
             </span>
-            @if($post['user_id'] == $TS['id'])
+            @if(($TS['id'] ?? 0) === $post['user_id'])
             <span class="options" onclick="options(this)">
                 <svg class="icon icon-more" aria-hidden="true"><use xlink:href="#icon-more"></use></svg>
             </span>
@@ -82,7 +82,7 @@ use function Zhiyi\Component\ZhiyiPlus\PlusComponentPc\getAvatar;
             'comments_type' => 'news',
             'url' => Route('pc:newsread', $post['id']),
             'position' => 1,
-            'comments_data' => $post['comments'],
+            'comments_data' => $post['comments'] ?? [],
             'top' => 1,
         ])
         <div class="feed_line"></div>

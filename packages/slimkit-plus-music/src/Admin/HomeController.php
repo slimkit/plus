@@ -18,7 +18,7 @@ declare(strict_types=1);
  * +----------------------------------------------------------------------+
  */
 
-namespace Zhiyi\Component\ZhiyiPlus\PlusComponentMusic\AdminControllers;
+namespace Zhiyi\Component\ZhiyiPlus\PlusComponentMusic\Admin;
 
 use Illuminate\Http\Request;
 use Zhiyi\Plus\Http\Controllers\Controller;
@@ -38,6 +38,8 @@ class HomeController extends Controller
     /**
      * 管理后台入口.
      *
+     * @param  Request  $request
+     * @param  Music  $music
      * @return mixed
      * @author Seven Du <shiweidu@outlook.com>
      */

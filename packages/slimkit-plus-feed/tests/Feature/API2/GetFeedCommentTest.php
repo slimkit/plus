@@ -37,13 +37,13 @@ class GetFeedCommentTest extends TestCase
      */
     protected function createUser(): UserModel
     {
-        $user = factory(UserModel::class)->create();
-        $ability = AbilityModel::where('name', 'feed-post')->firstOr(function () {
-            return factory(AbilityModel::class)->create([
+        $user = UserModel::factory()->create();
+        $ability = AbilityModel::query()->where('name', 'feed-post')->firstOr(function () {
+            return AbilityModel::factory()->create([
                 'name' => 'feed-post',
             ]);
         });
-        $role = factory(RoleModel::class)
+        $role = RoleModel::factory()
             ->create([
                 'name' => 'test',
             ]);

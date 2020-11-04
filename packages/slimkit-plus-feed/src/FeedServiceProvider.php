@@ -20,6 +20,7 @@ declare(strict_types=1);
 
 namespace Zhiyi\Component\ZhiyiPlus\PlusComponentFeed;
 
+use Illuminate\Database\Eloquent\Factories\Factory;
 use function Zhiyi\Plus\setting;
 use Illuminate\Support\ServiceProvider;
 use Zhiyi\Plus\Support\ManageRepository;
@@ -83,11 +84,11 @@ class FeedServiceProvider extends ServiceProvider
                 },
             ];
         });
-
-        $this
-            ->app
-            ->make('Illuminate\Database\Eloquent\Factory')
-            ->load(__DIR__.'/../database/factories');
+        // dd($this->moduleName);
+        // $this
+        //     ->app
+        //     ->make()
+        //     ->load(__DIR__.'/../database/factories');
     }
 
     /**

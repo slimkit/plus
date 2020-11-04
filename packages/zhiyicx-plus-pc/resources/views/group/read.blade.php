@@ -45,7 +45,7 @@
                             <div class="options_div">
                                 <div class="triangle"></div>
                                     <ul>
-                                        @if($TS['id'] ?? false)
+                                        @if($TS['id'] ?? 0)
                                         <li>
                                             <a href="javascript:;" onclick="repostable.show('groups', '{{$group['id']}}')">
                                                 <svg class="icon"><use xlink:href="#icon-share"></use></svg> 转发
@@ -196,7 +196,7 @@
                         @endif
                     </a>
                 </dt>
-                @if ($TS['id'] != $group['founder']['user']['id'])
+                @if (($TS['id'] ?? 0) !== $group['founder']['user']['id'])
                 <dd>圈主：{{$group['founder']['user']['name']}}</dd>
                 <dd>
                     <span class="contact" onclick="easemob.createCon({{ $group['founder']['user']['id'] }})">联系圈主</span>

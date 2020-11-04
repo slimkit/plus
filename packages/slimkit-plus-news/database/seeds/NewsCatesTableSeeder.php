@@ -18,7 +18,7 @@ declare(strict_types=1);
  * +----------------------------------------------------------------------+
  */
 
-namespace SlimKit\Plus\Packages\News\Seeds;
+namespace Slimkit\PlusNews\DataBase\Seeders;
 
 use Illuminate\Database\Seeder;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentNews\Models\NewsCate;

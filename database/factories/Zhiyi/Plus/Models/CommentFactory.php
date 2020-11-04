@@ -15,11 +15,18 @@
  * | Homepage: www.thinksns.com                                           |
  * +----------------------------------------------------------------------+
  */
+namespace Database\Factories\Zhiyi\Plus\Models\Zhiyi\Plus\Models\Zhiyi\Plus\Models\Zhiyi\Plus\Models\Zhiyi\Plus\Models\Zhiyi\Plus\Models\Zhiyi\Plus\Models\Zhiyi\Plus\Models\Zhiyi\Plus\Models\Zhiyi\Plus\Models;
 
-use Faker\Generator as Faker;
+use Illuminate\Database\Eloquent\Factories\Factory;
+use Zhiyi\Plus\Models\Comment;
 
-$factory->define(\Zhiyi\Plus\Models\Like::class, function (Faker $faker) {
-    return [
-        //
-    ];
-});
+class CommentFactory extends Factory {
+    protected $model = Comment::class;
+
+    public function definition()
+    {
+        return [
+            //
+        ];
+    }
+}

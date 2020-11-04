@@ -37,9 +37,9 @@ class GetFeedTest extends TestCase
     {
         parent::setUp();
 
-        $this->user = factory(UserModel::class)->create();
+        $this->user = UserModel::factory()->create();
 
-        $this->feed = factory(Feed::class)->create([
+        $this->feed = Feed::factory()->create([
             'user_id' => $this->user->id,
         ]);
     }

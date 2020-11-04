@@ -69,9 +69,9 @@ class ChannelManager extends Manager
             setting('file-storage', 'channels.public')['filesystem'] ?? null
         );
 
-        $channel = $this->app->make(Channels\PublicChannel::class);
+        $channel = $this->container->make(Channels\PublicChannel::class);
         $channel->setFilesystem($filesystem);
-        $channel->setRequest($this->app->make(Request::class));
+        $channel->setRequest($this->container->make(Request::class));
 
         return $channel;
     }

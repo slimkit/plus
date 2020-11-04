@@ -15,7 +15,7 @@
  * | Homepage: www.thinksns.com                                           |
  * +----------------------------------------------------------------------+
  */
-
+namespace Database\Seeders;
 use Zhiyi\Plus\Models\Role;
 use Illuminate\Database\Seeder;
 use function Zhiyi\Plus\setting;

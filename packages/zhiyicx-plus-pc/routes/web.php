@@ -248,7 +248,7 @@ Route::prefix('socialite')->group(function () {
 
     // 三方获取信息跳转
     Route::get('/{service}', 'SocialiteController@redirectToProvider')->where(['service' => 'weibo|qq|wechat'])->name('pc:socialite');
-    Route::get('/{service}/bind', 'SocialiteController@redirectToProviderByBind')->where(['service' => 'weibo|qq|wechat'])->name('pc:socialitebind');
+    Route::get('/{service}/bind', 'SocialiteController@redirectToProviderByBind')->where(['service' => 'weibo|qq|wechat'])->name('pc:get:socialitebind');
 
     // 三方回调
     Route::get('/{service}/callback', 'SocialiteController@handleProviderCallback')->where(['service' => 'weibo|qq|wechat']);

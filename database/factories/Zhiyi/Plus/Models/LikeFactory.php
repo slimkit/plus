@@ -15,37 +15,17 @@
  * | Homepage: www.thinksns.com                                           |
  * +----------------------------------------------------------------------+
  */
+namespace Database\Factories\Zhiyi\Plus\Models\Zhiyi\Plus\Models\Zhiyi\Plus\Models\Zhiyi\Plus\Models\Zhiyi\Plus\Models\Zhiyi\Plus\Models\Zhiyi\Plus\Models\Zhiyi\Plus\Models;
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
-use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Eloquent\Factories\Factory;
+use Zhiyi\Plus\Models\Like;
 
-class CreateFailedJobsTable extends Migration
+class LikeFactory extends Factory
 {
-    /**
-     * Run the migrations.
-     *
-     * @return void
-     */
-    public function up()
-    {
-        Schema::create('failed_jobs', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->text('connection');
-            $table->text('queue');
-            $table->longText('payload');
-            $table->longText('exception');
-            $table->timestamp('failed_at')->useCurrent();
-        });
-    }
+    protected $model = Like::class;
 
-    /**
-     * Reverse the migrations.
-     *
-     * @return void
-     */
-    public function down()
+    public function definition()
     {
-        Schema::dropIfExists('failed_jobs');
+        return [];
     }
 }

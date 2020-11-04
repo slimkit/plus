@@ -5,11 +5,12 @@
     "license": "MIT",
     "require": {
         "php": ">=7.0",
-        "guzzlehttp/guzzle": "^6.3"
+        "guzzlehttp/guzzle": "^6.5"
     },
     "autoload": {
         "psr-4": {
-            "SlimKit\\PlusSocialite\\": "src/"
+            "SlimKit\\PlusSocialite\\": "src/",
+            "SlimKit\\PlusSocialite\\Database\\Seeders\\": "database/seeds"
         }
     },
     "config": {

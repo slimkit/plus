@@ -15,11 +15,22 @@
  * | Homepage: www.thinksns.com                                           |
  * +----------------------------------------------------------------------+
  */
+namespace Database\Factories\Zhiyi\Plus\Models;
 
-use Faker\Generator as Faker;
+use Illuminate\Database\Eloquent\Factories\Factory;
+use Zhiyi\Plus\Models\VerificationCode;
 
-$factory->define(\Zhiyi\Plus\Models\Comment::class, function (Faker $faker) {
-    return [
-        //
-    ];
-});
+class VerificationCodeFactory extends Factory {
+    protected $model = VerificationCode::class;
+
+    public function definition()
+    {
+        return [
+            'user_id' => null,
+            'channel' => 'mail',
+            'account' => $this->faker->safeEmail,
+            'code' => $this->faker->numberBetween(1000, 999999),
+            'state' => 0,
+        ];
+    }
+}

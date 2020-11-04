@@ -15,7 +15,7 @@
  * | Homepage: www.thinksns.com                                           |
  * +----------------------------------------------------------------------+
  */
-
+namespace Database\Seeders;
 use Zhiyi\Plus\Models\Tag;
 use Illuminate\Database\Seeder;
 use Zhiyi\Plus\Models\TagCategory;

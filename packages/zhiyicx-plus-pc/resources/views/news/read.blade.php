@@ -37,7 +37,7 @@
                                     <svg class="icon" aria-hidden="true"><use xlink:href="#icon-share"></use></svg>转发
                                 </a>
                             </li>
-                            @if($TS && $news['user_id'] == $TS['id'])
+                            @if($news['user_id'] === ($TS['id'] ?? 0))
                                 @if($news['audit_status'] == 3)
                                     <li>
                                         <a href="{{ route('pc:newsrelease', $news['id']) }}">
@@ -114,7 +114,7 @@
                     </div>
 
                     {{-- 打赏 --}}
-                    @if($news['user_id'] !== $TS['id'])
+                    @if($news['user_id'] !== ($TS['id'] ?? 0))
                     @include('pcview::widgets.rewards' , ['rewards_data' => $news['rewards'], 'rewards_type' => 'news', 'rewards_id' => $news['id'], 'rewards_info' => $news['reward']])
                     @endif
                 </div>

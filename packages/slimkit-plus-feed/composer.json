@@ -14,12 +14,11 @@
         }
     ],
     "autoload": {
-        "classmap": [
-            "database/seeds"
-        ],
         "psr-4": {
             "Zhiyi\\Component\\ZhiyiPlus\\PlusComponentFeed\\": "src/",
-            "Zhiyi\\Plus\\Packages\\Feed\\": "src/"
+            "SlimKit\\Feed\\DataBase\\Factories\\": "database/factories",
+            "Slimkit\\Feed\\Database\\Seeders\\": "database/seeds"
+
         }
     },
     "autoload-dev": {

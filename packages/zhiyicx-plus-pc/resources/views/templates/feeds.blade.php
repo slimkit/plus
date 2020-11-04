@@ -7,7 +7,7 @@ use function Zhiyi\Component\ZhiyiPlus\PlusComponentPc\getAvatar;
 
 @if(!empty($feeds))
 @foreach($feeds as $key => $post)
-<div class="feed_item" id="feed_{{$post['id']}}" data-amount="{{ $post['paid_node']['amount'] }}" data-node="{{ $post['paid_node']['node'] }}">
+<div class="feed_item" id="feed_{{$post['id']}}" data-amount="{{ $post['paid_node']['amount'] ?? 0 }}" data-node="{{ $post['paid_node']['node'] ?? 0 }}">
     <div class="feed_title">
         <a class="avatar_box" href="{{ route('pc:mine', $post['user']['id']) }}">
             <img class="avatar" src="{{ getAvatar($post['user'], 50) }}" width="50" />
@@ -129,7 +129,7 @@ use function Zhiyi\Component\ZhiyiPlus\PlusComponentPc\getAvatar;
                         </a>
                         @endif
                     </li>
-                    @if($post['user_id'] == $TS['id'])
+                    @if(($TS['id'] ?? 0) === $post['user_id'])
                     <li>
                         <a href="javascript:;" onclick="weibo.pinneds({{$post['id']}});">
                             <svg class="icon" aria-hidden="true"><use xlink:href="#icon-pinned2"></use></svg>申请置顶

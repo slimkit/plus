@@ -15,15 +15,26 @@
  * | Homepage: www.thinksns.com                                           |
  * +----------------------------------------------------------------------+
  */
+namespace Database\Factories\Zhiyi\Plus\Models\Zhiyi\Plus\Models\Zhiyi\Plus\Models\Zhiyi\Plus\Models\Zhiyi\Plus\Models\Zhiyi\Plus\Models\Zhiyi\Plus\Models\Zhiyi\Plus\Models\Zhiyi\Plus\Models\Zhiyi\Plus\Models\Zhiyi\Plus\Models;
 
-use Faker\Generator as Faker;
+use Illuminate\Database\Eloquent\Factories\Factory;
+use Zhiyi\Plus\Models\WalletCash;
 
-$factory->define(Zhiyi\Plus\Models\VerificationCode::class, function (Faker $faker) {
-    return [
-        'user_id' => null,
-        'channel' => 'mail',
-        'account' => $faker->safeEmail,
-        'code' => $faker->numberBetween(1000, 999999),
-        'state' => 0,
-    ];
-});
+class CashFactory extends Factory {
+
+    static $user_id;
+    protected $model = WalletCash::class;
+
+    public function definition()
+    {
+        return [
+            'user_id' => $this->user_id,
+            'type' => 'alipay',
+            'account' => '1212121212',
+            'value' => random_int(1, 999999),
+            'status' => rand(0, 2),
+            'remark' => '',
+        ];
+    }
+
+}

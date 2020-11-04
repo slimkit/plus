@@ -39,10 +39,10 @@ class GetPublishNewsListTest extends TestCase
      */
     public function testGetPublishNewsList()
     {
-        $user = factory(UserModel::class)->create();
-        $cate = factory(NewsCateModel::class)->create();
+        $user = UserModel::factory()->create();
+        $cate = NewsCateModel::factory()->create();
 
-        factory(NewsModel::class, 6)->create([
+        NewsModel::factory(6)->make([
             'user_id' => $user->id,
             'cate_id' => $cate->id,
             'audit_status' => 3,
@@ -63,8 +63,8 @@ class GetPublishNewsListTest extends TestCase
      */
     protected function createTags()
     {
-        $cate = factory(TagCateModel::class)->create();
-        $tags = factory(TagModel::class, 3)->create([
+        $cate = TagCateModel::factory()->create(););
+        $tags = TagModel::factory(3)->create([
             'tag_category_id' => $cate->id,
         ]);
 

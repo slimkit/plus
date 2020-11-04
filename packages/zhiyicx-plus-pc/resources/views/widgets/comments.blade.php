@@ -62,10 +62,10 @@
                             @endif
 
                             @if (
-                                    ($TS['id'] == $cv['user_id']) ||
+                                    (($TS['id'] ?? 0) === $cv['user_id']) ||
                                     (isset($group['joined']) && in_array($group['joined']['role'], ['administrator', 'founder']))
                                 )
-                                @if(isset($top) && $top == 1 && $TS['id'] == $cv['user_id'] && !$params['disabled'])
+                                @if(isset($top) && $top == 1 && ($TS['id'] ?? 0) === $cv['user_id'] && !$params['disabled'])
                                     <a class="mouse comment_del" onclick="comment.pinneds('{{$cv['commentable_type']}}', {{$cv['commentable_id']}}, {{$cv['id']}})">申请置顶</a>
                                 @endif
                                 <a class="mouse comment_del" onclick="comment.delete('{{$cv['commentable_type']}}', {{$cv['commentable_id']}}, {{$cv['id']}})">删除</a>

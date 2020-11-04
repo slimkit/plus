@@ -211,11 +211,11 @@ class Feed
 
         $this->model->comments = $pinnedComments->map(function ($comment) {
             $comment->pinned = true;
-            $comment->addHidden('pivot');
+            $comment->makeHidden('pivot');
 
             return $comment;
         })->merge($comments);
-        $this->model->addHidden('pinnedComments');
+        $this->model->makeHidden('pinnedComments');
 
         return $this->model;
     }

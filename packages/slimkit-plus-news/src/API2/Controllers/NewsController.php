@@ -141,7 +141,7 @@ class NewsController extends Controller
             $news->has_collect = $news->collected($user);
             $news->has_like = $news->liked($user);
             $news->is_pinned = ! (bool) $news->pinned()->where('state', 1)->where('expires_at', '>', $datetime)->get()->isEmpty();
-            $news->addHidden(['images', 'pinned']);
+            $news->makeHidden(['images', 'pinned']);
 
             return $news;
         });

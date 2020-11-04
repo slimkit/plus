@@ -15,11 +15,25 @@
  * | Homepage: www.thinksns.com                                           |
  * +----------------------------------------------------------------------+
  */
+namespace Database\Factories\Zhiyi\Plus\Models\Zhiyi\Plus\Models\Zhiyi\Plus\Models\Zhiyi\Plus\Models\Zhiyi\Plus\Models\Zhiyi\Plus\Models;
+use Illuminate\Database\Eloquent\Factories\Factory;
+use Zhiyi\Plus\Models\WalletOrder;
 
-use Faker\Generator as Faker;
+class OrderFactory extends Factory {
+    static $user_id;
+    protected $model = WalletOrder::class;
 
-$factory->define(Zhiyi\Plus\Models\Ability::class, function (Faker $faker) {
-    return [
-        //
-    ];
-});
+    public function definition()
+    {
+        return [
+            'owner_id' => $this->user_id,
+            'target_type' => 'user',
+            'target_id' => 'id',
+            'title' => '测试标题',
+            'body' => '测试内容',
+            'type' => 1,
+            'amount' => random_int(1, 999999),
+            'state' => rand(-1, 1),
+        ];
+    }
+}

@@ -43,7 +43,7 @@
                                     <svg class="icon" aria-hidden="true"><use xlink:href="#icon-share"></use></svg>转发
                                 </a>
                             </li>
-                        @if($TS && $user['id'] == $TS['id'])
+                        @if($user['id'] === ($TS['id'] ?? 0))
                             <li>
                                 <a href="javascript:;" onclick="weibo.pinneds({{$feed['id']}});">
                                     <svg class="icon" aria-hidden="true"><use xlink:href="#icon-pinned2"></use></svg>申请置顶
@@ -153,7 +153,7 @@
                 </div>
 
                 {{-- 打賞 --}}
-                @if(($config['bootstrappers']['feed']['reward'] ?? false) && $user['id'] !== $TS['id'])
+                @if(($config['bootstrappers']['feed']['reward'] ?? false) && $user['id'] !== ($TS['id'] ?? 0))
                     @include('pcview::widgets.rewards' , [
                         'rewards_data' => $feed['rewards'],
                         'rewards_type' => 'feeds',

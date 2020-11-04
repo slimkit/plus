@@ -20,14 +20,15 @@ declare(strict_types=1);
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Contracts\Routing\Registrar as RouteContract;
+use Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Admin\Controllers\Topic;
 
 Route::group(['middleware' => ['auth:web', 'admin']], function (RouteContract $route) {
-    $route->get('topics', \Zhiyi\Plus\Packages\Feed\Admin\Controllers\Topic::class.'@adminListTopics');
-    $route->post('topics', \Zhiyi\Plus\Packages\Feed\Admin\Controllers\Topic::class.'@create');
-    $route->put('topics/{topic}', \Zhiyi\Plus\Packages\Feed\Admin\Controllers\Topic::class.'@update');
-    $route->delete('topics/{topic}', \Zhiyi\Plus\Packages\Feed\Admin\Controllers\Topic::class.'@destroy');
-    $route->put('topics/{topic}/hot-toggle', \Zhiyi\Plus\Packages\Feed\Admin\Controllers\Topic::class.'@hotToggle');
-    $route->get('topic-review-switch-toggle', \Zhiyi\Plus\Packages\Feed\Admin\Controllers\Topic::class.'@getReviewSwitch');
-    $route->put('topic-review-switch-toggle', \Zhiyi\Plus\Packages\Feed\Admin\Controllers\Topic::class.'@reviewSwitchToggle');
-    $route->put('topics/{topic}/review', \Zhiyi\Plus\Packages\Feed\Admin\Controllers\Topic::class.'@toggleReview');
+    $route->get('topics', Topic::class.'@adminListTopics');
+    $route->post('topics', Topic::class.'@create');
+    $route->put('topics/{topic}', Topic::class.'@update');
+    $route->delete('topics/{topic}', Topic::class.'@destroy');
+    $route->put('topics/{topic}/hot-toggle', Topic::class.'@hotToggle');
+    $route->get('topic-review-switch-toggle', Topic::class.'@getReviewSwitch');
+    $route->put('topic-review-switch-toggle', Topic::class.'@reviewSwitchToggle');
+    $route->put('topics/{topic}/review', Topic::class.'@toggleReview');
 });

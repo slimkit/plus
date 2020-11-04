@@ -39,11 +39,11 @@ class RewardFeedTest extends TestCase
     {
         parent::setUp();
 
-        $this->owner = factory(UserModel::class)->create();
+        $this->owner = UserModel::factory()->create();
 
-        $this->other = factory(UserModel::class)->create();
+        $this->other = UserModel::factory()->create();
 
-        $this->feed = factory(Feed::class)->create([
+        $this->feed = Feed::factory()->create([
             'user_id' => $this->owner->id,
         ]);
     }

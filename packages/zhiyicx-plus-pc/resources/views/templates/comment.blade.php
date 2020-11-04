@@ -28,13 +28,13 @@
                     <div class="triangle"></div>
                     <ul>
                     @if (
-                            ($comment['user']['id'] == $TS['id']) ||
+                            ($comment['user']['id'] === ($TS['id'] ?? 0)) ||
                             (isset($group['joined']) && in_array($group['joined']['role'], ['administrator', 'founder']))
                         )
                         @php
                             $disabled = $group['joined']['disabled'] ?? 0;
                         @endphp
-                        @if($comment['user']['id'] == $TS['id'] && !$disabled)
+                        @if(($TS['id'] ?? 0) === $comment['user']['id'] && !$disabled)
                         <li>
                             <a href="javascript:;" onclick="comment.pinneds('{{$comment['commentable_type']}}', {{$comment['commentable_id']}}, {{$comment['id']}});">
                                 <svg class="icon" aria-hidden="true"><use xlink:href="#icon-pinned2"></use></svg>申请置顶
@@ -69,7 +69,7 @@
                 @endif
 
                 {!! formatContent($comment['body']) !!}
-                @if ($comment['user']['id'] != $TS['id'])
+                @if (($TS['id'] ?? 0) === $comment['user']['id'])
                     <a href="javascript:;" class="mouse" onclick="comment.reply('{{$comment['user']['id']}}', {{$comment['commentable_id']}}, '{{$comment['user']['name']}}', '{{$comment['commentable_type']}}')">回复</a>
                 @endif
             </div>

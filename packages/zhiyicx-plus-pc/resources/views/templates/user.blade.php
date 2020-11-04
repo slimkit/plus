@@ -15,7 +15,7 @@
                 <a href="{{route('pc:mine',['user_id'=>$data['id']])}}">
                     <span class="user_name">{{ $data['name'] ?? $data['phone'] }}</span>
                 </a>
-                @if ($data['id'] != $TS['id'])
+                @if (($TS['id'] ?? 0) === $data['id'])
                 @if ($data['follower'])
                 <span id="data" class="follow_btn followed" uid="{{ $data['id'] }}" status="1">已关注</span>
                 @else

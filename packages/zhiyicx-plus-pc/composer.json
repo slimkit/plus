@@ -8,14 +8,12 @@
         }
     ],
     "autoload": {
-        "classmap": [
-            "database/seeds/"
-        ],
         "files": [
             "src/helpers.php"
         ],
         "psr-4": {
-            "Zhiyi\\Component\\ZhiyiPlus\\PlusComponentPc\\": "src/"
+            "Zhiyi\\Component\\ZhiyiPlus\\PlusComponentPc\\": "src/",
+            "SlimKit\\PlusPc\\Database\\Seeders\\": "database/seeds"
         }
     },
     "extra": {
@@ -26,7 +24,7 @@
         }
     },
     "require": {
-        "overtrue/socialite": "^2.0",
+        "overtrue/socialite": "^3.0",
         "gregwar/captcha": "1.*"
     },
     "version": "2.3.0"

@@ -81,7 +81,7 @@ class BaseController extends Controller
 
                 // 环信
                 $easemob = $repository->get('easemob');
-                $config['easemob_key'] = $easemob['app_key'];
+                $config['easemob_key'] = $easemob['app_key'] ?? '';
 
                 // 小助手
                 if (isset($config['bootstrappers']['im:helper'])) {

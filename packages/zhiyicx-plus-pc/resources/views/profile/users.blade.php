@@ -6,7 +6,7 @@
 
 <div class="fan_cont">
     <ul class="fan_ul">
-        @if($user_id && $user_id != $TS['id'])
+        @if($user_id && $user_id !== ($TS['id'] ?? 0))
         <li><a href="javascript:;" data-type="1" @if($type == 1) class="a_border" @endif>TA的粉丝</a></li>
         <li><a href="javascript:;" data-type="2" @if($type == 2) class="a_border" @endif>TA的关注</a></li>
         @else

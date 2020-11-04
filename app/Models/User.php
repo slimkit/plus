@@ -20,6 +20,7 @@ declare(strict_types=1);
 
 namespace Zhiyi\Plus\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Builder;
@@ -36,6 +37,7 @@ class User extends Authenticatable implements JWTSubject
         SoftDeletes,
         Concerns\UserHasAbility,
         Concerns\UserHasNotifiable,
+        HasFactory,
         Concerns\Macroable;
     // 关系数据相关
     use Relations\UserHasWallet,

@@ -28,15 +28,6 @@ use function Zhiyi\Plus\setting;
 class FilesystemManager extends Manager
 {
     /**
-     * Create the filesystem manager instance.
-     * @param \Zhiyi\Plus\AppInterface $app
-     */
-    public function __construct(AppInterface $app)
-    {
-        parent::__construct($app);
-    }
-
-    /**
      * Get the default driver name.
      */
     public function getDefaultDriver()
@@ -54,7 +45,7 @@ class FilesystemManager extends Manager
             'disk' => 'local',
         ]);
         $filesystem = $this
-            ->app
+            ->container
             ->make(\Illuminate\Contracts\Filesystem\Factory::class)
             ->disk($localConfigure['disk']);
 

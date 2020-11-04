@@ -26,7 +26,7 @@ Route::middleware('web')
 
 Route::middleware('web')
     ->prefix('/music/admin')
-    ->namespace('Zhiyi\\Component\\ZhiyiPlus\\PlusComponentMusic\\AdminControllers')
+    ->namespace('Zhiyi\\Component\\ZhiyiPlus\\PlusComponentMusic\\Admin')
     ->group(component_base_path('/routes/admin.php'));
 
 Route::prefix('api/v2')

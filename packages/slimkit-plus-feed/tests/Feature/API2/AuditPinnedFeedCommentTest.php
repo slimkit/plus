@@ -43,15 +43,15 @@ class AuditPinnedFeedCommentTest extends TestCase
     {
         parent::setUp();
 
-        $this->owner = factory(UserModel::class)->create();
+        $this->owner = UserModel::factory()->create();
 
-        $this->other = factory(UserModel::class)->create();
+        $this->other = UserModel::factory()->create();
 
-        $this->feed = factory(Feed::class)->create([
+        $this->feed = Feed::factory()->create([
             'user_id' => $this->owner->id,
         ]);
 
-        $this->comment = factory(CommentModel::class)->create([
+        $this->comment = CommentModel::factory()->create([
             'user_id' => $this->other->id,
             'target_user' => $this->other->id,
             'body' => 'test',
@@ -59,7 +59,7 @@ class AuditPinnedFeedCommentTest extends TestCase
             'commentable_type' => 'feeds',
         ]);
 
-        $this->pinned = factory(FeedPinned::class)->create([
+        $this->pinned = FeedPinned::factory()->create([
             'channel' => 'comment',
             'raw' => $this->feed->id,
             'target' => $this->comment->id,

@@ -40,9 +40,9 @@ class CommentNewsTest extends TestCase
     public function setUp()
     {
         parent::setUp();
-        $this->user = factory(UserModel::class)->create();
-        $this->cate = factory(NewsCateModel::class)->create();
-        $this->news = factory(NewsModel::class)->create([
+        $this->user = UserModel::factory()->create();
+        $this->cate = NewsCateModel::factory()->create();
+        $this->news = NewsModel::factory()->create([
             'title' => 'test',
             'user_id' => $this->user->id,
             'cate_id' => $this->cate->id,
@@ -57,7 +57,7 @@ class CommentNewsTest extends TestCase
      */
     public function testCommentNews()
     {
-        $other = factory(UserModel::class)->create();
+        $other = UserModel::factory()->create();
         $response = $this
             ->actingAs($this->user, 'api')
             ->json('POST', "/api/v2/news/{$this->news->id}/comments", [
@@ -91,7 +91,7 @@ class CommentNewsTest extends TestCase
      */
     public function testDeleteNewsComment()
     {
-        $comment = factory(CommentModel::class)->create([
+        $comment = CommentModel::factory()->create([
             'user_id' => $this->user->id,
             'target_user' => 0,
             'body' => 'test',

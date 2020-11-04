@@ -18,7 +18,7 @@ declare(strict_types=1);
  * +----------------------------------------------------------------------+
  */
 
-namespace Zhiyi\Plus\Packages\Feed\Admin\Controllers;
+namespace Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Admin\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -28,7 +28,7 @@ use Illuminate\Http\JsonResponse;
 use Zhiyi\Plus\Models\FeedTopic as TopicModel;
 use Zhiyi\Plus\API2\Controllers\Feed\Topic as Controller;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
-use Zhiyi\Plus\Packages\Feed\Admin\Requests\ListAllTopics as ListTopicsRequest;
+use Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Admin\Requests\ListAllTopics as ListTopicsRequest;
 
 class Topic extends Controller
 {

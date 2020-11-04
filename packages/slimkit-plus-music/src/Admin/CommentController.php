@@ -18,7 +18,7 @@ declare(strict_types=1);
  * +----------------------------------------------------------------------+
  */
 
-namespace Zhiyi\Component\ZhiyiPlus\PlusComponentMusic\AdminControllers;
+namespace Zhiyi\Component\ZhiyiPlus\PlusComponentMusic\Admin;
 
 use Illuminate\Http\Request;
 use Zhiyi\Plus\Models\Comment;
@@ -32,9 +32,9 @@ class CommentController extends Controller
 {
     /**
      * 所有歌曲应用相关评论.
-     * @param  Request      $request [description]
-     * @param  MusicComment $comment [description]
-     * @return [type]                [description]
+     * @param  Request  $request
+     * @param  MusicComment  $comment
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function lists(Request $request, MusicComment $comment)
     {

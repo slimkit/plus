@@ -24,6 +24,7 @@ use Exception;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Zhiyi\Plus\API2\Requests\Request;
 
 class Handler extends ExceptionHandler
 {
@@ -50,21 +51,23 @@ class Handler extends ExceptionHandler
      * Register the exception handling callbacks for the application.
      *
      * @return void
+     * @throws \Throwable
      */
     public function register()
     {
-        parent::report($exception);
+        // parent::report();
     }
 
     /**
      * Render an exception into an HTTP response.
      *
-     * @param \Illuminate\Http\Request $request
-     * @param \Exception               $exception
+     * @param  $request
+     * @param  \Throwable  $exception
      *
      * @return \Illuminate\Http\Response
+     * @throws \Throwable
      */
-    public function render($request, Exception $exception)
+    public function render($request, \Throwable $exception)
     {
         return parent::render($request, $exception);
     }
@@ -85,10 +88,10 @@ class Handler extends ExceptionHandler
     /**
      * Prepare exception for rendering.
      *
-     * @param  \Exception  $exception
+     * @param  \Throwable  $exception
      * @return \Exception
      */
-    protected function prepareException(Exception $exception)
+    protected function prepareException(\Throwable $exception)
     {
         if ($exception instanceof ModelNotFoundException) {
             $exception = new NotFoundHttpException('内容不存在', $exception);

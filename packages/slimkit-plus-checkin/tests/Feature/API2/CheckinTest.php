@@ -36,7 +36,7 @@ class CheckinTest extends TestCase
      */
     public function testCheckin()
     {
-        $user = $user = factory(UserModel::class)->create();
+        $user = $user = UserModel::factory()->create();
         $this
             ->actingAs($user, 'api')
             ->json('PUT', 'api/v2/user/checkin/currency')

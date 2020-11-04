@@ -20,10 +20,13 @@ declare(strict_types=1);
 
 namespace Zhiyi\Component\ZhiyiPlus\PlusComponentNews\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class NewsCate extends Model
 {
+    use HasFactory;
+
     protected $table = 'news_cates';
     public $timestamps = false;
     protected $fillable = ['name', 'rank'];

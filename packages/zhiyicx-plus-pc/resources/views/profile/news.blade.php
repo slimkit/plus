@@ -17,7 +17,7 @@
         {{-- 资讯列表 --}}
         <div class="profile_content">
             <div class="profile_menu J-menu">
-            @if ($user['id'] == $TS['id'])
+            @if ($user['id'] === ($TS['id'] ?? 0))
                 <a class="active" href="javascript:;" cid="0">已发布</a>
                 <a href="javascript:;" cid="1">投稿中</a>
                 <a href="javascript:;" cid="3">被驳回</a>
@@ -42,7 +42,7 @@
 $(function(){
     var params = { type: {{ $type }}, isAjax: true };
 
-    @if ($user['id'] != $TS['id'])
+    @if ($user['id'] !== ($TS['id'] ?? 0))
         params = { user: {{$user['id']}}, isAjax: true }
     @endif
 

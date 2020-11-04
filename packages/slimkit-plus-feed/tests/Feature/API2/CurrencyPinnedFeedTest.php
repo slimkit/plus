@@ -37,11 +37,11 @@ class CurrencyPinnedFeedTest extends TestCase
     {
         parent::setUp();
 
-        $this->user = factory(UserModel::class)->create([
+        $this->user = UserModel::factory()->create([
             'password' => bcrypt('123456'),
         ]);
 
-        $this->feed = factory(Feed::class)->create([
+        $this->feed = Feed::factory()->create([
             'user_id' => $this->user->id,
         ]);
     }

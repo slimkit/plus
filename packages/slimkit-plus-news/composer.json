@@ -15,11 +15,10 @@
         "files": [
             "src/helpers.php"
         ],
-        "classmap": [
-            "database/seeds/"
-        ],
         "psr-4": {
-            "Zhiyi\\Component\\ZhiyiPlus\\PlusComponentNews\\": "src/"
+            "Zhiyi\\Component\\ZhiyiPlus\\PlusComponentNews\\": "src/",
+            "Slimkit\\PlusNews\\DataBase\\Factories\\": "database/factories",
+            "Slimkit\\PlusNews\\DataBase\\Seeders\\": "database/seeds"
         }
     },
     "extra": {

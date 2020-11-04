@@ -7,6 +7,7 @@
 .login_top a:hover {color:#59b6d7;}
 .login_container {width:640px;height:360px;margin:auto;padding-top:200px;}
 .login_left {float:left;width:240px;height:360px;background:url('../images/login-leftBg.png') no-repeat;}
+.login_left img { width: 100%; height: 100%; }
 .login_hy {font-size:20px;padding:50px 0 55px;text-align:center;color:#fff;}
 .login_code {width:120px;margin:auto;}
 .login_code img {width:120px;height:120px;}

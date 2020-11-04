@@ -18,7 +18,7 @@ declare(strict_types=1);
  * +----------------------------------------------------------------------+
  */
 
-namespace Zhiyi\Plus\Packages\Music\Providers;
+namespace Zhiyi\Component\ZhiyiPlus\PlusComponentMusic\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use Zhiyi\Plus\Support\ManageRepository;

@@ -15,7 +15,7 @@
  * | Homepage: www.thinksns.com                                           |
  * +----------------------------------------------------------------------+
  */
-
+namespace SlimKit\PlusPc\Database\Seeders;
 use Illuminate\Database\Seeder;
 
 class PcDatabaseSeeder extends Seeder

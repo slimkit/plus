@@ -22,7 +22,7 @@
                 <p class="description">{{ $topic['desc'] ?? '' }}</p>
             </div>
 
-            @if($creator['id'] !== $TS['id'])
+            @if(($TS['id'] ?? 0) === $creator['id'])
                 <button class="report ev-btn-report">举报</button>
             @else
                 <button class="report ev-btn-edit-topic">编辑话题</button>
@@ -39,7 +39,7 @@
     </div>
     <div class="right">
         <div class="interaction">
-            @if($TS && $TS['id'] !== $topic['creator_user_id'])
+            @if(($TS['id'] ?? 0) !== $topic['creator_user_id'])
             <button class="ev-btn-follow-topic" @if($topic['has_followed'] ?? false)style="display: none;"@endif>
                 <svg class="icon" aria-hidden="true"><use xlink:href="#icon-topic"></use></svg>
                 关注话题
@@ -48,7 +48,7 @@
                 <svg class="icon" aria-hidden="true"><use xlink:href="#icon-topic2"></use></svg>
                 已关注
             </button>
-            @elseif (!$TS)
+            @elseif (($TS['id'] ?? 0))
             <button onclick="checkLogin()">
                 <svg class="icon" aria-hidden="true"><use xlink:href="#icon-topic"></use></svg>
                 关注话题
@@ -68,7 +68,7 @@
                 分享至:
                 @include('pcview::widgets.thirdshare' , [
                     'color' => '#fff',
-                    'share_url' => route('pc:topicDetail', ['topicid_id' => $topic['id']]),
+                    'share_url' => route('pc:topicDetail', ['topic_id' => $topic['id']]),
                     'share_title' => $topic['name'],
                     'share_pic' => $topic['logo']['url'] ?? asset('assets/pc/images/default_picture.png'),
                 ])

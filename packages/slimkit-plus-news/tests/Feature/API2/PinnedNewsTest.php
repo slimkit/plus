@@ -41,9 +41,9 @@ class PinnedNewsTest extends TestCase
     public function setUp()
     {
         parent::setUp();
-        $this->user = factory(UserModel::class)->create();
-        $this->cate = factory(NewsCateModel::class)->create();
-        $this->news = factory(NewsModel::class)->create([
+        $this->user = UserModel::factory()->create();
+        $this->cate = NewsCateModel::factory()->create(););
+        $this->news = NewsModel::factory()->create([
             'title' => 'test',
             'user_id' => $this->user->id,
             'cate_id' => $this->cate->id,
@@ -89,11 +89,11 @@ class PinnedNewsTest extends TestCase
      */
     public function testNewPinnedNewsComment()
     {
-        $other = factory(UserModel::class)->create([
+        $other = UserModel::factory()->create([
             'password' => bcrypt('123456'),
         ]);
         $other->currency()->increment('sum', 100);
-        $comment = factory(CommentModel::class)->create([
+        $comment = CommentModel::factory()->create([
             'user_id' =>    $other->id,
             'target_user' => 0,
             'body' => 'test',
@@ -134,10 +134,10 @@ class PinnedNewsTest extends TestCase
      */
     public function testAuditNewsCommentPinned()
     {
-        $other = factory(UserModel::class)->create();
+        $other = UserModel::factory()->create();
         $other->wallet()->increment('balance', 100);
 
-        $comment = factory(CommentModel::class)->create([
+        $comment = CommentModel::factory()->create([
             'user_id' =>    $other->id,
             'target_user' => 0,
             'body' => 'test',
@@ -174,10 +174,10 @@ class PinnedNewsTest extends TestCase
      */
     public function testRejectNewsCommentPinned()
     {
-        $other = factory(UserModel::class)->create();
+        $other = UserModel::factory()->create();
         $other->wallet()->increment('balance', 100);
 
-        $comment = factory(CommentModel::class)->create([
+        $comment = CommentModel::factory()->create([
             'user_id' =>    $other->id,
             'target_user' => 0,
             'body' => 'test',
@@ -213,10 +213,10 @@ class PinnedNewsTest extends TestCase
      */
     public function testCancelNewsCommentPinned()
     {
-        $other = factory(UserModel::class)->create();
+        $other = UserModel::factory()->create();
         $other->wallet()->increment('balance', 100);
 
-        $comment = factory(CommentModel::class)->create([
+        $comment = CommentModel::factory()->create([
             'user_id' => $other->id,
             'target_user' => 0,
             'body' => 'test',

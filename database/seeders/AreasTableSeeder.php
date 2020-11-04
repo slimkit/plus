@@ -15,7 +15,7 @@
  * | Homepage: www.thinksns.com                                           |
  * +----------------------------------------------------------------------+
  */
-
+namespace Database\Seeders;
 use Zhiyi\Plus\Models\Area;
 use Illuminate\Database\Seeder;
 use Illuminate\Console\OutputStyle;

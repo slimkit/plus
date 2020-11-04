@@ -37,14 +37,14 @@ class ReportFeedTest extends TestCase
      */
     protected function createUser(): UserModel
     {
-        $user = factory(UserModel::class)->create();
+        $user = UserModel::factory()->create();
         $ability = AbilityModel::where('name', 'feed-post')->firstOr(function () {
-            return factory(AbilityModel::class)->create([
+            return AbilityModel::factory()->create([
                 'name' => 'feed-post',
             ]);
         });
         $role = RoleModel::where('name', 'test')->firstOr(function () {
-            return factory(RoleModel::class)->create([
+            return RoleModel::factory()->create([
                 'name' => 'test',
             ]);
         });

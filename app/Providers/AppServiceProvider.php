@@ -24,7 +24,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\ServiceProvider;
 use function Zhiyi\Plus\validateUsername;
 use Zhiyi\Plus\Packages\Wallet\TypeManager;
-use Illuminate\Http\Resources\Json\Resource;
+use Illuminate\Http\Resources\Json\JsonResource;
 use function Zhiyi\Plus\validateChinaPhoneNumber;
 use Zhiyi\Plus\Packages\Wallet\TargetTypeManager;
 
@@ -69,7 +69,7 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         Schema::defaultStringLength(191);
-        Resource::withoutWrapping();
+        JsonResource::withoutWrapping();
         // 注册验证规则.
         $this->registerValidator();
     }

@@ -15,6 +15,7 @@
  * | Homepage: www.thinksns.com                                           |
  * +----------------------------------------------------------------------+
  */
+namespace Database\Seeders;
 
 use Zhiyi\Plus\Models\Role;
 use Zhiyi\Plus\Models\Ability;

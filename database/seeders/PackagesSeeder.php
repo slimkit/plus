@@ -15,8 +15,9 @@
  * | Homepage: www.thinksns.com                                           |
  * +----------------------------------------------------------------------+
  */
-
+namespace Database\Seeders;
 use Illuminate\Database\Seeder;
+use SlimKit\PlusPc\Database\Seeders\PcDatabaseSeeder;
 
 class PackagesSeeder extends Seeder
 {
@@ -29,9 +30,9 @@ class PackagesSeeder extends Seeder
     public function run()
     {
         $this->call(\SlimKit\PlusCheckIn\Seeds\DatabaseSeeder::class);
-        $this->call(\SlimKit\Plus\Packages\News\Seeds\DatabaseSeeder::class);
-        $this->call(\SlimKit\Plus\Packages\Feed\Seeds\DatabaseSeeder::class);
-        $this->call(\Zhiyi\Plus\Packages\Music\Seeds\DatabaseSeeder::class);
+        $this->call(\Slimkit\PlusNews\DataBase\Seeders\DatabaseSeeder::class);
+        $this->call(\Slimkit\Feed\Database\Seeders\DatabaseSeeder::class);
+        $this->call(\SlimKit\PlusMusic\Database\Seeders\DatabaseSeeder::class);
         $this->call(PcDatabaseSeeder::class);
     }
 }

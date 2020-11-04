@@ -20,6 +20,7 @@ namespace Zhiyi\Component\ZhiyiPlus\PlusComponentPc\Controllers;
 
 use Auth;
 use Session;
+use Illuminate\Support\Str;
 use Tymon\JWTAuth\JWT;
 use Tymon\JWTAuth\JWTAuth;
 use Zhiyi\Plus\Models\User;
@@ -107,7 +108,7 @@ class PassportController extends BaseController
 
             $verify->delete();
 
-            if ($user = User::where($field, $login)->first()) {
+            if ($user = User::query()->where($field, $login)->first()) {
                 Authorize::login($user, true);
 
                 return redirect(route('pc:feeds'));
@@ -201,8 +202,7 @@ class PassportController extends BaseController
     public function checkCaptcha(Request $request)
     {
         $input = $request->input('captcha');
-
-        if (Session::get('milkcaptcha') == $input) {
+        if (Str::lower(Session::get('milkcaptcha')) === Str::lower($input)) {
             return response()->json([], 200);
         } else {
             return response()->json([], 501);
@@ -221,8 +221,9 @@ class PassportController extends BaseController
 
     /**
      * 通过token登录用户.
-     * @author Foreach
+     * @param  Request  $request
      * @return mixed
+     * @author Foreach
      */
     public function token(Request $request)
     {

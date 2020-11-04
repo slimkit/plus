@@ -20,6 +20,8 @@ declare(strict_types=1);
 
 namespace Zhiyi\Component\ZhiyiPlus\PlusComponentNews\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Zhiyi\Plus\Models\Tag;
 use Zhiyi\Plus\Models\User;
 use Zhiyi\Plus\Models\Report;
@@ -34,6 +36,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class News extends Model
 {
     use SoftDeletes,
+        HasFactory,
         Relations\NewsHasLike,
         Relations\NewsHasReward,
         Relations\NewsHasCollection;
@@ -70,7 +73,7 @@ class News extends Model
      * @Author   Wayne
      * @DateTime 2018-04-14
      * @Email    qiaobin@zhiyicx.com
-     * @return   [type]              [description]
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function blacks()
     {
@@ -111,6 +114,8 @@ class News extends Model
 
     /**
      * 筛选已审核文章.
+     * @param  Builder  $query
+     * @return Builder
      */
     public function scopeByAudit(Builder $query): Builder
     {
@@ -119,8 +124,8 @@ class News extends Model
 
     /**
      *  资讯拥有的置顶评论.
-     *  @author Wayne < qiaobinloverabbi@gmail.com >
-     *  @return [type]
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     * @author Wayne < qiaobinloverabbi@gmail.com >
      */
     public function pinnedComments()
     {
@@ -130,8 +135,8 @@ class News extends Model
 
     /**
      *  是否置顶.
-     *  @author Wayne < qiaobinloverabbi@gmail.com >
-     *  @return [type] [description]
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     * @author Wayne < qiaobinloverabbi@gmail.com >
      */
     public function pinned()
     {
@@ -168,7 +173,7 @@ class News extends Model
      * @return morphMany
      * @author BS <414606094@qq.com>
      */
-    public function reports()
+    public function reports(): morphMany
     {
         return $this->morphMany(Report::class, 'reportable');
     }

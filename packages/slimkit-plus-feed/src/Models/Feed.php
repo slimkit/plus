@@ -20,6 +20,7 @@ declare(strict_types=1);
 
 namespace Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Zhiyi\Plus\Models\User;
 use Zhiyi\Plus\Models\Report;
 use Zhiyi\Plus\Models\Comment;
@@ -36,6 +37,7 @@ use Zhiyi\Plus\Models\FeedTopicLink as FeedTopicLinkModel;
 class Feed extends Model
 {
     use SoftDeletes,
+        HasFactory,
         Concerns\HasFeedCollect,
         Relations\FeedHasReward,
         Relations\FeedHasLike,

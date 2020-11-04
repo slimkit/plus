@@ -36,6 +36,7 @@
 </template>
 <script>
 import fileUpload from './file_upload_v2.js'
+
 export default {
     name: 'file_upload',
     props: ['imgs'],
@@ -44,38 +45,37 @@ export default {
         task_id: null
     }),
     computed: {
-        imgInfo() {
+        imgInfo () {
             let r = {
                 showImg: false,
                 imgSrc: null
             }
             if (this.imgs || this.up_imgs) {
-                let imgSrc = this.imgs ? ('/api/v2/files/' + this.imgs) : (this.up_imgs);
-                r.showImg = true;
-                r.imgSrc = imgSrc;
+                let imgSrc = this.imgs ? ('/api/v2/files/' + this.imgs) : (this.up_imgs)
+                r.showImg = true
+                r.imgSrc = imgSrc
             }
-            return r;
+            return r
         }
     },
     methods: {
-        upLoadFile() {
-            this.$refs.input_img.click();
+        upLoadFile () {
+            this.$refs.input_img.click()
         },
-        filesChange(e) {
-            let file = e.target.files[0];
-            fileUpload(file, (task_id) => {
-                    if (task_id) this.setTask_id(task_id);
-                })
-                .then(imgsrc => {
-                    this.up_imgs = imgsrc || '';
-                })
+        filesChange (e) {
+            let file = e.target.files[0]
+            fileUpload(file, task_id => {
+                if (task_id) this.setTask_id(task_id)
+            }).then(imgsrc => {
+                this.up_imgs = imgsrc || ''
+            })
         },
-        updata() {
-            this.up_imgs = null;
-            this.$emit('updata');
+        updata () {
+            this.up_imgs = null
+            this.$emit('updata')
         },
-        setTask_id(task_id) {
-            this.$emit("getTask_id", task_id)
+        setTask_id (task_id) {
+            this.$emit('getTask_id', task_id)
         }
     }
 }
@@ -148,7 +148,7 @@ export default {
 .upload-list .upload-list__item-thumbnail {
     width: 100%;
     height: 100%;
-    object-fit:cover;
+    object-fit: cover;
 }
 
 .upload-list__item-status-label {
@@ -192,7 +192,7 @@ export default {
     line-height: 118px;
 }
 
-.upload-list__item-actions span+span {
+.upload-list__item-actions span + span {
     margin-left: 15px;
 }
 

@@ -20,6 +20,7 @@ declare(strict_types=1);
 
 namespace Zhiyi\Component\ZhiyiPlus\PlusComponentNews\Providers;
 
+use Illuminate\Database\Eloquent\Factories\Factory;
 use Zhiyi\Plus\Models\User;
 use function Zhiyi\Plus\setting;
 use Illuminate\Support\ServiceProvider;
@@ -84,7 +85,7 @@ class NewsServiceProvider extends ServiceProvider
             ];
         });
 
-        $this->app->make('Illuminate\Database\Eloquent\Factory')->load(__DIR__.'/../../database/factories');
+        // $this->app->make(Factory::class)->load(__DIR__.'/../../database/factories');
     }
 
     /**

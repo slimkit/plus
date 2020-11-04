@@ -18,7 +18,7 @@ declare(strict_types=1);
  * +----------------------------------------------------------------------+
  */
 
-namespace Zhiyi\Component\ZhiyiPlus\PlusComponentMusic\AdminControllers;
+namespace Zhiyi\Component\ZhiyiPlus\PlusComponentMusic\Admin;
 
 use Illuminate\Http\Request;
 use Zhiyi\Plus\Http\Controllers\Controller;
@@ -34,8 +34,9 @@ class SingerController extends Controller
 {
     /**
      * 歌手列表.
-     * @param  Request $request [description]
-     * @return [type]           [description]
+     * @param  Request  $request
+     * @param  MusicSingerModel  $musicSinger
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function list(Request $request, MusicSinger $musicSinger)
     {

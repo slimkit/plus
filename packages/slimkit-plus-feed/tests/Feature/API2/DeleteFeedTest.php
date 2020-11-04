@@ -36,8 +36,8 @@ class DeleteFeedTest extends TestCase
      */
     public function testDeleteFeed()
     {
-        $user = factory(UserModel::class)->create();
-        $feed = factory(Feed::class)->create([
+        $user = UserModel::factory()->create();
+        $feed = Feed::factory()->create([
             'user_id' => $user->id,
         ]);
         $response = $this
@@ -54,9 +54,9 @@ class DeleteFeedTest extends TestCase
      */
     public function testDeleteOtherFeed()
     {
-        $user = factory(UserModel::class)->create();
-        $feed = factory(Feed::class)->create([
-            'user_id' => factory(UserModel::class)->create()->id,
+        $user = UserModel::factory()->create();
+        $feed = Feed::factory()->create([
+            'user_id' => UserModel::factory()->create()->id,
         ]);
 
         $response = $this
@@ -74,7 +74,7 @@ class DeleteFeedTest extends TestCase
     public function testDeleteNonExistFeed()
     {
         $response = $this
-            ->actingAs(factory(UserModel::class)->create(), 'api')
+            ->actingAs(UserModel::factory()->create(), 'api')
             ->json('DELETE', '/api/v2/feeds/0/currency');
         $response
             ->assertStatus(404);

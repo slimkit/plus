@@ -18,13 +18,13 @@
         ],
         "psr-4": {
             "Zhiyi\\Component\\ZhiyiPlus\\PlusComponentMusic\\": "src/",
-            "Zhiyi\\Plus\\Packages\\Music\\": "src/"
+            "SlimKit\\PlusMusic\\Database\\Seeders\\": "database/seeds"
         }
     },
     "extra": {
         "laravel": {
             "providers": [
-                "Zhiyi\\Plus\\Packages\\Music\\Providers\\AppServiceProvider"
+                "Zhiyi\\Component\\ZhiyiPlus\\PlusComponentMusic\\Providers\\AppServiceProvider"
             ]
         }
     },
