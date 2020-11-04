@@ -24,6 +24,7 @@ use Illuminate\Notifications\Notification;
 use Medz\Laravel\Notifications\JPush\Message as JPushMessage;
 use Zhiyi\Plus\AtMessage\ResourceInterface;
 use Zhiyi\Plus\Models\User as UserModel;
+use function Zhiyi\Plus\setting;
 
 class At extends Notification implements ShouldQueue
 {
@@ -35,7 +36,8 @@ class At extends Notification implements ShouldQueue
     /**
      * Create a new notification instance.
      *
-     * @return void
+     * @param  ResourceInterface  $resource
+     * @param  UserModel  $sender
      */
     public function __construct(ResourceInterface $resource, UserModel $sender)
     {
@@ -55,7 +57,18 @@ class At extends Notification implements ShouldQueue
             return [];
         }
 
-        return ['database', 'jpush'];
+        return $this->getJPushSetting('open') ? ['database', 'jpush'] : ['database'];
+    }
+
+    /**
+     * @param  string|null  $name
+     * @return mixed
+     */
+    protected function getJPushSetting(string $name = null)
+    {
+        $setting = setting('user', 'vendor:jpush', []) + config('jpush', []);
+
+        return $name === null ? $setting : $setting[$name] ?? null;
     }
 
     /**

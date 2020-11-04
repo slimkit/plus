@@ -58,11 +58,13 @@ class SmsChannel
      *
      * @param  mixed  $notifiable
      * @param  \Illuminate\Notifications\Notification  $notification
-     * @return \Nexmo\Message\Message
+     * @return array|void
+     * @throws \Overtrue\EasySms\Exceptions\InvalidArgumentException
+     * @throws \Overtrue\EasySms\Exceptions\NoGatewayAvailableException
      */
     public function send($notifiable, Notification $notification)
     {
-        if ((! $to = $notifiable->routeNotificationFor('sms')) || (empty($this->sms->getDefaultGateway()['gateways']))) {
+        if ((! $to = $notifiable->routeNotificationFor('sms'))) {
             return;
         }
 

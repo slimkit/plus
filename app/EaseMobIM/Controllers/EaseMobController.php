@@ -18,7 +18,7 @@ declare(strict_types=1);
  * +----------------------------------------------------------------------+
  */
 
-namespace Zhiyi\Plus\EaseMobIm;
+namespace Zhiyi\Plus\EaseMobIM\Controllers;
 
 use GuzzleHttp\Client;
 use Illuminate\Http\Request;

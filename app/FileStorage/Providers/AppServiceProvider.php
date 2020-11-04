@@ -27,7 +27,7 @@ use Zhiyi\Plus\FileStorage\ChannelManager;
 use Zhiyi\Plus\FileStorage\Http\MakeRoutes;
 use Zhiyi\Plus\FileStorage\Storage;
 use Zhiyi\Plus\FileStorage\StorageInterface;
-use Zhiyi\Plus\FileStorage\Validators\Rulers\ValidatorRulesRegister;
+use Zhiyi\Plus\FileStorage\Validators\Rulers\ValidatorRegister;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -58,6 +58,6 @@ class AppServiceProvider extends ServiceProvider
         $this->app->make(MakeRoutes::class)->register();
 
         // Register validate rules.
-        $this->app->make(ValidatorRulesRegister::class)->register();
+        $this->app->make(ValidatorRegister::class)->register();
     }
 }

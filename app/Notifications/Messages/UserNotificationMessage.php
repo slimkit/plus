@@ -25,7 +25,7 @@ class UserNotificationMessage
     /**
      * The message channel.
      *
-     * @var strng
+     * @var string
      */
     protected $channel;
 

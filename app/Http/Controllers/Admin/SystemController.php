@@ -31,9 +31,9 @@ class SystemController extends Controller
     /**
      * 发送系统通知.
      *
+     * @param  Request  $request
+     * @return \Illuminate\Http\JsonResponse|object
      * @author bs<414606094@qq.com>
-     * @param  Request $request [description]
-     * @return [type]           [description]
      */
     public function pushSystemNotice(Request $request)
     {

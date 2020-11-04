@@ -22,6 +22,7 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Notification;
 use Medz\Laravel\Notifications\JPush\Message as JPushMessage;
+use function Zhiyi\Plus\setting;
 
 class System extends Notification implements ShouldQueue
 {
@@ -49,7 +50,18 @@ class System extends Notification implements ShouldQueue
      */
     public function via($notifiable)
     {
-        return ['database', 'jpush'];
+        return $this->getJPushSetting('open') ? ['database', 'jpush'] : ['database'];
+    }
+
+    /**
+     * @param  string|null  $name
+     * @return mixed
+     */
+    protected function getJPushSetting(string $name = null)
+    {
+        $setting = setting('user', 'vendor:jpush', []) + config('jpush', []);
+
+        return $name === null ? $setting : $setting[$name] ?? null;
     }
 
     /**

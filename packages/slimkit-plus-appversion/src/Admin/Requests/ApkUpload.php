@@ -18,7 +18,7 @@ declare(strict_types=1);
  * +----------------------------------------------------------------------+
  */
 
-namespace Slimkit\PlusAppversion\API\Requests;
+namespace Slimkit\PlusAppversion\Admin\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 

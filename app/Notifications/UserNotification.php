@@ -24,6 +24,7 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Notification;
 use Zhiyi\Plus\Notifications\Channels\JPushChannel;
+use function Zhiyi\Plus\setting;
 
 class UserNotification extends Notification implements ShouldQueue
 {
@@ -53,7 +54,18 @@ class UserNotification extends Notification implements ShouldQueue
      */
     public function via(): array
     {
-        return ['database', JPushChannel::class];
+        return $this->getJPushSetting('open') ? ['database', JPushChannel::class] : ['database'];
+    }
+
+    /**
+     * @param  string|null  $name
+     * @return mixed
+     */
+    protected function getJPushSetting(string $name = null)
+    {
+        $setting = setting('user', 'vendor:jpush', []) + config('jpush', []);
+
+        return $name === null ? $setting : $setting[$name] ?? null;
     }
 
     /**

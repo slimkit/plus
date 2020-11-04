@@ -13,9 +13,6 @@
         "files": [
             "src/helpers.php"
         ],
-        "classmap": [
-            "database/seeds"
-        ],
         "psr-4": {
             "Zhiyi\\Component\\ZhiyiPlus\\PlusComponentMusic\\": "src/",
             "SlimKit\\PlusMusic\\Database\\Seeders\\": "database/seeds"
@@ -28,5 +25,5 @@
             ]
         }
     },
-    "version": "2.4.0"
+    "version": "2.4.1"
 }

@@ -24,6 +24,7 @@ use Illuminate\Notifications\Notification;
 use Medz\Laravel\Notifications\JPush\Message as JPushMessage;
 use Zhiyi\Plus\Models\Comment as CommentModel;
 use Zhiyi\Plus\Models\User as UserModel;
+use function Zhiyi\Plus\setting;
 
 class Comment extends Notification implements ShouldQueue
 {
@@ -56,7 +57,18 @@ class Comment extends Notification implements ShouldQueue
             return [];
         }
 
-        return ['database', 'jpush'];
+        return $this->getJPushSetting('open') ? ['database', 'jpush'] : ['database'];
+    }
+
+    /**
+     * @param  string|null  $name
+     * @return mixed
+     */
+    protected function getJPushSetting(string $name = null)
+    {
+        $setting = setting('user', 'vendor:jpush', []) + config('jpush', []);
+
+        return $name === null ? $setting : $setting[$name] ?? null;
     }
 
     /**

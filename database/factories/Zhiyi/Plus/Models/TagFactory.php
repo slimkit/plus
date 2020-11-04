@@ -15,7 +15,7 @@
  * | Homepage: www.thinksns.com                                           |
  * +----------------------------------------------------------------------+
  */
-namespace Database\Factories\Zhiyi\Plus\Models\Zhiyi\Plus\Models;
+namespace Database\Factories\Zhiyi\Plus\Models;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Zhiyi\Plus\Models\Tag;
 

@@ -28,5 +28,5 @@
         "gregwar/captcha": "1.*",
         "michelf/php-markdown": "^1.9"
     },
-    "version": "2.4.0"
+    "version": "2.4.1"
 }

@@ -79,7 +79,7 @@ class BaseController extends Controller
                 $config['nav_bottom'] = Navigation::byPid(0)->byPos(1)->byStatus(1)->get();
 
                 // 环信
-                $easemob = setting('user', 'vendor:easemob') + [
+                $easemob = setting('user', 'vendor:easemob', []) + [
                   'open' => false,
                   'appKey' => '',
                   'clientId' => '',

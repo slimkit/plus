@@ -23,7 +23,7 @@ namespace Zhiyi\Plus\FileStorage\Validators\Rulers;
 use Illuminate\Contracts\Validation\Factory as ValidationFactoryContract;
 use Zhiyi\Plus\AppInterface;
 
-class ValidatorRulesRegister
+class ValidatorRegister
 {
     /**
      * The app.

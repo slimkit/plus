@@ -19,6 +19,8 @@
 use Illuminate\Contracts\Routing\Registrar as RouteContract;
 use Illuminate\Support\Facades\Route;
 use Zhiyi\Plus\EaseMobIm;
+use Zhiyi\Plus\EaseMobIM\Controllers\EaseMobController;
+use Zhiyi\Plus\EaseMobIM\Controllers\GroupController;
 use Zhiyi\Plus\Http\Controllers\APIs\V2 as API2;
 
 Route::any('/develop', \Zhiyi\Plus\Http\Controllers\DevelopController::class.'@index');
@@ -530,44 +532,44 @@ Route::group(['prefix' => 'v2'], function (RouteContract $api) {
         $api->group(['prefix' => 'easemob'], function (RouteContract $api) {
 
             // 注册环信用户(单个)
-            $api->post('register/{user_id}', EaseMobIm\EaseMobController::class.'@createUser')->where(['user_id' => '[0-9]+']);
+            $api->post('register/{user_id}', EaseMobController::class.'@createUser')->where(['user_id' => '[0-9]+']);
 
             //批量注册环信用户
-            $api->post('/register', EaseMobIm\EaseMobController::class.'@createUsers');
+            $api->post('/register', EaseMobController::class.'@createUsers');
 
             // 为未注册环信用户注册环信（兼容老用户）
-            $api->post('/register-old-users', EaseMobIm\EaseMobController::class.'@registerOldUsers');
+            $api->post('/register-old-users', EaseMobController::class.'@registerOldUsers');
 
             // 重置用户环信密码
-            $api->put('/password', EaseMobIm\EaseMobController::class.'@resetPassword');
+            $api->put('/password', EaseMobController::class.'@resetPassword');
 
             // 获取环信用户密码
-            $api->get('/password', EaseMobIm\EaseMobController::class.'@getPassword');
+            $api->get('/password', EaseMobController::class.'@getPassword');
 
             // 创建群组
-            $api->post('/group', EaseMobIm\GroupController::class.'@store');
+            $api->post('/group', GroupController::class.'@store');
 
             // 修改群组信息
-            $api->patch('/group', EaseMobIm\GroupController::class.'@update');
+            $api->patch('/group', GroupController::class.'@update');
 
             // 删除群组
-            $api->delete('/group', EaseMobIm\GroupController::class.'@delete');
+            $api->delete('/group', GroupController::class.'@delete');
 
             // 获取指定群组信息
-            $api->get('/group', EaseMobIm\GroupController::class.'@getGroup');
-            $api->get('/groups', EaseMobIm\GroupController::class.'@newGetGroup');
+            $api->get('/group', GroupController::class.'@getGroup');
+            $api->get('/groups', GroupController::class.'@newGetGroup');
 
             // 获取群头像
-            $api->get('/group/face', EaseMobIm\GroupController::class.'@getGroupFace');
+            $api->get('/group/face', GroupController::class.'@getGroupFace');
 
             // 添加群成员
-            $api->post('/group/member', EaseMobIm\GroupController::class.'@addGroupMembers');
+            $api->post('/group/member', GroupController::class.'@addGroupMembers');
 
             // 移除群成员
-            $api->delete('/group/member', EaseMobIm\GroupController::class.'@removeGroupMembers');
+            $api->delete('/group/member', GroupController::class.'@removeGroupMembers');
 
             // 获取聊天记录Test
-            $api->get('/group/message', EaseMobIm\EaseMobController::class.'@getMessage');
+            $api->get('/group/message', EaseMobController::class.'@getMessage');
         });
 
         // 积分部分
