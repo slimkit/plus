@@ -22,7 +22,8 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 use Zhiyi\Plus\Models\User;
 
-class UserFactory extends Factory {
+class UserFactory extends Factory
+{
     protected $model = User::class;
 
     public function definition()

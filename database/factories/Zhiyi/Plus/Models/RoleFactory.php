@@ -15,12 +15,14 @@
  * | Homepage: www.thinksns.com                                           |
  * +----------------------------------------------------------------------+
  */
+
 namespace Database\Factories\Zhiyi\Plus\Models;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Zhiyi\Plus\Models\Role;
 
-class RoleFactory extends Factory {
+class RoleFactory extends Factory
+{
     protected $model = Role::class;
 
     public function definition()

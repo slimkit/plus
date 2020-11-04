@@ -105,7 +105,7 @@ class FeedController extends Controller
             ->when($top && $top !== 'all', function ($query) use ($top, $datetime) { // 置顶筛选
                 switch ($top) {
                     case 'no':
-                        return $query->whereNotExists(function ($query) use ($datetime) {
+                        return $query->whereNotExists(function ($query) {
                             return $query->from('feed_pinneds')->whereRaw('feed_pinneds.target = feeds.id')->where('channel', 'feed');
                         });
                         break;
@@ -115,7 +115,7 @@ class FeedController extends Controller
                         });
                         break;
                     case 'wait':
-                        return $query->whereExists(function ($query) use ($datetime) {
+                        return $query->whereExists(function ($query) {
                             return $query->from('feed_pinneds')->whereRaw('feed_pinneds.target = feeds.id')->where('channel', 'feed')->whereNull('expires_at');
                         });
                         break;
@@ -158,10 +158,10 @@ class FeedController extends Controller
                     });
                 });
             })
-            ->when($stime, function ($query) use ($stime, $datetime) { // 根据时间筛选
+            ->when($stime, function ($query) use ($stime) { // 根据时间筛选
                 return $query->whereDate('created_at', '>=', $stime);
             })
-            ->when($etime, function ($query) use ($etime, $datetime) { // 根据时间筛选
+            ->when($etime, function ($query) use ($etime) { // 根据时间筛选
                 return $query->whereDate('created_at', '<', $etime);
             })
             ->orderBy('id', 'desc')
@@ -260,7 +260,7 @@ class FeedController extends Controller
             ->get();
         $process = new UserProcess();
         $feed->getConnection()->transaction(function () use ($pinnedComments, $feed, $process, $cache) {
-            $pinnedComments->map(function ($comment) use ($process, $feed, $pinnedComments) {
+            $pinnedComments->map(function ($comment) use ($process, $feed) {
                 $process->reject(0, $comment->amount, $comment->user_id, '评论申请置顶退款', sprintf('退还在动态《%s》申请置顶的评论的款项', Str::limit($feed->feed_content, 100)));
                 $comment->delete();
             });

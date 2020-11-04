@@ -15,11 +15,14 @@
  * | Homepage: www.thinksns.com                                           |
  * +----------------------------------------------------------------------+
  */
+
 namespace Database\Factories\Zhiyi\Plus\Models;
+
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Zhiyi\Plus\Models\Tag;
 
-class TagFactory extends Factory {
+class TagFactory extends Factory
+{
     protected $model = Tag::class;
 
     public function definition()

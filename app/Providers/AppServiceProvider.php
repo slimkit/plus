@@ -20,10 +20,10 @@ declare(strict_types=1);
 
 namespace Zhiyi\Plus\Providers;
 
+use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\ServiceProvider;
 use Zhiyi\Plus\Models\User;
-use Illuminate\Http\Resources\Json\JsonResource;
 use Zhiyi\Plus\Observers\UserObserver;
 use Zhiyi\Plus\Packages\Wallet\TargetTypeManager;
 use Zhiyi\Plus\Packages\Wallet\TypeManager;

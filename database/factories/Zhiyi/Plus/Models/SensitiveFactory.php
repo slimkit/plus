@@ -15,11 +15,14 @@
  * | Homepage: www.thinksns.com                                           |
  * +----------------------------------------------------------------------+
  */
+
 namespace Database\Factories\Zhiyi\Plus\Models;
+
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Zhiyi\Plus\Models\Sensitive;
 
-class SensitiveFactory extends Factory {
+class SensitiveFactory extends Factory
+{
     protected $model = Sensitive::class;
 
     public function definition()

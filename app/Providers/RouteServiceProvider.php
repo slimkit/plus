@@ -38,7 +38,6 @@ class RouteServiceProvider extends ServiceProvider
     protected $namespace = 'Zhiyi\Plus\Http\Controllers';
     public const HOME = '/home';
 
-
     /**
      * Define your route model bindings, pattern filters, etc.
      *

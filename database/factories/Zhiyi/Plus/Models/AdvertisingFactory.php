@@ -15,12 +15,14 @@
  * | Homepage: www.thinksns.com                                           |
  * +----------------------------------------------------------------------+
  */
+
 namespace Database\Factories\Zhiyi\Plus\Models;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Zhiyi\Plus\Models\Advertising;
 
-class AdvertisingFactory extends Factory {
+class AdvertisingFactory extends Factory
+{
     protected $model = Advertising::class;
 
     public function definition()

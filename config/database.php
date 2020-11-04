@@ -15,6 +15,7 @@
  * | Homepage: www.thinksns.com                                           |
  * +----------------------------------------------------------------------+
  */
+
 use Illuminate\Support\Str;
 
 return [

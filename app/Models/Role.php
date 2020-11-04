@@ -29,6 +29,7 @@ use Illuminate\Database\Eloquent\Model;
 class Role extends Model
 {
     use HasFactory;
+
     /**
      * Get all abilities of the role.
      *

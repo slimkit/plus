@@ -131,7 +131,7 @@ class CommentPinnedController extends Controller
         $charge->subject = '置顶资讯动态评论';
         $charge->body = sprintf('置顶评论《%s》', Str::limit($comment->body, 100, '...'));
 
-        $news->getConnection()->transaction(function () use ($response, $pinned, $comment, $user, $charge, $news) {
+        $news->getConnection()->transaction(function () use ($pinned, $user, $charge) {
             $pinned->save();
             $user->currency()->increment('sum', $charge->amount);
             $user->walletCharges()->save($charge);
@@ -191,7 +191,7 @@ class CommentPinnedController extends Controller
         $charge->body = sprintf('被拒动态评论《%s》申请，退还申请金额', Str::limit($pinned->comment->body ?? 'null', 100, '...'));
         $charge->status = 1;
 
-        $pinned->getConnection()->transaction(function () use ($response, $charge, $pinned, $comment, $dateTime, $news, $user) {
+        $pinned->getConnection()->transaction(function () use ($charge, $pinned, $dateTime) {
             $charge->save();
             $pinned->user->wallet()->increment('balance', $pinned->amount);
             $pinned->expires_at = $dateTime;

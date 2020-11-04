@@ -15,14 +15,15 @@
  * | Homepage: www.thinksns.com                                           |
  * +----------------------------------------------------------------------+
  */
+
 namespace Database\Factories\Zhiyi\Plus\Models;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Zhiyi\Plus\Models\WalletCash;
 
-class CashFactory extends Factory {
-
-    static $user_id;
+class CashFactory extends Factory
+{
+    public static $user_id;
     protected $model = WalletCash::class;
 
     public function definition()
@@ -36,5 +37,4 @@ class CashFactory extends Factory {
             'remark' => '',
         ];
     }
-
 }

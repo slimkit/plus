@@ -20,9 +20,9 @@ declare(strict_types=1);
 
 namespace Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use DB;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Zhiyi\Plus\Models\Comment as CommentModel;
@@ -31,6 +31,7 @@ use Zhiyi\Plus\Models\User;
 class FeedPinned extends Model
 {
     use HasFactory;
+
     public static function boot()
     {
         parent::boot();

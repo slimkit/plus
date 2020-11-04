@@ -52,7 +52,7 @@ class MusicCommentController extends Controller
         $comment->target_user = 0;  //音乐暂为后台上传
         $comment->body = $body;
 
-        $music->getConnection()->transaction(function () use ($music, $comment, $user) {
+        $music->getConnection()->transaction(function () use ($music, $comment) {
             $music->comments()->save($comment);
             $music->increment('comment_count', 1);
             $music->musicSpecials->each->increment('comment_count', 1);

@@ -71,7 +71,7 @@ class RankController extends Controller
         ->take($limit)
         ->get();
 
-        return response()->json($newsModel->getConnection()->transaction(function () use ($news, $user, $date, $newsModel, $offset) {
+        return response()->json($newsModel->getConnection()->transaction(function () use ($news, $user, $offset) {
             return $news->map(function ($new, $key) use ($user, $offset) {
                 $new->user->following = $new->user->hasFollwing($user);
                 $new->user->follower = $new->user->hasFollower($user);

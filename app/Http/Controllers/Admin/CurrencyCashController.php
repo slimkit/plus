@@ -90,7 +90,7 @@ class CurrencyCashController extends Controller
             return response()->json(['message' => '参数错误'], 422);
         }
 
-        DB::transaction(function () use ($mark, $state, $order) {
+        DB::transaction(function () use ($state, $order) {
             $order->state = $state;
             $order->save();
 

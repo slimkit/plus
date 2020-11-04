@@ -15,12 +15,14 @@
  * | Homepage: www.thinksns.com                                           |
  * +----------------------------------------------------------------------+
  */
+
 namespace Database\Factories\Zhiyi\Plus\Models;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Zhiyi\Plus\Models\File;
 
-class FileFactory extends Factory {
+class FileFactory extends Factory
+{
     protected $model = File::class;
 
     public function definition()

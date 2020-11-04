@@ -58,7 +58,7 @@ class RanksController extends Controller
                 return $item->user;
             })
             ->filter()
-            ->map(function (UserModel $user, $key) use ($offset) {
+            ->map(function (UserModel $user, $key) {
                 $user->follwing = false;
                 $user->follower = false;
 

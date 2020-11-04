@@ -15,11 +15,14 @@
  * | Homepage: www.thinksns.com                                           |
  * +----------------------------------------------------------------------+
  */
+
 namespace Database\Factories\Zhiyi\Plus\Models;
+
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Zhiyi\Plus\Models\Ability;
 
-class AbilityFactory extends Factory {
+class AbilityFactory extends Factory
+{
     protected $model = Ability::class;
 
     public function definition()

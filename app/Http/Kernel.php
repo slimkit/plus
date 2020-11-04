@@ -95,6 +95,6 @@ class Kernel extends HttpKernel
         'sensitive'  => \Zhiyi\Plus\Http\Middleware\DisposeSensitive::class,
         'operation'  => \Zhiyi\Plus\Http\Middleware\SensitiveOperation::class,
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
-        'bindings' => SubstituteBindings::class
+        'bindings' => SubstituteBindings::class,
     ];
 }

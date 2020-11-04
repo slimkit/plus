@@ -77,7 +77,7 @@ class RankController extends Controller
             ->take($limit)
             ->get();
 
-        return $response->json($feedModel->getConnection()->transaction(function () use ($feeds, $user, $date, $feedModel, $offset) {
+        return $response->json($feedModel->getConnection()->transaction(function () use ($feeds, $user, $offset) {
             return $feeds->map(function ($feed, $key) use ($user, $offset) {
                 $feed->user->following = $feed->user->hasFollwing($user);
                 $feed->user->follower = $feed->user->hasFollower($user);

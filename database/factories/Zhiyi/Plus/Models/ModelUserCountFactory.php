@@ -15,11 +15,14 @@
  * | Homepage: www.thinksns.com                                           |
  * +----------------------------------------------------------------------+
  */
+
 namespace Database\Factories\Zhiyi\Plus\Models;
+
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Zhiyi\Plus\Models\UserCount;
 
-class ModelUserCountFactory extends Factory {
+class ModelUserCountFactory extends Factory
+{
     protected $model = UserCount::class;
 
     public function definition()

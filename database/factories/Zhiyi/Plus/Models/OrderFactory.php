@@ -15,12 +15,15 @@
  * | Homepage: www.thinksns.com                                           |
  * +----------------------------------------------------------------------+
  */
+
 namespace Database\Factories\Zhiyi\Plus\Models;
+
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Zhiyi\Plus\Models\WalletOrder;
 
-class OrderFactory extends Factory {
-    static $user_id;
+class OrderFactory extends Factory
+{
+    public static $user_id;
     protected $model = WalletOrder::class;
 
     public function definition()

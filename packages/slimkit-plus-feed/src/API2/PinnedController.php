@@ -96,7 +96,7 @@ class PinnedController extends Controller
                     'charge' => $charge,
                     'pinned' => $pinned,
                     'feed' => $feed,
-                    'call' => $feed->user ? function () use ($user, $comment, $feed, $pinned) {
+                    'call' => $feed->user ? function () use ($feed, $pinned) {
                         // $message = sprintf('%s 在你发布的动态中申请评论置顶', $user->name);
                         // 增加动态评论置顶申请未读数
                         $userUnReadCount = $pinned->newQuery()

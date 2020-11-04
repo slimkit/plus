@@ -20,17 +20,17 @@ declare(strict_types=1);
 
 namespace Zhiyi\Plus\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Tymon\JWTAuth\Contracts\JWTSubject;
-use Illuminate\Notifications\Notifiable;
 use Cache;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
 use Medz\Laravel\Notifications\JPush\Sender;
+use Tymon\JWTAuth\Contracts\JWTSubject;
 use Zhiyi\Plus\FileStorage\FileMetaInterface;
 use Zhiyi\Plus\FileStorage\Traits\EloquentAttributeTrait as FileStorageEloquentAttributeTrait;
 use Zhiyi\Plus\Models\Relations\UserHasWalletCash;

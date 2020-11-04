@@ -80,11 +80,11 @@ class BaseController extends Controller
 
                 // 环信
                 $easemob = setting('user', 'vendor:easemob', []) + [
-                  'open' => false,
-                  'appKey' => '',
-                  'clientId' => '',
-                  'clientSecret' => '',
-                  'registerType' => 0,
+                    'open' => false,
+                    'appKey' => '',
+                    'clientId' => '',
+                    'clientSecret' => '',
+                    'registerType' => 0,
                 ];
 
                 $config['easemob_key'] = $easemob['appKey'] ?? '';

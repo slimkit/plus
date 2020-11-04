@@ -105,7 +105,7 @@ class MusicCollectionController extends Controller
             ])->setStatusCode(400);
         }
 
-        DB::transaction(function () use ($user, $special) {
+        DB::transaction(function () use ($special) {
             $special->collections()->delete();
             $special->decrement('collect_count');
         });

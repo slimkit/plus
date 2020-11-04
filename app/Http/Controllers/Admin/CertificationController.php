@@ -203,7 +203,7 @@ class CertificationController extends Controller
         $certification->status = 1;
         $certification->certification_name = $type;
 
-        return $certification->getConnection()->transaction(function () use ($files, $type, $certification) {
+        return $certification->getConnection()->transaction(function () use ($files, $certification) {
             $files->each(function ($file) use ($certification) {
                 $file->channel = 'certification:file';
                 $file->raw = $certification->user_id;

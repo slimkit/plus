@@ -50,7 +50,7 @@ class RankController extends Controller
             ->take($limit)
             ->get();
 
-        return response()->json($userModel->getConnection()->transaction(function () use ($users, $userModel, $auth, $offset) {
+        return response()->json($userModel->getConnection()->transaction(function () use ($users, $auth, $offset) {
             return $users->map(function ($user, $key) use ($auth, $offset) {
                 $user->extra->count = $user->followers_count;
                 $user->extra->rank = $key + $offset + 1;

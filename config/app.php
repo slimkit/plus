@@ -197,7 +197,7 @@ return [
         Zhiyi\Plus\Providers\NotificationServiceProvider::class,
         Zhiyi\Plus\Providers\EloquentServiceProvider::class,
         Zhiyi\Plus\FileStorage\Providers\AppServiceProvider::class,
-        \Mavinoo\Batch\BatchServiceProvider::class
+        \Mavinoo\Batch\BatchServiceProvider::class,
 
     ],
 
@@ -250,7 +250,7 @@ return [
         'Validator'    => Illuminate\Support\Facades\Validator::class,
         'View'         => Illuminate\Support\Facades\View::class,
         'Image'        => Intervention\Image\Facades\Image::class,
-        'Batch'         => \Mavinoo\Batch\BatchFacade::class
+        'Batch'         => \Mavinoo\Batch\BatchFacade::class,
     ],
 
 ];

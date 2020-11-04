@@ -15,7 +15,9 @@
  * | Homepage: www.thinksns.com                                           |
  * +----------------------------------------------------------------------+
  */
+
 namespace SlimKit\PlusPc\Database\Seeders;
+
 use Illuminate\Database\Seeder;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentPc\Models\Navigation;
 use Zhiyi\Plus\Models\AdvertisingSpace;

@@ -270,7 +270,7 @@ class HomeController extends Controller
 
         try {
             $special->saveOrFail();
-            $special->getConnection()->transaction(function () use ($special, $request, $paidNode, $fileWith) {
+            $special->getConnection()->transaction(function () use ($special, $paidNode, $fileWith) {
                 $fileWith && $this->saveSpecialFileWith($fileWith, $special);
                 $paidNode && $this->saveSpecialPaidNode($paidNode, $special);
             });
@@ -347,7 +347,7 @@ class HomeController extends Controller
                 if ($request->input('special')) {
                     $music->musicSpecials()->attach($request->input('special'));
                 }
-                $music->getConnection()->transaction(function () use ($request, $music, $paidNodes, $fileWith) {
+                $music->getConnection()->transaction(function () use ($music, $paidNodes, $fileWith) {
                     $this->saveMusicPaidNode($paidNodes, $music);
                     $this->saveMusicFileWith($fileWith, $music);
                 });
