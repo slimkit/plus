@@ -22,16 +22,16 @@ namespace Zhiyi\Plus\API2\Controllers;
 
 use Illuminate\Http\JsonResponse;
 use Zhiyi\Plus\API2\Requests\ListAllComments;
-use Zhiyi\Plus\Models\Comment as CommentModel;
 use Zhiyi\Plus\API2\Resources\Comment as CommentResource;
+use Zhiyi\Plus\Models\Comment as CommentModel;
 
 class Comment extends Controller
 {
     /**
      * List all comments.
-     * @param \Zhiyi\Plus\API2\Requests\ListAllComments $request
-     * @param \Zhiyi\Plus\Models\Comment $model
-     * @return \Illuminate\Http\JsonResponse
+     * @param  ListAllComments  $request
+     * @param  CommentModel  $model
+     * @return JsonResponse
      */
     public function index(ListAllComments $request, CommentModel $model): JsonResponse
     {

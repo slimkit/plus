@@ -20,8 +20,8 @@ declare(strict_types=1);
 
 namespace SlimKit\PlusCheckIn\Admin\Controllers;
 
-use function Zhiyi\Plus\setting;
 use SlimKit\PlusCheckIn\Admin\Requests\StoreConfig as StoreConfigRequest;
+use function Zhiyi\Plus\setting;
 
 class HomeController
 {

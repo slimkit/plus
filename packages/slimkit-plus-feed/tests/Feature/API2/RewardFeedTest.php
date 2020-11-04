@@ -20,10 +20,10 @@ declare(strict_types=1);
 
 namespace SlimKit\PlusFeed\Tests\Feature\API2;
 
-use Zhiyi\Plus\Tests\TestCase;
-use Zhiyi\Plus\Models\User as UserModel;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\Feed;
+use Zhiyi\Plus\Models\User as UserModel;
+use Zhiyi\Plus\Tests\TestCase;
 
 class RewardFeedTest extends TestCase
 {
@@ -55,11 +55,11 @@ class RewardFeedTest extends TestCase
      */
     public function testRewardFeed()
     {
-        $this->other->wallet()->increment('balance', 1000);
+        $this->other->currency()->increment('sum', 1000);
 
         $response = $this
             ->actingAs($this->other, 'api')
-            ->json('POST', "/api/v2/feeds/{$this->feed->id}/rewards", ['amount' => 10]);
+            ->json('POST', "/api/v2/feeds/{$this->feed->id}/new-rewards", ['amount' => 10]);
 
         $response
             ->assertStatus(201)

@@ -20,29 +20,26 @@ declare(strict_types=1);
 
 namespace Zhiyi\Component\ZhiyiPlus\PlusComponentNews\Feature\API2;
 
-use Zhiyi\Plus\Tests\TestCase;
-use Zhiyi\Plus\Models\User as UserModel;
-use Zhiyi\Plus\Models\Comment as CommentModel;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentNews\Models\News as NewsModel;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentNews\Models\NewsCate as NewsCateModel;
-use Zhiyi\Component\ZhiyiPlus\PlusComponentNews\Models\NewsPinned as NewsPinnedModel;
+use Zhiyi\Component\ZhiyiPlus\PlusComponentNews\Models\NewsPinned;
+use Zhiyi\Plus\Models\Comment as CommentModel;
+use Zhiyi\Plus\Models\User as UserModel;
+use Zhiyi\Plus\Tests\TestCase;
 
 class PinnedNewsTest extends TestCase
 {
     use DatabaseTransactions;
-
     protected $user;
-
     protected $cate;
-
     protected $news;
 
     public function setUp()
     {
         parent::setUp();
         $this->user = UserModel::factory()->create();
-        $this->cate = NewsCateModel::factory()->create(););
+        $this->cate = NewsCateModel::factory()->create();
         $this->news = NewsModel::factory()->create([
             'title' => 'test',
             'user_id' => $this->user->id,
@@ -51,41 +48,13 @@ class PinnedNewsTest extends TestCase
         ]);
     }
 
-    public function testPinnedNews()
-    {
-        $this->user->wallet()->increment('balance', 100);
-
-        $response = $this
-            ->actingAs($this->user, 'api')
-            ->json('POST', "/api/v2/news/{$this->news->id}/pinneds", [
-                'amount' => 100,
-                'day' => 1,
-            ]);
-        $response
-            ->assertStatus(201)
-            ->assertJsonStructure(['message']);
-    }
-
-    /**
-     * 查看申请置顶的资讯列表.
-     *
-     * @return mixed
-     */
-    public function testGetNewsPinneds()
-    {
-        $response = $this
-            ->actingAs($this->user, 'api')
-            ->json('GET', '/api/v2/news/pinneds');
-        $response
-            ->assertStatus(200);
-    }
-
     /**
      * 测试新版的评论置顶请求
+     *
      * @Author   Wayne
      * @DateTime 2018-04-24
      * @Email    qiaobin@zhiyicx.com
-     * @return   [type]              [description]
+     * @return void [type]
      */
     public function testNewPinnedNewsComment()
     {
@@ -104,8 +73,8 @@ class PinnedNewsTest extends TestCase
         $response = $this
             ->actingAs($other, 'api')
             ->json('POST', "/api/v2/news/{$this->news->id}/comments/{$comment->id}/currency-pinneds", [
-                'amount' => 100,
-                'day' => 1,
+                'amount'   => 100,
+                'day'      => 1,
                 'password' => '123456',
             ]);
         $response
@@ -145,7 +114,7 @@ class PinnedNewsTest extends TestCase
             'commentable_type' => 'news',
         ]);
 
-        $pinned = new NewsPinnedModel();
+        $pinned = new NewsPinned();
         $pinned->user_id = $other->id;
         $pinned->raw = $comment->id;
         $pinned->target = $this->news->id;
@@ -160,7 +129,7 @@ class PinnedNewsTest extends TestCase
             ->actingAs($this->user, 'api')
             ->json(
                 'PATCH',
-                "/api/v2/news/{$this->news->id}/comments/{$comment->id}/pinneds/{$pinned->id}"
+                "/api/v2/news/{$this->news->id}/comments/{$comment->id}/currency-pinneds/{$pinned->id}"
             );
         $response
             ->assertStatus(201)
@@ -185,7 +154,7 @@ class PinnedNewsTest extends TestCase
             'commentable_type' => 'news',
         ]);
 
-        $pinned = new NewsPinnedModel();
+        $pinned = new NewsPinned();
         $pinned->user_id = $other->id;
         $pinned->raw = $comment->id;
         $pinned->target = $this->news->id;
@@ -200,7 +169,7 @@ class PinnedNewsTest extends TestCase
             ->actingAs($this->user, 'api')
             ->json(
                 'PATCH',
-                "/api/v2/news/{$this->news->id}/comments/{$comment->id}/pinneds/{$pinned->id}/reject"
+                "/api/v2/news/{$this->news->id}/comments/{$comment->id}/currency-pinneds/{$pinned->id}/reject"
             );
         $response
             ->assertStatus(204);
@@ -224,7 +193,7 @@ class PinnedNewsTest extends TestCase
             'commentable_type' => 'news',
         ]);
 
-        $pinned = new NewsPinnedModel();
+        $pinned = new NewsPinned();
         $pinned->user_id = $other->id;
         $pinned->raw = $comment->id;
         $pinned->target = $this->news->id;

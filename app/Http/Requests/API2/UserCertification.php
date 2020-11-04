@@ -20,7 +20,6 @@ declare(strict_types=1);
 
 namespace Zhiyi\Plus\Http\Requests\API2;
 
-use Zhiyi\Plus\Models\Certification;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UserCertification extends FormRequest

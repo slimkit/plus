@@ -21,28 +21,30 @@ declare(strict_types=1);
 namespace Zhiyi\Component\ZhiyiPlus\PlusComponentNews\API2\Controllers;
 
 use Carbon\Carbon;
-use Illuminate\Support\Str;
+use Illuminate\Contracts\Routing\ResponseFactory as ResponseContract;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
+use Zhiyi\Component\ZhiyiPlus\PlusComponentNews\Models\News as NewsModel;
+use Zhiyi\Component\ZhiyiPlus\PlusComponentNews\Models\NewsPinned as NewsPinnedModel;
 use Zhiyi\Plus\Http\Controllers\Controller;
 use Zhiyi\Plus\Models\Comment as CommentModel;
 use Zhiyi\Plus\Notifications\System as SystemNotification;
 use Zhiyi\Plus\Packages\Currency\Processes\User as UserProcess;
-use Illuminate\Contracts\Routing\ResponseFactory as ResponseContract;
-use Zhiyi\Component\ZhiyiPlus\PlusComponentNews\Models\News as NewsModel;
-use Zhiyi\Component\ZhiyiPlus\PlusComponentNews\Models\NewsPinned as NewsPinnedModel;
 
 class NewCommentPinnedController extends Controller
 {
     /**
      * 通过评论置顶.
      *
-     * @param Request $request
-     * @param ResponseContract $response
-     * @param Carbon $dateTime
-     * @param NewsModel $news
-     * @param CommentModel $comment
-     * @param NewsPinnedModel $pinned
+     * @param  Request  $request
+     * @param  ResponseContract  $response
+     * @param  Carbon  $dateTime
+     * @param  NewsModel  $news
+     * @param  CommentModel  $comment
+     * @param  NewsPinnedModel  $pinned
+     *
      * @return mixed
+     * @throws \Exception
      * @author BS <414606094@qq.com>
      */
     public function accept(
@@ -91,13 +93,15 @@ class NewCommentPinnedController extends Controller
     /**
      * 拒绝评论置顶.
      *
-     * @param Request $request
-     * @param NewsModel $news
-     * @param CommentModel $comment
-     * @param NewsPinnedModel $pinned
-     * @param ResponseContract $response
-     * @param Carbon $dateTime
+     * @param  Request  $request
+     * @param  NewsModel  $news
+     * @param  CommentModel  $comment
+     * @param  NewsPinnedModel  $pinned
+     * @param  ResponseContract  $response
+     * @param  Carbon  $dateTime
+     *
      * @return mixed
+     * @throws \Exception
      * @author BS <414606094@qq.com>
      */
     public function reject(

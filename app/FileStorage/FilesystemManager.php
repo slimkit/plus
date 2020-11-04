@@ -20,9 +20,9 @@ declare(strict_types=1);
 
 namespace Zhiyi\Plus\FileStorage;
 
+use Illuminate\Support\Manager;
 use OSS\OssClient;
 use Zhiyi\Plus\AppInterface;
-use Illuminate\Support\Manager;
 use function Zhiyi\Plus\setting;
 
 class FilesystemManager extends Manager

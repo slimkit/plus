@@ -20,23 +20,22 @@ declare(strict_types=1);
 
 namespace Zhiyi\Plus\Tests\Feature\API2;
 
-use Zhiyi\Plus\Tests\TestCase;
 use Illuminate\Contracts\Auth\Guard;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Support\Facades\Auth;
 use Zhiyi\Plus\Models\User as UserModel;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Zhiyi\Plus\Tests\TestCase;
 
 class VerifyCodeTest extends TestCase
 {
     use DatabaseTransactions;
-
     protected $user;
 
     protected function setUp()
     {
         parent::setUp();
 
-        $this->user = factory(UserModel::class)->create(['phone' => '13730441111', 'email' => 'aaa@bbb.com']);
+        $this->user = factory(UserModel::class)->create(['phone' => '18908019700', 'email' => '182478966@qq.com']);
     }
 
     /**
@@ -47,6 +46,7 @@ class VerifyCodeTest extends TestCase
      */
     public function testGetVerifyCodeByPhone()
     {
+        $this->withoutExceptionHandling();
         $token = $this->guard()->login($this->user);
 
         $responseByPhone = $this->json('POST', 'api/v2/verifycodes?token='.$token, [
@@ -77,6 +77,7 @@ class VerifyCodeTest extends TestCase
      * Assert login response.
      *
      * @param $response
+     *
      * @return void
      */
     protected function assertLoginResponse($response)

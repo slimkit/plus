@@ -1,5 +1,6 @@
 @php
-    use function Zhiyi\Component\ZhiyiPlus\PlusComponentPc\getTime;
+    use Michelf\MarkdownExtra;
+    use sixlive\ParsedownHighlight;use function Zhiyi\Component\ZhiyiPlus\PlusComponentPc\getTime;
     use function Zhiyi\Component\ZhiyiPlus\PlusComponentPc\getImageUrl;
     use function Zhiyi\Component\ZhiyiPlus\PlusComponentPc\formatMarkdown;
 @endphp
@@ -10,6 +11,7 @@
 
 @section('styles')
     <link rel="stylesheet" href="{{ asset('assets/pc/css/news.css') }}"/>
+    <link rel="stylesheet" href="{{ asset('assets/pc/css/default.min.css') }}"/>
     <link rel="stylesheet" href="{{ asset('assets/pc/markdown/pluseditor.css') }}"/>
 @endsection
 
@@ -22,10 +24,11 @@
                 </div>
 
                 <div class="detail_info relative" id="news_toolbar">
-                    <a href="{{ route('pc:news', ['cate_id' => $news['category']['id']]) }}" class="cates_span">{{ $news['category']['name'] ?? '默认' }}</a>
+                    <a href="{{ route('pc:news', ['cate_id' => $news['category']['id']]) }}"
+                       class="cates_span">{{ $news['category']['name'] ?? '默认' }}</a>
                     <span>{{ $news['from'] != '原创' ? $news['from'] : $news['author'] }}  ·  {{ $news['hits'] }}浏览  ·  {{ getTime($news['created_at']) }}</span>
                     @if($news['audit_status'] != 1)
-                    <span class="options" onclick="options(this)">
+                        <span class="options" onclick="options(this)">
                         <svg class="icon icon-more" aria-hidden="true"><use xlink:href="#icon-more"></use></svg>
                     </span>
                     @endif
@@ -34,32 +37,48 @@
                         <ul>
                             <li>
                                 <a href="javascript:;" onclick="repostable.show('news' ,{{ $news['id'] }})">
-                                    <svg class="icon" aria-hidden="true"><use xlink:href="#icon-share"></use></svg>转发
+                                    <svg class="icon" aria-hidden="true">
+                                        <use xlink:href="#icon-share"></use>
+                                    </svg>
+                                    转发
                                 </a>
                             </li>
                             @if($news['user_id'] === ($TS['id'] ?? 0))
                                 @if($news['audit_status'] == 3)
                                     <li>
                                         <a href="{{ route('pc:newsrelease', $news['id']) }}">
-                                           <svg class="icon" aria-hidden="true"><use xlink:href="#icon-edit"></use></svg>编辑
+                                            <svg class="icon" aria-hidden="true">
+                                                <use xlink:href="#icon-edit"></use>
+                                            </svg>
+                                            编辑
                                         </a>
                                     </li>
                                 @elseif($news['audit_status'] == 0)
                                     <li>
                                         <a href="javascript:;" onclick="news.pinneds({{$news['id']}});">
-                                            <svg class="icon" aria-hidden="true"><use xlink:href="#icon-pinned2"></use></svg>申请置顶
+                                            <svg class="icon" aria-hidden="true">
+                                                <use xlink:href="#icon-pinned2"></use>
+                                            </svg>
+                                            申请置顶
                                         </a>
                                     </li>
                                     <li>
-                                        <a href="javascript:;" onclick="news.delete({{$news['id']}}, {{$news['category']['id']}});">
-                                            <svg class="icon" aria-hidden="true"><use xlink:href="#icon-delete"></use></svg>删除
+                                        <a href="javascript:;"
+                                           onclick="news.delete({{$news['id']}}, {{$news['category']['id']}});">
+                                            <svg class="icon" aria-hidden="true">
+                                                <use xlink:href="#icon-delete"></use>
+                                            </svg>
+                                            删除
                                         </a>
                                     </li>
                                 @endif
                             @else
                                 <li>
-                                    <a href="javascript:;" onclick="reported.init('{{$news['id']}}', 'news');">
-                                        <svg class="icon" aria-hidden="true"><use xlink:href="#icon-report"></use></svg><span>举报</span>
+                                    <a href="javascript:;" onclick="reported.init('{{$news['id']}}', 'news-detail');">
+                                        <svg class="icon" aria-hidden="true">
+                                            <use xlink:href="#icon-report"></use>
+                                        </svg>
+                                        <span>举报</span>
                                     </a>
                                 </li>
                             @endif
@@ -75,36 +94,40 @@
                     </div>
                 @endif
 
-                <div class="detail_content markdown-body editormd-preview-container">
-                {!! formatMarkdown($news['content']) !!}
+                <div id="markdown-body" class="detail_content markdown-body editormd-preview-container">
+                    {!! formatMarkdown($news['content']) !!}
                 </div>
                 @if (!$news['audit_status'])
-                <div class="detail_share">
-                    <span id="J-collect{{ $news['id'] }}" rel="{{ $news['collect_count'] }}" status="{{(int) $news['has_collect']}}">
+                    <div class="detail_share">
+                    <span id="J-collect{{ $news['id'] }}" rel="{{ $news['collect_count'] }}"
+                          status="{{(int) $news['has_collect']}}">
                         @if($news['has_collect'])
-                        <a class="act" href="javascript:;" onclick="collected.init({{$news['id']}}, 'news', 0);" class="act">
+                            <a class="act" href="javascript:;" onclick="collected.init({{$news['id']}}, 'news', 0);"
+                               class="act">
                             <svg class="icon" aria-hidden="true"><use xlink:href="#icon-collect"></use></svg>
                             <font class="cs">{{ $news['collect_count'] }}</font> 人收藏
                         </a>
                         @else
-                        <a href="javascript:;" onclick="collected.init({{$news['id']}}, 'news', 0);">
+                            <a href="javascript:;" onclick="collected.init({{$news['id']}}, 'news', 0);">
                             <svg class="icon" aria-hidden="true"><use xlink:href="#icon-collect"></use></svg>
                             <font class="cs">{{ $news['collect_count'] }}</font> 人收藏
                         </a>
                         @endif
                     </span>
-                    <span class="digg" id="J-likes{{$news['id']}}" rel="{{$news['digg_count']}}" status="{{(int) $news['has_like']}}">
+                        <span class="digg" id="J-likes{{$news['id']}}" rel="{{$news['digg_count']}}"
+                              status="{{(int) $news['has_like']}}">
                         @if($news['has_like'])
-                        <a class="act" href="javascript:void(0)" onclick="liked.init({{$news['id']}}, 'news', 0)">
+                                <a class="act" href="javascript:void(0)"
+                                   onclick="liked.init({{$news['id']}}, 'news', 0)">
                             <svg class="icon" aria-hidden="true"><use xlink:href="#icon-like-copy"></use></svg>
                             <font>{{$news['digg_count']}}</font> 人喜欢
                         </a>
-                        @else
-                        <a href="javascript:;" onclick="liked.init({{$news['id']}}, 'news', 0)">
+                            @else
+                                <a href="javascript:;" onclick="liked.init({{$news['id']}}, 'news', 0)">
                             <svg class="icon" aria-hidden="true"><use xlink:href="#icon-like"></use></svg>
                             <font>{{$news['digg_count']}}</font> 人喜欢
                         </a>
-                        @endif
+                            @endif
                     </span>
 
                     {{-- 第三方分享 --}}
@@ -119,45 +142,48 @@
                     @endif
                 </div>
 
-                {{-- 相关推荐 --}}
-                @if (!empty($news_rel))
-                <div class="detail_recommend">
-                    <p class="rel_title">相关推荐</p>
-                    <div class="rel_tags">
-                        @foreach ($news['tags'] as $tag)
-                        <span>{{ $tag['name'] }}</span>
-                        @endforeach
-                    </div>
+                    {{-- 相关推荐 --}}
+                    @if (!empty($news_rel))
+                        <div class="detail_recommend">
+                            <p class="rel_title">相关推荐</p>
+                            <div class="rel_tags">
+                                @foreach ($news['tags'] as $tag)
+                                    <span>{{ $tag['name'] }}</span>
+                                @endforeach
+                            </div>
 
-                    @foreach ($news_rel as $rel)
-                    <div class="rel_news_item clearfix">
-                         <div class="rel_news_img">
-                              <a href="{{ route('pc:newsread', ['news_id' => $rel['id']]) }}">
-                                   <img class="lazy" width="180" height="130" data-original="{{ getImageUrl($rel['image'], 180, 130)}}"/>
-                              </a>
-                         </div>
-                         <div class="rel_news_word">
-                              <a href="{{ route('pc:newsread', ['news_id' => $rel['id']]) }}" class="news_title"> {{ $rel['title'] }} </a>
-                              <p>{{ $rel['subject'] }}</p>
-                              <div class="news_bm">
-                                   <a href="{{ route('pc:news', ['cate_id' => $rel['category']['id']]) }}" class="cates_span">{{ $rel['category']['name'] ?? '默认'}}</a>
-                                   <span>{{ $rel['from'] }}  ·  {{ $rel['hits'] }}浏览  ·  {{ getTime($rel['created_at']) }}</span>
-                              </div>
-                         </div>
-                    </div>
-                    @endforeach
-                </div>
-                @endif
+                            @foreach ($news_rel as $rel)
+                                <div class="rel_news_item clearfix">
+                                    <div class="rel_news_img">
+                                        <a href="{{ route('pc:newsread', ['news_id' => $rel['id']]) }}">
+                                            <img class="lazy" width="180" height="130"
+                                                 data-original="{{ getImageUrl($rel['image'], 180, 130)}}"/>
+                                        </a>
+                                    </div>
+                                    <div class="rel_news_word">
+                                        <a href="{{ route('pc:newsread', ['news_id' => $rel['id']]) }}"
+                                           class="news_title"> {{ $rel['title'] }} </a>
+                                        <p>{{ $rel['subject'] }}</p>
+                                        <div class="news_bm">
+                                            <a href="{{ route('pc:news', ['cate_id' => $rel['category']['id']]) }}"
+                                               class="cates_span">{{ $rel['category']['name'] ?? '默认'}}</a>
+                                            <span>{{ $rel['from'] }}  ·  {{ $rel['hits'] }}浏览  ·  {{ getTime($rel['created_at']) }}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            @endforeach
+                        </div>
+                    @endif
 
-                {{-- 评论  --}}
-                @include('pcview::widgets.comments', [
-                    'id' => $news['id'],
-                    'comments_count' => $news['comment_count'],
-                    'comments_type' => 'news',
-                    'loading' => '.detail_comment',
-                    'position' => 0,
-                    'top' => 1,
-                ])
+                    {{-- 评论  --}}
+                    @include('pcview::widgets.comments', [
+                        'id' => $news['id'],
+                        'comments_count' => $news['comment_count'],
+                        'comments_type' => 'news',
+                        'loading' => '.detail_comment',
+                        'position' => 0,
+                        'top' => 1,
+                    ])
 
                 @endif
             </div>
@@ -179,26 +205,39 @@
 @endsection
 
 @section('scripts')
-<script src="{{ asset('assets/pc/js/module.news.js') }}"></script>
-<script src="{{ asset('assets/pc/js/module.mention.js') }}"></script>
-<script src="{{ asset('assets/pc/js/qrcode.js') }}"></script>
-<script>
-$(function(){
-    $("img.lazy").lazyload({effect: "fadeIn"});
+    <script src="{{ asset('assets/pc/js/module.news.js') }}"></script>
+    <script src="{{ asset('assets/pc/js/module.mention.js') }}"></script>
+    <script src="{{ asset('assets/pc/js/qrcode.js') }}"></script>
+    <script>
+      $(function() {
+        {{--var md = markdownit({--}}
+        {{--  breaks: true,--}}
+        {{--  html: false,--}}
+        {{--  highlight: function (code) {--}}
+        {{--    return hljs ? hljs.highlightAuto(code).value : code--}}
+        {{--  },--}}
+        {{--})--}}
+        {{--  .use(markdownitContainer, 'hljs-left') /* align left */--}}
+        {{--  .use(markdownitContainer, 'hljs-center')/* align center */--}}
+        {{--  .use(markdownitContainer, 'hljs-right')--}}
 
-    // 近期热点
-    if($('.time_menu li a').length > 0) {
-        $('.time_menu li').hover(function() {
-            var type = $(this).attr('type');
+        {{--$('#markdown-body').html(md.render(`{!!formatMarkdown($news['content'])!!}`))--}}
 
-            $(this).siblings().find('a').removeClass('hover');
-            $(this).find('a').addClass('hover');
+        $('img.lazy').lazyload({ effect: 'fadeIn' })
 
-            $('.hot_news_list div').hide();
-            $('#' + type).show();
-        })
-    }
-});
+        // 近期热点
+        if ($('.time_menu li a').length > 0) {
+          $('.time_menu li').hover(function() {
+            var type = $(this).attr('type')
 
-</script>
+            $(this).siblings().find('a').removeClass('hover')
+            $(this).find('a').addClass('hover')
+
+            $('.hot_news_list div').hide()
+            $('#' + type).show()
+          })
+        }
+      })
+
+    </script>
 @endsection

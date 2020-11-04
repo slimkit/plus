@@ -20,8 +20,8 @@ declare(strict_types=1);
 
 namespace Zhiyi\Plus\Services;
 
-use JPush\Client;
 use Illuminate\Contracts\Config\Repository;
+use JPush\Client;
 
 class Push
 {

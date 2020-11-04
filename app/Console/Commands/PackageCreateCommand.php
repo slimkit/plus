@@ -20,8 +20,9 @@ declare(strict_types=1);
 
 namespace Zhiyi\Plus\Console\Commands;
 
-use Illuminate\Console\Command;
 use Illuminate\Config\Repository;
+use Illuminate\Console\Command;
+use Illuminate\Support\Str;
 use Symfony\Component\Finder\Finder;
 
 class PackageCreateCommand extends Command
@@ -32,14 +33,12 @@ class PackageCreateCommand extends Command
      * @var string
      */
     protected $name = 'package:create';
-
     /**
      * The console command description.
      *
      * @var string
      */
     protected $description = 'Create a ThinkSNS+✈️ extension package.';
-
     /**
      * The composer repository.
      *
@@ -58,39 +57,47 @@ class PackageCreateCommand extends Command
         $this->initRepository();
 
         [$vendor, $name] = explode('/', $packageName = $this->questionName());
-        $namespace = sprintf('%s\\%s\\', $this->cameCase($vendor), $this->cameCase($name));
+        $namespace = sprintf('%s\\%s\\', $this->cameCase($vendor),
+            $this->cameCase($name));
         $namespace = $this->ask('Autoload namespace, default', $namespace);
         $namespace = $this->formatNamespace($namespace);
 
         $this->repository->set('name', $packageName);
-        $this->repository->set('description', sprintf('A "%s" package For ThinkSNS+✈️.', $packageName));
+        $this->repository->set('description',
+            sprintf('A "%s" package For ThinkSNS+✈️.', $packageName));
         $this->repository->set('autoload.psr-4', [
-            $namespace.'\\' => 'src/',
+            $namespace.'\\'        => 'src/',
             $namespace.'\\Seeds\\' => 'database/seeds/',
         ]);
         $this->repository->set('extra.laravel.providers', [
-            $this->formatNamespace($namespace.'\\Providers\\AppServiceProvider'),
-            $this->formatNamespace($namespace.'\\Providers\\ModelServiceProvider'),
-            $this->formatNamespace($namespace.'\\Providers\\RouteServiceProvider'),
+            $this->formatNamespace($namespace
+                .'\\Providers\\AppServiceProvider'),
+            $this->formatNamespace($namespace
+                .'\\Providers\\ModelServiceProvider'),
+            $this->formatNamespace($namespace
+                .'\\Providers\\RouteServiceProvider'),
         ]);
 
         // Get output path.
         $outputPath = base_path(sprintf('packages/%s-%s', $vendor, $name));
         if (is_dir($outputPath) && file_exists($outputPath)) {
-            throw new \RuntimeException(sprintf('Will the directory "%s" already exist', $outputPath));
+            throw new \RuntimeException(sprintf('Will the directory "%s" already exist',
+                $outputPath));
         }
 
         $variable = [
-            '{name}' => $name,
+            '{name}'        => $name,
             '{studly-name}' => $this->cameCase($name),
-            '{vendor}' => $vendor,
-            '{namespace}' => preg_replace('/(\\\)+/', '\\', $namespace),
+            '{vendor}'      => $vendor,
+            '{namespace}'   => preg_replace('/(\\\)+/', '\\', $namespace),
         ];
 
         $this->putStub($this->findStub(), $outputPath, $variable);
         file_put_contents(
             $outputPath.'/composer.json',
-            json_encode($this->repository->all(), JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT)
+            json_encode($this->repository->all(),
+                JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE
+                | JSON_PRETTY_PRINT)
         );
 
         $this->info(sprintf('Create Package to: [%s] success.', $outputPath));
@@ -99,14 +106,18 @@ class PackageCreateCommand extends Command
     /**
      * Put stub.
      *
-     * @param \Symfony\Component\Finder\Finder $stubs
-     * @param string $outputPath
-     * @param array $variable
+     * @param  \Symfony\Component\Finder\Finder  $stubs
+     * @param  string  $outputPath
+     * @param  array  $variable
+     *
      * @return void
      * @author Seven Du <shiweidu@outlook.com>
      */
-    protected function putStub(Finder $stubs, string $outputPath, array $variable = [])
-    {
+    protected function putStub(
+        Finder $stubs,
+        string $outputPath,
+        array $variable = []
+    ) {
         $this->getOutput()->progressStart($stubs->count());
         foreach ($stubs as $file) {
             $content = $file->getContents();
@@ -155,7 +166,8 @@ class PackageCreateCommand extends Command
     /**
      * format namespace.
      *
-     * @param string $namespace
+     * @param  string  $namespace
+     *
      * @return string
      * @author Seven Du <shiweidu@outlook.com>
      */
@@ -164,6 +176,7 @@ class PackageCreateCommand extends Command
         $namespace = ltrim($namespace, '\\');
         $namespace = rtrim($namespace, '\\');
         $namespace = preg_replace('/(\\\)+/', '\\', $namespace);
+
         // $namespace = str_replace('\\', '\\\\', $namespace);
 
         return $namespace;
@@ -172,7 +185,8 @@ class PackageCreateCommand extends Command
     /**
      * 格式化名称为驼峰式.
      *
-     * @param string $name [description]
+     * @param  string  $name  [description]
+     *
      * @return string
      * @author Seven Du <shiweidu@outlook.com>
      */
@@ -181,7 +195,7 @@ class PackageCreateCommand extends Command
         $name = str_replace('.', '', $name);
         $name = str_replace('-', '_', $name);
 
-        return ucfirst(camel_case($name));
+        return ucfirst(Str::camel($name));
     }
 
     /**
@@ -192,15 +206,17 @@ class PackageCreateCommand extends Command
      */
     protected function questionName(): string
     {
-        return $this->getOutput()->ask('Package name (<vendor>/<name>)', null, function ($name) {
-            if (! preg_match('{^[a-z0-9_.-]+/[a-z0-9_.-]+$}', $name)) {
-                throw new \InvalidArgumentException(
-                    'The package name '.$name.' is invalid, it should be lowercase and have a vendor name, a forward slash, and a package name, matching: [a-z0-9_.-]+/[a-z0-9_.-]+'
-                );
-            }
+        return $this->getOutput()
+            ->ask('Package name (<vendor>/<name>)', null, function ($name) {
+                if (! preg_match('{^[a-z0-9_.-]+/[a-z0-9_.-]+$}', $name)) {
+                    throw new \InvalidArgumentException(
+                        'The package name '.$name
+                        .' is invalid, it should be lowercase and have a vendor name, a forward slash, and a package name, matching: [a-z0-9_.-]+/[a-z0-9_.-]+'
+                    );
+                }
 
-            return $name;
-        });
+                return $name;
+            });
     }
 
     /**
@@ -212,14 +228,14 @@ class PackageCreateCommand extends Command
     protected function initRepository()
     {
         $this->repository = new Repository([
-            'name' => 'vendor/name',
+            'name'        => 'vendor/name',
             'description' => '✈️The package is a ThinkSNS+ package.',
-            'type' => 'library',
-            'license' => 'MIT',
-            'require' => [
+            'type'        => 'library',
+            'license'     => 'MIT',
+            'require'     => [
                 'php' => '>=7.1.3',
             ],
-            'autoload' => [],
+            'autoload'    => [],
         ]);
     }
 }

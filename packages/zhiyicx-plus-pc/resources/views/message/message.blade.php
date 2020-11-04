@@ -87,7 +87,7 @@
             </div>
 
             {{-- 聊天 --}}
-            <div class="chat_left @if($type != 0) hide" @endif" id="chat_left_message">
+            <div class="chat_left @if($type != 0) hide @endif" id="chat_left_message">
                 <div class="chat_search">
                     <svg class="icon chat_search_icon" aria-hidden="true">
                         <use xlink:href="#icon-search"></use>
@@ -204,7 +204,7 @@
         $('.chat_left').on('click', 'li', function () {
             $(this).hasClass("current_room") || ($(this).addClass("current_room").siblings('.current_room').removeClass('current_room'));
             var type = $(this).data('type');
-            if (type == 0) {
+            if (type === 0) {
                 body_title.removeClass('hide');
                 $('#message_wrap').hide();
                 $('#chat_wrap').show();
@@ -396,7 +396,7 @@
                     loadtype: 2,
                     selfname: '_loader',
                     callback: function(){
-                        easemob.setRead(0, 'commented');
+                        easemob.setRead(0, 'comment');
                     }
                 });
                 body_title.html(title);
@@ -414,7 +414,7 @@
                     loadtype: 2,
                     selfname: '_loader',
                     callback: function(){
-                        easemob.setRead(0, 'liked');
+                        easemob.setRead(0, 'like');
                     }
                 });
                 body_title.html(title);

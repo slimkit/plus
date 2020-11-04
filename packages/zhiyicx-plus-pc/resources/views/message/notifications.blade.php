@@ -1,112 +1,140 @@
 @php
     use function Zhiyi\Component\ZhiyiPlus\PlusComponentPc\getTime;
 @endphp
-@if (!empty($notifications))
+@if (count($notifications) > 0)
     <ul class="tz-cont">
         @foreach($notifications as $noti)
-            @php
-                $ref = $noti['data']
-            @endphp
             <li>
                 <div class="tz-content">
-                    @switch($ref['type'])
-                    @case('reward')
-                        <a href="{{route('pc:mine', ['user' => $ref['sender']['id']])}}">
-                            {{ $ref['sender']['name'] }}打赏了你
+                    @switch($noti['data']['type'] ?? '0')
+                        @case('reward')
+                        <a href="{{route('pc:mine', ['user' => $noti['data']['sender']['id']])}}">
+                            {{ $noti['data']['sender']['name'] }}打赏了你
                         </a>
                         @break
-                    @case('reward:feeds')
-                        <a href="{{route('pc:feedread', ['feed'=>$ref['feed_id']])}}">
-                            {{ $ref['sender']['name'] }}打赏了你的动态
+                        @case('pinned:feeds')
+                        <a href="{{route('pc:feedread', ['feed' => $noti['data']['feed']['id']])}}">
+                            @if($noti['data']['state'] === 'passed')
+                                你的动态已经成功置顶
+                            @else
+                                管理员拒绝了你的动态置顶申请
+                            @endif
                         </a>
                         @break
-                    @case('reward:news')
-                        <a href="{{route('pc:newsread', ['news'=>$ref['news']['id']])}}">
-                            你的资讯《{{ $ref['news']['title'] }}》被{{ $ref['sender']['name'] }}打赏了{{ $ref['amount'].$ref['unit'] }}
+                        @case('reward:feeds')
+                        <a href="{{route('pc:feedread', ['feed'=>$noti['data']['feed_id']])}}">
+                            {{ $noti['data']['sender']['name'] }}打赏了你的动态
                         </a>
                         @break
-                    @case('group:post-reward')
-                        <a href="{{route('pc:grouppost', ['group_id'=>$ref['group_id'], ''=>$ref['post']['id']])}}">
-                            你的帖子「{{ $ref['post']['title'] }}」被{{ $ref['sender']['name'] }}打赏了
+                        @case('news:audit')
+                        <a href="{{route('pc:newsread', ['news'=>$noti['data']['news']['id']])}}">
+                            {{ $noti['data']['contents'] ?? ''}}
                         </a>
                         @break
-                    @case('group:join')
-                        @if($ref['state'] ?? 'accept'== 'rejected')
-                            <a href="{{route('pc:groupread', ['group_id'=>$ref['group']['id']])}}">
-                                拒绝用户加入「{{ $ref['group']['name'] }}」圈子
-                            </a>
-                        @else
-                            <a href="{{route('pc:groupread', ['group_id'=>$ref['group']['id']])}}">
-                                {{ $ref['user'] ? $ref['user']['name'] : ''}}请求加入圈子「{{ $ref['group']['name'] }}」
-                            </a>
-                        @endif
+                        @case('news:reject')
+                        <a href="{{route('pc:newsrelease', ['news_id'=>$noti['data']['news']['id']])}}">
+                            {{ $noti['data']['contents'] ?? ''}}
+                        </a>
                         @break
-                    @case('user-certification')
+                        @case('reward:news')
+                        <a href="{{route('pc:newsread', ['news'=>$noti['data']['news']['id']])}}">
+                            你的资讯《{{ $noti['data']['news']['title'] }}》被{{ $noti['data']['sender']['name'] }}
+                            打赏了{{ $noti['data']['amount'].$noti['data']['unit'] }}
+                        </a>
+                        @break
+                        @case('user-certification')
                         <a href="{{route('pc:authenticate')}}">
-                        @if($ref['state'] ?? 'accept' == 'rejected')
-                            你申请的身份认证已被驳回，驳回理由：{{ $ref['contents'] }}
+                            @if($noti['data']['state']  === 'rejected')
+                                你申请的身份认证已被驳回，驳回理由：{{ $noti['data']['contents'] }}
+                            @else
+                                你申请的身份认证已通过
+                            @endif
+                        </a>
+                        @break
+                        @case('pinned:feed/comment')
+                        <a href="{{route('pc:feedread', ['feed'=>$noti['data']['feed']['id']])}}">
+                            @if($noti['data']['state'] === 'rejected' )
+                                你的动态评论「{{ $noti['data']['comment']['contents'] }}」已被拒绝置顶
+                            @else
+                                你的动态评论「{{ $noti['data']['comment']['contents'] }}」已置顶
+                            @endif
+                        </a>
+                        @break
+                        @case('feed:topic:create:passed')
+                        <a href="{{route('pc:topicDetail', ['topic_id' => $noti['data']['topic']['id']])}}">
+                            {{$noti['data']['contents']}}
+                        </a>
+                        @break
+                        @case('feed:topic:create:failed')
+                        <a href="javascript:void(0)">
+                            {{$noti['data']['contents']}}
+                        </a>
+                        @break
+                        @case('pinned:news/comment')
+                        <a href="{{route('pc:newsread', ['news'=>$noti['data']['news']['id']])}}">
+                            @if($noti['data']['state'] === 'rejected')
+                                资讯《{{ $noti['data']['news']['title'] }}
+                                》评论「{{ $noti['data']['comment']['contents'] }}」已被拒绝置顶
+                            @else
+                                资讯《{{ $noti['data']['news']['title'] }}
+                                》评论「{{ $noti['data']['comment']['contents'] }}」已置顶
+                            @endif
+                        </a>
+                        @break
+                        @case('news:delete:reject')
+                        <a href="{{route('pc:newsread', ['news'=>$noti['data']['news']['id']])}}">
+                            你申请删除资讯「{{ $noti['data']['news']['title']}}」的请求已被拒绝
+                        </a>
+                        @break
+                        @case('news:delete:accept')
+                        <a href="javascript:void(0)">
+                            你申请删除资讯「{{ $noti['data']['news']['title']}}」的请求已被通过
+                        </a>
+                        @break
+                        @case('user-currency:cash')
+                        @if($noti['data']['state'] === 'rejected')
+                            你的积分提现申请已被拒绝，理由：{{$noti['data']['contents']}}
                         @else
-                            你申请的身份认证已通过
+                            你的积分提现申请已通过申请
                         @endif
+                        @break
+                        @case('delete:feed/comment')
+                        <a href="{{route('pc:feedread',['feed' => $noti['data']['feed']['id']])}}">
+                            你的评论「{{$noti['data']['comment']['contents']}}」已被管理员删除
                         </a>
                         @break
-                    @case('qa:answer-adoption')
-                    @case('question:answer')
-                        <a href="{{route('pc:answeread', ['question'=>$ref['question']['id'],'answer'=>$ref['answer']['id']])}}">
-                            你提交的问题回答被采纳
-                        </a>
+                        @case('report')
+                        @switch($noti['data']['resource']['type'])
+                            @case('groups')
+                            <a href="{{route('pc:groupread',['group_id' => $noti['data']['resource']['id']])}}">
+                                你举报的圈子「{{$noti['data']['subject']}}
+                                」平台已{{$noti['data']['state'] === 'rejected' ? '驳回' : '处理'}},
+                                备注: {{$noti['data']['resource']['mark'] ?? ''}}
+                            </a>
+                            @break
+                            @case('feeds')
+                            <a href="{{route('pc:feedread',['feed' => $noti['data']['resource']['id']])}}">
+                                你举报的「{{$noti['data']['subject']}}
+                                」平台已{{$noti['data']['state'] === 'rejected' ? '驳回' : '处理'}},
+                                备注: {{$noti['data']['resource']['mark'] ?? ''}}
+                            </a>
+                            @break
+                            @case('news')
+                            <a href="{{route('pc:newsread',['news' => $noti['data']['resource']['id']])}}">
+                                你举报的「{{$noti['data']['subject']}}
+                                」平台已{{$noti['data']['state'] === 'rejected' ? '驳回' : '处理'}},
+                                备注: {{$noti['data']['resource']['mark'] ?? ''}}
+                            </a>
+                            @break
+                            @case('comments')
+                            <a href="javascript:void(0)">
+                                你举报的「{{$noti['data']['subject']}}
+                                」平台已{{$noti['data']['state'] === 'rejected' ? '驳回' : '处理'}},
+                                备注: {{$noti['data']['resource']['mark'] ?? ''}}
+                            </a>
+                            @break
+                        @endswitch
                         @break
-                    @case('qa:reward')
-                        <a href="{{route('pc:answeread', ['question'=>$ref['answer']['question_id'],'answer'=>$ref['answer']['id']])}}">
-                            {{ $ref['sender']['name'] }}打赏了你的回答
-                        </a>
-                        @break
-                    @case('qa:invitation')
-                        <a href="{{route('pc:questionread', ['question'=>$ref['question']['id']])}}">
-                            {{ $ref['sender']['name'] }}邀请你回答问题「{{ $ref['question']['subject'] }}」
-                        </a>
-                        @break
-                    @case('pinned:feed/comment')
-                        <a href="{{route('pc:feedread', ['feed'=>$ref['feed']['id']])}}">
-                        @if($ref['state'] ?? 'accept' == 'rejected')
-                            拒绝用户动态评论「{{ $ref['comment']['contents'] }}」的置顶请求
-                        @else
-                            同意用户动态评论「{{ $ref['comment']['contents'] }}」的置顶请求
-                        @endif
-                        </a>
-                        @break
-                    @case('pinned:news/comment')
-                        <a href="{{route('pc:newsread', ['news'=>$ref['news']['id']])}}">
-                        @if($ref['state'] ?? 'accept' == 'rejected')
-                            拒绝用户关于资讯《{{ $ref['news']['title'] }}》评论「{{ $ref['comment']['contents'] }}」的置顶请求
-                        @else
-                            同意用户关于资讯《{{ $ref['news']['title'] }}》评论「{{ $ref['comment']['contents'] }}」的置顶请求
-                        @endif
-                        </a>
-                        @break
-                    @case('group:comment-pinned')
-                    @case('group:send-comment-pinned')
-                        <a href="{{route('pc:grouppost', ['group_id'=>$ref['group_id'], ''=>$ref['post']['id']])}}">
-                        @if($ref['state'] ?? 'accept' == 'rejected')
-                            拒绝帖子「{{ $ref['post']['title']}}」的评论置顶请求
-                        @else
-                            同意帖子「{{ $ref['post']['title']}}」的评论置顶请求
-                        @endif
-                        </a>
-                        @break
-                    @case('group:post-pinned')
-                        <a href="{{route('pc:grouppost', ['group_id'=>$ref['group_id'], ''=>$ref['post']['id']])}}">
-                        @if($ref['state'] ?? 'accept' == 'rejected')
-                            拒绝用于帖子「{{ $ref['post']['title']}}」的置顶请求
-                        @else
-                            同意用于帖子「{{ $ref['post']['title']}}」的置顶请求
-                        @endif
-                        </a>
-                        @break
-                    @case('group:pinned-admin')
-                        <a href="{{route('pc:grouppost', ['group_id'=>$ref['group_id'], ''=>$ref['post']['id']])}}">
-                            你的帖子「{{ $ref['post']['title'] }}」被管理员置顶
-                        </a>
                     @endswitch
                 </div>
                 <div class="tz-date">{{ getTime($noti['created_at']) }}</div>

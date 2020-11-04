@@ -16,8 +16,8 @@
  * +----------------------------------------------------------------------+
  */
 
-use Illuminate\Support\Facades\Route;
 use Illuminate\Contracts\Routing\Registrar as RouteRegisterContract;
+use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------

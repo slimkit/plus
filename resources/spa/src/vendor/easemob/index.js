@@ -30,8 +30,7 @@ export function openWebIM () {
   if (
     CURUSER.id &&
     status === 0 &&
-    !WebIM.conn.isOpened() &&
-    !WebIM.conn.isOpening()
+    !WebIM.conn.isOpened()
   ) {
     Api.get('easemob/password', {
       validateStatus: s => s === 201,

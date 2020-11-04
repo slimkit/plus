@@ -19,17 +19,18 @@
 namespace Zhiyi\Component\ZhiyiPlus\PlusComponentPc\Controllers;
 
 use Illuminate\Http\Request;
-use function Zhiyi\Component\ZhiyiPlus\PlusComponentPc\api;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentNews\Models\News;
+use function Zhiyi\Component\ZhiyiPlus\PlusComponentPc\api;
 use function Zhiyi\Component\ZhiyiPlus\PlusComponentPc\formatPinneds;
 
 class NewsController extends BaseController
 {
     /**
      * 资讯首页.
-     * @author Foreach
-     * @param  Request $request
+     * @param Request $request
      * @return mixed
+     * @throws \Throwable
+     * @author Foreach
      */
     public function index(Request $request)
     {
@@ -63,6 +64,7 @@ class NewsController extends BaseController
                 'status'  => true,
                 'data' => $newsData,
                 'after' => $after,
+                'count' => count($news['news']),
             ]);
         }
 
@@ -77,9 +79,9 @@ class NewsController extends BaseController
 
     /**
      * 资讯详情.
-     * @author Foreach
-     * @param  int    $news_id [资讯id]
+     * @param News $news
      * @return mixed
+     * @author Foreach
      */
     public function read(News $news)
     {
@@ -129,10 +131,11 @@ class NewsController extends BaseController
 
     /**
      * 文章评论列表.
-     * @author ZsyD
-     * @param  Request $request
-     * @param  int     $news_id [资讯id]
+     * @param Request $request
+     * @param int $news_id [资讯id]
      * @return \Illuminate\Http\JsonResponse
+     * @throws \Throwable
+     * @author ZsyD
      */
     public function comments(Request $request, int $news_id)
     {
@@ -149,6 +152,7 @@ class NewsController extends BaseController
             'status'  => true,
             'data' => $commentData,
             'after' => $after,
+            'count' => count($comments),
         ]);
     }
 }

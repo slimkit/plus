@@ -231,7 +231,7 @@ export default {
     },
     userBackground () {
       const { url } = this.user.bg || {}
-      return url || require('@/images/user_home_default_cover.png')
+      return url || require('../images/user_home_default_cover.png')
     },
     verified () {
       return this.user.verified
@@ -332,7 +332,7 @@ export default {
     followUserByStatus (status) {
       if (!status || this.fetchFollow) return
       this.fetchFollow = true
-
+      let { user: { extra: { followers_count: followersCount = 0 } = {} } = {} } = this
       userApi
         .followUserByStatus({
           id: this.user.id,
@@ -341,6 +341,7 @@ export default {
         .then(follower => {
           this.relation = follower
           this.fetchFollow = false
+          this.user.extra.followers_count = follower ? followersCount + 1 : followersCount - 1
         })
     },
     hidenFilter () {
@@ -374,14 +375,13 @@ export default {
       this.isMine && this.screen !== 'all' && (params.screen = this.screen)
 
       this.$http
-        .get('/feeds', {
-          params,
-        })
+        .get('/feeds', { params })
         .then(({ data: { feeds = [] } }) => {
           this.feeds = loadmore ? [...this.feeds, ...feeds] : feeds
           this.$refs.portal.afterLoadMore(feeds.length < params.limit)
         })
         .finally(() => {
+          this.fetchFeeding = false
           this.$refs.portal.afterUpdate()
         })
     },

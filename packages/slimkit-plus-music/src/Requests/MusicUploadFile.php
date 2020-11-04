@@ -42,7 +42,7 @@ class MusicUploadFile extends FormRequest
     public function rules()
     {
         return [
-            'file' => 'required|max:20480|file|mimetypes:audio/mpeg,audio/midi,audio/ogg,audio/mp3',
+            'file' => 'required|max:204800|file|mimetypes:audio/mpeg,audio/midi,audio/ogg,audio/mp3',
         ];
     }
 

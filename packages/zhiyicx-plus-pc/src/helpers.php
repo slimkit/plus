@@ -18,17 +18,18 @@
 
 namespace Zhiyi\Component\ZhiyiPlus\PlusComponentPc;
 
+use Arr;
+use Artisan;
 use Auth;
-use Session;
-use HTMLPurifier;
 use Carbon\Carbon;
 use GuzzleHttp\Client;
+use HTMLPurifier;
 use HTMLPurifier_Config;
-use Illuminate\Support\Arr;
+use Michelf\MarkdownExtra;
+use Request;
+use Route;
+use Session;
 use Zhiyi\Plus\Models\User;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\Artisan;
 
 /**
  * [formatContent 动态列表内容处理].
@@ -38,12 +39,12 @@ use Illuminate\Support\Facades\Artisan;
  * @return [string]
  * @author Foreach
  */
-function formatContent($content) {
+function formatContent($content)
+{
     // 链接替换
     $content
         = preg_replace_callback('/((?:https?|mailto|ftp):\/\/([^\x{2e80}-\x{9fff}\s<\'\"“”‘’，。}]*)?)/u',
-        function ($url)
-        {
+        function ($url) {
             return '<a class="mcolor" href="'.$url[0].'">访问链接+</a>';
         }, $content);
 
@@ -60,8 +61,7 @@ function formatContent($content) {
 
     // at 用户替换为链接
     $content = preg_replace_callback('/\x{00ad}@((?:[^\/]+?))\x{00ad}/iu',
-        function ($match)
-        {
+        function ($match) {
             $username = $match[1];
             $url = route('pc:mine', [
                 'user' => $username,
@@ -100,8 +100,7 @@ function inapi(
     ]);
 
     // 注入JWT请求单例
-    app()->resolving(\Tymon\JWTAuth\JWT::class, function ($jwt) use ($request)
-    {
+    app()->resolving(\Tymon\JWTAuth\JWT::class, function ($jwt) use ($request) {
         $jwt->setRequest($request);
 
         return $jwt;
@@ -109,8 +108,7 @@ function inapi(
     Auth::guard('api')->setRequest($request);
 
     // 解决获取认证用户
-    $request->setUserResolver(function ()
-    {
+    $request->setUserResolver(function () {
         return Auth::user('api');
     });
 
@@ -127,32 +125,32 @@ function inapi(
 /**
  * [api].
  *
- * @param  string  $method  [请求方式]
- * @param  string  $url  [地址]
- * @param  array  $params  [参数]
+ * @param string $method [请求方式]
+ * @param string $url [地址]
+ * @param array $params [参数]
  *
- * @return
+ * @return mixed
+ * @throws \GuzzleHttp\Exception\GuzzleException
  * @author Foreach
  */
-function api($method = 'POST', $url = '', $params = []) {
-    $client = new Client([
-        'base_uri' => config('app.url'),
-    ]);
-
+function api($method = 'POST', $url = '', $params = [])
+{
     $headers = [
         'Accept'        => 'application/json',
         'Authorization' => 'Bearer '.Session::get('token'),
     ];
+    $client = new Client([
+        'base_uri' => config('app.url'),
+        'headers'  => $headers,
+    ]);
     if ($method == 'GET') {
         $response = $client->request($method, $url, [
             'query'       => $params,
-            'headers'     => $headers,
             'http_errors' => false,
         ]);
     } else {
         $response = $client->request($method, $url, [
             'form_params' => $params,
-            'headers'     => $headers,
             'http_errors' => false,
         ]);
     }
@@ -168,7 +166,8 @@ function api($method = 'POST', $url = '', $params = []) {
  * @return
  * @author Foreach
  */
-function getTime($time) {
+function getTime($time)
+{
     // 本地化
     $time = Carbon::parse($time);
     Carbon::setLocale('zh');
@@ -205,7 +204,8 @@ function getTime($time) {
  * @return [string]
  * @author Foreach
  */
-function getImageUrl($image = [], $width, $height, $cut = true, $blur = 0) {
+function getImageUrl($image = [], $width, $height, $cut = true, $blur = 0)
+{
     if (! $image) {
         return false;
     }
@@ -235,20 +235,20 @@ function getImageUrl($image = [], $width, $height, $cut = true, $blur = 0) {
  * @return
  * @author Zsyd
  */
-function cacheClear() {
+function cacheClear()
+{
     return Artisan::call('cache:clear');
 }
 
 /**
  * [getAvatar 获取头像].
- *
  * @param  [type]  $user  [用户数组]
- * @param  int  $width  [宽度]
- *
- * @return [string]
+ * @param int $width [宽度]
+ * @return string [string]
  * @author Foreach
  */
-function getAvatar($user, $width = 0) {
+function getAvatar($user, $width = 0)
+{
     if (empty($user['avatar']) || ! $user['avatar']) {
         switch ($user['sex'] ?? false) {
             case 1:
@@ -277,40 +277,29 @@ function getAvatar($user, $width = 0) {
 
 /**
  * [formatMarkdown 转换markdown].
- *
  * @param  [string] $body [内容]
- *
- * @return [string] [html]
+ * @return string|string[]|null
  * @author Foreach
  */
-function formatMarkdown($body) {
+function formatMarkdown($body)
+{
     // 图片替换
     $body = preg_replace('/\@\!\[(.*?)\]\((\d+)\)/i',
         '![$1]('.getenv('APP_URL').'/api/v2/files/$2)', $body);
 
-    // $content = htmlspecialchars_decode(\Parsedown::instance()->setMarkupEscaped(true)->text($body));
-    // if (!strip_tags($content)) {
-    //     $content = preg_replace_callback('/\[\]\((.*?)\)/i', function($url){
-    //         return '<p><a href="'.$url[1].'">'.$url[1].'</a></p>';
-    //     }, $body);
-    // }
+    $body = MarkdownExtra::defaultTransform($body);
 
-    $config = HTMLPurifier_Config::createDefault();
-    $config->set('HTML.Allowed', 'br,a[href]');
-    $purifier = new HTMLPurifier($config);
-    $body = $purifier->purify($body);
-    $content = \Parsedown::instance()->text($body);
-
-    return $content;
+    return $body;
 }
 
 /**
  * @param  [string] $body [内容]
  *
- * @return [string] [html]
+ * @return string
  * @author Foreach
  */
-function formatList($body) {
+function formatList($body)
+{
     $body = preg_replace('/\@\!\[(.*?)\]\((\d+)\)/', '[图片]', $body);
 
     $config = HTMLPurifier_Config::createDefault();
@@ -327,24 +316,24 @@ function formatList($body) {
  *
  * @param  [type] $id [用户id]
  *
- * @return
+ * @return array
  * @author Foreach
  */
-function getUserInfo($id) {
-    return User::find($id)->toArray();
+function getUserInfo($id): array
+{
+    return User::query()->find($id)->toArray();
 }
 
 /**
  * [setPinneds 置顶数据组装].
  *
- * @param  [type] $data    [列表数据]
- * @param  [type] $pinneds [置顶数据]
- * @param  [type] $k       [键名]
- *
- * @return [type]        [description]
+ * @param $data
+ * @param $pinneds
+ * @return mixed
  * @author Foreach
  */
-function formatPinneds($data, $pinneds) {
+function formatPinneds($data, $pinneds)
+{
     if (empty($pinneds)) {
         return $data;
     }
@@ -370,9 +359,10 @@ function formatPinneds($data, $pinneds) {
  * @return [array]
  * @author Foreach
  */
-function formatRepostable($feeds) {
+function formatRepostable($feeds)
+{
     foreach ($feeds as &$feed) {
-        if (! $feed['repostable_type']) {
+        if (! isset($feed['repostable_type'])) {
             continue;
         }
         $feed['repostable'] = [];

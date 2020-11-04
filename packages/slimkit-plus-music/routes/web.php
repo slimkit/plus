@@ -17,7 +17,6 @@ declare(strict_types=1);
  * | Homepage: www.thinksns.com                                           |
  * +----------------------------------------------------------------------+
  */
-
 // Route::any('/component-example', 'ExampleWebController@example');
 // Route::any('/component-example/admin', 'ExampleWebController@admin')
 //     ->middleware('auth:web')

@@ -21,10 +21,10 @@ declare(strict_types=1);
 namespace Zhiyi\Plus\AtMessage\Resources;
 
 use InvalidArgumentException;
+use Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\Feed as FeedModel;
+use Zhiyi\Plus\AtMessage\ResourceInterface;
 use Zhiyi\Plus\Models\User as UserModel;
 use Zhiyi\Plus\Types\Models as ModelTypes;
-use Zhiyi\Plus\AtMessage\ResourceInterface;
-use Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\Feed as FeedModel;
 
 class Feed implements ResourceInterface
 {

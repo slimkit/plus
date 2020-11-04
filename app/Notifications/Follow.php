@@ -19,10 +19,10 @@
 namespace Zhiyi\Plus\Notifications;
 
 use Illuminate\Bus\Queueable;
-use Zhiyi\Plus\Models\User as UserModel;
-use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Notifications\Notification;
 use Medz\Laravel\Notifications\JPush\Message as JPushMessage;
+use Zhiyi\Plus\Models\User as UserModel;
 
 class Follow extends Notification implements ShouldQueue
 {

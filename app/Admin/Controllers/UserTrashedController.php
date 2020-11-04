@@ -21,8 +21,8 @@ declare(strict_types=1);
 namespace Zhiyi\Plus\Admin\Controllers;
 
 use Illuminate\Http\Request;
-use Zhiyi\Plus\Models\User as UserModel;
 use Zhiyi\Plus\Admin\Resources\TrashedUserResource;
+use Zhiyi\Plus\Models\User as UserModel;
 
 class UserTrashedController extends Controller
 {

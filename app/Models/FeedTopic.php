@@ -21,12 +21,12 @@ declare(strict_types=1);
 namespace Zhiyi\Plus\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Zhiyi\Plus\FileStorage\FileMetaInterface;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Zhiyi\Plus\FileStorage\Traits\EloquentAttributeTrait;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\Feed as FeedModel;
+use Zhiyi\Plus\FileStorage\FileMetaInterface;
+use Zhiyi\Plus\FileStorage\Traits\EloquentAttributeTrait;
 
 class FeedTopic extends Model
 {

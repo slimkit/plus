@@ -20,9 +20,9 @@ declare(strict_types=1);
 
 namespace Zhiyi\Plus\FileStorage\Validators;
 
-use function Zhiyi\Plus\setting;
 use Zhiyi\Plus\FileStorage\ChannelManager;
 use Zhiyi\Plus\FileStorage\Exceptions\NotAllowUploadMimeTypeException;
+use function Zhiyi\Plus\setting;
 
 class CreateTaskValidator extends AbstractValidator
 {

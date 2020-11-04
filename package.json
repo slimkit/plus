@@ -1,55 +1,54 @@
 {
-  "private": true,
-  "version": "2.3.0",
-  "scripts": {
-    "dev": "npm run development",
-    "changelog": "rm -rf CHANGELOG.md && conventional-changelog -p angular -r 2 -i CHANGELOG.md -s",
-    "postinstall": "opencollective postinstall",
-    "docs:dev": "vuepress dev docs",
-    "docs:build": "vuepress build docs",
-    "development": "cross-env NODE_ENV=development node_modules/webpack/bin/webpack.js --progress --config=node_modules/laravel-mix/setup/webpack.config.js",
-    "watch": "npm run development -- --watch",
-    "watch-poll": "npm run watch -- --watch-poll",
-    "hot": "cross-env NODE_ENV=development node_modules/webpack-dev-server/bin/webpack-dev-server.js --inline --hot --disable-host-check --config=node_modules/laravel-mix/setup/webpack.config.js",
-    "prod": "npm run production",
-    "production": "cross-env NODE_ENV=production node_modules/webpack/bin/webpack.js --no-progress --config=node_modules/laravel-mix/setup/webpack.config.js"
-  },
-  "devDependencies": {
-    "@babel/plugin-proposal-class-properties": "^7.4.4",
-    "@babel/preset-env": "^7.4.4",
-    "conventional-changelog-cli": "^2.0.1",
-    "opencollective": "^1.0.3",
-    "sass": "^1.20.1",
-    "sass-loader": "7.*",
-    "vue-template-compiler": "^2.5.16",
-    "axios": "^0.19",
-    "cross-env": "^7.0",
-    "laravel-mix": "^5.0.1",
-    "lodash": "^4.17.19",
-    "resolve-url-loader": "^3.1.0"
-  },
-  "dependencies": {
-    "@slimkit/plus-editor": "^0.0.3",
-    "axios": "^0.19.0",
-    "bootstrap-sass": "^3.3.7",
-    "chart.js": "^2.7.2",
-    "echarts": "^4.1.0",
-    "highlight.js": "^9.12.0",
-    "jquery": "^3.3.1",
-    "js-md5": "^0.7.3",
-    "lodash": "^4.17.10",
-    "markdown-it": "^8.4.1",
-    "plus-message-bundle": "^1.0.2",
-    "simkit-bootstrap-ui-kit": "^1.1.1",
-    "vue": "^2.5.17",
-    "vue-echarts-v3": "^2.0.1",
-    "vue-router": "^3.0.7",
-    "vuex": "^3.0.1",
-    "vuex-router-sync": "^5.0.0"
-  },
-  "collective": {
-    "type": "opencollective",
-    "url": "https://opencollective.com/plus",
-    "logo": "https://opencollective.com/plus/logo.txt"
-  }
+    "private": true,
+    "version": "2.4.0",
+    "scripts": {
+        "dev": "npm run development",
+        "development": "cross-env NODE_ENV=development node_modules/webpack/bin/webpack.js --progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",
+        "watch": "npm run development -- --watch",
+        "watch-poll": "npm run watch -- --watch-poll",
+        "hot": "cross-env NODE_ENV=development node_modules/webpack-dev-server/bin/webpack-dev-server.js --inline --hot --config=node_modules/laravel-mix/setup/webpack.config.js --progress",
+        "prod": "npm run production",
+        "production": "cross-env NODE_ENV=production node_modules/webpack/bin/webpack.js --progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",
+        "changelog": "rm -rf CHANGELOG.md && conventional-changelog -p angular -r 2 -i CHANGELOG.md -s",
+        "postinstall": "opencollective postinstall",
+        "docs:dev": "vuepress dev docs",
+        "docs:build": "vuepress build docs"
+    },
+    "devDependencies": {
+        "@babel/core": "^7.5.5",
+        "@babel/plugin-proposal-class-properties": "^7.5.5",
+        "conventional-changelog-cli": "^2.0.23",
+        "@vue/babel-preset-app": "^3.9.2",
+        "cross-env": "^5.1.5",
+        "laravel-mix": "^4.1.2",
+        "opencollective": "^1.0.3",
+        "resolve-url-loader": "^3.1.0",
+        "sass": "^1.22.9",
+        "sass-loader": "7.*",
+        "vue-template-compiler": "^2.6.10"
+    },
+    "dependencies": {
+        "@slimkit/plus-editor": "^0.0.3",
+        "axios": "^0.19.0",
+        "bootstrap-sass": "^3.3.7",
+        "chart.js": "^2.7.2",
+        "echarts": "^4.1.0",
+        "highlight.js": "^9.12.0",
+        "jquery": "^3.3.1",
+        "js-md5": "^0.7.3",
+        "lodash": "^4.17.15",
+        "markdown-it": "^8.4.1",
+        "plus-message-bundle": "^1.0.2",
+        "simkit-bootstrap-ui-kit": "^1.1.1",
+        "vue": "^2.6.10",
+        "vue-echarts-v3": "^2.0.1",
+        "vue-router": "^3.0.1",
+        "vuex": "^3.1.1",
+        "vuex-router-sync": "^5.0.0"
+    },
+    "collective": {
+        "type": "opencollective",
+        "url": "https://opencollective.com/plus",
+        "logo": "https://opencollective.com/plus/logo.txt"
+    }
 }

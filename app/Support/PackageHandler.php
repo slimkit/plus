@@ -30,7 +30,6 @@ abstract class PackageHandler
      * @var array
      */
     private static $handles = [];
-
     /**
      * The handler methods.
      *
@@ -52,8 +51,9 @@ abstract class PackageHandler
     /**
      * Register handler.
      *
-     * @param string $name
-     * @param PackageHandler|string $handler
+     * @param  string  $name
+     * @param  PackageHandler|string  $handler
+     *
      * @return void
      * @author Seven Du <shiweidu@outlook.com>
      */
@@ -65,7 +65,8 @@ abstract class PackageHandler
     /**
      * 转换处理方法名称为显示名称.
      *
-     * @param string $handle
+     * @param  string  $handle
+     *
      * @return string
      * @author Seven Du <shiweidu@outlook.com>
      */
@@ -75,13 +76,14 @@ abstract class PackageHandler
             $handle = substr($handle, 0, -6);
         }
 
-        return str_replace('_', '-', snake_case($handle));
+        return str_replace('_', '-', Str::snake($handle));
     }
 
     /**
      * 转换处理方法为类方法名称.
      *
-     * @param string $handle
+     * @param  string  $handle
+     *
      * @return string
      * @author Seven Du <shiweidu@outlook.com>
      */
@@ -105,8 +107,11 @@ abstract class PackageHandler
         if (! $this->methods) {
             $this->methods = [];
             foreach (get_class_methods($this) as $method) {
-                if (strtolower(substr($method, -6)) === 'handle' && substr($method, -7) === substr($method, -7, 1).'Handle') {
-                    array_push($this->methods, $this->formatHandleToDisplay($method));
+                if (strtolower(substr($method, -6)) === 'handle'
+                    && substr($method, -7) === substr($method, -7, 1).'Handle'
+                ) {
+                    array_push($this->methods,
+                        $this->formatHandleToDisplay($method));
                 }
             }
         }
@@ -117,8 +122,9 @@ abstract class PackageHandler
     /**
      *  Run handler.
      *
-     * @param \Illuminate\Console\Command $command
-     * @param string $handler
+     * @param  \Illuminate\Console\Command  $command
+     * @param  string  $handler
+     *
      * @return mixed
      * @author Seven Du <shiweidu@outlook.com>
      */

@@ -22,9 +22,9 @@ namespace Zhiyi\Plus\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
 use Zhiyi\Plus\Http\Controllers\Controller;
-use Zhiyi\Plus\Models\Sensitive as SensitiveModel;
 use Zhiyi\Plus\Http\Requests\Admin\CreateSensitive as CreateSensitiveRequest;
 use Zhiyi\Plus\Http\Requests\Admin\UpdateSensitive as UpdateSensitiveRequest;
+use Zhiyi\Plus\Models\Sensitive as SensitiveModel;
 
 class SensitiveController extends Controller
 {

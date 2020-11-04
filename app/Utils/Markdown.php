@@ -18,9 +18,9 @@
 
 namespace Zhiyi\Plus\Utils;
 
-use Parsedown;
 use HTMLPurifier;
 use League\HTMLToMarkdown\HtmlConverter;
+use Parsedown;
 
 class Markdown
 {

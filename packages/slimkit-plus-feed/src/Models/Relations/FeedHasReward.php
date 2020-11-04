@@ -21,9 +21,9 @@ declare(strict_types=1);
 namespace Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\Relations;
 
 use DB;
-use Zhiyi\Plus\Models\User;
-use Zhiyi\Plus\Models\Reward;
 use Illuminate\Support\Facades\Cache;
+use Zhiyi\Plus\Models\Reward;
+use Zhiyi\Plus\Models\User;
 
 trait FeedHasReward
 {

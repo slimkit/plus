@@ -20,8 +20,8 @@ declare(strict_types=1);
 
 namespace Zhiyi\Plus\Tests\Feature\API2;
 
-use Zhiyi\Plus\Tests\TestCase;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Zhiyi\Plus\Tests\TestCase;
 
 class RegisterVerifyCodeTest extends TestCase
 {
@@ -36,13 +36,11 @@ class RegisterVerifyCodeTest extends TestCase
     public function testGetVerifyCode()
     {
         $registerByPhone = $this->json('POST', 'api/v2/verifycodes/register', [
-            'phone' => '13730111234',
+            'phone' => '18908019700',
         ]);
-
         $registerByEmail = $this->json('POST', 'api/v2/verifycodes/register', [
-            'email' => 'aaa@bbb.com',
+            'email' => 'support@zhiyicx.com',
         ]);
-
         $this->assertLoginResponse($registerByPhone);
         $this->assertLoginResponse($registerByEmail);
     }
@@ -51,6 +49,7 @@ class RegisterVerifyCodeTest extends TestCase
      * Assert login response.
      *
      * @param $response
+     *
      * @return void
      */
     protected function assertLoginResponse($response)

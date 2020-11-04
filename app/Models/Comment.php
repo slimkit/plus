@@ -21,15 +21,34 @@ declare(strict_types=1);
 namespace Zhiyi\Plus\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Illuminate\Database\Eloquent\Relations\MorphTo;
 
 class Comment extends Model
 {
     use HasFactory;
+    public static function boot()
+    {
+        parent::boot();
+        static::addGlobalScope('user', function (Builder $query) {
+            $query->with('user');
+        });
+        static::addGlobalScope('reply', function (Builder $query) {
+            $query->with([
+                'reply' => function (BelongsTo $belongsTo) {
+                    $belongsTo->withoutGlobalScope('certification');
+                },
+            ]);
+        });
+    }
+
     /**
      * Has commentable.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\MorphTo
+     * @return MorphTo
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function commentable()
@@ -40,20 +59,22 @@ class Comment extends Model
     /**
      * Has a user.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return BelongsTo
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function user()
     {
-        return $this->belongsTo(User::class, 'user_id', 'id');
+        return $this->belongsTo(User::class, 'user_id', 'id')
+            ->withTrashed();
     }
 
     /**
      * 被回复者.
+     *
      * @Author   Wayne
      * @DateTime 2018-04-14
      * @Email    qiaobin@zhiyicx.com
-     * @return   [type]              [description]
+     * @return BelongsTo
      */
     public function target()
     {
@@ -67,10 +88,11 @@ class Comment extends Model
 
     /**
      * 被回复者.
+     *
      * @Author   Wayne
      * @DateTime 2018-04-14
      * @Email    qiaobin@zhiyicx.com
-     * @return   [type]              [description]
+     * @return BelongsTo
      */
     public function reply()
     {
@@ -80,7 +102,7 @@ class Comment extends Model
     /**
      * 被举报记录.
      *
-     * @return morphMany
+     * @return MorphMany
      * @author BS <414606094@qq.com>
      */
     public function reports()

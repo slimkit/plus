@@ -20,9 +20,9 @@ declare(strict_types=1);
 
 namespace Zhiyi\Plus\Packages\Wallet\Types;
 
-use Zhiyi\Plus\Packages\Wallet\Order;
 use Zhiyi\Plus\Models\User as UserModel;
 use Zhiyi\Plus\Models\WalletOrder as WalletOrderModel;
+use Zhiyi\Plus\Packages\Wallet\Order;
 use Zhiyi\Plus\Packages\Wallet\TargetTypes\UserTarget;
 
 class UserType extends Type

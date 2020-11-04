@@ -20,9 +20,9 @@ declare(strict_types=1);
 
 namespace SlimKit\PlusID\Actions\User;
 
-use Validator;
 use SlimKit\PlusID\Actions\Action;
 use SlimKit\PlusID\Support\Message;
+use Validator;
 use Zhiyi\Plus\Models\User as UserModel;
 
 class Create extends Action

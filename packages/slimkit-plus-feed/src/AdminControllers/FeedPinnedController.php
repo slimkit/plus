@@ -21,13 +21,14 @@ declare(strict_types=1);
 namespace Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\AdminControllers;
 
 use Carbon\Carbon;
-use Illuminate\Support\Str;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
+use Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\Feed;
+use Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\FeedPinned;
 use Zhiyi\Plus\Http\Controllers\Controller;
 use Zhiyi\Plus\Notifications\System as SystemNotification;
-use Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\Feed;
 use Zhiyi\Plus\Packages\Currency\Processes\User as UserProcess;
-use Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\FeedPinned;
 
 class FeedPinnedController extends Controller
 {
@@ -127,11 +128,12 @@ class FeedPinnedController extends Controller
             $pinned->save();
         } else {
             $pinned = FeedPinned::find($pinned);
+            $date = new Carbon($pinned->expires_at);
+            $datetime = $date->addDay($time);
+            $pinned->day = $datetime->diffInDays(Carbon::now());
+            $pinned->expires_at = $datetime->toDateTimeString();
         }
-        $date = new Carbon($pinned->expires_at);
-        $datetime = $date->addDay($time);
-        $pinned->day = $datetime->diffInDays(Carbon::now());
-        $pinned->expires_at = $datetime->toDateTimeString();
+
         $pinned->save();
 
         $pinned->user->notify(new SystemNotification('你的动态被管理员设置为置顶', [
@@ -147,14 +149,13 @@ class FeedPinnedController extends Controller
 
     /**
      * 撤销置顶.
-     * @param  Request    $request [description]
-     * @param  Feed       $feed    [description]
-     * @param  FeedPinned $pinned  [description]
-     * @return [type]              [description]
+     * @param Feed $feed [description]
+     * @param FeedPinned $pinned [description]
+     * @return JsonResponse [type]              [description]
      */
     public function destroy(Feed $feed, FeedPinned $pinned)
     {
-        $pinned->where('target', $feed->id)
+        $pinned->newQuery()->where('target', $feed->id)
             ->where('channel', 'feed')
             ->delete();
 

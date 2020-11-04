@@ -20,8 +20,8 @@ declare(strict_types=1);
 
 namespace Zhiyi\Plus\Bootstrap;
 
-use Zhiyi\Plus\Support\Configuration;
 use Illuminate\Contracts\Foundation\Application;
+use Zhiyi\Plus\Support\Configuration;
 
 class LoadConfiguration
 {

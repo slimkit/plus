@@ -22,16 +22,34 @@ namespace Zhiyi\Plus\Providers;
 
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\ServiceProvider;
-use function Zhiyi\Plus\validateUsername;
-use Zhiyi\Plus\Packages\Wallet\TypeManager;
-use Illuminate\Http\Resources\Json\JsonResource;
-use function Zhiyi\Plus\validateChinaPhoneNumber;
+use Zhiyi\Plus\Models\User;
+use Zhiyi\Plus\Observers\UserObserver;
 use Zhiyi\Plus\Packages\Wallet\TargetTypeManager;
+use Zhiyi\Plus\Packages\Wallet\TypeManager;
+use function Zhiyi\Plus\validateChinaPhoneNumber;
+use function Zhiyi\Plus\validateUsername;
 
 class AppServiceProvider extends ServiceProvider
 {
     /**
-     * Register any application services.
+     * Bootstrap any application services.
+     *
+     * @return void
+     */
+    public function boot()
+    {
+        Schema::defaultStringLength(191);
+        JsonResource::withoutWrapping();
+        // 注册验证规则.
+        $this->registerValidator();
+
+        User::observe([
+            UserObserver::class,
+        ]);
+    }
+
+    /**
+     * Resgister the application service.
      *
      * @return void
      */
@@ -50,7 +68,8 @@ class AppServiceProvider extends ServiceProvider
         });
 
         $this->app->singleton('at-message', function ($app) {
-            $manager = $app->make(\Zhiyi\Plus\AtMessage\ResourceManagerInterface::class);
+            $manager
+                = $app->make(\Zhiyi\Plus\AtMessage\ResourceManagerInterface::class);
 
             return new \Zhiyi\Plus\AtMessage\Message($manager);
         });
@@ -58,20 +77,6 @@ class AppServiceProvider extends ServiceProvider
         $this->app->singleton('at-resource-manager', function ($app) {
             return new \Zhiyi\Plus\AtMessage\ResourceManager($app);
         });
-    }
-
-    /**
-     * Bootstrap any application services.
-     *
-     * @return void
-     * @author Seven Du <shiweidu@outlook.com>
-     */
-    public function boot()
-    {
-        Schema::defaultStringLength(191);
-        JsonResource::withoutWrapping();
-        // 注册验证规则.
-        $this->registerValidator();
     }
 
     /**
@@ -93,32 +98,36 @@ class AppServiceProvider extends ServiceProvider
         });
 
         // 注册显示长度验证规则
-        $this->app->validator->extend('display_length', function ($attribute, string $value, array $parameters) {
-            unset($attribute);
+        $this->app->validator->extend('display_length',
+            function ($attribute, string $value, array $parameters) {
+                unset($attribute);
 
-            return $this->validateDisplayLength($value, $parameters);
-        });
+                return $this->validateDisplayLength($value, $parameters);
+            });
 
         // 注册中英文显示宽度验证规则
-        $this->app->validator->extend('display_width', function ($attribute, string $value, array $parameters) {
-            unset($attribute);
+        $this->app->validator->extend('display_width',
+            function ($attribute, string $value, array $parameters) {
+                unset($attribute);
 
-            return $this->validateDisplayWidth($value, $parameters);
-        });
+                return $this->validateDisplayWidth($value, $parameters);
+            });
     }
 
     /**
      * 验证显示长度计算.
      *
-     * @param string|int $value
-     * @param array $parameters
+     * @param  string|int  $value
+     * @param  array  $parameters
+     *
      * @return bool
      * @author Seven Du <shiweidu@outlook.com>
      */
     protected function validateDisplayLength(string $value, array $parameters): bool
     {
         preg_match_all('/[a-zA-Z0-9_]/', $value, $single);
-        $length = count($single[0]) / 2 + mb_strlen(preg_replace('([a-zA-Z0-9_])', '', $value));
+        $length = count($single[0]) / 2
+            + mb_strlen(preg_replace('([a-zA-Z0-9_])', '', $value));
 
         return $this->validateBetween($length, $parameters);
     }
@@ -126,8 +135,9 @@ class AppServiceProvider extends ServiceProvider
     /**
      * 验证中英文显示宽度.
      *
-     * @param string $value
-     * @param array $parameters
+     * @param  string  $value
+     * @param  array  $parameters
+     *
      * @return bool
      */
     protected function validateDisplayWidth(string $value, array $parameters): bool
@@ -140,8 +150,9 @@ class AppServiceProvider extends ServiceProvider
     /**
      * 验证一个数字是否在指定的最小最大值之间.
      *
-     * @param float $number
-     * @param array $parameters
+     * @param  float  $number
+     * @param  array  $parameters
+     *
      * @return bool
      */
     private function validateBetween(float $number, array $parameters): bool

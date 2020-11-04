@@ -20,9 +20,9 @@ declare(strict_types=1);
 
 namespace Zhiyi\Plus\API2\Controllers;
 
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
-use Illuminate\Http\JsonResponse;
 use Zhiyi\Plus\API2\Resources\UserCountsResource;
 use Zhiyi\Plus\Models\UserCount as UserCountModel;
 
@@ -47,7 +47,7 @@ class UserCountsController extends Controller
      */
     public function count(Request $request): JsonResponse
     {
-        $counts = UserCountModel::where('user_id', $request->user()->id)->get();
+        $counts = UserCountModel::query()->where('user_id', $request->user()->id)->get();
         $counts = $counts->keyBy('type')->map(function ($count) {
             return $count->total;
         });

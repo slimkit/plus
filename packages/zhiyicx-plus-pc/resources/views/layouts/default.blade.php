@@ -59,7 +59,7 @@
         @if($config['common']['qq_consult']['enable'] ?? false)
         <div class="qq_consult">
             <a href="//wpa.qq.com/msgrd?v=3&uin={{ $config['common']['qq_consult']['uin'] ?? '' }}&site=qq&menu=yes" target="_blank">产品咨询</a>
-            <a href="http://www.thinksns.com" target="_blank">ThinkSNS 官网</a>
+            <a href="http://thinksns.zhiyicx.com" target="_blank">ThinkSNS 官网</a>
         </div>
         @endif
     </div>
@@ -76,6 +76,16 @@
     {{-- 环信 --}}
     <script src="{{ mix('easemob.min.js', 'assets/pc') }}"></script>
     <script src="{{ asset('assets/pc/js/module.easemob.js') }}"></script>
+    <script>
+      if(TS['id']) {
+          /*设置未读消息定时器*/
+          easemob.getUnreadMessage()
+          var unread_message_timeout = window.setInterval(easemob.getUnreadMessage(),
+              20000)
+          easemob.getUnreadChats()
+          var unread_chat_timeout = window.setInterval(easemob.getUnreadChats, 1000)
+      }
+    </script>
     @yield('scripts')
 
     {{-- 统计代码 --}}

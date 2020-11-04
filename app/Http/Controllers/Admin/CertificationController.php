@@ -20,14 +20,14 @@ declare(strict_types=1);
 
 namespace Zhiyi\Plus\Http\Controllers\Admin;
 
-use Zhiyi\Plus\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
-use Zhiyi\Plus\Models\Certification;
 use Zhiyi\Plus\Http\Controllers\Controller;
-use Zhiyi\Plus\Models\FileWith as FileWithModel;
 use Zhiyi\Plus\Http\Requests\API2\UserCertification;
+use Zhiyi\Plus\Models\Certification;
+use Zhiyi\Plus\Models\FileWith as FileWithModel;
+use Zhiyi\Plus\Models\User;
 use Zhiyi\Plus\Notifications\System as SystemNotification;
 
 class CertificationController extends Controller

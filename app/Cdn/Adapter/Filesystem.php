@@ -20,13 +20,13 @@ declare(strict_types=1);
 
 namespace Zhiyi\Plus\Cdn\Adapter;
 
-use Zhiyi\Plus\Cdn\Refresh;
-use Intervention\Image\Image;
-use Intervention\Image\Constraint;
-use Intervention\Image\ImageManager;
-use Zhiyi\Plus\Contracts\Cdn\UrlGenerator as FileUrlGeneratorContract;
-use Illuminate\Contracts\Foundation\Application as ApplicationContract;
 use Illuminate\Contracts\Filesystem\Factory as FilesystemFactoryContract;
+use Illuminate\Contracts\Foundation\Application as ApplicationContract;
+use Intervention\Image\Constraint;
+use Intervention\Image\Image;
+use Intervention\Image\ImageManager;
+use Zhiyi\Plus\Cdn\Refresh;
+use Zhiyi\Plus\Contracts\Cdn\UrlGenerator as FileUrlGeneratorContract;
 
 class Filesystem implements FileUrlGeneratorContract
 {

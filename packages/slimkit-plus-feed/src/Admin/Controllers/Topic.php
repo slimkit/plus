@@ -20,15 +20,16 @@ declare(strict_types=1);
 
 namespace Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Admin\Controllers;
 
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Carbon;
-use function Zhiyi\Plus\setting;
-use Illuminate\Http\JsonResponse;
-use Zhiyi\Plus\Models\FeedTopic as TopicModel;
-use Zhiyi\Plus\API2\Controllers\Feed\Topic as Controller;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Admin\Requests\ListAllTopics as ListTopicsRequest;
+use Zhiyi\Plus\API2\Controllers\Feed\Topic as Controller;
+use Zhiyi\Plus\Models\FeedTopic as TopicModel;
+use Zhiyi\Plus\Notifications\System as SystemNotification;
+use function Zhiyi\Plus\setting;
 
 class Topic extends Controller
 {
@@ -109,6 +110,18 @@ class Topic extends Controller
         }
 
         $topic->status = $status;
+        // 发送拒绝或通过的审核通知
+        if ($topic->creator_user_id && (bool) setting('feed', 'topic:need-review', false)) {
+            $msg = sprintf('创建话题「%s」的请求已被%s', $topic->name, $status === 'passed' ? '通过' : '拒绝');
+            $topic->creator->notify(new SystemNotification($msg, [
+                'type' => sprintf('feed:topic:create:%s', $status),
+                'contents' => $msg,
+                'topic' => [
+                    'id' => $topic->id,
+                    'name' => $topic->name,
+                ],
+            ]));
+        }
         $topic->save();
 
         return new Response('', 204);

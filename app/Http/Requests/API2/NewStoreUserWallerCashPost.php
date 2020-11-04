@@ -20,10 +20,10 @@ declare(strict_types=1);
 
 namespace Zhiyi\Plus\Http\Requests\API2;
 
-use Illuminate\Validation\Rule;
-use function Zhiyi\Plus\setting;
-use Zhiyi\Plus\Packages\Wallet\Wallet;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
+use Zhiyi\Plus\Packages\Wallet\Wallet;
+use function Zhiyi\Plus\setting;
 
 class NewStoreUserWallerCashPost extends FormRequest
 {

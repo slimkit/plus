@@ -20,8 +20,8 @@ declare(strict_types=1);
 
 namespace Zhiyi\Plus\Packages\Currency;
 
-use Zhiyi\Plus\Models\User as UserModel;
 use Zhiyi\Plus\Models\CurrencyType as CurrencyTypeModel;
+use Zhiyi\Plus\Models\User as UserModel;
 
 class Process
 {
@@ -34,14 +34,17 @@ class Process
 
     public function __construct()
     {
-        $this->currency_type = CurrencyTypeModel::findOrFail(1);
+        $this->currency_type = CurrencyTypeModel::current();
     }
 
     /**
      * 检测用户模型.
      *
      * @param $user
+     * @param  bool  $throw
+     *
      * @return UserModel | bool
+     * @throws \Exception
      * @author BS <414606094@qq.com>
      */
     public function checkUser($user, $throw = true)
@@ -64,14 +67,16 @@ class Process
     /**
      * 检测用户货币模型，防止后续操作出现错误.
      *
-     * @param UserModel $user
+     * @param  UserModel  $user
+     *
      * @return UserModel
      * @author BS <414606094@qq.com>
      */
     protected function checkCurrency(UserModel $user): UserModel
     {
         if (! $user->currency) {
-            $user->currency = $user->currency()->create(['type' => $this->currency_type->id, 'sum' => 0]);
+            $user->currency = $user->currency()
+                ->create(['type' => $this->currency_type->get('id'), 'sum' => 0]);
         }
 
         return $user;

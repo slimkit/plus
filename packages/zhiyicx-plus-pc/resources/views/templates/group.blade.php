@@ -1,4 +1,5 @@
 @php
+    use Illuminate\Support\Str;
     use Zhiyi\PlusGroup\Models\GroupMember;
     use Illuminate\Support\Str;
 @endphp

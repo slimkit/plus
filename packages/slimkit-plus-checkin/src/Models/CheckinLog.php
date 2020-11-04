@@ -20,12 +20,12 @@ declare(strict_types=1);
 
 namespace SlimKit\PlusCheckIn\Models;
 
-use Zhiyi\Plus\Models\User;
 use Illuminate\Database\Eloquent\Model;
+use Zhiyi\Plus\Models\User;
 
 class CheckinLog extends Model
 {
-    public function onwer()
+    public function owner()
     {
         return $this->belongsTo(User::class, 'user_id', 'id');
     }

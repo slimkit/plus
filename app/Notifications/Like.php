@@ -21,11 +21,11 @@ declare(strict_types=1);
 namespace Zhiyi\Plus\Notifications;
 
 use Illuminate\Bus\Queueable;
+use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Notifications\Notification;
+use Medz\Laravel\Notifications\JPush\Message as JPushMessage;
 use Zhiyi\Plus\Models\Like as LikeModel;
 use Zhiyi\Plus\Models\User as UserModel;
-use Illuminate\Notifications\Notification;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Medz\Laravel\Notifications\JPush\Message as JPushMessage;
 
 class Like extends Notification implements ShouldQueue
 {

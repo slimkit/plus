@@ -48,3 +48,13 @@ export function getAboutUs () {
   const url = '/aboutus'
   return api.get(url, { validateStatus: s => s === 200 })
 }
+
+/**
+ * 获取跳转商城信息
+ *
+ * @author ZsyD
+ */
+export function getShop (client) {
+  const url = `/plus-id/toShop/${client}`
+  return api.get(url, { validateStatus: s => s === 200 })
+}

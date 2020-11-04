@@ -16,9 +16,9 @@
  * +----------------------------------------------------------------------+
  */
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 class CreateFileWithsTable extends Migration
 {
@@ -27,9 +27,9 @@ class CreateFileWithsTable extends Migration
      *
      * @return void
      */
-    public function up() {
-        Schema::create('file_withs', function (Blueprint $table)
-        {
+    public function up()
+    {
+        Schema::create('file_withs', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('file_id')->unsigned()->comment('文件ID');
             $table->unsignedBigInteger('user_id')->unsigned()->comment('用户ID');
@@ -65,7 +65,8 @@ class CreateFileWithsTable extends Migration
      *
      * @return void
      */
-    public function down() {
+    public function down()
+    {
         Schema::dropIfExists('file_withs');
     }
 }

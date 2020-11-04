@@ -20,12 +20,12 @@ declare(strict_types=1);
 
 namespace Zhiyi\Plus\Http\Controllers\APIs\V2;
 
+use Illuminate\Contracts\Routing\ResponseFactory as ContractResponse;
+use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Zhiyi\Plus\Models\User;
-use Illuminate\Http\Request;
 use Zhiyi\Plus\Models\WalletCharge;
 use Zhiyi\Plus\Services\Wallet\Charge as WalletChargeService;
-use Illuminate\Contracts\Routing\ResponseFactory as ContractResponse;
 
 class WalletChargeController extends Controller
 {

@@ -20,11 +20,11 @@ declare(strict_types=1);
 
 namespace Zhiyi\Plus\Admin\Controllers\FileStorage;
 
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use function Zhiyi\Plus\setting;
-use Illuminate\Http\JsonResponse;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
+use function Zhiyi\Plus\setting;
 
 class PublicChannel
 {

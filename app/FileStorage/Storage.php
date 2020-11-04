@@ -20,42 +20,48 @@ declare(strict_types=1);
 
 namespace Zhiyi\Plus\FileStorage;
 
-use Illuminate\Support\Str;
 use Illuminate\Http\Request;
-use Zhiyi\Plus\AppInterface;
 use Illuminate\Support\Carbon;
 use Symfony\Component\HttpFoundation\Response;
+use Zhiyi\Plus\AppInterface;
 use Zhiyi\Plus\FileStorage\Channels\ChannelInterface;
+use Zhiyi\Plus\FileStorage\Validators\ValidatorInterface;
 
 class Storage implements StorageInterface
 {
     /**
      * The app.
-     * @var \Zhiyi\Plus\AppInterface
+     *
+     * @var AppInterface
      */
     protected $app;
-
     /**
      * Channel manager.
+     *
      * @var
      */
     protected $channelManager;
 
     /**
      * Create the storage instance.
-     * @param \Zhiyi\Plus\AppInterface $app
-     * @param \Zhiyi\Plus\FileStorage\ChannelManager $channelManager
+     *
+     * @param  AppInterface  $app
+     * @param  ChannelManager  $channelManager
      */
-    public function __construct(AppInterface $app, ChannelManager $channelManager)
-    {
+    public function __construct(
+        AppInterface $app,
+        ChannelManager $channelManager
+    ) {
         $this->app = $app;
         $this->channelManager = $channelManager;
     }
 
     /**
      * Create a upload task.
-     * @param \Illuminate\Http\Request $request
-     * @return \Zhiyi\Plus\FileStorage\TaskInterface
+     *
+     * @param  Request  $request
+     *
+     * @return TaskInterface
      */
     public function createTask(Request $request): TaskInterface
     {
@@ -79,7 +85,9 @@ class Storage implements StorageInterface
 
     /**
      * Get a file info.
-     * @param \Zhiyi\Plus\FileStorage\ResourceInterface $resource
+     *
+     * @param  ResourceInterface  $resource
+     *
      * @return \Zhiyi\Plus\FileMetaInterface
      */
     public function meta(ResourceInterface $resource): FileMetaInterface
@@ -89,8 +97,10 @@ class Storage implements StorageInterface
 
     /**
      * Get a file response.
-     * @param \Zhiyi\Plus\FileStorage\ResourceInterface $resource
-     * @param string|null $rule
+     *
+     * @param  ResourceInterface  $resource
+     * @param  string|null  $rule
+     *
      * @return string
      */
     public function response(ResourceInterface $resource, ?string $rule = null): Response
@@ -100,7 +110,9 @@ class Storage implements StorageInterface
 
     /**
      * Deelte a resource.
-     * @param \Zhiyi\Plus\FileStorage\ResourceInterface $resource
+     *
+     * @param  ResourceInterface  $resource
+     *
      * @return bool
      */
     public function delete(ResourceInterface $resource): ?bool
@@ -110,8 +122,10 @@ class Storage implements StorageInterface
 
     /**
      * Put a file.
-     * @param \Zhiyi\Plus\FileStorage\ResourceInterface $resource
-     * @param mixed $content
+     *
+     * @param  ResourceInterface  $resource
+     * @param  mixed  $content
+     *
      * @return bool
      */
     public function put(ResourceInterface $resource, $content): bool
@@ -121,7 +135,9 @@ class Storage implements StorageInterface
 
     /**
      * A storage task callback handle.
-     * @param \Zhiyi\Plus\FileStorage\ResourceInterface $resource
+     *
+     * @param  ResourceInterface  $resource
+     *
      * @return void
      */
     public function callback(ResourceInterface $resource): void
@@ -131,8 +147,10 @@ class Storage implements StorageInterface
 
     /**
      * Get a channel instance.
-     * @param \Zhiyi\Plus\FileStorage\ResourceInterface $resource
-     * @return \Zhiyi\Plus\FileStorage\Channels\ChannelInterface
+     *
+     * @param  ResourceInterface  $resource
+     *
+     * @return ChannelInterface
      */
     public function getChannel(ResourceInterface $resource): ChannelInterface
     {
@@ -144,7 +162,9 @@ class Storage implements StorageInterface
 
     /**
      * Make a new path.
-     * @param string $filename
+     *
+     * @param  string  $filename
+     *
      * @return string
      */
     public function makePath(string $filename): string
@@ -157,7 +177,8 @@ class Storage implements StorageInterface
 
     /**
      * Get create task validator.
-     * @return \Zhiyi\Plus\FileStorage\Valodators\ValidatorInterface
+     *
+     * @return ValidatorInterface
      */
     public function getCreateTaskValidator(): Validators\ValidatorInterface
     {

@@ -20,9 +20,9 @@ declare(strict_types=1);
 
 namespace Zhiyi\Component\ZhiyiPlus\PlusComponentNews\Models;
 
-use Zhiyi\Plus\Models\User;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
+use Zhiyi\Plus\Models\User;
 
 class NewsComment extends Model
 {

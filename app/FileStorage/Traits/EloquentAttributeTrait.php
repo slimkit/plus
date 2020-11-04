@@ -21,9 +21,9 @@ declare(strict_types=1);
 namespace Zhiyi\Plus\FileStorage\Traits;
 
 use Exception;
+use Zhiyi\Plus\FileStorage\FileMetaInterface;
 use Zhiyi\Plus\FileStorage\Resource;
 use Zhiyi\Plus\FileStorage\StorageInterface;
-use Zhiyi\Plus\FileStorage\FileMetaInterface;
 
 trait EloquentAttributeTrait
 {

@@ -20,16 +20,16 @@ declare(strict_types=1);
 
 namespace Zhiyi\Component\ZhiyiPlus\PlusComponentNews\API2\Controllers;
 
+use Illuminate\Contracts\Foundation\Application as ApplicationContract;
+use Illuminate\Contracts\Routing\ResponseFactory as ResponseContract;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
+use Zhiyi\Component\ZhiyiPlus\PlusComponentNews\Models\News as NewsModel;
+use Zhiyi\Component\ZhiyiPlus\PlusComponentNews\Models\NewsPinned as NewsPinnedModel;
 use Zhiyi\Plus\Http\Controllers\Controller;
 use Zhiyi\Plus\Models\Comment as CommentModel;
 use Zhiyi\Plus\Models\UserCount as UserCountModel;
 use Zhiyi\Plus\Models\WalletCharge as WalletChargeModel;
-use Illuminate\Contracts\Routing\ResponseFactory as ResponseContract;
-use Illuminate\Contracts\Foundation\Application as ApplicationContract;
-use Zhiyi\Component\ZhiyiPlus\PlusComponentNews\Models\News as NewsModel;
-use Zhiyi\Component\ZhiyiPlus\PlusComponentNews\Models\NewsPinned as NewsPinnedModel;
 
 class PinnedController extends Controller
 {
@@ -92,23 +92,23 @@ class PinnedController extends Controller
         $pinned->state = 0;
 
         return $this->app->call([$this, 'PinnedValidate'], [
-        'pinned' => $pinned,
-        'call' => function (WalletChargeModel $charge, NewsPinnedModel $pinned) use ($user, $news) {
-            $charge->user_id = $user->id;
-            $charge->channel = 'user';
-            $charge->account = $user->id;
-            $charge->action = 0;
-            $charge->amount = $pinned->amount;
-            $charge->subject = '申请资讯置顶';
-            $charge->body = sprintf('申请资讯《%s》置顶', $news->title);
-            $charge->status = 1;
+            'pinned' => $pinned,
+            'call' => function (WalletChargeModel $charge, NewsPinnedModel $pinned) use ($user, $news) {
+                $charge->user_id = $user->id;
+                $charge->channel = 'user';
+                $charge->account = $user->id;
+                $charge->action = 0;
+                $charge->amount = $pinned->amount;
+                $charge->subject = '申请资讯置顶';
+                $charge->body = sprintf('申请资讯《%s》置顶', $news->title);
+                $charge->status = 1;
 
-            return $this->app->call([$this, 'save'], [
-                'charge' => $charge,
-                'pinned' => $pinned,
-                'call' => null,
-            ]);
-        },
+                return $this->app->call([$this, 'save'], [
+                    'charge' => $charge,
+                    'pinned' => $pinned,
+                    'call' => null,
+                ]);
+            },
         ]);
     }
 
@@ -160,48 +160,48 @@ class PinnedController extends Controller
         $pinned->state = 0;
 
         return $this->app->call([$this, 'PinnedValidate'], [
-        'pinned' => $pinned,
-        'call' => function (WalletChargeModel $charge, NewsPinnedModel $pinned) use ($user, $comment, $news) {
-            $charge->user_id = $user->id;
-            $charge->channel = 'user';
-            $charge->account = $user->id;
-            $charge->action = 0;
-            $charge->amount = $pinned->amount;
-            $charge->subject = '申请资讯评论置顶';
-            $charge->body = sprintf('申请评论《%s》置顶', $comment->body);
-            $charge->status = 1;
+            'pinned' => $pinned,
+            'call' => function (WalletChargeModel $charge, NewsPinnedModel $pinned) use ($user, $comment, $news) {
+                $charge->user_id = $user->id;
+                $charge->channel = 'user';
+                $charge->account = $user->id;
+                $charge->action = 0;
+                $charge->amount = $pinned->amount;
+                $charge->subject = '申请资讯评论置顶';
+                $charge->body = sprintf('申请评论《%s》置顶', $comment->body);
+                $charge->status = 1;
 
-            return $this->app->call([$this, 'save'], [
-                'charge' => $charge,
-                'pinned' => $pinned,
-                'news' => $news,
-                'call' => $news->user ? function () use ($user, $comment, $news, $pinned) {
-                    // $message = sprintf('%s 在你发布的资讯中申请评论置顶', $user->name);
-                    // 获取资讯发布者未处理的评论置顶申请数量
-                    $unreadCount = $pinned->newQuery()
-                        ->where('target_user', $news->user_id)
-                        ->where('channel', 'news:comment')
-                        ->whereNull('expires_at')
-                        ->count();
+                return $this->app->call([$this, 'save'], [
+                    'charge' => $charge,
+                    'pinned' => $pinned,
+                    'news' => $news,
+                    'call' => $news->user ? function () use ($user, $comment, $news, $pinned) {
+                        // $message = sprintf('%s 在你发布的资讯中申请评论置顶', $user->name);
+                        // 获取资讯发布者未处理的评论置顶申请数量
+                        $unreadCount = $pinned->newQuery()
+                            ->where('target_user', $news->user_id)
+                            ->where('channel', 'news:comment')
+                            ->whereNull('expires_at')
+                            ->count();
 
-                    // 增加资讯评论申请置顶的未读消息数量
-                    $userCount = UserCountModel::firstOrNew([
-                        'user_id' => $news->user->id,
-                        'type' => 'user-news-comment-pinned',
-                    ]);
+                        // 增加资讯评论申请置顶的未读消息数量
+                        $userCount = UserCountModel::firstOrNew([
+                            'user_id' => $news->user->id,
+                            'type' => 'user-news-comment-pinned',
+                        ]);
 
-                    $userCount->total = $unreadCount;
-                    $userCount->save();
+                        $userCount->total = $unreadCount;
+                        $userCount->save();
 
-                    // $news->user->sendNotifyMessage('news:pinned-comment', $message, [
-                    //     'news' => $news,
-                    //     'user' => $user,
-                    //     'comment' => $comment,
-                    //     'pinned' => $pinned,
-                    // ]);
-                } : null,
-            ]);
-        },
+                        // $news->user->sendNotifyMessage('news:pinned-comment', $message, [
+                        //     'news' => $news,
+                        //     'user' => $user,
+                        //     'comment' => $comment,
+                        //     'pinned' => $pinned,
+                        // ]);
+                    } : null,
+                ]);
+            },
         ]);
     }
 

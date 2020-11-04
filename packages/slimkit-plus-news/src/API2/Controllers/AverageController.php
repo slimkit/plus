@@ -21,9 +21,9 @@ declare(strict_types=1);
 namespace Zhiyi\Component\ZhiyiPlus\PlusComponentNews\API2\Controllers;
 
 use Carbon\Carbon;
-use Zhiyi\Plus\Http\Controllers\Controller;
-use Zhiyi\Component\ZhiyiPlus\PlusComponentNews\Models\NewsPinned;
 use Illuminate\Contracts\Routing\ResponseFactory as ResponseContract;
+use Zhiyi\Component\ZhiyiPlus\PlusComponentNews\Models\NewsPinned;
+use Zhiyi\Plus\Http\Controllers\Controller;
 
 class AverageController extends Controller
 {

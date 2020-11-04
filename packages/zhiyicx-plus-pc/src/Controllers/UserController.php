@@ -26,10 +26,11 @@ class UserController extends BaseController
 {
     /**
      * 找伙伴.
-     * @author Foreach
-     * @param  Request     $request
-     * @param  int|int $type    [类型]
+     * @param Request $request
+     * @param int|int $type [类型]
      * @return mixed
+     * @throws \Throwable
+     * @author Foreach
      */
     public function users(Request $request, int $type = 1)
     {

@@ -28,13 +28,15 @@ class FileStorageRuler implements RulerInterface
 {
     /**
      * The storage.
-     * @var \Zhiyi\Plus\FileStorage\StorageInterface
+     *
+     * @var StorageInterface
      */
     protected $storage;
 
     /**
-     * Create the ruler instalce.
-     * @param Zhiyi\Plus\FileStorage\StorageInterface $storage
+     * Create the ruler instance.
+     *
+     * @param  StorageInterface  $storage
      */
     public function __construct(StorageInterface $storage)
     {
@@ -43,7 +45,9 @@ class FileStorageRuler implements RulerInterface
 
     /**
      * Rule handler.
-     * @param array $params
+     *
+     * @param  array  $params
+     *
      * @return bool
      */
     public function handle(array $params): bool

@@ -1,13 +1,6 @@
 {
   "presets": [
-    "@babel/preset-env"
+    "@vue/app"
   ],
-  "plugins": [
-    [
-      "@babel/plugin-proposal-class-properties",
-      {
-        "loose": true
-      }
-    ]
-  ]
+  "plugins": ["transform-class-properties"]
 }

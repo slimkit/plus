@@ -20,8 +20,9 @@ declare(strict_types=1);
 
 namespace Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\Concerns;
 
-use Zhiyi\Plus\Models\User;
 use Illuminate\Support\Facades\Cache;
+use Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\CacheName\CacheKeys;
+use Zhiyi\Plus\Models\User;
 
 trait HasFeedCollect
 {
@@ -33,26 +34,27 @@ trait HasFeedCollect
      */
     public function collections()
     {
-        return $this->belongsToMany(User::class, 'feed_collections', 'feed_id', 'user_id')
+        return $this->belongsToMany(User::class, 'feed_collections', 'feed_id',
+            'user_id')
             ->withTimestamps();
     }
 
     /**
      * check if user has collected.
      *
-     * @param int $user
+     * @param  int  $user
+     *
      * @return bool
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function collected(int $user): bool
     {
-        $cacheKey = sprintf('feed-collected:%s,%s', $this->id, $user);
-        if (Cache::has($cacheKey)) {
-            return Cache::get($cacheKey);
-        }
-
-        $status = $this->collections()->newPivotStatementForId($user)->first() !== null;
-        Cache::forever($cacheKey, $status);
+        $status = Cache::rememberForever(sprintf(CacheKeys::COLLECTED,
+            $this->id, $user), function () use ($user) {
+                return $this->collections()
+                ->newPivotStatementForId($user)
+                ->exists();
+            });
 
         return $status;
     }
@@ -60,7 +62,8 @@ trait HasFeedCollect
     /**
      * 动态收藏.
      *
-     * @param int $user
+     * @param  int  $user
+     *
      * @return mixed
      * @author Seven Du <shiweidu@outlook.com>
      */
@@ -74,7 +77,8 @@ trait HasFeedCollect
     /**
      * 取消动态收藏.
      *
-     * @param int $user
+     * @param  int  $user
+     *
      * @return mixed
      * @author Seven Du <shiweidu@outlook.com>
      */
@@ -88,14 +92,15 @@ trait HasFeedCollect
     /**
      * Clean up cache.
      *
-     * @param int $feed
-     * @param int $user
+     * @param  int  $feed
+     * @param  int  $user
+     *
      * @return void
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function forgetCollet(int $feed, int $user)
     {
-        $cacheKey = sprintf('feed-collected:%s,%s', $feed, $user);
-        Cache::forget($cacheKey);
+        Cache::forget(sprintf(CacheKeys::COLLECTED,
+            $feed, $user));
     }
 }

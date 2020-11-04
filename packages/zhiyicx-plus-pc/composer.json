@@ -25,7 +25,8 @@
     },
     "require": {
         "overtrue/socialite": "^3.0",
-        "gregwar/captcha": "1.*"
+        "gregwar/captcha": "1.*",
+        "michelf/php-markdown": "^1.9"
     },
-    "version": "2.3.0"
+    "version": "2.4.0"
 }

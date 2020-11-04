@@ -20,9 +20,9 @@ declare(strict_types=1);
 
 namespace SlimKit\PlusID\Admin\Controllers;
 
-use SlimKit\PlusID\Models\Client as ClientModel;
 use SlimKit\PlusID\Admin\Requests\CreateClientRequest;
 use SlimKit\PlusID\Admin\Requests\UpdateClientRequest;
+use SlimKit\PlusID\Models\Client as ClientModel;
 
 class ClientsController
 {

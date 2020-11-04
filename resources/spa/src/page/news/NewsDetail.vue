@@ -1,5 +1,5 @@
 <template>
-  <ArticleCard
+    <ArticleCard
     ref="article"
     type="news"
     :article="newsId"
@@ -9,69 +9,69 @@
     @like="likeNews"
     @more="moreAction"
     @comment="$refs.comments.open()"
-  >
-    <JoLoadMore
-      slot="main"
-      ref="loadmore"
-      :auto-load="false"
-      :show-bottom="false"
-      @onRefresh="onRefresh"
     >
-      <div class="m-flex-shrink1 m-flex-grow1 m-art m-main">
-        <section class="m-art-head">
-          <h1>{{ news.title }}</h1>
-          <p>
-            <i class="m-art-cate">{{ cate }}</i>
-            <span class="from">{{ $t('news.from') }} {{ news.from || $t('news.original') }}</span>
-          </p>
-        </section>
-        <p v-if="news.subject" class="m-art-subject">
-          <span>[{{ $t('news.post.label.subject') }}]</span>
-          {{ news.subject }}
-        </p>
-        <div class="m-art-body markdown-body" v-html="body" />
+        <JoLoadMore
+        slot="main"
+        ref="loadmore"
+        :auto-load="false"
+        :show-bottom="false"
+        @onRefresh="onRefresh"
+        >
+            <div class="m-flex-shrink1 m-flex-grow1 m-art m-main">
+                <section class="m-art-head">
+                    <h1>{{ news.title }}</h1>
+                    <p>
+                        <i class="m-art-cate">{{ cate }}</i>
+                        <span class="from">{{ $t('news.from') }} {{ news.from || $t('news.original') }}</span>
+                    </p>
+                </section>
+                <p v-if="news.subject" class="m-art-subject">
+                    <span>[{{ $t('news.post.label.subject') }}]</span>
+                    {{ news.subject }}
+                </p>
+                <div class="m-art-body markdown-body" v-html="body"/>
 
-        <!-- 点赞组件 -->
-        <ArticleLike
-          :likers="likes"
-          :like-count="likeCount"
-          :time="time"
-          :view-count="news.hits"
-        />
+                <!-- 点赞组件 -->
+                <ArticleLike
+                        :likers="likes"
+                        :like-count="likeCount"
+                        :time="time"
+                        :view-count="news.hits"
+                />
 
-        <!-- 打赏组件 -->
-        <ArticleReward
-          v-if="allowReward && !isMine"
-          v-bind="reward"
-          :article="newsId"
-          :is-mine="isMine"
-          type="news"
-          @success="fetchNewsRewards"
-        />
-      </div>
+                <!-- 打赏组件 -->
+                <ArticleReward
+                        v-if="allowReward && !isMine"
+                        v-bind="reward"
+                        :article="newsId"
+                        :is-mine="isMine"
+                        type="news"
+                        @success="fetchNewsRewards"
+                />
+            </div>
 
-      <div v-if="relationNews.length && isPublic" class="m-box-model m-art-comments">
-        <ul class="m-box m-aln-center m-art-comments-tabs">
-          <li>{{ $t('news.relation') }}</li>
-        </ul>
-        <NewsCard
-          v-for="newsItem in relationNews"
-          :key="`relation-${newsItem.id}`"
-          :news="newsItem"
-        />
-      </div>
+            <div v-if="relationNews.length && isPublic" class="m-box-model m-art-comments">
+                <ul class="m-box m-aln-center m-art-comments-tabs">
+                    <li>{{ $t('news.relation') }}</li>
+                </ul>
+                <NewsCard
+                        v-for="newsItem in relationNews"
+                        :key="`relation-${newsItem.id}`"
+                        :news="newsItem"
+                />
+            </div>
 
-      <!-- 评论列表 -->
-      <ArticleComments
-        ref="comments"
-        type="news"
-        :article="newsId"
-        :total.sync="commentCount"
-        :fetching="fetchComing"
-        @reply="replyComment"
-      />
-    </JoLoadMore>
-  </ArticleCard>
+            <!-- 评论列表 -->
+            <ArticleComments
+                    ref="comments"
+                    type="news"
+                    :article="newsId"
+                    :total.sync="commentCount"
+                    :fetching="fetchComing"
+                    @reply="replyComment"
+            />
+        </JoLoadMore>
+    </ArticleCard>
 </template>
 
 <script>
@@ -435,49 +435,72 @@ export default {
 }
 </script>
 
-<style lang="less" scoped>
-.m-art-head {
-  padding: 36px 20px 0;
+<style lang="less">
+    .markdown-body strong {
+        font-weight: bolder;
+    }
 
-  h1 {
-    margin-bottom: 36px;
-    color: @primary;
-    font-size: 50px;
-    letter-spacing: 1px; /*no*/
-  }
-  p {
-    font-size: 24px;
-    color: @text-color4;
-  }
-}
+    .markdown-body p {
+        margin-top: 0;
+        margin-bottom: 16px;
+    }
 
-.m-art-cate {
-  @scale: 0.95;
+    .markdown-body .hljs-center {
+        text-align: center;
+    }
 
-  padding: 4px;
-  font-style: normal;
-  display: inline-block;
-  font-size: 20px;
-  height: 30px/@scale;
-  margin-right: 10px;
-  color: @primary;
-  line-height: (30px / @scale - 8);
-  border: 1px solid currentColor; /*no*/
-  -webkit-transform-origin-x: 0;
-  -webkit-transform: scale(@scale);
-  transform: scale(@scale);
-}
+    .markdown-body .hljs-right {
+        text-align: right;
+    }
 
-.m-art-subject {
-  margin: 50px 20px 20px;
-  padding: 30px;
-  font-size: 26px;
-  line-height: 36px;
-  background-color: #f4f5f6;
-  color: #999;
-  border-left: 5px solid #e3e3e3;
-  span {
-    color: #666;
-  }
-}
+    .markdown-body .hljs-left {
+        text-align: left;
+    }
+
+    .m-art-head {
+        padding: 36px 20px 0;
+
+        h1 {
+            margin-bottom: 36px;
+            color: @primary;
+            font-size: 50px;
+            letter-spacing: 1px; /*no*/
+        }
+
+        p {
+            font-size: 24px;
+            color: @text-color4;
+        }
+    }
+
+    .m-art-cate {
+        @scale: 0.95;
+
+        padding: 4px;
+        font-style: normal;
+        display: inline-block;
+        font-size: 20px;
+        height: 30px/@scale;
+        margin-right: 10px;
+        color: @primary;
+        line-height: (30px / @scale - 8);
+        border: 1px solid currentColor; /*no*/
+        -webkit-transform-origin-x: 0;
+        -webkit-transform: scale(@scale);
+        transform: scale(@scale);
+    }
+
+    .m-art-subject {
+        margin: 50px 20px 20px;
+        padding: 30px;
+        font-size: 26px;
+        line-height: 36px;
+        background-color: #f4f5f6;
+        color: #999;
+        border-left: 5px solid #e3e3e3;
+
+        span {
+            color: #666;
+        }
+    }
 </style>

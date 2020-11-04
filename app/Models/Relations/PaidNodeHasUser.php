@@ -20,34 +20,39 @@ declare(strict_types=1);
 
 namespace Zhiyi\Plus\Models\Relations;
 
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Support\Facades\Cache;
+use Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\CacheName\CacheKeys;
 use Zhiyi\Plus\Models\User;
 use Zhiyi\Plus\Models\Wallet;
-use Illuminate\Support\Facades\Cache;
 
 trait PaidNodeHasUser
 {
     // 发起支付节点人钱包.
     public function wallet()
     {
-        return $this->hasManyThrough(Wallet::class, User::class, 'id', 'user_id', 'user_id');
+        return $this->hasManyThrough(Wallet::class, User::class, 'id',
+            'user_id', 'user_id');
     }
 
     /**
      * Paid node users.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     * @return BelongsToMany
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function users()
     {
-        return $this->belongsToMany(User::class, 'paid_node_users', 'node_id', 'user_id');
+        return $this->belongsToMany(User::class, 'paid_node_users', 'node_id',
+            'user_id');
     }
 
     /**
      * the author of paid.
      *
-     * @author bs<414606094@qq.com>
      * @return hasOne
+     * @author bs<414606094@qq.com>
      */
     public function user()
     {
@@ -57,7 +62,9 @@ trait PaidNodeHasUser
     /**
      * To determine whether to pay for the node, to support the filter publisher.
      *
-     * @param int $user User ID
+     * @param  int  $user  User ID
+     * @param  bool  $filter
+     *
      * @return bool
      * @author Seven Du <shiweidu@outlook.com>
      */
@@ -67,13 +74,10 @@ trait PaidNodeHasUser
             return true;
         }
 
-        $cacheKey = sprintf('paid:%s,%s', $this->id, $user);
-        if (Cache::has($cacheKey)) {
-            return Cache::get($cacheKey);
-        }
-
-        $status = $this->users()->newPivotStatementForId($user)->first() !== null;
-        Cache::forever($cacheKey, $status);
+        $status = Cache::rememberForever(sprintf(CacheKeys::PAID, $this->id,
+            $user), function () use ($user) {
+                return $this->users()->newPivotStatementForId($user)->exists();
+            });
 
         return $status;
     }

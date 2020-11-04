@@ -16,11 +16,12 @@
  * +----------------------------------------------------------------------+
  */
 namespace Database\Seeders;
-use Zhiyi\Plus\Models\Area;
-use Illuminate\Database\Seeder;
+
+use Illuminate\Console\Events\CommandFinished;
 use Illuminate\Console\OutputStyle;
 use Illuminate\Database\Events\QueryExecuted;
-use Illuminate\Console\Events\CommandFinished;
+use Illuminate\Database\Seeder;
+use Zhiyi\Plus\Models\Area;
 
 class AreasTableSeeder extends Seeder
 {

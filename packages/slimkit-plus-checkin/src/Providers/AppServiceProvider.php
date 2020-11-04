@@ -25,7 +25,7 @@ use Illuminate\Support\ServiceProvider;
 class AppServiceProvider extends ServiceProvider
 {
     /**
-     * Boorstrap the service provider.
+     * Bootstrap the service provider.
      *
      * @return void
      */

@@ -20,14 +20,13 @@ declare(strict_types=1);
 
 namespace Zhiyi\Plus\Tests\Feature\API2;
 
-use Zhiyi\Plus\Tests\TestCase;
-use Zhiyi\Plus\Models\User as UserModel;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Zhiyi\Plus\Models\User as UserModel;
+use Zhiyi\Plus\Tests\TestCase;
 
 class WalletTransformTest extends TestCase
 {
     use DatabaseTransactions;
-
     protected $user;
 
     protected function setUp()
@@ -46,7 +45,8 @@ class WalletTransformTest extends TestCase
      */
     public function testTransfer()
     {
-        $response = $this->actingAs($this->user, 'api')->json('POST', '/api/v2/plus-pay/transform', ['amount' => 2121]);
+        $response = $this->actingAs($this->user, 'api')
+            ->json('POST', '/api/v2/plus-pay/transform', ['amount' => 2121]);
 
         $response->assertStatus(201);
     }

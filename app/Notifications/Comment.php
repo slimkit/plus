@@ -19,11 +19,11 @@
 namespace Zhiyi\Plus\Notifications;
 
 use Illuminate\Bus\Queueable;
-use Zhiyi\Plus\Models\User as UserModel;
-use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
-use Zhiyi\Plus\Models\Comment as CommentModel;
+use Illuminate\Notifications\Notification;
 use Medz\Laravel\Notifications\JPush\Message as JPushMessage;
+use Zhiyi\Plus\Models\Comment as CommentModel;
+use Zhiyi\Plus\Models\User as UserModel;
 
 class Comment extends Notification implements ShouldQueue
 {
@@ -35,7 +35,8 @@ class Comment extends Notification implements ShouldQueue
     /**
      * Create a new notification instance.
      *
-     * @return void
+     * @param CommentModel $comment
+     * @param UserModel $sender
      */
     public function __construct(CommentModel $comment, UserModel $sender)
     {
@@ -62,7 +63,7 @@ class Comment extends Notification implements ShouldQueue
      * Get the JPush representation of the notification.
      *
      * @param  mixed  $notifiable
-     * @return \Medz\Laravel\Notifications\JPush\Message
+     * @return JPushMessage
      */
     public function toJpush($notifiable): JPushMessage
     {

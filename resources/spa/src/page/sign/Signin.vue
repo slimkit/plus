@@ -128,7 +128,7 @@ export default {
   computed: {
     disabled () {
       return (
-        this.account.length === 0 || this.password.length < 6 || this.loading
+        this.account.length === 0 || this.password.length === 0 || this.loading
       )
     },
     isWechat () {
@@ -145,7 +145,7 @@ export default {
       }
 
       if (this.password.length < 6) {
-        this.err = this.$t('auth.error.password')
+        this.err = this.$t('auth.error.password_min', { min: 6 })
         return false
       }
 

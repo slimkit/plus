@@ -20,9 +20,9 @@ declare(strict_types=1);
 
 namespace Zhiyi\Plus\Cdn\Adapter;
 
+use GuzzleHttp\Client as HttpClient;
 use Illuminate\Support\Arr;
 use Zhiyi\Plus\Cdn\Refresh;
-use GuzzleHttp\Client as HttpClient;
 use Zhiyi\Plus\Contracts\Cdn\UrlGenerator as FileUrlGeneratorContract;
 
 class Qiniu implements FileUrlGeneratorContract

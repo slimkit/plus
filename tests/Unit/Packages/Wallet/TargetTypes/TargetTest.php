@@ -18,9 +18,9 @@
 
 namespace Zhiyi\Plus\Tests\Unit\Packages\Wallet\TargetTypes;
 
-use Zhiyi\Plus\Tests\TestCase;
 use Zhiyi\Plus\Packages\Wallet\Order;
 use Zhiyi\Plus\Packages\Wallet\TargetTypes\Target;
+use Zhiyi\Plus\Tests\TestCase;
 
 class TargetTest extends TestCase
 {

@@ -21,10 +21,10 @@ declare(strict_types=1);
 namespace Zhiyi\Plus\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
-use Zhiyi\Plus\Models\Tag as TagModel;
 use Zhiyi\Plus\Http\Controllers\Controller;
 use Zhiyi\Plus\Http\Requests\API2\StoreTag;
 use Zhiyi\Plus\Http\Requests\API2\UpdateTag;
+use Zhiyi\Plus\Models\Tag as TagModel;
 use Zhiyi\Plus\Models\TagCategory as TagCategoryModel;
 
 /**

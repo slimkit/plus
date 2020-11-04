@@ -20,12 +20,12 @@ declare(strict_types=1);
 
 namespace Zhiyi\Component\ZhiyiPlus\PlusComponentMusic\Providers;
 
-use Illuminate\Support\ServiceProvider;
-use Zhiyi\Plus\Support\ManageRepository;
 use Illuminate\Database\Eloquent\Relations\Relation;
+use Illuminate\Support\ServiceProvider;
+use function Zhiyi\Component\ZhiyiPlus\PlusComponentMusic\base_path as component_base_path;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentMusic\Models\Music;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentMusic\Models\MusicSpecial;
-use function Zhiyi\Component\ZhiyiPlus\PlusComponentMusic\base_path as component_base_path;
+use Zhiyi\Plus\Support\ManageRepository;
 
 class AppServiceProvider extends ServiceProvider
 {

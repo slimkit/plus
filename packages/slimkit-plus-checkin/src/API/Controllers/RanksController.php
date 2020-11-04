@@ -20,11 +20,11 @@ declare(strict_types=1);
 
 namespace SlimKit\PlusCheckIn\API\Controllers;
 
+use Illuminate\Contracts\Routing\ResponseFactory as ResponseFactoryContract;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use Zhiyi\Plus\Models\User as UserModel;
 use Zhiyi\Plus\Models\UserExtra as UserExtraModel;
-use Illuminate\Contracts\Routing\ResponseFactory as ResponseFactoryContract;
 
 class RanksController extends Controller
 {
@@ -43,9 +43,12 @@ class RanksController extends Controller
         $limit = $request->query('limit', 10);
         $offset = max(0, $request->query('offset', 0));
 
-        $users = $model->with(['user' => function ($query) {
-            return $query->withTrashed();
-        }])
+        $users = $model->with([
+            'user' => function ($query) {
+                return $query->withTrashed();
+            },
+            'user.extra',
+        ])
             ->orderBy('checkin_count', 'desc')
             ->orderBy('updated_at', 'desc')
             ->offset($offset)

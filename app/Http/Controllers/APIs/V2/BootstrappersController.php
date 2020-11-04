@@ -20,13 +20,12 @@ declare(strict_types=1);
 
 namespace Zhiyi\Plus\Http\Controllers\APIs\V2;
 
-use Zhiyi\Plus\Models\GoldType;
-use function Zhiyi\Plus\setting;
+use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Http\JsonResponse;
+use Zhiyi\Plus\Models\AdvertisingSpace;
 use Zhiyi\Plus\Models\CommonConfig;
 use Zhiyi\Plus\Models\CurrencyType;
-use Zhiyi\Plus\Models\AdvertisingSpace;
-use Illuminate\Contracts\Support\Arrayable;
+use function Zhiyi\Plus\setting;
 use Zhiyi\Plus\Support\BootstrapAPIsEventer;
 
 class BootstrappersController extends Controller
@@ -34,9 +33,12 @@ class BootstrappersController extends Controller
     /**
      * Gets the list of initiator configurations.
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @param  BootstrapAPIsEventer  $events
+     * @param  AdvertisingSpace  $space
+     *
+     * @return JsonResponse
      */
-    public function show(BootstrapAPIsEventer $events, AdvertisingSpace $space, GoldType $goldType): JsonResponse
+    public function show(BootstrapAPIsEventer $events, AdvertisingSpace $space): JsonResponse
     {
         $bootstrappers = [
             'server:version' => app()->version(),
@@ -108,11 +110,7 @@ class BootstrappersController extends Controller
             'transform-currency' => setting('wallet', 'transform-status', true),
         ];
 
-        $goldSetting = $goldType->where('status', 1)->select('name', 'unit')->first() ?? collect(['name' => '金币', 'unit' => '个']);
-        $bootstrappers['site']['gold_name'] = $goldSetting;
-
-        $currency = CurrencyType::where('enable', 1)->first() ?? collect(['name' => '积分', 'unit' => '']);
-        $bootstrappers['site']['currency_name'] = $currency;
+        $bootstrappers['site']['currency_name'] = CurrencyType::current();
         config('im.helper-user') && $bootstrappers['im:helper-user'] = config('im.helper-user');
         // 每页数据量
         $bootstrappers['limit'] = config('app.data_limit');

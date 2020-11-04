@@ -20,8 +20,8 @@ declare(strict_types=1);
 
 namespace Zhiyi\Plus\Support;
 
-use Zhiyi\Plus\Models\File;
 use Zhiyi\Plus\Contracts\Cdn\UrlGenerator as FileUrlGeneratorContract;
+use Zhiyi\Plus\Models\File;
 
 abstract class CdnUrlGenerator implements FileUrlGeneratorContract
 {
@@ -47,6 +47,7 @@ abstract class CdnUrlGenerator implements FileUrlGeneratorContract
      * Set file data model.
      *
      * @param \Zhiyi\Plus\Models\File $file
+     * @return CdnUrlGenerator
      * @author Seven Du <shiweidu@outlook.com>
      */
     protected function setFile(File $file)

@@ -20,11 +20,11 @@ declare(strict_types=1);
 
 namespace SlimKit\PlusSocialite\Drivers;
 
-use function Zhiyi\Plus\username;
-use Zhiyi\Plus\Models\User as UserModel;
 use SlimKit\PlusSocialite\Contracts\Sociable;
-use SlimKit\PlusSocialite\Traits\SocialiteDriverHelper;
 use SlimKit\PlusSocialite\Models\UserSocialite as UserSocialiteModel;
+use SlimKit\PlusSocialite\Traits\SocialiteDriverHelper;
+use Zhiyi\Plus\Models\User as UserModel;
+use function Zhiyi\Plus\username;
 
 abstract class DriverAbstract implements Sociable
 {

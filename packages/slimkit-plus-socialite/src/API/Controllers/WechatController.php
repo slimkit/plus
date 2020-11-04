@@ -21,8 +21,8 @@ declare(strict_types=1);
 namespace SlimKit\PlusSocialite\API\Controllers;
 
 use Illuminate\Http\Request;
-use function Zhiyi\Plus\setting;
 use Illuminate\Support\Facades\Cache;
+use function Zhiyi\Plus\setting;
 
 class WechatController extends Controller
 {

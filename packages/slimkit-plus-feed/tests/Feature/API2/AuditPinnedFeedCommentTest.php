@@ -20,12 +20,12 @@ declare(strict_types=1);
 
 namespace SlimKit\PlusFeed\Tests\Feature\API2;
 
-use Zhiyi\Plus\Tests\TestCase;
-use Zhiyi\Plus\Models\User as UserModel;
-use Zhiyi\Plus\Models\Comment as CommentModel;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\Feed;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\FeedPinned;
+use Zhiyi\Plus\Models\Comment as CommentModel;
+use Zhiyi\Plus\Models\User as UserModel;
+use Zhiyi\Plus\Tests\TestCase;
 
 class AuditPinnedFeedCommentTest extends TestCase
 {

@@ -18,9 +18,11 @@
 
 namespace Zhiyi\Component\ZhiyiPlus\PlusComponentPc\Controllers;
 
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use function Zhiyi\Component\ZhiyiPlus\PlusComponentPc\api;
+use Throwable;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\Feed;
+use function Zhiyi\Component\ZhiyiPlus\PlusComponentPc\api;
 use function Zhiyi\Component\ZhiyiPlus\PlusComponentPc\formatPinneds;
 use function Zhiyi\Component\ZhiyiPlus\PlusComponentPc\formatRepostable;
 
@@ -28,9 +30,11 @@ class FeedController extends BaseController
 {
     /**
      * 动态首页/列表.
-     * @author Foreach
-     * @param  Request $request
+     * @param Request $request
      * @return mixed
+     * @throws Throwable
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @author Foreach
      */
     public function feeds(Request $request)
     {
@@ -89,6 +93,7 @@ class FeedController extends BaseController
                 return response()->json([
                     'status' => true,
                     'data' => $feedData,
+                    'count' => count($data['feeds']),
                     'after' => $after,
                 ]);
             }
@@ -110,9 +115,10 @@ class FeedController extends BaseController
 
     /**
      * 动态详情.
-     * @author Foreach
-     * @param  int     $feed_id [动态id]
+     * @param Feed $feed
      * @return mixed
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @author Foreach
      */
     public function read(Feed $feed)
     {
@@ -122,7 +128,6 @@ class FeedController extends BaseController
         $data['user'] = $feed->user;
         $feedinfo = formatRepostable([$feedinfo]);
         $data['feed'] = $feedinfo[0];
-
         $this->PlusData['current'] = 'feeds';
 
         return view('pcview::feed.read', $data, $this->PlusData);
@@ -130,10 +135,12 @@ class FeedController extends BaseController
 
     /**
      * 动态评论列表.
+     * @param Request $request
+     * @param int $feed_id [动态id]
+     * @return JsonResponse
+     * @throws Throwable
+     * @throws \GuzzleHttp\Exception\GuzzleException
      * @author Foreach
-     * @param  Request $request
-     * @param  int     $feed_id [动态id]
-     * @return \Illuminate\Http\JsonResponse
      */
     public function comments(Request $request, int $feed_id)
     {
@@ -148,6 +155,7 @@ class FeedController extends BaseController
 
         return response()->json([
             'status' => true,
+            'count' => count($comments['comments']),
             'data' => $commentData,
             'after' => $after,
         ]);

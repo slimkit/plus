@@ -20,11 +20,11 @@ declare(strict_types=1);
 
 namespace Zhiyi\Plus\FileStorage;
 
-use JsonSerializable;
-use Zhiyi\Plus\Models\User;
-use Illuminate\Contracts\Support\Jsonable;
 use Illuminate\Contracts\Support\Arrayable;
+use Illuminate\Contracts\Support\Jsonable;
+use JsonSerializable;
 use Zhiyi\Plus\FileStorage\Pay\PayInterface;
+use Zhiyi\Plus\Models\User;
 
 interface FileMetaInterface extends Arrayable, JsonSerializable, Jsonable
 {

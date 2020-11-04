@@ -20,7 +20,9 @@ declare(strict_types=1);
 
 namespace Zhiyi\Plus\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Certification extends Model
 {
@@ -62,6 +64,14 @@ class Certification extends Model
      * @var array
      */
     protected $fillable = ['certification_name', 'user_id', 'data', 'status'];
+
+    public static function boot()
+    {
+        parent::boot();
+        static::addGlobalScope('category', function (Builder $builder) {
+            $builder->with('category');
+        });
+    }
 
     /**
      * Get icon url.
@@ -110,7 +120,7 @@ class Certification extends Model
     /**
      * Has certification caregory.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     * @return HasOne
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function category()

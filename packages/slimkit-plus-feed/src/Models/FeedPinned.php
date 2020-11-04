@@ -21,17 +21,28 @@ declare(strict_types=1);
 namespace Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Zhiyi\Plus\Models\User;
+use DB;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Zhiyi\Plus\Models\Comment as CommentModel;
+use Zhiyi\Plus\Models\User;
 
 class FeedPinned extends Model
 {
     use HasFactory;
+    public static function boot()
+    {
+        parent::boot();
+        static::addGlobalScope('user', function (Builder $query) {
+            $query->with('user');
+        });
+    }
+
     /**
      * Has user.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     * @return HasOne
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function user()
@@ -42,7 +53,7 @@ class FeedPinned extends Model
     /**
      *  Has feed.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     * @return HasOne
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function feed()
@@ -58,7 +69,7 @@ class FeedPinned extends Model
     /**
      * Has feed comment.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     * @return HasOne
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function comment()
@@ -75,8 +86,8 @@ class FeedPinned extends Model
             ->where('amount', '>', 0)
             ->where('day', '>', 0)
             ->first([
-                \DB::raw('SUM(day) as total_day'),
-                \DB::raw('SUM(amount) as total_amount'),
+                DB::raw('SUM(day) as total_day'),
+                DB::raw('SUM(amount) as total_amount'),
             ])
             ->toArray();
     }

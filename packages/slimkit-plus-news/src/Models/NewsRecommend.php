@@ -20,8 +20,8 @@ declare(strict_types=1);
 
 namespace Zhiyi\Component\ZhiyiPlus\PlusComponentNews\Models;
 
-use Zhiyi\Plus\Models\FileWith;
 use Illuminate\Database\Eloquent\Model;
+use Zhiyi\Plus\Models\FileWith;
 
 class NewsRecommend extends Model
 {

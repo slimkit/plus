@@ -20,9 +20,9 @@ declare(strict_types=1);
 
 namespace SlimKit\PlusID\Web\Controllers;
 
-use SlimKit\PlusID\Server;
 use Illuminate\Http\Request;
 use SlimKit\PlusID\Models\Client as ClientModel;
+use SlimKit\PlusID\Server;
 
 class HomeController
 {

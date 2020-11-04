@@ -21,18 +21,17 @@ declare(strict_types=1);
 namespace Zhiyi\Plus\Http\Controllers\Admin;
 
 use Carbon\Carbon;
-use Zhiyi\Plus\Models\Area;
-use Illuminate\Http\Request;
-use function Zhiyi\Plus\setting;
-use Illuminate\Support\Facades\DB;
-use Zhiyi\Plus\Models\CommonConfig;
-use Illuminate\Contracts\Mail\Mailer;
-use Illuminate\Support\Facades\Cache;
-use Zhiyi\Plus\Support\Configuration;
 use Illuminate\Contracts\Config\Repository;
-use Zhiyi\Plus\Http\Controllers\Controller;
 use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\Mail\Mailer;
 use Illuminate\Contracts\Routing\ResponseFactory;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
+use Zhiyi\Plus\Http\Controllers\Controller;
+use Zhiyi\Plus\Models\Area;
+use Zhiyi\Plus\Models\CommonConfig;
+use function Zhiyi\Plus\setting;
+use Zhiyi\Plus\Support\Configuration;
 
 class SiteController extends Controller
 {

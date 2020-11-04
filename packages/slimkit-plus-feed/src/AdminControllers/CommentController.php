@@ -20,19 +20,22 @@ declare(strict_types=1);
 
 namespace Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\AdminControllers;
 
-use DB;
 use Carbon\Carbon;
-use Illuminate\Support\Str;
-use Zhiyi\Plus\Models\User;
-use Illuminate\Http\Request;
-use Zhiyi\Plus\Models\Comment;
-use Zhiyi\Plus\Models\UserCount;
+use DB;
+use Exception;
 use Illuminate\Database\QueryException;
-use Zhiyi\Plus\Http\Controllers\Controller;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\Feed;
-use Zhiyi\Plus\Packages\Currency\Processes\User as UserProcess;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\FeedPinned;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Traits\PaginatorPage;
+use Zhiyi\Plus\Http\Controllers\Controller;
+use Zhiyi\Plus\Models\Comment;
+use Zhiyi\Plus\Models\User;
+use Zhiyi\Plus\Models\UserCount;
+use Zhiyi\Plus\Notifications\System as SystemNotification;
+use Zhiyi\Plus\Packages\Currency\Processes\User as UserProcess;
 
 class CommentController extends Controller
 {
@@ -41,7 +44,11 @@ class CommentController extends Controller
     /**
      * 获取评论列表.
      *
-     * @param \Illuminate\Http\Request $request
+     * @param Request $request
+     * @param Comment $commentModel
+     * @param Carbon $datetime
+     * @param FeedPinned $feedPinned
+     * @param User $user
      * @return mixed
      * @author Seven Du <shiweidu@outlook.com>
      */
@@ -192,13 +199,14 @@ class CommentController extends Controller
      *
      * @param Comment $comment
      * @return mixed
+     * @throws Exception
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function delete(Comment $comment)
     {
         DB::beginTransaction();
         try {
-            $pinnedComment = FeedPinned::whereNull('expires_at')
+            $pinnedComment = FeedPinned::query()->whereNull('expires_at')
                 ->where('target', $comment->id)
                 ->where('channel', 'comment')
                 ->first();
@@ -208,11 +216,11 @@ class CommentController extends Controller
                 $pinnedComment->delete();
             }
             // 统计被评论用户未操作的动态评论置顶
-            $unReadCount = FeedPinned::whereNull('expires_at')
+            $unReadCount = FeedPinned::query()->whereNull('expires_at')
                 ->where('channel', 'comment')
                 ->where('target_user', $comment->target_user)
                 ->count();
-            $userCount = UserCount::firstOrNew([
+            $userCount = UserCount::query()->firstOrNew([
                 'type' => 'user-feed-comment-pinned',
                 'user_id' => $comment->target_user,
             ]);
@@ -223,15 +231,22 @@ class CommentController extends Controller
             $feed = new Feed();
             $feed->where('id', $comment->commentable_id)->decrement('feed_comment_count'); // 统计相关动态评论数量
 
-            // TODO 用户评论统计，积分减少
-
+            // 通知用户评论被删除
+            $comment->user->notify(new SystemNotification('动态评论被管理员删除', [
+                'type' => 'delete:feed/comment',
+                'comment' => [
+                    'contents' => $comment->body,
+                ],
+                'feed' => [
+                    'id' => $comment->commentable_id,
+                    'type' => $comment->commentable_type,
+                ],
+            ]));
             $comment->delete();
         } catch (QueryException $e) {
             DB::rollBack();
 
-            return response()->json([
-                'message' => $e->formatMessage(),
-            ])->setStatusCode(500);
+            throw $e;
         }
         DB::commit();
 
@@ -240,10 +255,10 @@ class CommentController extends Controller
 
     /**
      * 同意评论置顶申请.
-     * @param  Request    $request  [description]
-     * @param  FeedPinned $pinned   [description]
-     * @param  Carbon     $datetime [description]
-     * @return [type]               [description]
+     * @param Comment $comment
+     * @param FeedPinned $pinned [description]
+     * @param Carbon $datetime [description]
+     * @return JsonResponse [type]               [description]
      */
     public function accept(Comment $comment, FeedPinned $pinned, Carbon $datetime)
     {
@@ -310,7 +325,9 @@ class CommentController extends Controller
 
     /**
      * 驳回评论置顶.
-     * @param  FeedPinned $pinned
+     * @param FeedPinned $pinned
+     * @return JsonResponse
+     * @throws Exception
      */
     public function reject(FeedPinned $pinned)
     {

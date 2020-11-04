@@ -20,9 +20,9 @@ declare(strict_types=1);
 
 namespace Zhiyi\Plus\Http\Controllers\APIs\V2;
 
+use Illuminate\Contracts\Routing\ResponseFactory as ResponseContract;
 use Illuminate\Http\Request;
 use Zhiyi\Plus\Models\Comment as CommentModel;
-use Illuminate\Contracts\Routing\ResponseFactory as ResponseContract;
 
 class UserCommentController extends Controller
 {
@@ -43,17 +43,17 @@ class UserCommentController extends Controller
 
         $comments = $model->getConnection()->transaction(function () use ($user, $limit, $after, $model) {
             return $model->with([
-                    'commentable',
-                    'user' => function ($query) {
-                        return $query->withTrashed();
-                    },
-                    'reply' => function ($query) {
-                        return $query->withTrashed();
-                    },
-                    'target' => function ($query) {
-                        return $query->withTrashed();
-                    },
-                ])
+                'commentable',
+                'user' => function ($query) {
+                    return $query->withTrashed();
+                },
+                'reply' => function ($query) {
+                    return $query->withTrashed();
+                },
+                'target' => function ($query) {
+                    return $query->withTrashed();
+                },
+            ])
                 ->where(function ($query) use ($user) {
                     return $query->where('target_user', $user->id)
                         ->orWhere('reply_user', $user->id);

@@ -4,7 +4,7 @@
 
     $params = $params ?? ['group_id' => 0, 'disabled' => 0];
 @endphp
-@if($position == 1)
+@if($position === 1)
     <div class="comment_box" style="display: none;">
         <div class="comment_line">
             <div class="tr2"></div>
@@ -133,7 +133,9 @@
 @if ($position == 0)
 <script>
     $(function(){
-        var params = {};
+        var params = {
+          limit: 15
+        };
         var comments_type = '{{ $comments_type }}';
         var group_id = '{{$params['group_id'] ?? 0}}';
         if (group_id) {

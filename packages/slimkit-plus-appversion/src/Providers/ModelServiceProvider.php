@@ -20,8 +20,8 @@ declare(strict_types=1);
 
 namespace Slimkit\PlusAppversion\Providers;
 
-use Illuminate\Support\ServiceProvider;
 use Illuminate\Database\Eloquent\Relations\Relation;
+use Illuminate\Support\ServiceProvider;
 
 class ModelServiceProvider extends ServiceProvider
 {

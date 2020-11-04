@@ -21,12 +21,12 @@ declare(strict_types=1);
 namespace Zhiyi\Component\ZhiyiPlus\PlusComponentMusic\Admin;
 
 use Illuminate\Http\Request;
-use Zhiyi\Plus\Models\Comment;
-use Zhiyi\Plus\Http\Controllers\Controller;
-use Zhiyi\Component\ZhiyiPlus\PlusComponentMusic\Models\Music;
-use function Zhiyi\Component\ZhiyiPlus\PlusComponentMusic\view;
-use Zhiyi\Component\ZhiyiPlus\PlusComponentMusic\Models\MusicSpecial;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentMusic\Models\Comment as MusicComment;
+use Zhiyi\Component\ZhiyiPlus\PlusComponentMusic\Models\Music;
+use Zhiyi\Component\ZhiyiPlus\PlusComponentMusic\Models\MusicSpecial;
+use function Zhiyi\Component\ZhiyiPlus\PlusComponentMusic\view;
+use Zhiyi\Plus\Http\Controllers\Controller;
+use Zhiyi\Plus\Models\Comment;
 
 class CommentController extends Controller
 {

@@ -18,13 +18,14 @@
 
 namespace Zhiyi\Component\ZhiyiPlus\PlusComponentPc\Controllers;
 
-use Zhiyi\Plus\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
-use Zhiyi\Plus\Http\Controllers\Controller;
-use Zhiyi\Plus\Models\Comment as CommentModel;
 use function Zhiyi\Component\ZhiyiPlus\PlusComponentPc\api;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentPc\Models\Navigation;
+use Zhiyi\Plus\Http\Controllers\Controller;
+use Zhiyi\Plus\Models\Comment as CommentModel;
+use Zhiyi\Plus\Models\User;
+use function Zhiyi\Plus\setting;
 
 class BaseController extends Controller
 {
@@ -37,7 +38,7 @@ class BaseController extends Controller
             // 用户认证
             $user = $request->user();
             if ($user) {
-                $user->load('wallet', 'newWallet', 'extra', 'tags', 'currency');
+                $user->load('newWallet', 'extra', 'tags', 'currency');
                 $user->makeVisible(['phone', 'email']);
             }
 
@@ -56,9 +57,7 @@ class BaseController extends Controller
             }
 
             // 站点配置
-            $config = Cache::get('config');
-
-            if (! $config) {
+            $config = Cache::remember('pc-config', 60, function () {
                 $config = [];
 
                 // 启动信息接口
@@ -74,14 +73,21 @@ class BaseController extends Controller
                 $config['app'] = $repository->get('app');
 
                 // 顶部导航
-                $config['nav'] = Navigation::byPid(0)->byPos(0)->orderBy('order_sort')->get();
+                $config['nav'] = Navigation::byPid(0)->byPos(0)->byStatus(1)->orderBy('order_sort')->get();
 
                 // 底部导航
-                $config['nav_bottom'] = Navigation::byPid(0)->byPos(1)->get();
+                $config['nav_bottom'] = Navigation::byPid(0)->byPos(1)->byStatus(1)->get();
 
                 // 环信
-                $easemob = $repository->get('easemob');
-                $config['easemob_key'] = $easemob['app_key'] ?? '';
+                $easemob = setting('user', 'vendor:easemob') + [
+                  'open' => false,
+                  'appKey' => '',
+                  'clientId' => '',
+                  'clientSecret' => '',
+                  'registerType' => 0,
+                ];
+
+                $config['easemob_key'] = $easemob['appKey'] ?? '';
 
                 // 小助手
                 if (isset($config['bootstrappers']['im:helper'])) {
@@ -98,12 +104,10 @@ class BaseController extends Controller
                 // 上传配置
                 $config['files'] = $config['files'] ?: ['upload_max_size' => '102400'];
 
-                // 缓存配置信息
-                Cache::forever('config', $config);
-            }
+                return $config;
+            });
 
             $this->PlusData['config'] = $config;
-
             // 公共地址
             $this->PlusData['routes']['api'] = asset('/api/v2');
             $this->PlusData['routes']['storage'] = asset('/api/v2/files').'/';
@@ -117,13 +121,9 @@ class BaseController extends Controller
 
     /**
      * 操作提示.
-     * @author ZsyD
-     * @param  int    $status  [状态]
-     * @param  string $url     [跳转链接]
-     * @param  string $message [信息]
-     * @param  string $content [内容]
-     * @param  int    $time    [跳转时间]
+     * @param Request $request
      * @return mixed
+     * @author ZsyD
      */
     public function notice(Request $request)
     {
@@ -156,7 +156,7 @@ class BaseController extends Controller
                 return response()->redirectTo(route('pc:mine', ['user' => $reportable_id]), 302);
                 break;
             case 'comments': // 评论部分暂时跳转到所属资源的详情页
-                $comment = CommentModel::find($reportable_id);
+                $comment = CommentModel::query()->find($reportable_id);
                 if (! $comment) {
                     return abort(404);
                 }

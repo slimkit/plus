@@ -21,9 +21,9 @@ declare(strict_types=1);
 namespace Zhiyi\Plus\Packages\Wallet\TargetTypes;
 
 use DB;
+use Zhiyi\Plus\Models\WalletCash as WalletCashModel;
 use Zhiyi\Plus\Packages\Wallet\Order;
 use Zhiyi\Plus\Packages\Wallet\Wallet;
-use Zhiyi\Plus\Models\WalletCash as WalletCashModel;
 
 class WidthdrawTarget extends Target
 {

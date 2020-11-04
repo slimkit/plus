@@ -34,7 +34,7 @@
             </div>
         </div>
         <div class="panel-body">
-            <div class="row flex-row">
+            <div class="row">
                 <div class="col-xs-3">
                     <div class="input-group">
                         <input type="text" class="form-control" placeholder="标题" v-model="key_words">

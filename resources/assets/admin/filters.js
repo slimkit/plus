@@ -1,4 +1,4 @@
-import plueMessageBundle from 'plus-message-bundle';
+import plueMessageBundle from 'plus-message-bundle'
 
 // see http://numeraljs.com
 // import numeral from 'numeral';
@@ -12,8 +12,8 @@ import plueMessageBundle from 'plus-message-bundle';
  * @author Seven Du <shiweidu@outlook.com>
  */
 export function plusMessageFirst (message, defaultMessage) {
-  return plueMessageBundle(message, defaultMessage).getMessage();
-};
+  return plueMessageBundle(message, defaultMessage).getMessage()
+}
 
 /**
  * 钱单位格式化.
@@ -44,9 +44,12 @@ export function plusMessageFirst (message, defaultMessage) {
  * @return {String}
  * @author Seven Du <shiweidu@outlook.com>
  */
-export function localDate(value) {
-  return (new Date(`${value}Z`)).toLocaleString();
-};
+export function localDate (value) {
+  if (value.charAt(value.length - 1) === 'Z') {
+    return (new Date(`${value}`)).toLocaleString(navigator.language, { hour12: false })
+  }
+  return (new Date(`${value}Z`)).toLocaleString(navigator.language, { hour12: false })
+}
 
 /**
  * Local date to UTC.
@@ -55,11 +58,11 @@ export function localDate(value) {
  * @return {String}
  * @author Seven Du <shiweidu@outlook.com>
  */
-export function localDateToUTC(value) {
-  const dateRepo = new Date(value);
-  const fullYear = dateRepo.getUTCFullYear();
-  const month = dateRepo.getUTCMonth() + 1;
-  const date = dateRepo.getUTCDate();
+export function localDateToUTC (value) {
+  const dateRepo = new Date(value)
+  const fullYear = dateRepo.getUTCFullYear()
+  const month = dateRepo.getUTCMonth() + 1
+  const date = dateRepo.getUTCDate()
 
-  return `${fullYear}-${month}-${date}`;
-};
+  return `${fullYear}-${month}-${date}`
+}

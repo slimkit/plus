@@ -3,13 +3,13 @@
     <button class="reward-btn" @click="reward">{{ $t('reward.name') }}</button>
     <!-- eslint-disable-next-line vue/component-name-in-template-casing -->
     <i18n
+      :slot-scope="{currencyUnit}"
       path="article.reward_count"
       class="reward-info"
       tag="p"
-      :places="{currencyUnit}"
     >
-      <span place="count">{{ count | formatNum }}</span>
-      <span place="amount">{{ ~~amount }}</span>
+      <span slot="count">{{ count | formatNum }}</span>
+      <span slot="amount">{{ ~~amount }}</span>
     </i18n>
     <RouterLink
       v-if="list.length > 0"

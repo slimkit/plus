@@ -20,9 +20,10 @@ declare(strict_types=1);
 
 namespace Zhiyi\Plus\Http\Controllers\APIs\V2;
 
-use Zhiyi\Plus\Models\User;
 use Illuminate\Http\Request;
+use Zhiyi\Plus\Models\CurrencyType;
 use Zhiyi\Plus\Models\GoldType;
+use Zhiyi\Plus\Models\User;
 use Zhiyi\Plus\Models\WalletCharge;
 use Zhiyi\Plus\Notifications\System as SystemNotification;
 use Zhiyi\Plus\Packages\Currency\Processes\User as UserProcess;
@@ -32,9 +33,9 @@ class UserRewardController extends Controller
     // 系统货币名称
     protected $goldName;
 
-    public function __construct(GoldType $goldModel)
+    public function __construct()
     {
-        $this->goldName = $goldModel->where('status', 1)->select('name', 'unit')->value('name') ?? '积分';
+        $this->goldName = CurrencyType::current('name');
     }
 
     /**
@@ -48,7 +49,7 @@ class UserRewardController extends Controller
      */
     public function store(Request $request, User $target, UserProcess $processer)
     {
-        $amount = $request->input('amount');
+        $amount = (int) $request->input('amount');
         if (! $amount || $amount < 0) {
             return response()->json([
                 'amount' => '请输入正确的打赏数量',
@@ -68,7 +69,7 @@ class UserRewardController extends Controller
             ], 500);
         }
 
-        $user->getConnection()->transaction(function () use ($user, $target, $amount, $userCount, $processer) {
+        $user->getConnection()->transaction(function () use ($user, $target, $amount, $processer) {
             $processer->prepayment($user->id, $amount, $target->id, sprintf('打赏用户“%s”', $target->name), sprintf('打赏用户“%s”，积分扣除%s', $target->name, $amount));
             $processer->receivables($target->id, $amount, $user->id, sprintf('“%s”打赏了你', $user->name), sprintf('用户“%s”打赏了你”，积分增加%s', $user->name, $amount));
 

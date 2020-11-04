@@ -21,8 +21,8 @@ declare(strict_types=1);
 namespace Zhiyi\Plus\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
-use Zhiyi\Plus\Models\Conversation;
 use Zhiyi\Plus\Http\Controllers\Controller;
+use Zhiyi\Plus\Models\Conversation;
 
 class ConversationController extends Controller
 {
@@ -43,13 +43,13 @@ class ConversationController extends Controller
 
         $total = $query->count('id');
         $items = $query->select([
-                'id',
-                'user_id',
-                'to_user_id',
-                'type',
-                'content',
-                'created_at',
-            ])
+            'id',
+            'user_id',
+            'to_user_id',
+            'type',
+            'content',
+            'created_at',
+        ])
             ->with(['user' => function ($query) {
                 $query->select('id', 'name');
             }, 'target' => function ($query) {

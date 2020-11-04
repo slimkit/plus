@@ -20,11 +20,11 @@ declare(strict_types=1);
 
 namespace Zhiyi\Plus\Http\Controllers\APIs\V2;
 
+use Illuminate\Contracts\Routing\ResponseFactory as ResponseFactoryContract;
 use Illuminate\Http\Request;
 use Zhiyi\Plus\Models\User as UserModel;
-use Zhiyi\Plus\Notifications\Follow as FollowNotification;
 use Zhiyi\Plus\Models\VerificationCode as VerificationCodeModel;
-use Illuminate\Contracts\Routing\ResponseFactory as ResponseFactoryContract;
+use Zhiyi\Plus\Notifications\Follow as FollowNotification;
 
 class CurrentUserController extends Controller
 {
@@ -168,6 +168,7 @@ class CurrentUserController extends Controller
         $offset = $request->query('offset', 0);
 
         $followers = $user->followers()
+            ->with('extra')
             ->offset($offset)
             ->limit($limit)
             ->get();
@@ -198,6 +199,7 @@ class CurrentUserController extends Controller
         $offset = $request->query('offset', 0);
 
         $followings = $user->followings()
+            ->with('extra')
             ->offset($offset)
             ->limit($limit)
             ->get();

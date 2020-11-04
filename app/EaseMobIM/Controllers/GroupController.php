@@ -21,11 +21,11 @@ declare(strict_types=1);
 namespace Zhiyi\Plus\EaseMobIm;
 
 use GuzzleHttp\Client;
-use Zhiyi\Plus\Models\User;
 use Illuminate\Http\Request;
 use Zhiyi\Plus\Cdn\UrlManager;
-use Zhiyi\Plus\Models\ImGroup;
 use Zhiyi\Plus\Models\FileWith;
+use Zhiyi\Plus\Models\ImGroup;
+use Zhiyi\Plus\Models\User;
 
 class GroupController extends EaseMobController
 {

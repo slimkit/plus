@@ -21,11 +21,11 @@ declare(strict_types=1);
 namespace SlimKit\PlusSocialite\API\Controllers;
 
 use Illuminate\Http\Request;
-use SlimKit\PlusSocialite\SocialiteManager;
-use SlimKit\PlusSocialite\Contracts\Sociable;
-use SlimKit\PlusSocialite\API\Requests\CreateUserRequest;
 use SlimKit\PlusSocialite\API\Requests\AccessTokenRequest;
+use SlimKit\PlusSocialite\API\Requests\CreateUserRequest;
+use SlimKit\PlusSocialite\Contracts\Sociable;
 use SlimKit\PlusSocialite\Models\UserSocialite as UserSocialiteModel;
+use SlimKit\PlusSocialite\SocialiteManager;
 
 class SocialiteController extends Controller
 {

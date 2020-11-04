@@ -20,16 +20,16 @@ declare(strict_types=1);
 
 namespace Zhiyi\Plus\FileStorage\Filesystems;
 
-use OSS\OssClient;
-use Illuminate\Http\Request;
-use Zhiyi\Plus\FileStorage\Task;
 use Illuminate\Contracts\Auth\Guard;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\RedirectResponse;
-use Zhiyi\Plus\FileStorage\TaskInterface;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use OSS\OssClient;
+use Symfony\Component\HttpFoundation\Response;
 use Zhiyi\Plus\FileStorage\FileMetaInterface;
 use Zhiyi\Plus\FileStorage\ResourceInterface;
-use Symfony\Component\HttpFoundation\Response;
+use Zhiyi\Plus\FileStorage\Task;
+use Zhiyi\Plus\FileStorage\TaskInterface;
 
 class AliyunOssFilesystem implements FilesystemInterface
 {

@@ -20,9 +20,9 @@ declare(strict_types=1);
 
 namespace Zhiyi\Plus\Models\Relations;
 
-use Zhiyi\Plus\Models\User;
-use Zhiyi\Plus\Models\BlackList;
 use Illuminate\Support\Facades\Cache;
+use Zhiyi\Plus\Models\BlackList;
+use Zhiyi\Plus\Models\User;
 
 trait UserHasBlackList
 {

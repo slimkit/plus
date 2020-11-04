@@ -20,17 +20,17 @@ declare(strict_types=1);
 
 namespace Zhiyi\Plus\Http\Controllers\Admin;
 
-use DB;
 use Carbon\Carbon;
-use Zhiyi\Plus\Models\Role;
-use Zhiyi\Plus\Models\User;
+use DB;
 use Illuminate\Http\Request;
-use Zhiyi\Plus\Models\Famous;
 use Illuminate\Validation\Rule;
-use function Zhiyi\Plus\setting;
-use Zhiyi\Plus\Models\UserRecommended;
 use Zhiyi\Plus\EaseMobIm\EaseMobController;
 use Zhiyi\Plus\Http\Controllers\Controller;
+use Zhiyi\Plus\Models\Famous;
+use Zhiyi\Plus\Models\Role;
+use Zhiyi\Plus\Models\User;
+use Zhiyi\Plus\Models\UserRecommended;
+use function Zhiyi\Plus\setting;
 
 class UserController extends Controller
 {

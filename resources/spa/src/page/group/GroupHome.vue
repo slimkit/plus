@@ -16,7 +16,7 @@
       <div class="group-label" @click="$router.push({ name: 'groups', query: { type: 'recommend' } })">
         <!-- eslint-disable-next-line vue/component-name-in-template-casing -->
         <i18n tag="h2" path="group.count">
-          <strong place="count">{{ groupTotalNumber }}</strong>
+          <strong slot="count">{{ groupTotalNumber }}</strong>
         </i18n>
         <svg class="m-style-svg m-svg-def m-entry-append">
           <use xlink:href="#icon-arrow-right" />

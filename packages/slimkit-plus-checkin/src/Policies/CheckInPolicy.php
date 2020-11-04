@@ -20,6 +20,8 @@ declare(strict_types=1);
 
 namespace SlimKit\PlusCheckIn\Policies;
 
+use Illuminate\Support\Facades\Cache;
+use SlimKit\PlusCheckIn\CacheName\CheckInCacheName;
 use Zhiyi\Plus\Models\User;
 
 class CheckInPolicy
@@ -27,7 +29,8 @@ class CheckInPolicy
     /**
      * 检查用户是否可以创建签到记录.
      *
-     * @param \Zhiyi\Plus\Models\User $user
+     * @param  User  $user
+     *
      * @return bool
      * @author Seven Du <shiweidu@outlook.com>
      */
@@ -35,8 +38,11 @@ class CheckInPolicy
     {
         $date = $user->freshTimestamp()->format('Y-m-d');
 
-        return ! $user->checkinLogs()
-            ->whereDate('created_at', $date)
-            ->first();
+        return ! Cache::rememberForever(sprintf(CheckInCacheName::CheckInAtDate,
+            $user->id, $date), function () use ($date, $user) {
+                return $user->checkinLogs()
+                ->whereDate('created_at', $date)
+                ->first();
+            });
     }
 }

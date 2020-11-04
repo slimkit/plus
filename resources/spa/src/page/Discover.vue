@@ -30,6 +30,18 @@
           </svg>
         </RouterLink>
       </ul>
+      <ul v-if="SHOP_PLUS_ID" class="m-entry-group padding">
+        <li class="m-entry" @click="goShop">
+          <svg class="m-style-svg m-svg-def m-entry-prepend">
+            <use :xlink:href="`#icon-discover-find`" />
+          </svg>
+          <span class="m-flex-grow1">商城</span>
+          <BadgeIcon :dot="false" class="m-entry-extra"></BadgeIcon>
+          <svg class="m-style-svg m-svg-def entry__item--append">
+            <use xlink:href="#icon-arrow-right" />
+          </svg>
+        </li>
+      </ul>
     </main>
     <FootGuide />
   </div>
@@ -37,6 +49,7 @@
 
 <script>
 import i18n from '@/i18n'
+import * as api from '@/api'
 
 const entrys = [
   [
@@ -95,11 +108,22 @@ export default {
     return {
       prefix: 'discover',
       entrys,
+      SHOP_PLUS_ID: process.env.VUE_APP_SHOP_PLUS_ID || 0,
     }
   },
   methods: {
     to (path) {
       this.$router.push(path)
+    },
+    goShop () {
+      api.getShop(this.SHOP_PLUS_ID).then(({ data }) => {
+        let params = data.params || []
+        let url = data.url || ''
+        params = Object.keys(params).map(function (key) {
+          return encodeURIComponent(key) + '=' + encodeURIComponent(params[key])
+        }).join('&')
+        location.href = url + '/Home/Api/check?' + params
+      })
     },
   },
 }

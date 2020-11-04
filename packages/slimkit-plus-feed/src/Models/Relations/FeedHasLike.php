@@ -20,16 +20,18 @@ declare(strict_types=1);
 
 namespace Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\Relations;
 
+use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Illuminate\Support\Facades\Cache;
+use Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\CacheName\CacheKeys;
 use Zhiyi\Plus\Models\Like;
 use Zhiyi\Plus\Models\User;
-use Illuminate\Support\Facades\Cache;
 
 trait FeedHasLike
 {
     /**
      * Has likes.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\MorphMany
+     * @return MorphMany
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function likes()
@@ -40,7 +42,8 @@ trait FeedHasLike
     /**
      * Check user like.
      *
-     * @param mixed $user
+     * @param  mixed  $user
+     *
      * @return bool
      * @author Seven Du <shiweidu@outlook.com>
      */
@@ -50,16 +53,13 @@ trait FeedHasLike
             $user = $user->id;
         }
 
-        $cacheKey = sprintf('feed-like:%s,%s', $this->id, $user);
-        if (Cache::has($cacheKey)) {
-            return Cache::get($cacheKey);
-        }
-
-        $status = $this->likes()
-            ->where('user_id', $user)
-            ->first() !== null;
-
-        Cache::forever($cacheKey, $status);
+        $status = Cache::rememberForever(
+            sprintf(CacheKeys::LIKED, $this->id, $user),
+            function () use ($user) {
+                return $this->likes()
+                    ->where('user_id', $user)
+                    ->exists();
+            });
 
         return $status;
     }
@@ -67,7 +67,8 @@ trait FeedHasLike
     /**
      * Like feed.
      *
-     * @param mixed $user
+     * @param  mixed  $user
+     *
      * @return mixed
      * @author Seven Du <shiweidu@outlook.com>
      */
@@ -82,10 +83,11 @@ trait FeedHasLike
             $this->increment('like_count', 1);
 
             // 增加用户点赞数
-            $this->user->extra()->firstOrCreate([])->increment('likes_count', 1);
+            $this->user->extra()->firstOrCreate([])
+                ->increment('likes_count', 1);
 
             return $this->likes()->firstOrCreate([
-                'user_id' => $user,
+                'user_id'     => $user,
                 'target_user' => $this->user_id,
             ]);
         });
@@ -94,7 +96,8 @@ trait FeedHasLike
     /**
      * Unlike feed.
      *
-     * @param mixed $user
+     * @param  mixed  $user
+     *
      * @return mixed
      * @author Seven Du <shiweidu@outlook.com>
      */
@@ -107,19 +110,21 @@ trait FeedHasLike
         $like = $this->likes()->where('user_id', $user)->first();
         $this->forgetLike($user);
 
-        return $like && $this->getConnection()->transaction(function () use ($like) {
-            $this->decrement('like_count', 1);
-            $this->user->extra()->decrement('likes_count', 1);
-            $like->delete();
+        return $like
+            && $this->getConnection()->transaction(function () use ($like) {
+                $this->decrement('like_count', 1);
+                $this->user->extra()->decrement('likes_count', 1);
+                $like->delete();
 
-            return true;
-        });
+                return true;
+            });
     }
 
     /**
      * Forget like cache.
      *
-     * @param mixed $user
+     * @param  mixed  $user
+     *
      * @return void
      * @author Seven Du <shiweidu@outlook.com>
      */
@@ -129,7 +134,6 @@ trait FeedHasLike
             $user = $user->id;
         }
 
-        $cacheKey = sprintf('feed-like:%s,%s', $this->id, $user);
-        Cache::forget($cacheKey);
+        Cache::forget(sprintf(CacheKeys::LIKED, $this->id, $user));
     }
 }

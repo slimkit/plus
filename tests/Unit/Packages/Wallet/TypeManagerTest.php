@@ -19,10 +19,10 @@
 namespace Zhiyi\Plus\Tests\Unit\Packages\Wallet;
 
 use RuntimeException;
-use Zhiyi\Plus\Tests\TestCase;
 use Zhiyi\Plus\Packages\Wallet\Order;
 use Zhiyi\Plus\Packages\Wallet\TypeManager;
 use Zhiyi\Plus\Packages\Wallet\Types\UserType;
+use Zhiyi\Plus\Tests\TestCase;
 
 class TypeManagerTest extends TestCase
 {

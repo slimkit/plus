@@ -22,14 +22,14 @@ namespace Zhiyi\Plus\FileStorage\Filesystems\Local;
 
 use Closure;
 use Exception;
-use Zhiyi\Plus\Models\User;
-use Zhiyi\Plus\FileStorage\ImageDimension;
+use Illuminate\Contracts\Filesystem\Filesystem as FilesystemContract;
 use Zhiyi\Plus\FileStorage\FileMetaAbstract;
+use Zhiyi\Plus\FileStorage\ImageDimension;
+use Zhiyi\Plus\FileStorage\ImageDimensionInterface;
 use Zhiyi\Plus\FileStorage\Pay\PayInterface;
 use Zhiyi\Plus\FileStorage\ResourceInterface;
 use Zhiyi\Plus\FileStorage\Traits\HasImageTrait;
-use Zhiyi\Plus\FileStorage\ImageDimensionInterface;
-use Illuminate\Contracts\Filesystem\Filesystem as FilesystemContract;
+use Zhiyi\Plus\Models\User;
 
 class FileMeta extends FileMetaAbstract
 {

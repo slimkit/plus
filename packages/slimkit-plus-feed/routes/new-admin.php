@@ -18,9 +18,9 @@ declare(strict_types=1);
  * +----------------------------------------------------------------------+
  */
 
-use Illuminate\Support\Facades\Route;
 use Illuminate\Contracts\Routing\Registrar as RouteContract;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Admin\Controllers\Topic;
+use Illuminate\Support\Facades\Route;
 
 Route::group(['middleware' => ['auth:web', 'admin']], function (RouteContract $route) {
     $route->get('topics', Topic::class.'@adminListTopics');

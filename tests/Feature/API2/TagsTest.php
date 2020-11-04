@@ -18,8 +18,8 @@
 
 namespace Zhiyi\Plus\Tests\Feature\API2;
 
-use Zhiyi\Plus\Tests\TestCase;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Zhiyi\Plus\Tests\TestCase;
 
 class TagsTest extends TestCase
 {

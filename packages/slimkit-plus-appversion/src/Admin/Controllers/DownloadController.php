@@ -22,9 +22,9 @@ namespace Slimkit\PlusAppversion\Admin\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use function Zhiyi\Plus\setting;
 use Zhiyi\Plus\Admin\Controllers\Controller;
 use Zhiyi\Plus\FileStorage\StorageInterface;
+use function Zhiyi\Plus\setting;
 
 class DownloadController extends Controller
 {

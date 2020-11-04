@@ -20,8 +20,8 @@ declare(strict_types=1);
 
 namespace Zhiyi\Plus\Policies\Feed;
 
-use Zhiyi\Plus\Models\User as UserModel;
 use Zhiyi\Plus\Models\FeedTopic as FeedTopicModel;
+use Zhiyi\Plus\Models\User as UserModel;
 
 class Topic
 {

@@ -1,4 +1,4 @@
-﻿@extends('layouts.bootstrap')
+@extends('layouts.bootstrap')
 
 @section('title', 'PC 后台管理')
 

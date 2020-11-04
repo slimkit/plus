@@ -18,8 +18,8 @@
 
 namespace Zhiyi\Component\ZhiyiPlus\PlusComponentPc\Models;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 
 class Navigation extends Model
 {
@@ -44,6 +44,11 @@ class Navigation extends Model
     public function scopeByPid(Builder $query, int $pid): Builder
     {
         return $query->where('parent_id', $pid);
+    }
+
+    public function scopeByStatus(Builder $builder, int $status): Builder
+    {
+        return $builder->where('status', $status);
     }
 
     public function parent()

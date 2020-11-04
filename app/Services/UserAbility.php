@@ -21,8 +21,8 @@ declare(strict_types=1);
 namespace Zhiyi\Plus\Services;
 
 use Illuminate\Support\Collection;
-use Zhiyi\Plus\Models\User as UserModel;
 use Zhiyi\Plus\Contracts\Model\UserAbility as UserAbilityContract;
+use Zhiyi\Plus\Models\User as UserModel;
 
 class UserAbility implements UserAbilityContract
 {

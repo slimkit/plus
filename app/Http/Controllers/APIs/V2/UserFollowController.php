@@ -20,9 +20,9 @@ declare(strict_types=1);
 
 namespace Zhiyi\Plus\Http\Controllers\APIs\V2;
 
+use Illuminate\Contracts\Routing\ResponseFactory as ResponseFactoryContract;
 use Illuminate\Http\Request;
 use Zhiyi\Plus\Models\User as UserModel;
-use Illuminate\Contracts\Routing\ResponseFactory as ResponseFactoryContract;
 
 class UserFollowController extends Controller
 {
@@ -42,6 +42,7 @@ class UserFollowController extends Controller
         $offset = $request->query('offset', 0);
 
         $followers = $user->followers()
+            ->with('extra')
             ->latest()
             ->offset($offset)
             ->limit($limit)
@@ -73,6 +74,7 @@ class UserFollowController extends Controller
         $offset = $request->query('offset', 0);
 
         $followings = $user->followings()
+            ->with('extra')
             ->latest()
             ->offset($offset)
             ->limit($limit)

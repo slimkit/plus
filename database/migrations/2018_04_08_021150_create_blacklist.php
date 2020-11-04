@@ -16,9 +16,9 @@
  * +----------------------------------------------------------------------+
  */
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 class CreateBlacklist extends Migration
 {
@@ -33,7 +33,6 @@ class CreateBlacklist extends Migration
             $table->integer('user_id')->unsigned()->comment('main user');
             $table->integer('target_id')->unsigned()->comment('blacked user id');
             $table->timestamps();
-            $table->index('user_id');
         });
     }
 

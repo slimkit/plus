@@ -21,10 +21,10 @@ declare(strict_types=1);
 namespace Zhiyi\Component\ZhiyiPlus\PlusComponentNews\API2\Controllers;
 
 use Illuminate\Http\Request;
-use Zhiyi\Plus\Models\GoldType;
-use Zhiyi\Plus\Models\CommonConfig;
-use Zhiyi\Plus\Models\WalletCharge;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentNews\Models\News;
+use Zhiyi\Plus\Models\CommonConfig;
+use Zhiyi\Plus\Models\CurrencyType;
+use Zhiyi\Plus\Models\WalletCharge;
 
 class RewardController extends Controller
 {
@@ -34,11 +34,11 @@ class RewardController extends Controller
     // 系统内货币与真实货币兑换比例
     protected $wallet_ratio;
 
-    public function __construct(GoldType $goldModel, CommonConfig $configModel)
+    public function __construct(CommonConfig $configModel)
     {
         $walletConfig = $configModel->where('name', 'wallet:ratio')->first();
 
-        $this->goldName = $goldModel->where('status', 1)->select('name', 'unit')->value('name') ?? '金币';
+        $this->goldName = CurrencyType::current('name');
         $this->wallet_ratio = $walletConfig->value ?? 100;
     }
 
@@ -70,7 +70,6 @@ class RewardController extends Controller
             ], 403);
         }
 
-        $userCount->total = $userUnreadCount + 1;
         $user->getConnection()->transaction(function () use ($user, $news, $charge, $targetUser, $amount) {
             // 扣除操作用户余额
             $user->wallet()->decrement('balance', $amount);
@@ -103,7 +102,7 @@ class RewardController extends Controller
                 $charge->status = 1;
                 $charge->save();
 
-                $target->notify(new SystemNotification(sprintf('%s打赏了你的资讯文章', $user->name), [
+                $targetUser->notify(new SystemNotification(sprintf('%s打赏了你的资讯文章', $user->name), [
                     'type' => 'reward:news',
                     'sender' => [
                         'id' => $user->id,

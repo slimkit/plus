@@ -21,15 +21,15 @@ declare(strict_types=1);
 namespace Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\AdminControllers;
 
 use Carbon\Carbon;
-use Illuminate\Support\Str;
-use Zhiyi\plus\Models\User;
-use Illuminate\Http\Request;
-use Zhiyi\Plus\Models\UserCount;
-use Zhiyi\Plus\Http\Controllers\Controller;
 use Illuminate\Contracts\Cache\Repository as CacheContract;
+use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\Feed;
-use Zhiyi\Plus\Packages\Currency\Processes\User as UserProcess;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\FeedPinned;
+use Zhiyi\Plus\Http\Controllers\Controller;
+use Zhiyi\plus\Models\User;
+use Zhiyi\Plus\Models\UserCount;
+use Zhiyi\Plus\Packages\Currency\Processes\User as UserProcess;
 
 class FeedController extends Controller
 {
@@ -78,12 +78,12 @@ class FeedController extends Controller
         }
 
         $feeds = $model->with([
-                'user',
-                'paidNode',
-                'images',
-                'images.paidNode',
-                'pinned',
-            ])
+            'user',
+            'paidNode',
+            'images',
+            'images.paidNode',
+            'pinned',
+        ])
             ->when($before, function ($query) use ($before) { // 翻页
                 return $query->where('id', '<', $before);
             })

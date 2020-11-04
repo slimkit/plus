@@ -20,9 +20,9 @@ declare(strict_types=1);
 
 namespace Zhiyi\Plus\Http\Controllers\APIs\V2;
 
+use Illuminate\Contracts\Routing\ResponseFactory as ResponseContract;
 use Illuminate\Http\Request;
 use Zhiyi\Plus\Models\Like as LikeModel;
-use Illuminate\Contracts\Routing\ResponseFactory as ResponseContract;
 
 class UserLikeController extends Controller
 {
@@ -33,11 +33,11 @@ class UserLikeController extends Controller
         $user = $request->user();
 
         $likes = $model->with([
-                'likeable',
-                'user' => function ($query) {
-                    return $query->withTrashed();
-                },
-            ])
+            'likeable',
+            'user' => function ($query) {
+                return $query->withTrashed();
+            },
+        ])
             ->where('target_user', $user->id)
             ->when($after, function ($query) use ($after) {
                 return $query->where('id', '<', $after);

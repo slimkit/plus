@@ -22,9 +22,9 @@ namespace Zhiyi\Plus\Http\Controllers\APIs\V2;
 
 use Carbon\Carbon;
 use Illuminate\Http\Request;
-use Zhiyi\Plus\Utils\Markdown;
-use function Zhiyi\Plus\setting;
 use Zhiyi\Plus\Models\Conversation;
+use function Zhiyi\Plus\setting;
+use Zhiyi\Plus\Utils\Markdown;
 
 class SystemController extends Controller
 {

@@ -16,9 +16,10 @@
  * +----------------------------------------------------------------------+
  */
 namespace Database\Seeders;
+
+use Illuminate\Database\Seeder;
 use Zhiyi\Plus\Models\Role;
 use Zhiyi\Plus\Models\User;
-use Illuminate\Database\Seeder;
 
 class UsersTableSeeder extends Seeder
 {

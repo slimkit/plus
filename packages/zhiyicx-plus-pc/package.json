@@ -10,16 +10,18 @@
         "production": "cross-env NODE_ENV=production node_modules/webpack/bin/webpack.js --progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js"
     },
     "devDependencies": {
+        "@babel/preset-env": "^7.4.5",
+        "babel-loader": "^8.0.6",
         "babel-preset-env": "^1.6.1",
         "babel-preset-stage-2": "^6.24.1",
         "cross-env": "^5.0.5",
-        "laravel-mix": "^2.1.14",
+        "laravel-mix": "^4.0.15",
         "vue-template-compiler": "^2.5.9"
     },
     "dependencies": {
         "axios": "^0.18.0",
         "js-md5": "^0.7.3",
-        "simkit-bootstrap-ui-kit": "^0.0.3",
+        "simkit-bootstrap-ui-kit": "^1.1.1",
         "vue": "^2.5.9",
         "vue-router": "^3.0.1"
     }

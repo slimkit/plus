@@ -21,17 +21,18 @@ declare(strict_types=1);
 namespace Zhiyi\Component\ZhiyiPlus\PlusComponentMusic\Admin;
 
 use Illuminate\Http\Request;
-use Zhiyi\Plus\Http\Controllers\Controller;
-use Zhiyi\Plus\Cdn\UrlManager as CdnUrlManager;
-use Zhiyi\Plus\Models\FileWith as FileWithModel;
-use Zhiyi\Plus\Models\PaidNode as PaidNodeModel;
+use Illuminate\Validation\Rule;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentMusic\Models\Music;
-use function Zhiyi\Component\ZhiyiPlus\PlusComponentMusic\view;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentMusic\Models\MusicSinger;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentMusic\Models\MusicSpecial;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentMusic\Requests\MusicAdd as MusicAddRequest;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentMusic\Requests\SpecialAdd as SpecialAddRequest;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentMusic\Requests\SpecialUpdate as SpecialUpdateRequest;
+use function Zhiyi\Component\ZhiyiPlus\PlusComponentMusic\view;
+use Zhiyi\Plus\Cdn\UrlManager as CdnUrlManager;
+use Zhiyi\Plus\Http\Controllers\Controller;
+use Zhiyi\Plus\Models\FileWith as FileWithModel;
+use Zhiyi\Plus\Models\PaidNode as PaidNodeModel;
 
 class HomeController extends Controller
 {
@@ -76,20 +77,29 @@ class HomeController extends Controller
 
     /**
      * 删除音乐.
-     * @param  Music  $music [description]
-     * @return [type]        [description]
+     * @param Music $music
+     * @return \Illuminate\Http\RedirectResponse
+     * @throws \Exception
      */
     public function handleDelete(Music $music)
     {
-        $music->delete();
+        try {
+            $music->getConnection()->transaction(function () use ($music) {
+                $music->comments()->delete();
+                $music->delete();
+            });
+        } catch (\Throwable $e) {
+            return redirect()->route('music:list')->with(['error-message' => '删除失败']);
+        }
 
-        return back()->with(['success-message' => '删除成功']);
+        return redirect()->route('music:list')->with(['success-message' => '删除成功']);
     }
 
     /**
      * 查看专辑.
-     * @param  Request $request [description]
-     * @return [type]           [description]
+     * @param Request $request [description]
+     * @param MusicSpecial $special
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function showSpecial(Request $request, MusicSpecial $special)
     {
@@ -114,9 +124,9 @@ class HomeController extends Controller
 
     /**
      * 显示专辑详情.
-     * @param  Request      $request [description]
-     * @param  MusicSpecial $special [description]
-     * @return [type]                [description]
+     * @param MusicSpecial $special
+     * @param CdnUrlManager $cdn
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function specialDetail(MusicSpecial $special, CdnUrlManager $cdn)
     {
@@ -157,19 +167,27 @@ class HomeController extends Controller
 
     /**
      * 禁用专辑.
-     * @param  MusicSpecial $special [description]
-     * @return [type]                [description]
+     * @param MusicSpecial $special
+     * @return \Illuminate\Http\RedirectResponse
+     * @throws \Throwable
      */
     public function handleDisableSpecial(MusicSpecial $special)
     {
-        $special->delete();
+        try {
+            $special->getConnection()->transaction(function () use ($special) {
+                $special->comments()->delete();
+                $special->delete();
+            });
+        } catch (\Throwable $e) {
+            return redirect()->route('music:special')->with(['success-message' => '删除失败']);
+        }
 
-        return back()->with(['success-message' => '禁用专辑成功']);
+        return redirect()->route('music:special')->with(['success-message' => '禁用专辑成功']);
     }
 
     /**
      * 增加专辑页面.
-     * @return [type] [description]
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function handleAddSpecial()
     {
@@ -178,9 +196,10 @@ class HomeController extends Controller
 
     /**
      * 保存专辑.
-     * @param  SpecialAddRequest $request [description]
-     * @param  MusicSpecial      $special [description]
-     * @return [type]                     [description]
+     * @param SpecialAddRequest $request
+     * @param MusicSpecial $special
+     * @return \Illuminate\Http\RedirectResponse
+     * @throws \Throwable
      */
     public function handleStoreSpecial(SpecialAddRequest $request, MusicSpecial $special)
     {
@@ -208,9 +227,11 @@ class HomeController extends Controller
 
     /**
      * 更改专辑.
-     * @param  Request      $request [description]
-     * @param  MusicSpecial $special [description]
-     * @return [type]                [description]
+     * @param SpecialUpdateRequest $request
+     * @param MusicSpecial $special
+     * @param FileWithModel $fileWithModel
+     * @return \Illuminate\Http\RedirectResponse
+     * @throws \Throwable
      */
     public function handleUpdateSpecial(SpecialUpdateRequest $request, MusicSpecial $special, FileWithModel $fileWithModel)
     {
@@ -258,65 +279,94 @@ class HomeController extends Controller
             throw $e;
         }
 
-        return back()->with(['success-message' => '更新专辑成功']);
+        return redirect()->route('music:special')->with(['success-message' => '更新专辑成功']);
     }
 
     /**
      * 歌曲详情.
-     * @param  Music        $music   [description]
-     * @param  MusicSpecial $special [description]
-     * @param  MusicSinger  $singer  [description]
-     * @return [type]                [description]
+     * @param MusicSpecial $special
+     * @param MusicSinger $singer
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function handleAddMuisc(MusicSpecial $special, MusicSinger $singer)
+    public function handleAddMuisc(Request $request, MusicSpecial $special, MusicSinger $singer)
     {
         $specials = $special->get();
         $singers = $singer->get();
+        $old = $request->old();
 
         return view('musicAdd', [
             'specials' => $specials,
             'singers' => $singers,
+            'old' => $old,
         ]);
     }
 
-    public function handleStoreMuisc(MusicAddRequest $request, Music $music)
+    public function handleStoreMuisc(Request $request, Music $music)
     {
+        $validator = \Validator::make($request->all(), [
+            'storage' => [
+                Rule::exists('file_withs', 'id')->where(function ($query) {
+                    $query->where('channel', null);
+                    $query->where('raw', null);
+                }),
+            ],
+            'title' => 'required|max:20',
+            'singer' => 'required|numeric',
+            'special' => 'required|array|min:1',
+            'listen' => 'numeric|min:0.01',
+            'download' => 'numeric|min:0.01',
+            'paid_node' => '',
+            'sort' => 'min:0',
+            'last_time' => 'nullable|numeric|min:0',
+        ], [
+            'storage.required' => '没有上传文件或者上传错误',
+            'storage.exists' => '歌曲还没有被上传',
+            'singer.required' => '请填写歌曲所属歌手',
+            'title.required' => '请填写名称',
+            'title.max' => '名称不能超过20个字',
+            'special.required' => '请选择专辑',
+        ]);
+        if ($validator->fails()) {
+            return redirect()->route('music:store')
+                ->withErrors($validator)
+                ->withInput();
+        }
         $music->title = $request->input('title');
         $music->last_time = (int) $request->input('last_time', 0);
         $music->storage = (int) $request->input('storage');
         $music->sort = (int) $request->input('sort', 0);
         $music->singer = (int) $request->input('singer');
         $music->lyric = $request->input('lyric');
-
         // 创建收费节点
         $paidNodes = $this->makePaidNode($request);
         $fileWith = $this->makeFileWith($request);
 
         try {
-            $music->saveOrFail();
-            if ($request->input('special')) {
-                $music->musicSpecials()->attach($request->input('special'));
-            }
-            $music->getConnection()->transaction(function () use ($request, $music, $paidNodes, $fileWith) {
-                $this->saveMusicPaidNode($paidNodes, $music);
-                $this->saveMusicFileWith($fileWith, $music);
+            $music->getConnection()->transaction(function () use ($music, $request, $paidNodes, $fileWith) {
+                $music->saveOrFail();
+                if ($request->input('special')) {
+                    $music->musicSpecials()->attach($request->input('special'));
+                }
+                $music->getConnection()->transaction(function () use ($request, $music, $paidNodes, $fileWith) {
+                    $this->saveMusicPaidNode($paidNodes, $music);
+                    $this->saveMusicFileWith($fileWith, $music);
+                });
             });
-        } catch (\Exception $e) {
-            $music->delete();
+        } catch (\Throwable $e) {
             throw $e;
         }
 
-        return back()->with(['success-message' => '添加歌曲成功']);
+        return redirect()->route('music:list')->with(['success-message' => '添加歌曲成功']);
     }
 
     /**
      * 创建付费节点模型.
      *
-     * @param StoreFeedPostRequest $request
+     * @param MusicAddRequest $request
      * @return mixed
      * @author Seven Du <shiweidu@outlook.com>
      */
-    protected function makePaidNode(MusicAddRequest $request)
+    protected function makePaidNode(Request $request)
     {
         $paid_node = (array) $request->input('paid_node');
         if (in_array('download', $paid_node) || in_array('listen', $paid_node)) {
@@ -336,8 +386,9 @@ class HomeController extends Controller
 
     /**
      * 创建专辑付费节点.
-     * @param  SpecialAddRequest $request [description]
-     * @return [type]                     [description]
+     * @param SpecialAddRequest $request [description]
+     * @param MusicSpecial $special
+     * @return PaidNodeModel|null
      */
     protected function makeSpecialNode(SpecialAddRequest $request, MusicSpecial $special)
     {
@@ -383,7 +434,7 @@ class HomeController extends Controller
      * @return mixed
      * @author Seven Du <shiweidu@outlook.com>
      */
-    protected function makeFileWith(MusicAddRequest $request)
+    protected function makeFileWith(Request $request)
     {
         return FileWithModel::where(
             'id',
@@ -477,9 +528,9 @@ class HomeController extends Controller
 
     /**
      * 保存专辑收费节点.
-     * @param  [type]       $node    [description]
-     * @param  MusicSpecial $special [description]
-     * @return [type]                [description]
+     * @param $node
+     * @param MusicSpecial $special
+     * @return void
      */
     protected function saveSpecialPaidNode($node, MusicSpecial $special)
     {

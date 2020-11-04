@@ -20,9 +20,9 @@ declare(strict_types=1);
 
 namespace SlimKit\PlusID\Actions\Auth;
 
+use Illuminate\Support\Facades\Auth;
 use SlimKit\PlusID\Actions\Action;
 use SlimKit\PlusID\Support\Message;
-use Illuminate\Support\Facades\Auth;
 use Zhiyi\Plus\Models\User as UserModel;
 
 class Login extends Action

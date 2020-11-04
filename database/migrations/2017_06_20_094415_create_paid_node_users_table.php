@@ -16,9 +16,9 @@
  * +----------------------------------------------------------------------+
  */
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 class CreatePaidNodeUsersTable extends Migration
 {
@@ -27,9 +27,9 @@ class CreatePaidNodeUsersTable extends Migration
      *
      * @return void
      */
-    public function up() {
-        Schema::create('paid_node_users', function (Blueprint $table)
-        {
+    public function up()
+    {
+        Schema::create('paid_node_users', function (Blueprint $table) {
             $table->integer('node_id')->unsigned()->comment('付费发布ID');
             $table->unsignedBigInteger('user_id')->unsigned()->comment('用户ID');
 
@@ -47,7 +47,8 @@ class CreatePaidNodeUsersTable extends Migration
      *
      * @return void
      */
-    public function down() {
+    public function down()
+    {
         Schema::dropIfExists('paid_node_users');
     }
 }

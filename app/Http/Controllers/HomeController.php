@@ -20,8 +20,8 @@ declare(strict_types=1);
 
 namespace Zhiyi\Plus\Http\Controllers;
 
-use Jenssegers\Agent\Agent;
 use Illuminate\Http\Request;
+use Jenssegers\Agent\Agent;
 
 class HomeController
 {

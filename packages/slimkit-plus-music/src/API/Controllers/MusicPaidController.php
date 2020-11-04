@@ -21,9 +21,9 @@ declare(strict_types=1);
 namespace Zhiyi\Plus\Packages\Music\API\Controllers;
 
 use Illuminate\Http\Request;
-use Zhiyi\Plus\Http\Controllers\Controller;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentMusic\Models\Music;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentMusic\Models\MusicSpecial;
+use Zhiyi\Plus\Http\Controllers\Controller;
 
 class MusicPaidController extends Controller
 {
