@@ -1,15 +1,12 @@
-# [2.3.0](https://github.com/slimkit/plus/compare/2.2.3...2.3.0) (2019-03-07)
-
-### Refactor
-
-- 重构消息通知系统
-- 重构 SPA 多个页面
-
-
-## [2.2.3](https://github.com/slimkit/plus/compare/2.2.2...2.2.3) (2019-03-07)
-
+### update
+[2020-11-04]
+1. 更新laravel框架至[8.x](https://laravel.com/docs/8.x)
 
 ### Bug Fixes
+[2020-11-04]
+* issue: [{type: bug, version: 2.3.0}: vendor文件夹下载不下来](https://github.com/slimkit/plus/issues/843)
+* issue: [无法登陆后台](https://github.com/slimkit/plus/issues/839)
+* issue: [ERROR: Trying to access array offset on value of type null](https://github.com/slimkit/plus/issues/838)
 
 * **动态:** 修复动态热门话题报错 fix [#586](https://github.com/slimkit/plus/issues/586) ([a6b49ae](https://github.com/slimkit/plus/commit/a6b49ae))
 * **动态:** 修复动态热门话题报错 fix [#586](https://github.com/slimkit/plus/issues/586) ([69be235](https://github.com/slimkit/plus/commit/69be235))
