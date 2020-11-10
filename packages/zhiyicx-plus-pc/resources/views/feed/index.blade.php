@@ -37,7 +37,7 @@
 
     <div class="right_container">
         {{-- 签到 --}}
-        @if ($TS['id'])
+        @if ($TS['id'] ?? 0)
             @include('pcview::widgets.checkin')
         @endif
 

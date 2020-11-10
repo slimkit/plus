@@ -68,13 +68,13 @@ class FeedController extends Controller
         ResponseContract $response
     ) {
         $type = $request->query('type', 'new');
-        if (! in_array($type, ['new', 'hot', 'follow', 'users']) || $request->query('id', false)) {
+        if (!in_array($type, ['new', 'hot', 'follow', 'users']) || $request->query('id', false)) {
             $type = 'new';
         }
 
         return $response->json([
             'pinned' => $app->call([$this, 'getPinnedFeeds']),
-            'feeds'  => $app->call([$this, $type]),
+            'feeds' => $app->call([$this, $type]),
         ])
             ->setStatusCode(200);
     }
@@ -128,9 +128,9 @@ class FeedController extends Controller
         ) {
             $feed->feed_view_count += 1;
             $updateValues[] = [
-                'id'              => $feed->id,
+                'id' => $feed->id,
                 'feed_view_count' => $feed->feed_view_count,
-                'hot'             => $feed->makeHotValue(),
+                'hot' => $feed->makeHotValue(),
             ];
             $repository->setModel($feed);
             $repository->images();
@@ -187,7 +187,7 @@ class FeedController extends Controller
                     )
                 );
 
-                if (! $id) {
+                if (!$id) {
                     return $query;
                 }
 
@@ -213,9 +213,9 @@ class FeedController extends Controller
             $feed->feed_view_count += 1;
 
             $updateValues[] = [
-                'id'              => $feed->id,
+                'id' => $feed->id,
                 'feed_view_count' => $feed->feed_view_count,
-                'hot'             => $feed->makeHotValue(),
+                'hot' => $feed->makeHotValue(),
             ];
 
             $repository->setModel($feed);
@@ -280,9 +280,9 @@ class FeedController extends Controller
             $feed->feed_view_count += 1;
 
             $updateValues[] = [
-                'id'              => $feed->id,
+                'id' => $feed->id,
                 'feed_view_count' => $feed->feed_view_count,
-                'hot'             => $feed->makeHotValue(),
+                'hot' => $feed->makeHotValue(),
             ];
 
             $repository->setModel($feed);
@@ -356,9 +356,9 @@ class FeedController extends Controller
         ) {
             $feed->feed_view_count += 1;
             $updateValues[] = [
-                'id'              => $feed->id,
+                'id' => $feed->id,
                 'feed_view_count' => $feed->feed_view_count,
-                'hot'             => $feed->makeHotValue(),
+                'hot' => $feed->makeHotValue(),
             ];
 
             $repository->setModel($feed);
@@ -397,9 +397,9 @@ class FeedController extends Controller
             && $feed->paidNode->paid($user) === false
         ) {
             return response()->json([
-                'message'   => '请购买动态',
+                'message' => '请购买动态',
                 'paid_node' => $feed->paidNode->id,
-                'amount'    => $feed->paidNode->amount,
+                'amount' => $feed->paidNode->amount,
             ])->setStatusCode(403);
         }
 
@@ -506,7 +506,7 @@ class FeedController extends Controller
                 ->where('user_id', $user->id)
                 ->where('topic_id', $topicID)
                 ->first();
-            if (! $link) {
+            if (!$link) {
                 $link = new FeedTopicUserLinkModel();
                 $link->topic_id = $topicID;
                 $link->user_id = $user->id;
@@ -602,13 +602,15 @@ class FeedController extends Controller
     {
         $video = $request->input('video');
 
-        return FileWithModel::where(
-            'id',
-            $video['video_id']
-        )->where('channel', null)
-            ->where('raw', null)
-            ->where('user_id', $request->user()->id)
-            ->first();
+        return ($video['video_id'] ?? null)
+            ? FileWithModel::query()->where(
+                'id',
+                $video['video_id']
+            )->where('channel', null)
+                ->where('raw', null)
+                ->where('user_id', $request->user()->id)
+                ->first()
+            : null;
     }
 
     /**
@@ -624,13 +626,15 @@ class FeedController extends Controller
     {
         $video = $request->input('video');
 
-        return FileWithModel::where(
-            'id',
-            $video['cover_id']
-        )->where('channel', null)
-            ->where('raw', null)
-            ->where('user_id', $request->user()->id)
-            ->first();
+        return ($video['cover_id'] ?? null)
+            ? FileWithModel::query()->where(
+                'id',
+                $video['cover_id']
+            )->where('channel', null)
+                ->where('raw', null)
+                ->where('user_id', $request->user()->id)
+                ->first()
+            : null;
     }
 
     /**
@@ -744,7 +748,7 @@ class FeedController extends Controller
     {
         $amount = $request->input('amount');
 
-        if (! $amount) {
+        if (!$amount) {
             return;
         }
 
@@ -799,7 +803,7 @@ class FeedController extends Controller
     ) {
         $user = $feed->user;
         $authUser = request()->user();
-        if (! $user) {
+        if (!$user) {
             // 删除话题关联
             $feed->topics->each(function ($topic) {
                 $topic->feeds_count -= 1;
@@ -811,7 +815,7 @@ class FeedController extends Controller
 
             return $response->json(null, 204);
         } elseif ($authUser->id !== $user->id
-            && ! $authUser->ability('[feed] Delete Feed')
+            && !$authUser->ability('[feed] Delete Feed')
         ) {
             return $response->json(['message' => '你没有权限删除动态'])
                 ->setStatusCode(403);
@@ -830,7 +834,7 @@ class FeedController extends Controller
         ) {
             $process = new UserProcess();
             $userCount = UserCount::firstOrNew([
-                'type'    => 'user-feed-comment-pinned',
+                'type' => 'user-feed-comment-pinned',
                 'user_id' => $user->id,
             ]);
             if ($pinned = $feed->pinned()->where('user_id', $user->id)
