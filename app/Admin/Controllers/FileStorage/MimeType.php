@@ -20,19 +20,28 @@ declare(strict_types=1);
 
 namespace Zhiyi\Plus\Admin\Controllers\FileStorage;
 
-use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Symfony\Component\HttpFoundation\File\MimeType\MimeTypeExtensionGuesser;
+use Illuminate\Support\Arr;
 use function Zhiyi\Plus\setting;
+use Illuminate\Http\JsonResponse;
+use Symfony\Component\Mime\MimeTypes;
 
-class MimeType extends MimeTypeExtensionGuesser
+class MimeType
 {
     /**
      * Caching MIME types.
      * @var array
      */
-    protected $mimeTypes = [];
+    protected $mimeTypes;
+
+    /**
+     * MimeType constructor.
+     */
+    public function __construct()
+    {
+        $this->mimeTypes = new MimeTypes();
+    }
 
     /**
      * Get file storage validate MIME types.
@@ -46,46 +55,30 @@ class MimeType extends MimeTypeExtensionGuesser
         ]);
         $mimeTypes = array_filter($configure['file-mime-types'] ?? []);
         $extensions = array_map(function (string $mimeType) {
-            return $this->guess($mimeType);
+            return $this->mimeTypes->getExtensions($mimeType);
         }, $mimeTypes);
 
-        return new JsonResponse($extensions, Response::HTTP_OK);
+        return new JsonResponse(array_unique(Arr::flatten($extensions)), Response::HTTP_OK);
     }
 
     /**
      * Update file storage validate MIME types.
      * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
+     * @throws \Throwable
      */
     public function update(Request $request): Response
     {
         $extensions = array_filter((array) $request->input('extensions', []));
         $mimeTypes = array_map(function (string $extension) {
-            return $this->mimeTypeGuess($extension);
+            return $this->mimeTypes->getMimeTypes($extension);
         }, $extensions);
-        $mimeTypes = array_unique($mimeTypes);
-
+        $mimeTypes = array_unique(Arr::flatten($mimeTypes));
         $setting = setting('file-storage');
         $setting->set('task-create-validate', array_merge((array) $setting->get('task-create-validate', []), array_filter([
             'file-mime-types' => $mimeTypes,
         ])));
 
         return new Response('', Response::HTTP_NO_CONTENT);
-    }
-
-    /**
-     * get extension MIME type.
-     * @param string $extension
-     * @return string
-     */
-    protected function mimeTypeGuess(string $extension): ?string
-    {
-        $mimeTypes = array_flip($this->defaultExtensions);
-        $mimeTypes = array_merge($mimeTypes, [
-            'jpeg' => 'image/jpeg',
-            'jpg' => 'image/jpeg',
-        ]);
-
-        return $mimeTypes[$extension] ?? null;
     }
 }

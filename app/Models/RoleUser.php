@@ -22,6 +22,18 @@ namespace Zhiyi\Plus\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * Zhiyi\Plus\Models\RoleUser
+ *
+ * @property int $user_id
+ * @property int $role_id
+ * @method static \Illuminate\Database\Eloquent\Builder|RoleUser newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|RoleUser newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|RoleUser query()
+ * @method static \Illuminate\Database\Eloquent\Builder|RoleUser whereRoleId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|RoleUser whereUserId($value)
+ * @mixin \Eloquent
+ */
 class RoleUser extends Model
 {
     protected $table = 'role_user';

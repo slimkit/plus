@@ -27,6 +27,40 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 
+/**
+ * Zhiyi\Plus\Models\Comment
+ *
+ * @property int $id Comment ID.
+ * @property int $user_id Send comment user.
+ * @property int $target_user Target user.
+ * @property int|null $reply_user Comments were answered.
+ * @property string $body Comment body.
+ * @property string $commentable_type
+ * @property int $commentable_id
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \Illuminate\Database\Eloquent\Collection|\Zhiyi\Plus\Models\BlackList[] $blacks
+ * @property-read int|null $blacks_count
+ * @property-read Model|\Eloquent $commentable
+ * @property-read \Zhiyi\Plus\Models\User|null $reply
+ * @property-read \Illuminate\Database\Eloquent\Collection|\Zhiyi\Plus\Models\Report[] $reports
+ * @property-read int|null $reports_count
+ * @property-read \Zhiyi\Plus\Models\User $target
+ * @property-read \Zhiyi\Plus\Models\User $user
+ * @method static Builder|Comment newModelQuery()
+ * @method static Builder|Comment newQuery()
+ * @method static Builder|Comment query()
+ * @method static Builder|Comment whereBody($value)
+ * @method static Builder|Comment whereCommentableId($value)
+ * @method static Builder|Comment whereCommentableType($value)
+ * @method static Builder|Comment whereCreatedAt($value)
+ * @method static Builder|Comment whereId($value)
+ * @method static Builder|Comment whereReplyUser($value)
+ * @method static Builder|Comment whereTargetUser($value)
+ * @method static Builder|Comment whereUpdatedAt($value)
+ * @method static Builder|Comment whereUserId($value)
+ * @mixin \Eloquent
+ */
 class Comment extends Model
 {
     use HasFactory;

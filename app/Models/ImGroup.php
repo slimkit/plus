@@ -22,6 +22,32 @@ namespace Zhiyi\Plus\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * Zhiyi\Plus\Models\ImGroup
+ *
+ * @property int $id 表ID
+ * @property string $im_group_id 环信群组ID
+ * @property int|null $user_id 用户ID
+ * @property string|null $group_face 群组头像
+ * @property int|null $type 类型：0-群组 1-聊天室
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property string|null $deleted_at
+ * @property-read \Zhiyi\Plus\Models\FileWith|null $face
+ * @property-read \Zhiyi\Plus\Models\User|null $owner
+ * @method static \Illuminate\Database\Eloquent\Builder|ImGroup newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|ImGroup newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|ImGroup query()
+ * @method static \Illuminate\Database\Eloquent\Builder|ImGroup whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|ImGroup whereDeletedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|ImGroup whereGroupFace($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|ImGroup whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|ImGroup whereImGroupId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|ImGroup whereType($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|ImGroup whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|ImGroup whereUserId($value)
+ * @mixin \Eloquent
+ */
 class ImGroup extends Model
 {
     public $table = 'im_group';

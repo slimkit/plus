@@ -24,6 +24,22 @@ use Illuminate\Database\Eloquent\Model;
 
 /**
  * 注册时关注用户模型.
+ *
+ * @property int $id
+ * @property int $user_id 被设置用户的id
+ * @property string $type 类型[ {each: 相互关注}, {followed: 被关注}]
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \Zhiyi\Plus\Models\User $user
+ * @method static \Illuminate\Database\Eloquent\Builder|Famous newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Famous newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Famous query()
+ * @method static \Illuminate\Database\Eloquent\Builder|Famous whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Famous whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Famous whereType($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Famous whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Famous whereUserId($value)
+ * @mixin \Eloquent
  */
 class Famous extends Model
 {

@@ -22,6 +22,22 @@ namespace Zhiyi\Plus\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * Zhiyi\Plus\Models\CurrencyTypeTransform
+ *
+ * @property int $form_type_id 原始货币类型
+ * @property int $to_type_id 目标货币类型
+ * @property int $form_sum 原始货币数量
+ * @property int $to_sum 目标货币数量
+ * @method static \Illuminate\Database\Eloquent\Builder|CurrencyTypeTransform newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|CurrencyTypeTransform newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|CurrencyTypeTransform query()
+ * @method static \Illuminate\Database\Eloquent\Builder|CurrencyTypeTransform whereFormSum($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|CurrencyTypeTransform whereFormTypeId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|CurrencyTypeTransform whereToSum($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|CurrencyTypeTransform whereToTypeId($value)
+ * @mixin \Eloquent
+ */
 class CurrencyTypeTransform extends Model
 {
     /**

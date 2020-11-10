@@ -13,12 +13,12 @@
             </a>
         </li>
         <li>
-            <a href="{{ route('pc:follower', ['user_id' => $TS['id'] ?? 0]) }}">
+            <a href="{{ route('pc:follower', ['user' => $TS['id'] ?? 0]) }}">
                 <svg class="icon" aria-hidden="true"><use xlink:href="#icon-myfans"></use></svg>我的粉丝
             </a>
         </li>
         <li>
-            <a href="{{ route('pc:following', ['user_id' => $TS['id'] ?? 0]) }}">
+            <a href="{{ route('pc:following', ['user' => $TS['id'] ?? 0]) }}">
                 <svg class="icon" aria-hidden="true"><use xlink:href="#icon-attention"></use></svg>关注的人
             </a>
         </li>

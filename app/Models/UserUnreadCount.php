@@ -22,6 +22,24 @@ namespace Zhiyi\Plus\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * Zhiyi\Plus\Models\UserUnreadCount
+ *
+ * @property int $user_id 用户ID
+ * @property int $unread_comments_count 未读评论数
+ * @property int $unread_likes_count 未读点赞数
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @method static \Illuminate\Database\Eloquent\Builder|UserUnreadCount newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|UserUnreadCount newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|UserUnreadCount query()
+ * @method static \Illuminate\Database\Eloquent\Builder|UserUnreadCount whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|UserUnreadCount whereUnreadCommentsCount($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|UserUnreadCount whereUnreadLikesCount($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|UserUnreadCount whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|UserUnreadCount whereUserId($value)
+ * @mixin \Eloquent
+ */
 class UserUnreadCount extends Model
 {
     /**

@@ -20,6 +20,28 @@ namespace Zhiyi\Plus\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * Zhiyi\Plus\Models\UserCount
+ *
+ * @property int $id 自增主键
+ * @property int $user_id 所有者 ID
+ * @property string $type 统计类型
+ * @property int|null $total 统计总数
+ * @property string|null $read_at
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @method static \Illuminate\Database\Eloquent\Builder|UserCount newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|UserCount newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|UserCount query()
+ * @method static \Illuminate\Database\Eloquent\Builder|UserCount whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|UserCount whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|UserCount whereReadAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|UserCount whereTotal($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|UserCount whereType($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|UserCount whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|UserCount whereUserId($value)
+ * @mixin \Eloquent
+ */
 class UserCount extends Model
 {
     protected $guarded = ['total'];

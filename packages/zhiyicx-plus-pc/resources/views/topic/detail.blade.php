@@ -39,20 +39,22 @@
     </div>
     <div class="right">
         <div class="interaction">
-            @if(($TS['id'] ?? 0) !== $topic['creator_user_id'])
-            <button class="ev-btn-follow-topic" @if($topic['has_followed'] ?? false)style="display: none;"@endif>
-                <svg class="icon" aria-hidden="true"><use xlink:href="#icon-topic"></use></svg>
-                关注话题
-            </button>
-            <button class="ev-btn-unfollow-topic actived" @if(!$topic['has_followed'])style="display: none;"@endif>
-                <svg class="icon" aria-hidden="true"><use xlink:href="#icon-topic2"></use></svg>
-                已关注
-            </button>
-            @elseif (($TS['id'] ?? 0))
-            <button onclick="checkLogin()">
-                <svg class="icon" aria-hidden="true"><use xlink:href="#icon-topic"></use></svg>
-                关注话题
-            </button>
+            @if((isset($TS['id'])))
+                @if ($TS['id'] !== $topic['creator_user_id'])
+                <button class="ev-btn-follow-topic" @if($topic['has_followed'] ?? false)style="display: none;"@endif>
+                    <svg class="icon" aria-hidden="true"><use xlink:href="#icon-topic"></use></svg>
+                    关注话题
+                </button>
+                <button class="ev-btn-unfollow-topic actived" @if(!$topic['has_followed'])style="display: none;"@endif>
+                    <svg class="icon" aria-hidden="true"><use xlink:href="#icon-topic2"></use></svg>
+                    已关注
+                </button>
+                @endif
+            @else
+                <button onclick="checkLogin()">
+                    <svg class="icon" aria-hidden="true"><use xlink:href="#icon-topic"></use></svg>
+                    关注话题
+                </button>
             @endif
             <button class="ev-btn-show-post">
                 <svg class="icon" aria-hidden="true"><use xlink:href="#icon-topic3"></use></svg>
@@ -82,7 +84,12 @@
                 @foreach($participants as $user)
                 <li>
                     <a href='{{ url("/users/{$user['id']}") }}'>
-                        <div class="avatar"></div><span class="name">{{ $user['name'] }}</span>
+                        <div class="avatar">
+                            @if ($user['avatar'])
+                                <img src="{{$user['avatar']['url']}}" title="{{$user['name']}}" alt="{{$user['name']}}">
+                            @endif
+                        </div>
+                        <span class="name">{{ $user['name'] }}</span>
                     </a>
                 </li>
                 @endforeach

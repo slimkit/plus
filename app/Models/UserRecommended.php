@@ -22,6 +22,23 @@ namespace Zhiyi\Plus\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * Zhiyi\Plus\Models\UserRecommended
+ *
+ * @property int $id
+ * @property int $user_id 用户ID
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \Zhiyi\Plus\Models\User $user
+ * @method static \Illuminate\Database\Eloquent\Builder|UserRecommended newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|UserRecommended newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|UserRecommended query()
+ * @method static \Illuminate\Database\Eloquent\Builder|UserRecommended whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|UserRecommended whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|UserRecommended whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|UserRecommended whereUserId($value)
+ * @mixin \Eloquent
+ */
 class UserRecommended extends Model
 {
     protected $table = 'users_recommended';

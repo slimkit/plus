@@ -24,6 +24,22 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Cache;
 use Zhiyi\Plus\CacheNames;
 
+/**
+ * Zhiyi\Plus\Models\CurrencyType
+ *
+ * @property int $id
+ * @property string $name 货币名称
+ * @property string $unit 货币单位
+ * @property int|null $enable 货币是否被启用
+ * @method static \Illuminate\Database\Eloquent\Builder|CurrencyType newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|CurrencyType newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|CurrencyType query()
+ * @method static \Illuminate\Database\Eloquent\Builder|CurrencyType whereEnable($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|CurrencyType whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|CurrencyType whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|CurrencyType whereUnit($value)
+ * @mixin \Eloquent
+ */
 class CurrencyType extends Model
 {
     /**

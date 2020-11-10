@@ -35,6 +35,93 @@ use Zhiyi\Plus\FileStorage\FileMetaInterface;
 use Zhiyi\Plus\FileStorage\Traits\EloquentAttributeTrait as FileStorageEloquentAttributeTrait;
 use Zhiyi\Plus\Models\Relations\UserHasWalletCash;
 
+/**
+ * Zhiyi\Plus\Models\User
+ *
+ * @property int $id
+ * @property string|null $name user name.
+ * @property string|null $email user email.
+ * @property string|null $phone user phone member.
+ * @property string|null $password password.
+ * @property string|null $bio 用户简介
+ * @property int|null $sex 用户性别
+ * @property string|null $location 用户位置
+ * @property string|null $avatar 用户头像
+ * @property string|null $bg 个人主页背景
+ * @property string|null $email_verified_at
+ * @property string|null $phone_verified_at
+ * @property string|null $remember_token user auth token.
+ * @property string|null $register_ip 注册 ID
+ * @property string|null $last_login_ip 最近登录 ID
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property \Illuminate\Support\Carbon|null $deleted_at
+ * @property-read \Illuminate\Database\Eloquent\Collection|\Zhiyi\Plus\Models\RoleUser[] $administrator
+ * @property-read int|null $administrator_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\Zhiyi\Plus\Models\Reward[] $beRewardeds
+ * @property-read int|null $be_rewardeds_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\Zhiyi\Plus\Models\Like[] $belikeds
+ * @property-read int|null $belikeds_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\Zhiyi\Plus\Models\BlackList[] $blacklists
+ * @property-read int|null $blacklists_count
+ * @property-read \Zhiyi\Plus\Models\Certification|null $certification
+ * @property-read \Illuminate\Database\Eloquent\Collection|\Zhiyi\Plus\Models\Comment[] $comments
+ * @property-read int|null $comments_count
+ * @property-read \Zhiyi\Plus\Models\Currency|null $currency
+ * @property-read \Zhiyi\Plus\Models\UserExtra|null $extra
+ * @property-read \Zhiyi\Plus\Models\Famous|null $famous
+ * @property-read \Illuminate\Database\Eloquent\Collection|\Zhiyi\Plus\Models\FeedTopic[] $feedTopics
+ * @property-read int|null $feed_topics_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\Zhiyi\Plus\Models\FileWith[] $files
+ * @property-read int|null $files_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|User[] $followers
+ * @property-read int|null $followers_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|User[] $followings
+ * @property-read int|null $followings_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\Zhiyi\Plus\Models\Like[] $likes
+ * @property-read int|null $likes_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|User[] $mutual
+ * @property-read int|null $mutual_count
+ * @property-read \Zhiyi\Plus\Models\NewWallet|null $newWallet
+ * @property-read \Illuminate\Notifications\DatabaseNotificationCollection|\Illuminate\Notifications\DatabaseNotification[] $notifications
+ * @property-read int|null $notifications_count
+ * @property-read \Zhiyi\Plus\Models\UserRecommended|null $recommended
+ * @property-read \Illuminate\Database\Eloquent\Collection|\Zhiyi\Plus\Models\Report[] $reports
+ * @property-read int|null $reports_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\Zhiyi\Plus\Models\Tag[] $tags
+ * @property-read int|null $tags_count
+ * @property-read \Zhiyi\Plus\Models\UserUnreadCount|null $unreadCount
+ * @property-read \Illuminate\Database\Eloquent\Collection|\Zhiyi\Plus\Models\WalletCash[] $walletCashes
+ * @property-read int|null $wallet_cashes_count
+ * @method static Builder|User byEmail($email)
+ * @method static Builder|User byName($name)
+ * @method static Builder|User byPhone($phone)
+ * @method static Builder|User newModelQuery()
+ * @method static Builder|User newQuery()
+ * @method static \Illuminate\Database\Query\Builder|User onlyTrashed()
+ * @method static Builder|User query()
+ * @method static Builder|User whereAvatar($value)
+ * @method static Builder|User whereBg($value)
+ * @method static Builder|User whereBio($value)
+ * @method static Builder|User whereCreatedAt($value)
+ * @method static Builder|User whereDeletedAt($value)
+ * @method static Builder|User whereEmail($value)
+ * @method static Builder|User whereEmailVerifiedAt($value)
+ * @method static Builder|User whereId($value)
+ * @method static Builder|User whereLastLoginIp($value)
+ * @method static Builder|User whereLocation($value)
+ * @method static Builder|User whereName($value)
+ * @method static Builder|User wherePassword($value)
+ * @method static Builder|User wherePhone($value)
+ * @method static Builder|User wherePhoneVerifiedAt($value)
+ * @method static Builder|User whereRegisterIp($value)
+ * @method static Builder|User whereRememberToken($value)
+ * @method static Builder|User whereSex($value)
+ * @method static Builder|User whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Query\Builder|User withTrashed()
+ * @method static \Illuminate\Database\Query\Builder|User withoutTrashed()
+ * @mixin \Eloquent
+ */
 class User extends Authenticatable implements JWTSubject
 {
     // 功能性辅助相关。

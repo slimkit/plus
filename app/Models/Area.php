@@ -23,6 +23,30 @@ namespace Zhiyi\Plus\Models;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * Zhiyi\Plus\Models\Area
+ *
+ * @property int $id
+ * @property string $name 名字
+ * @property int $pid 父级ID
+ * @property string|null $extends 扩展内容
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \Illuminate\Database\Eloquent\Collection|Area[] $items
+ * @property-read int|null $items_count
+ * @property-read Area|null $parent
+ * @method static Builder|Area byPid($pid)
+ * @method static Builder|Area newModelQuery()
+ * @method static Builder|Area newQuery()
+ * @method static Builder|Area query()
+ * @method static Builder|Area whereCreatedAt($value)
+ * @method static Builder|Area whereExtends($value)
+ * @method static Builder|Area whereId($value)
+ * @method static Builder|Area whereName($value)
+ * @method static Builder|Area wherePid($value)
+ * @method static Builder|Area whereUpdatedAt($value)
+ * @mixin \Eloquent
+ */
 class Area extends Model
 {
     /**

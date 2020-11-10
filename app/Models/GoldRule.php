@@ -22,6 +22,28 @@ namespace Zhiyi\Plus\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * Zhiyi\Plus\Models\GoldRule
+ *
+ * @property int $id
+ * @property string $name 金币规则名称
+ * @property string $alias 金币规则别名
+ * @property string $desc
+ * @property int $incremental 金币规则增量
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @method static \Illuminate\Database\Eloquent\Builder|GoldRule newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|GoldRule newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|GoldRule query()
+ * @method static \Illuminate\Database\Eloquent\Builder|GoldRule whereAlias($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|GoldRule whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|GoldRule whereDesc($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|GoldRule whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|GoldRule whereIncremental($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|GoldRule whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|GoldRule whereUpdatedAt($value)
+ * @mixin \Eloquent
+ */
 class GoldRule extends Model
 {
     public $table = 'gold_rules';

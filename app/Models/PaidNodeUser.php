@@ -22,6 +22,18 @@ namespace Zhiyi\Plus\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * Zhiyi\Plus\Models\PaidNodeUser
+ *
+ * @property int $node_id 付费发布ID
+ * @property int $user_id 用户ID
+ * @method static \Illuminate\Database\Eloquent\Builder|PaidNodeUser newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|PaidNodeUser newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|PaidNodeUser query()
+ * @method static \Illuminate\Database\Eloquent\Builder|PaidNodeUser whereNodeId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|PaidNodeUser whereUserId($value)
+ * @mixin \Eloquent
+ */
 class PaidNodeUser extends Model
 {
     //

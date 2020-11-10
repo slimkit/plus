@@ -22,6 +22,25 @@ namespace Zhiyi\Plus\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * Zhiyi\Plus\Models\Taggable
+ *
+ * @property int $tag_id 标签ID
+ * @property string $taggable_type
+ * @property int $taggable_id
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \Zhiyi\Plus\Models\User $user
+ * @method static \Illuminate\Database\Eloquent\Builder|Taggable newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Taggable newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Taggable query()
+ * @method static \Illuminate\Database\Eloquent\Builder|Taggable whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Taggable whereTagId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Taggable whereTaggableId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Taggable whereTaggableType($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Taggable whereUpdatedAt($value)
+ * @mixin \Eloquent
+ */
 class Taggable extends Model
 {
     protected $table = 'taggables';

@@ -24,6 +24,33 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
+/**
+ * Zhiyi\Plus\Models\Certification
+ *
+ * @property int $id
+ * @property string $certification_name
+ * @property int $user_id
+ * @property array $data
+ * @property int|null $examiner
+ * @property int|null $status
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \Zhiyi\Plus\Models\CertificationCategory|null $category
+ * @property-read string|null $icon
+ * @property-read \Zhiyi\Plus\Models\User $user
+ * @method static Builder|Certification newModelQuery()
+ * @method static Builder|Certification newQuery()
+ * @method static Builder|Certification query()
+ * @method static Builder|Certification whereCertificationName($value)
+ * @method static Builder|Certification whereCreatedAt($value)
+ * @method static Builder|Certification whereData($value)
+ * @method static Builder|Certification whereExaminer($value)
+ * @method static Builder|Certification whereId($value)
+ * @method static Builder|Certification whereStatus($value)
+ * @method static Builder|Certification whereUpdatedAt($value)
+ * @method static Builder|Certification whereUserId($value)
+ * @mixin \Eloquent
+ */
 class Certification extends Model
 {
     use Concerns\HasAvatar;

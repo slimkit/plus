@@ -24,6 +24,35 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
+/**
+ * Zhiyi\Plus\Models\FileWith
+ *
+ * @property int $id
+ * @property int $file_id 文件ID
+ * @property int $user_id 用户ID
+ * @property string|null $channel 记录频道
+ * @property int|null $raw 原始频道关联信息
+ * @property string|null $size 图片尺寸，目标文件如果是图片的话则存在。便于客户端提前预设盒子
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property string|null $deleted_at
+ * @property-read \Zhiyi\Plus\Models\File|null $file
+ * @property-read string $pay_index
+ * @property-read \Zhiyi\Plus\Models\PaidNode|null $paidNode
+ * @method static Builder|FileWith newModelQuery()
+ * @method static Builder|FileWith newQuery()
+ * @method static Builder|FileWith query()
+ * @method static Builder|FileWith whereChannel($value)
+ * @method static Builder|FileWith whereCreatedAt($value)
+ * @method static Builder|FileWith whereDeletedAt($value)
+ * @method static Builder|FileWith whereFileId($value)
+ * @method static Builder|FileWith whereId($value)
+ * @method static Builder|FileWith whereRaw($value)
+ * @method static Builder|FileWith whereSize($value)
+ * @method static Builder|FileWith whereUpdatedAt($value)
+ * @method static Builder|FileWith whereUserId($value)
+ * @mixin \Eloquent
+ */
 class FileWith extends Model
 {
     /**

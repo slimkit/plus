@@ -23,6 +23,27 @@ namespace Zhiyi\Plus\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
+/**
+ * Zhiyi\Plus\Models\NewWallet
+ *
+ * @property int $owner_id 钱包所属者
+ * @property int $balance 钱包余额
+ * @property int $total_income 总收入
+ * @property int $total_expenses 总支出
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \Zhiyi\Plus\Models\User|null $owner
+ * @method static \Illuminate\Database\Eloquent\Builder|NewWallet newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|NewWallet newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|NewWallet query()
+ * @method static \Illuminate\Database\Eloquent\Builder|NewWallet whereBalance($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|NewWallet whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|NewWallet whereOwnerId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|NewWallet whereTotalExpenses($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|NewWallet whereTotalIncome($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|NewWallet whereUpdatedAt($value)
+ * @mixin \Eloquent
+ */
 class NewWallet extends Model
 {
     protected $fillable = ['user_id', 'balance', 'total_expenses', 'total_income'];

@@ -22,6 +22,28 @@ namespace Zhiyi\Plus\Models;
 
 use Illuminate\Database\Eloquent\Relations\Pivot;
 
+/**
+ * Zhiyi\Plus\Models\FeedTopicUserLink
+ *
+ * @property int $index The topic followers index
+ * @property int $topic_id Be follow topic id
+ * @property int $user_id Follow topic user id
+ * @property int|null $feeds_count The user send to the topic feeds count
+ * @property string|null $following_at
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @method static \Illuminate\Database\Eloquent\Builder|FeedTopicUserLink newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|FeedTopicUserLink newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|FeedTopicUserLink query()
+ * @method static \Illuminate\Database\Eloquent\Builder|FeedTopicUserLink whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|FeedTopicUserLink whereFeedsCount($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|FeedTopicUserLink whereFollowingAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|FeedTopicUserLink whereIndex($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|FeedTopicUserLink whereTopicId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|FeedTopicUserLink whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|FeedTopicUserLink whereUserId($value)
+ * @mixin \Eloquent
+ */
 class FeedTopicUserLink extends Pivot
 {
     /**

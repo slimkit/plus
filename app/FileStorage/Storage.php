@@ -22,6 +22,7 @@ namespace Zhiyi\Plus\FileStorage;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Str;
 use Symfony\Component\HttpFoundation\Response;
 use Zhiyi\Plus\AppInterface;
 use Zhiyi\Plus\FileStorage\Channels\ChannelInterface;

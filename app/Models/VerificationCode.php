@@ -26,6 +26,39 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Notifications\Notifiable;
 
+/**
+ * Zhiyi\Plus\Models\VerificationCode
+ *
+ * @property int $id
+ * @property int|null $user_id 关联用户
+ * @property string $channel 发送频道，例如 mail, sms
+ * @property string $account 发送账户
+ * @property string $code 发送验证码
+ * @property int|null $state 状态
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property \Illuminate\Support\Carbon|null $deleted_at
+ * @property-read \Illuminate\Notifications\DatabaseNotificationCollection|\Illuminate\Notifications\DatabaseNotification[] $notifications
+ * @property-read int|null $notifications_count
+ * @property-read \Zhiyi\Plus\Models\User|null $user
+ * @method static Builder|VerificationCode byValid($second = 300)
+ * @method static Builder|VerificationCode newModelQuery()
+ * @method static Builder|VerificationCode newQuery()
+ * @method static \Illuminate\Database\Query\Builder|VerificationCode onlyTrashed()
+ * @method static Builder|VerificationCode query()
+ * @method static Builder|VerificationCode whereAccount($value)
+ * @method static Builder|VerificationCode whereChannel($value)
+ * @method static Builder|VerificationCode whereCode($value)
+ * @method static Builder|VerificationCode whereCreatedAt($value)
+ * @method static Builder|VerificationCode whereDeletedAt($value)
+ * @method static Builder|VerificationCode whereId($value)
+ * @method static Builder|VerificationCode whereState($value)
+ * @method static Builder|VerificationCode whereUpdatedAt($value)
+ * @method static Builder|VerificationCode whereUserId($value)
+ * @method static \Illuminate\Database\Query\Builder|VerificationCode withTrashed()
+ * @method static \Illuminate\Database\Query\Builder|VerificationCode withoutTrashed()
+ * @mixin \Eloquent
+ */
 class VerificationCode extends Model
 {
     use Notifiable, SoftDeletes, HasFactory;

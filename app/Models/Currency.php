@@ -22,6 +22,24 @@ namespace Zhiyi\Plus\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * Zhiyi\Plus\Models\Currency
+ *
+ * @property int $owner_id 货币所属者
+ * @property int $type 货币类型
+ * @property int $sum 货币总和
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @method static \Illuminate\Database\Eloquent\Builder|Currency newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Currency newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Currency query()
+ * @method static \Illuminate\Database\Eloquent\Builder|Currency whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Currency whereOwnerId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Currency whereSum($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Currency whereType($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Currency whereUpdatedAt($value)
+ * @mixin \Eloquent
+ */
 class Currency extends Model
 {
     /**

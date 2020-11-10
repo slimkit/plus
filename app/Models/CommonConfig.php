@@ -23,6 +23,28 @@ namespace Zhiyi\Plus\Models;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * Zhiyi\Plus\Models\CommonConfig
+ *
+ * @property int $id config id
+ * @property string $name 配置名称
+ * @property string $namespace 配置命名空间
+ * @property string|null $value 缓存值
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @method static Builder|CommonConfig byName($name)
+ * @method static Builder|CommonConfig byNamespace($namespace)
+ * @method static Builder|CommonConfig newModelQuery()
+ * @method static Builder|CommonConfig newQuery()
+ * @method static Builder|CommonConfig query()
+ * @method static Builder|CommonConfig whereCreatedAt($value)
+ * @method static Builder|CommonConfig whereId($value)
+ * @method static Builder|CommonConfig whereName($value)
+ * @method static Builder|CommonConfig whereNamespace($value)
+ * @method static Builder|CommonConfig whereUpdatedAt($value)
+ * @method static Builder|CommonConfig whereValue($value)
+ * @mixin \Eloquent
+ */
 class CommonConfig extends Model
 {
     protected $primaryKey = 'id';

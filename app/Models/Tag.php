@@ -23,6 +23,29 @@ namespace Zhiyi\Plus\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * Zhiyi\Plus\Models\Tag
+ *
+ * @property int $id
+ * @property string $name 标签名称
+ * @property int $tag_category_id 标签类别
+ * @property int $weight 权重,排序用
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \Zhiyi\Plus\Models\TagCategory|null $category
+ * @property-read \Illuminate\Database\Eloquent\Collection|\Zhiyi\Plus\Models\Taggable[] $taggable
+ * @property-read int|null $taggable_count
+ * @method static \Illuminate\Database\Eloquent\Builder|Tag newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Tag newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Tag query()
+ * @method static \Illuminate\Database\Eloquent\Builder|Tag whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Tag whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Tag whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Tag whereTagCategoryId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Tag whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Tag whereWeight($value)
+ * @mixin \Eloquent
+ */
 class Tag extends Model
 {
     use HasFactory;

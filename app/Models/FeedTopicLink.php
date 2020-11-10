@@ -24,6 +24,21 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\Pivot;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\Feed as FeedModel;
 
+/**
+ * Zhiyi\Plus\Models\FeedTopicLink
+ *
+ * @property int $index The topic link index
+ * @property int $topic_id Topic ID
+ * @property int $feed_id Feed ID
+ * @property-read FeedModel|null $feed
+ * @method static \Illuminate\Database\Eloquent\Builder|FeedTopicLink newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|FeedTopicLink newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|FeedTopicLink query()
+ * @method static \Illuminate\Database\Eloquent\Builder|FeedTopicLink whereFeedId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|FeedTopicLink whereIndex($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|FeedTopicLink whereTopicId($value)
+ * @mixin \Eloquent
+ */
 class FeedTopicLink extends Pivot
 {
     /**

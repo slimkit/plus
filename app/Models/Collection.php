@@ -22,6 +22,27 @@ namespace Zhiyi\Plus\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * Zhiyi\Plus\Models\Collection
+ *
+ * @property int $id
+ * @property int $user_id 用户ID
+ * @property string $collectible_type
+ * @property int $collectible_id
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read Model|\Eloquent $collectible
+ * @method static \Illuminate\Database\Eloquent\Builder|Collection newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Collection newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Collection query()
+ * @method static \Illuminate\Database\Eloquent\Builder|Collection whereCollectibleId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Collection whereCollectibleType($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Collection whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Collection whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Collection whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Collection whereUserId($value)
+ * @mixin \Eloquent
+ */
 class Collection extends Model
 {
     /**

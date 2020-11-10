@@ -24,6 +24,26 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Cache;
 use Zhiyi\Plus\CacheNames;
 
+/**
+ * Zhiyi\Plus\Models\GoldType
+ *
+ * @property int $id
+ * @property string $name 类型名称
+ * @property string $unit 单位
+ * @property int $status 状态:1-开启 0-关闭
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @method static \Illuminate\Database\Eloquent\Builder|GoldType newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|GoldType newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|GoldType query()
+ * @method static \Illuminate\Database\Eloquent\Builder|GoldType whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|GoldType whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|GoldType whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|GoldType whereStatus($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|GoldType whereUnit($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|GoldType whereUpdatedAt($value)
+ * @mixin \Eloquent
+ */
 class GoldType extends Model
 {
     public $table = 'gold_types';

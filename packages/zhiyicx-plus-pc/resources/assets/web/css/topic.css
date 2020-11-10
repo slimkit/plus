@@ -44,10 +44,22 @@
 .p-topic-detail .right .participant {background-color: #fff;text-align: center;}
 .p-topic-detail .right .participant header {font-size: 16px;padding: 20px;}
 .p-topic-detail .right .participant hr {margin: 0 20px;border: 1px solid #ededed;border-width: 1px 0 0;}
-.p-topic-detail .right .participant ul {display: flex;flex-flow: row wrap;padding: 20px 0;justify-content: space-between;}
-.p-topic-detail .right .participant ul li {width: 33%;height: 90px;display: flex;flex-direction: column;justify-content: space-around;align-items: center;}
+.p-topic-detail .right .participant ul {display: grid;padding: 20px 0;grid-template-columns: repeat(3, 33.3%);grid-gap: 10px 0px;grid-auto-flow: row;}
+.p-topic-detail .right .participant ul li {height: 80px;display: flex;flex-direction: column;justify-content: space-around;align-items: center;}
+.p-topic-detail .right .participant ul li a {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
 .p-topic-detail .right .participant .avatar {width: 50px;height: 50px;border-radius: 25px;background: url(../images/avatar.png);background-size: contain;;}
-.p-topic-detail .right .participant .name {font-size: 12px;color: #666;}
+.p-topic-detail .right .participant .name {
+    -webkit-line-clamp: 1;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    text-overflow:ellipsis;
+    overflow: hidden;
+    font-size: 12px;color: #666;}
 .p-topic-detail .right .participant footer {height: 40px;line-height: 40px;background-color: #f9fcff;font-size: 12px;color:#999;cursor: pointer;}
 
 /* 话题创建页 */

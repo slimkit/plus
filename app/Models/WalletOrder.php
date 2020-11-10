@@ -23,6 +23,38 @@ namespace Zhiyi\Plus\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
+/**
+ * Zhiyi\Plus\Models\WalletOrder
+ *
+ * @property int $id
+ * @property int $owner_id 记录所属者
+ * @property string $target_type 目标类型
+ * @property string $target_id 目标标识
+ * @property string $title 订单标题
+ * @property string|null $body 详情
+ * @property int $type 1：入账、-1：支出
+ * @property int $amount 订单金额
+ * @property int|null $state 订单状态，0: 等待，1：成功，-1: 失败
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \Zhiyi\Plus\Models\User|null $owner
+ * @property-read \Zhiyi\Plus\Models\NewWallet|null $wallet
+ * @method static \Illuminate\Database\Eloquent\Builder|WalletOrder newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|WalletOrder newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|WalletOrder query()
+ * @method static \Illuminate\Database\Eloquent\Builder|WalletOrder whereAmount($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|WalletOrder whereBody($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|WalletOrder whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|WalletOrder whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|WalletOrder whereOwnerId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|WalletOrder whereState($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|WalletOrder whereTargetId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|WalletOrder whereTargetType($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|WalletOrder whereTitle($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|WalletOrder whereType($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|WalletOrder whereUpdatedAt($value)
+ * @mixin \Eloquent
+ */
 class WalletOrder extends Model
 {
     /**

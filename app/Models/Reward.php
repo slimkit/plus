@@ -22,6 +22,33 @@ namespace Zhiyi\Plus\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * Zhiyi\Plus\Models\Reward
+ *
+ * @property int $id
+ * @property int $user_id 操作用户
+ * @property int $target_user 目标用户
+ * @property int $amount 打赏金额
+ * @property string $rewardable_type
+ * @property int $rewardable_id
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read Model|\Eloquent $rewardable
+ * @property-read \Zhiyi\Plus\Models\User|null $target
+ * @property-read \Zhiyi\Plus\Models\User|null $user
+ * @method static \Illuminate\Database\Eloquent\Builder|Reward newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Reward newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Reward query()
+ * @method static \Illuminate\Database\Eloquent\Builder|Reward whereAmount($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Reward whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Reward whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Reward whereRewardableId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Reward whereRewardableType($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Reward whereTargetUser($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Reward whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Reward whereUserId($value)
+ * @mixin \Eloquent
+ */
 class Reward extends Model
 {
     /**

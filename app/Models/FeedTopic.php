@@ -28,6 +28,42 @@ use Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\Feed as FeedModel;
 use Zhiyi\Plus\FileStorage\FileMetaInterface;
 use Zhiyi\Plus\FileStorage\Traits\EloquentAttributeTrait;
 
+/**
+ * Zhiyi\Plus\Models\FeedTopic
+ *
+ * @property int $id
+ * @property string $name The topic name
+ * @property string|null $logo The topic logo
+ * @property string|null $desc The topic desc
+ * @property int $creator_user_id The topic creator user ID
+ * @property-read int|null $feeds_count The topic link feeds count
+ * @property int|null $followers_count The topic followers count
+ * @property string|null $hot_at 设置为热门的时间
+ * @property string|null $status Review status
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \Zhiyi\Plus\Models\User|null $creator
+ * @property-read \Illuminate\Database\Eloquent\Collection|FeedModel[] $feeds
+ * @property-read \Illuminate\Database\Eloquent\Collection|\Zhiyi\Plus\Models\Report[] $reports
+ * @property-read int|null $reports_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\Zhiyi\Plus\Models\User[] $users
+ * @property-read int|null $users_count
+ * @method static \Illuminate\Database\Eloquent\Builder|FeedTopic newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|FeedTopic newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|FeedTopic query()
+ * @method static \Illuminate\Database\Eloquent\Builder|FeedTopic whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|FeedTopic whereCreatorUserId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|FeedTopic whereDesc($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|FeedTopic whereFeedsCount($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|FeedTopic whereFollowersCount($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|FeedTopic whereHotAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|FeedTopic whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|FeedTopic whereLogo($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|FeedTopic whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|FeedTopic whereStatus($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|FeedTopic whereUpdatedAt($value)
+ * @mixin \Eloquent
+ */
 class FeedTopic extends Model
 {
     use EloquentAttributeTrait;

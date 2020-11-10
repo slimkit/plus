@@ -22,6 +22,21 @@ namespace Zhiyi\Plus\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * Zhiyi\Plus\Models\CertificationCategory
+ *
+ * @property string $name
+ * @property string $display_name
+ * @property string|null $description
+ * @property-read string|null $icon
+ * @method static \Illuminate\Database\Eloquent\Builder|CertificationCategory newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|CertificationCategory newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|CertificationCategory query()
+ * @method static \Illuminate\Database\Eloquent\Builder|CertificationCategory whereDescription($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|CertificationCategory whereDisplayName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|CertificationCategory whereName($value)
+ * @mixin \Eloquent
+ */
 class CertificationCategory extends Model
 {
     use Concerns\HasAvatar;
