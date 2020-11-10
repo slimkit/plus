@@ -68,7 +68,7 @@ class FeedController extends Controller
         ResponseContract $response
     ) {
         $type = $request->query('type', 'new');
-        if (!in_array($type, ['new', 'hot', 'follow', 'users']) || $request->query('id', false)) {
+        if (! in_array($type, ['new', 'hot', 'follow', 'users']) || $request->query('id', false)) {
             $type = 'new';
         }
 
@@ -187,7 +187,7 @@ class FeedController extends Controller
                     )
                 );
 
-                if (!$id) {
+                if (! $id) {
                     return $query;
                 }
 
@@ -506,7 +506,7 @@ class FeedController extends Controller
                 ->where('user_id', $user->id)
                 ->where('topic_id', $topicID)
                 ->first();
-            if (!$link) {
+            if (! $link) {
                 $link = new FeedTopicUserLinkModel();
                 $link->topic_id = $topicID;
                 $link->user_id = $user->id;
@@ -748,7 +748,7 @@ class FeedController extends Controller
     {
         $amount = $request->input('amount');
 
-        if (!$amount) {
+        if (! $amount) {
             return;
         }
 
@@ -803,7 +803,7 @@ class FeedController extends Controller
     ) {
         $user = $feed->user;
         $authUser = request()->user();
-        if (!$user) {
+        if (! $user) {
             // 删除话题关联
             $feed->topics->each(function ($topic) {
                 $topic->feeds_count -= 1;
@@ -815,7 +815,7 @@ class FeedController extends Controller
 
             return $response->json(null, 204);
         } elseif ($authUser->id !== $user->id
-            && !$authUser->ability('[feed] Delete Feed')
+            && ! $authUser->ability('[feed] Delete Feed')
         ) {
             return $response->json(['message' => '你没有权限删除动态'])
                 ->setStatusCode(403);
