@@ -23,7 +23,7 @@ namespace Zhiyi\Plus\Models;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * Zhiyi\Plus\Models\Reward
+ * Zhiyi\Plus\Models\Reward.
  *
  * @property int $id
  * @property int $user_id 操作用户

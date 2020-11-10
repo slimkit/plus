@@ -29,7 +29,7 @@ use Zhiyi\Plus\FileStorage\FileMetaInterface;
 use Zhiyi\Plus\FileStorage\Traits\EloquentAttributeTrait;
 
 /**
- * Zhiyi\Plus\Models\FeedTopic
+ * Zhiyi\Plus\Models\FeedTopic.
  *
  * @property int $id
  * @property string $name The topic name

@@ -25,7 +25,7 @@ use Illuminate\Support\Facades\Cache;
 use Zhiyi\Plus\CacheNames;
 
 /**
- * Zhiyi\Plus\Models\GoldType
+ * Zhiyi\Plus\Models\GoldType.
  *
  * @property int $id
  * @property string $name 类型名称

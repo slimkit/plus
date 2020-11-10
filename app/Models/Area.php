@@ -24,7 +24,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * Zhiyi\Plus\Models\Area
+ * Zhiyi\Plus\Models\Area.
  *
  * @property int $id
  * @property string $name 名字

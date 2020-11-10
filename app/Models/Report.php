@@ -23,7 +23,7 @@ namespace Zhiyi\Plus\Models;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * Zhiyi\Plus\Models\Report
+ * Zhiyi\Plus\Models\Report.
  *
  * @property int $id
  * @property int $user_id 用户ID

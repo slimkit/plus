@@ -23,7 +23,7 @@ namespace Zhiyi\Plus\Models;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * Zhiyi\Plus\Models\PaidNodeUser
+ * Zhiyi\Plus\Models\PaidNodeUser.
  *
  * @property int $node_id 付费发布ID
  * @property int $user_id 用户ID

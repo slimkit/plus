@@ -28,7 +28,7 @@ use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 
 /**
- * Zhiyi\Plus\Models\Comment
+ * Zhiyi\Plus\Models\Comment.
  *
  * @property int $id Comment ID.
  * @property int $user_id Send comment user.

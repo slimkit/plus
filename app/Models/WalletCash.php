@@ -26,7 +26,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 // use Illuminate\Database\Eloquent\Builder;
 
 /**
- * Zhiyi\Plus\Models\WalletCash
+ * Zhiyi\Plus\Models\WalletCash.
  *
  * @property int $id 提现记录ID
  * @property int $user_id 提现用户

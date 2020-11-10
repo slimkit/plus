@@ -20,12 +20,12 @@ declare(strict_types=1);
 
 namespace Zhiyi\Plus\Admin\Controllers\FileStorage;
 
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Arr;
-use function Zhiyi\Plus\setting;
-use Illuminate\Http\JsonResponse;
 use Symfony\Component\Mime\MimeTypes;
+use function Zhiyi\Plus\setting;
 
 class MimeType
 {

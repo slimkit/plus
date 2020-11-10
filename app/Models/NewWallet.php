@@ -24,7 +24,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
 /**
- * Zhiyi\Plus\Models\NewWallet
+ * Zhiyi\Plus\Models\NewWallet.
  *
  * @property int $owner_id 钱包所属者
  * @property int $balance 钱包余额

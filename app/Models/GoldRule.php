@@ -23,7 +23,7 @@ namespace Zhiyi\Plus\Models;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * Zhiyi\Plus\Models\GoldRule
+ * Zhiyi\Plus\Models\GoldRule.
  *
  * @property int $id
  * @property string $name 金币规则名称

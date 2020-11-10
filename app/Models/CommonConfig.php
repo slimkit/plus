@@ -24,7 +24,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * Zhiyi\Plus\Models\CommonConfig
+ * Zhiyi\Plus\Models\CommonConfig.
  *
  * @property int $id config id
  * @property string $name 配置名称

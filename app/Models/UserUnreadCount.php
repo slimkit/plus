@@ -23,7 +23,7 @@ namespace Zhiyi\Plus\Models;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * Zhiyi\Plus\Models\UserUnreadCount
+ * Zhiyi\Plus\Models\UserUnreadCount.
  *
  * @property int $user_id 用户ID
  * @property int $unread_comments_count 未读评论数

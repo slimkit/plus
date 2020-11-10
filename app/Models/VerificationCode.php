@@ -27,7 +27,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Notifications\Notifiable;
 
 /**
- * Zhiyi\Plus\Models\VerificationCode
+ * Zhiyi\Plus\Models\VerificationCode.
  *
  * @property int $id
  * @property int|null $user_id 关联用户

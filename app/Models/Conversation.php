@@ -23,7 +23,7 @@ namespace Zhiyi\Plus\Models;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * Zhiyi\Plus\Models\Conversation
+ * Zhiyi\Plus\Models\Conversation.
  *
  * @property int $id
  * @property string $type 会话类型 system 系统通知 feedback 用户反馈

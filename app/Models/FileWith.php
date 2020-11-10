@@ -25,7 +25,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
 /**
- * Zhiyi\Plus\Models\FileWith
+ * Zhiyi\Plus\Models\FileWith.
  *
  * @property int $id
  * @property int $file_id 文件ID

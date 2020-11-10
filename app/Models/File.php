@@ -23,7 +23,7 @@ namespace Zhiyi\Plus\Models;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * Zhiyi\Plus\Models\File
+ * Zhiyi\Plus\Models\File.
  *
  * @property int $id
  * @property string $hash 文件 hash

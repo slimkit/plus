@@ -21,7 +21,7 @@ namespace Zhiyi\Plus\Models;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * Zhiyi\Plus\Models\UserCount
+ * Zhiyi\Plus\Models\UserCount.
  *
  * @property int $id 自增主键
  * @property int $user_id 所有者 ID

@@ -25,7 +25,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
 /**
- * Zhiyi\Plus\Models\Certification
+ * Zhiyi\Plus\Models\Certification.
  *
  * @property int $id
  * @property string $certification_name

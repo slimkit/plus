@@ -24,7 +24,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
- * Zhiyi\Plus\Models\Wallet
+ * Zhiyi\Plus\Models\Wallet.
  *
  * @property int $id 钱包ID
  * @property int $user_id 钱包所属用户

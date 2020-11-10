@@ -23,7 +23,7 @@ namespace Zhiyi\Plus\Models;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * Zhiyi\Plus\Models\UserExtra
+ * Zhiyi\Plus\Models\UserExtra.
  *
  * @property int $user_id 用户标识
  * @property int|null $likes_count 点赞统计

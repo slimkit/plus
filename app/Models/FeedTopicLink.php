@@ -25,7 +25,7 @@ use Illuminate\Database\Eloquent\Relations\Pivot;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\Feed as FeedModel;
 
 /**
- * Zhiyi\Plus\Models\FeedTopicLink
+ * Zhiyi\Plus\Models\FeedTopicLink.
  *
  * @property int $index The topic link index
  * @property int $topic_id Topic ID

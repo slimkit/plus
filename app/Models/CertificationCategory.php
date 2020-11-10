@@ -23,7 +23,7 @@ namespace Zhiyi\Plus\Models;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * Zhiyi\Plus\Models\CertificationCategory
+ * Zhiyi\Plus\Models\CertificationCategory.
  *
  * @property string $name
  * @property string $display_name

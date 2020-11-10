@@ -23,7 +23,7 @@ namespace Zhiyi\Plus\Models;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * Zhiyi\Plus\Models\Sensitive
+ * Zhiyi\Plus\Models\Sensitive.
  *
  * @property int $id
  * @property string $word 敏感词

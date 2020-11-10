@@ -25,7 +25,7 @@ use Illuminate\Support\Facades\Cache;
 use Zhiyi\Plus\CacheNames;
 
 /**
- * Zhiyi\Plus\Models\CurrencyType
+ * Zhiyi\Plus\Models\CurrencyType.
  *
  * @property int $id
  * @property string $name 货币名称

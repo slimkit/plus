@@ -24,7 +24,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * Zhiyi\Plus\Models\Ability
+ * Zhiyi\Plus\Models\Ability.
  *
  * @property int $id
  * @property string $name

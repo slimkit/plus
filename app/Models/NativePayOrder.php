@@ -21,7 +21,7 @@ namespace Zhiyi\Plus\Models;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * Zhiyi\Plus\Models\NativePayOrder
+ * Zhiyi\Plus\Models\NativePayOrder.
  *
  * @property int $id
  * @property string $type 支付类型: alipay,wechatPay

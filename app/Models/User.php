@@ -36,7 +36,7 @@ use Zhiyi\Plus\FileStorage\Traits\EloquentAttributeTrait as FileStorageEloquentA
 use Zhiyi\Plus\Models\Relations\UserHasWalletCash;
 
 /**
- * Zhiyi\Plus\Models\User
+ * Zhiyi\Plus\Models\User.
  *
  * @property int $id
  * @property string|null $name user name.

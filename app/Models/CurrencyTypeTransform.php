@@ -23,7 +23,7 @@ namespace Zhiyi\Plus\Models;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * Zhiyi\Plus\Models\CurrencyTypeTransform
+ * Zhiyi\Plus\Models\CurrencyTypeTransform.
  *
  * @property int $form_type_id 原始货币类型
  * @property int $to_type_id 目标货币类型

@@ -21,7 +21,7 @@ namespace Zhiyi\Plus\Models;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * Zhiyi\Plus\Models\Setting
+ * Zhiyi\Plus\Models\Setting.
  *
  * @property int $id
  * @property string $namespace 配置命名空间

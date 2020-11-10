@@ -24,7 +24,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
- * Zhiyi\Plus\Models\WalletCharge
+ * Zhiyi\Plus\Models\WalletCharge.
  *
  * @property int $id
  * @property int|null $user_id 关联用户，可不存在，例如直接支付方式等。存在便于按照用户检索。

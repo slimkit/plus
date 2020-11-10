@@ -24,7 +24,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * Zhiyi\Plus\Models\Tag
+ * Zhiyi\Plus\Models\Tag.
  *
  * @property int $id
  * @property string $name 标签名称

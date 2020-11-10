@@ -23,7 +23,7 @@ namespace Zhiyi\Plus\Models;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * Zhiyi\Plus\Models\BlackList
+ * Zhiyi\Plus\Models\BlackList.
  *
  * @property int $user_id main user
  * @property int $target_id blacked user id

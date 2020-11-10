@@ -23,7 +23,7 @@ namespace Zhiyi\Plus\Models;
 use Illuminate\Database\Eloquent\Relations\Pivot;
 
 /**
- * Zhiyi\Plus\Models\FeedTopicUserLink
+ * Zhiyi\Plus\Models\FeedTopicUserLink.
  *
  * @property int $index The topic followers index
  * @property int $topic_id Be follow topic id

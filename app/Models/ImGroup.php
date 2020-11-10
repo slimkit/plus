@@ -23,7 +23,7 @@ namespace Zhiyi\Plus\Models;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * Zhiyi\Plus\Models\ImGroup
+ * Zhiyi\Plus\Models\ImGroup.
  *
  * @property int $id 表ID
  * @property string $im_group_id 环信群组ID

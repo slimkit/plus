@@ -23,7 +23,7 @@ namespace Zhiyi\Plus\Models;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * Zhiyi\Plus\Models\TagCategory
+ * Zhiyi\Plus\Models\TagCategory.
  *
  * @property int $id
  * @property string $name 标签类别

@@ -23,7 +23,7 @@ namespace Zhiyi\Plus\Models;
 use Illuminate\Database\Eloquent\Relations\Pivot;
 
 /**
- * Zhiyi\Plus\Models\Like
+ * Zhiyi\Plus\Models\Like.
  *
  * @property int $id
  * @property int $user_id 点赞用户

@@ -21,7 +21,7 @@ namespace Zhiyi\Plus\Models;
 use Illuminate\Database\Eloquent\Relations\Pivot;
 
 /**
- * Zhiyi\Plus\Models\UserFollow
+ * Zhiyi\Plus\Models\UserFollow.
  *
  * @property int $id 关注ID
  * @property int $user_id 对象用户

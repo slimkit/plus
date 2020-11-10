@@ -23,7 +23,7 @@ namespace Zhiyi\Plus\Models;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * Zhiyi\Plus\Models\CurrencyCommodity
+ * Zhiyi\Plus\Models\CurrencyCommodity.
  *
  * @property int $id
  * @property int $creator 创建者用户ID

@@ -23,7 +23,7 @@ namespace Zhiyi\Plus\Models;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * Zhiyi\Plus\Models\RoleUser
+ * Zhiyi\Plus\Models\RoleUser.
  *
  * @property int $user_id
  * @property int $role_id

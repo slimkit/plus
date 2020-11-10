@@ -23,7 +23,7 @@ namespace Zhiyi\Plus\Models;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * Zhiyi\Plus\Models\PaidNode
+ * Zhiyi\Plus\Models\PaidNode.
  *
  * @property int $id 付费记录ID
  * @property string $channel 付费频道

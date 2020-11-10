@@ -23,7 +23,7 @@ namespace Zhiyi\Plus\Models;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * Zhiyi\Plus\Models\AdvertisingSpace
+ * Zhiyi\Plus\Models\AdvertisingSpace.
  *
  * @property int $id
  * @property string $channel 广告位频道

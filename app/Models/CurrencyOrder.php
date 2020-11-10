@@ -23,7 +23,7 @@ namespace Zhiyi\Plus\Models;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * Zhiyi\Plus\Models\CurrencyOrder
+ * Zhiyi\Plus\Models\CurrencyOrder.
  *
  * @property int $id
  * @property int $owner_id 记录所属者

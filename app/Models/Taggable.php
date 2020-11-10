@@ -23,7 +23,7 @@ namespace Zhiyi\Plus\Models;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * Zhiyi\Plus\Models\Taggable
+ * Zhiyi\Plus\Models\Taggable.
  *
  * @property int $tag_id 标签ID
  * @property string $taggable_type
