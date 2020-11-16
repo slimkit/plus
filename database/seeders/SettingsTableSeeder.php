@@ -50,6 +50,10 @@ class SettingsTableSeeder extends Seeder
             'channels.public' => [
                 'filesystem' => 'local',
             ],
+            'filesystems.local' => [
+                'disk' => 'public',
+                'timeout' => 3600
+            ],
             'task-create-validate' => [
                 'image-min-width' => 0,
                 'image-max-width' => 2800,

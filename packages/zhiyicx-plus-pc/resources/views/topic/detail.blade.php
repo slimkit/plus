@@ -170,12 +170,18 @@
         axios.put('{{ url("/api/v2/user/feed-topics/{$topic['id']}") }}');
         $('.ev-btn-follow-topic').hide();
         $('.ev-btn-unfollow-topic').show();
+        var node = $('#followers_count');
+        var now = parseInt(node.html()) + 1
+        node.html(now)
     }
 
     function unfollowTopic() {
         axios.delete('{{ url("/api/v2/user/feed-topics/{$topic['id']}") }}');
         $('.ev-btn-unfollow-topic').hide();
         $('.ev-btn-follow-topic').show();
+        var node = $('#followers_count');
+        var now = parseInt(node.html()) - 1
+        now >= 0 && node.html(now)
     }
 
 })()
