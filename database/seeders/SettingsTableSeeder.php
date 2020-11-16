@@ -52,7 +52,7 @@ class SettingsTableSeeder extends Seeder
             ],
             'filesystems.local' => [
                 'disk' => 'public',
-                'timeout' => 3600
+                'timeout' => 3600,
             ],
             'task-create-validate' => [
                 'image-min-width' => 0,
