@@ -16,15 +16,15 @@
  * +----------------------------------------------------------------------+
  */
 
-    /**
-     * A helper file for Laravel, to provide autocomplete information to your IDE
-     * Generated for Laravel 2.4.1.
-     *
-     * This file should not be included in your code, only analyzed by your IDE!
-     *
-     * @author Barry vd. Heuvel <barryvdh@gmail.com>
-     * @see https://github.com/barryvdh/laravel-ide-helper
-     */
+/**
+ * A helper file for Laravel, to provide autocomplete information to your IDE
+ * Generated for Laravel 2.4.1.
+ *
+ * This file should not be included in your code, only analyzed by your IDE!
+ *
+ * @author Barry vd. Heuvel <barryvdh@gmail.com>
+ * @see https://github.com/barryvdh/laravel-ide-helper
+ */
 
 namespace Illuminate\Support\Facades {
         /**

@@ -1,5 +1,21 @@
 <?php
 
+/*
+ * +----------------------------------------------------------------------+
+ * |                          ThinkSNS Plus                               |
+ * +----------------------------------------------------------------------+
+ * | Copyright (c) 2016-Present ZhiYiChuangXiang Technology Co., Ltd.     |
+ * +----------------------------------------------------------------------+
+ * | This source file is subject to enterprise private license, that is   |
+ * | bundled with this package in the file LICENSE, and is available      |
+ * | through the world-wide-web at the following url:                     |
+ * | https://github.com/slimkit/plus/blob/master/LICENSE                  |
+ * +----------------------------------------------------------------------+
+ * | Author: Slim Kit Group <master@zhiyicx.com>                          |
+ * | Homepage: www.thinksns.com                                           |
+ * +----------------------------------------------------------------------+
+ */
+
 namespace Zhiyi\Plus\Providers;
 
 use Illuminate\Support\ServiceProvider;
@@ -38,7 +54,7 @@ class PaymentServiceProvidor extends ServiceProvider
 
         $this->app->singleton(PaymentGateway::class, static function ($app) use ($factory, $config) {
             $paymentGateway = Omnipay::create($factory);
-            if(stripos($factory, 'alipay')) {
+            if (stripos($factory, 'alipay')) {
                 // 签名方法
                 $paymentGateway->setSignType($config['signType']);
                 // appId
@@ -47,7 +63,7 @@ class PaymentServiceProvidor extends ServiceProvider
                 $paymentGateway->setPrivateKey($config['secretKey']);
                 // 公钥
                 $paymentGateway->setAlipayPublicKey($config['publicKey']);
-            } else if (stripos($factory, 'wechat')) {
+            } elseif (stripos($factory, 'wechat')) {
                 $paymentGateway->setAppId($config['appId']);
                 $paymentGateway->setApiKey($config['apiKey']);
                 $paymentGateway->setMchId($config['mchId']);
