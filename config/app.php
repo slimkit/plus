@@ -198,6 +198,7 @@ return [
         Zhiyi\Plus\Providers\EloquentServiceProvider::class,
         Zhiyi\Plus\FileStorage\Providers\AppServiceProvider::class,
         \Mavinoo\Batch\BatchServiceProvider::class,
+        \Zhiyi\Plus\Providers\PaymentServiceProvidor::class,
 
     ],
 

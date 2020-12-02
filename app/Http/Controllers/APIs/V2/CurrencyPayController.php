@@ -28,6 +28,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Carbon;
 use Omnipay\Omnipay;
+use Zhiyi\Plus\Contracts\PaymentGateway;
 use Zhiyi\Plus\Http\Controllers\Controller;
 use Zhiyi\Plus\Models\CurrencyOrder as CurrencyOrderModel;
 use Zhiyi\Plus\Models\NativePayOrder;
@@ -393,12 +394,13 @@ class CurrencyPayController extends Controller
     }
 
     /**
-     * @param Request  $request
-     * @param Carbon   $dateTime
-     * @param Response $response
+     * @param Request $request
+     * @param ResponseContract $response
+     * @param PaymentGateway $gateWay
+     * @param NativePayOrder $order
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getWechatWapOrder(Request $request, ResponseFactory $response, NativePayOrder $order)
+    public function getWechatWapOrder(Request $request, ResponseFactory $response, PaymentGateway $gateWay, NativePayOrder $order)
     {
         $user = $request->user();
         $amount = $request->input('amount', 0);
@@ -420,10 +422,6 @@ class CurrencyPayController extends Controller
             return $response->json(['message' => '请求来源非法'], 403);
         }
 
-        $gateWay = Omnipay::create('WechatPay_Js');
-        $gateWay->setAppId($config['appId']);
-        $gateWay->setApiKey($config['apiKey']);
-        $gateWay->setMchId($config['mchId']);
         $gateWay->setNotifyUrl(
             action([static::class, 'wechatNotify'])
         );
