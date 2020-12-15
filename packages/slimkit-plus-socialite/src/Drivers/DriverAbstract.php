@@ -59,7 +59,7 @@ abstract class DriverAbstract implements Sociable
     {
         $unionid = $this->unionid($accessToken);
         $provider = $this->provider();
-        $this->abortIf(!($socialite = UserSocialiteModel::provider($provider, $unionid)->first()), function ($abort) {
+        $this->abortIf(! ($socialite = UserSocialiteModel::provider($provider, $unionid)->first()), function ($abort) {
             $abort(404, '请绑定账号');
         });
 
@@ -77,7 +77,7 @@ abstract class DriverAbstract implements Sociable
      */
     public function bindForUser(string $accessToken, UserModel $user)
     {
-        if (!$user->phone) {
+        if (! $user->phone) {
             return response()->json(['message' => ['绑定第三方账号必须绑定手机号码']], 422);
         }
 
@@ -111,11 +111,11 @@ abstract class DriverAbstract implements Sociable
         $user = UserModel::where(username($login), $login)->first();
         $provider = $this->provider();
 
-        if (!$user) {
+        if (! $user) {
             return response()->json(['login' => ['用户不存在']], 404);
         }
 
-        if (!$user->verifyPassword($password)) {
+        if (! $user->verifyPassword($password)) {
             return response()->json(['password' => ['密码错误']], 422);
         }
 
@@ -169,7 +169,7 @@ abstract class DriverAbstract implements Sociable
     {
         $provider = $this->provider();
 
-        if (!$user->phone) {
+        if (! $user->phone) {
             return response()->json(['message' => ['解绑第三方账号必须绑定手机号码']], 422);
         }
 
