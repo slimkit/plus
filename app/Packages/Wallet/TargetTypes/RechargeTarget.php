@@ -20,7 +20,7 @@ declare(strict_types=1);
 
 namespace Zhiyi\Plus\Packages\Wallet\TargetTypes;
 
-use DB;
+use Illuminate\Support\Facades\DB;
 use Zhiyi\Plus\Packages\Wallet\Order;
 use Zhiyi\Plus\Packages\Wallet\Wallet;
 

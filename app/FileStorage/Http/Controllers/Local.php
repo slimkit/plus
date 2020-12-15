@@ -75,11 +75,11 @@ class Local extends Controller
 
     /**
      * Put a file.
-     * @param \Illuminate\Http\Request $request
-     * @param s\Illuminate\Contracts\Cache\Factory $cache
-     * @param string $channel
-     * @param string $path
-     * @return Symfony\Component\HttpFoundation\Response
+     * @param  \Illuminate\Http\Request  $request
+     * @param  FactoryContract  $cache
+     * @param  string  $channel
+     * @param  string  $path
+     * @return JsonResponse
      */
     public function put(Request $request, FactoryContract $cache, string $channel, string $path): JsonResponse
     {

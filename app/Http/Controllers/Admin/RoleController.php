@@ -42,7 +42,7 @@ class RoleController extends Controller
             ])->setStatusCode(403);
         }
 
-        $roles = Role::all();
+        $roles = Role::query()->all();
 
         return response()->json($roles)->setStatusCode(200);
     }
@@ -62,7 +62,9 @@ class RoleController extends Controller
             return response()->json([
                 'errors' => ['你没有删除角色权限'],
             ])->setStatusCode(403);
-        } elseif ($role->non_delete) {
+        }
+
+        if ($role->non_delete) {
             return response(['errors' => ['不可删除的用户组']], 403);
         }
 
@@ -96,7 +98,9 @@ class RoleController extends Controller
             return response()->json([
                 'errors' => ['name' => '名称不能为空'],
             ])->setStatusCode(422);
-        } elseif (Role::where('name', 'LIKE', $name)->first()) {
+        }
+
+        if (Role::query()->where('name', 'LIKE', $name)->first()) {
             return response()->json([
                 'errors' => ['name' => '名称已经存在'],
             ])->setStatusCode(422);

@@ -131,7 +131,7 @@ class HomeController extends Controller
     public function specialDetail(MusicSpecial $special, CdnUrlManager $cdn)
     {
         $special->load(['storage', 'paidNode']);
-        $storage = FileWithModel::find($special->storage);
+        $storage = FileWithModel::query()->find($special->storage);
         $special->url = $this->showStorage($cdn, $storage);
         $storage->load('file');
         $special->file = $storage->file;

@@ -20,7 +20,7 @@ declare(strict_types=1);
 
 namespace Zhiyi\Plus\Packages\Currency\Processes;
 
-use DB;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use Pingpp\Charge as PingppCharge;
 use Zhiyi\Plus\Models\CurrencyOrder as CurrencyOrderModel;

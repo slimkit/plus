@@ -29,7 +29,7 @@ class CreateFeedPinnedsTable extends Migration
      *
      * @return void
      */
-    public function up()
+    public function up(): void
     {
         Schema::create('feed_pinneds', function (Blueprint $table) {
             $table->increments('id');

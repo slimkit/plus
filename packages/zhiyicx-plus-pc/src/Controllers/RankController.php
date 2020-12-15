@@ -18,7 +18,7 @@
 
 namespace Zhiyi\Component\ZhiyiPlus\PlusComponentPc\Controllers;
 
-use Cache;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Http\Request;
 use function Zhiyi\Component\ZhiyiPlus\PlusComponentPc\api;
 
