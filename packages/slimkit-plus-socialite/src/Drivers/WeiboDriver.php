@@ -53,7 +53,7 @@ class WeiboDriver extends DriverAbstract
      */
     public function unionid(string $accessToken): string
     {
-        $resuilt = json_decode(
+        $result = json_decode(
             $this->getHttpClient()->get('/account/get_uid.json', [
                 'query' => ['access_token' => $accessToken],
                 'headers' => ['Accept' => 'application/json'],
@@ -62,10 +62,10 @@ class WeiboDriver extends DriverAbstract
             ->getContents(), true
         );
 
-        $this->abortIf(isset($resuilt['error']), function ($abort) use ($resuilt) {
-            $abort(500, sprintf('%s (#%s)', $resuilt['error'], $resuilt['error_code']));
+        $this->abortIf(isset($result['error']), function ($abort) use ($result) {
+            $abort(500, sprintf('%s (#%s)', $result['error'], $result['error_code']));
         });
 
-        return (string) $resuilt['uid'];
+        return (string) $result['uid'];
     }
 }

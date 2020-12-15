@@ -22,6 +22,7 @@ namespace SlimKit\PlusSocialite\Models;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Zhiyi\Plus\Models\User;
 
 class UserSocialite extends Model
@@ -36,10 +37,10 @@ class UserSocialite extends Model
     /**
      * Get user.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return BelongsTo
      * @author Seven Du <shiweidu@outlook.com>
      */
-    public function user()
+    public function user(): BelongsTo
     {
         return $this->belongsTo(User::class, 'user_id', 'id');
     }
@@ -50,7 +51,7 @@ class UserSocialite extends Model
      * @param string $type
      * @author Seven Du <shiweidu@outlook.com>
      */
-    public function setTypeAttribute(string $type)
+    public function setTypeAttribute(string $type): void
     {
         $this->attributes['type'] = strtolower($type);
     }
@@ -58,28 +59,28 @@ class UserSocialite extends Model
     /**
      * Scope socialite provider.
      *
-     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @param  Builder  $query
      * @param string $type
-     * @param string $unionid
-     * @return \Illuminate\Database\Eloquent\Builder
+     * @param string $unionId
+     * @return Builder
      * @author Seven Du <shiweidu@outlook.com>
      */
-    public function scopeProvider(Builder $query, string $type, string $unionid)
+    public function scopeProvider(Builder $query, string $type, string $unionId): Builder
     {
         return $query->where('type', strtolower($type))
-            ->where('union_id', $unionid);
+            ->where('union_id', $unionId);
     }
 
     /**
      * Scope socialite provider to user.
      *
-     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @param  Builder  $query
      * @param string $type
      * @param string|int $userID
-     * @return \Illuminate\Database\Eloquent\Builder
+     * @return Builder
      * @author Seven Du <shiweidu@outlook.com>
      */
-    public function scopeProviderToUser(Builder $query, string $type, $userID)
+    public function scopeProviderToUser(Builder $query, string $type, $userID): Builder
     {
         return $query->where('type', strtolower($type))
             ->where('user_id', $userID);

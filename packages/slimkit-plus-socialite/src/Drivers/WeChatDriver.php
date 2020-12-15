@@ -53,7 +53,7 @@ class WeChatDriver extends DriverAbstract
      */
     public function unionid(string $accessToken): string
     {
-        $resuilt = json_decode(
+        $result = json_decode(
             $this->getHttpClient()->get('/sns/userinfo', [
                 'headers' => ['Accept' => 'application/json'],
                 'query' => [
@@ -65,10 +65,10 @@ class WeChatDriver extends DriverAbstract
             ->getContents(), true
         );
 
-        $this->abortIf(isset($resuilt['errcode']), function ($abort) use ($resuilt) {
-            $abort(500, sprintf('%s (#%s)', $resuilt['errmsg'], $resuilt['errcode']));
+        $this->abortIf(isset($result['errcode']), function ($abort) use ($result) {
+            $abort(500, sprintf('%s (#%s)', $result['errmsg'], $result['errcode']));
         });
 
-        return (string) $resuilt['unionid'];
+        return (string) $result['unionid'];
     }
 }

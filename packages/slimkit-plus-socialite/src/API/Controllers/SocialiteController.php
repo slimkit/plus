@@ -32,7 +32,7 @@ class SocialiteController extends Controller
     /**
      * Socialite manager instance.
      *
-     * @var \SlimKit\PlusSocialite\SocialiteManager
+     * @var SocialiteManager
      */
     protected $socialite;
 
@@ -48,9 +48,9 @@ class SocialiteController extends Controller
     ];
 
     /**
-     * Create socialite controler.
+     * Create socialite controller.
      *
-     * @param \SlimKit\PlusSocialite\SocialiteManager $socialite
+     * @param  SocialiteManager  $socialite
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function __construct(SocialiteManager $socialite)
@@ -61,7 +61,7 @@ class SocialiteController extends Controller
     /**
      * Get all providers bind status.
      *
-     * @param \Illuminate\Http\Request $request
+     * @param  Request  $request
      * @return mixed
      * @author Seven Du <shiweidu@outlook.com>
      */
@@ -76,7 +76,7 @@ class SocialiteController extends Controller
     /**
      * Check bind and get user auth token.
      *
-     * @param \SlimKit\PlusSocialite\API\Requests\AccessTokenRequest $request
+     * @param  AccessTokenRequest  $request
      * @param string $provider
      * @return mixed
      * @author Seven Du <shiweidu@outlook.com>
@@ -92,7 +92,7 @@ class SocialiteController extends Controller
     /**
      * Create user and return auth token.
      *
-     * @param \SlimKit\PlusSocialite\API\Requests\CreateUserRequest $request
+     * @param  CreateUserRequest  $request
      * @param string $provider
      * @return mixed
      * @author Seven Du <shiweidu@outlook.com>
@@ -109,7 +109,7 @@ class SocialiteController extends Controller
     /**
      * Bind provider for account.
      *
-     * @param \SlimKit\PlusSocialite\API\Requests\AccessTokenRequest $request
+     * @param  AccessTokenRequest  $request
      * @param string $provider
      * @return mixed
      * @author Seven Du <shiweidu@outlook.com>
@@ -126,7 +126,7 @@ class SocialiteController extends Controller
     /**
      * Bind provider for user.
      *
-     * @param \SlimKit\PlusSocialite\API\Requests\AccessTokenRequest $request
+     * @param  AccessTokenRequest  $request
      * @param string $provider
      * @return mixed
      * @author Seven Du <shiweidu@outlook.com>
@@ -142,7 +142,7 @@ class SocialiteController extends Controller
     /**
      * Unbind provider for user.
      *
-     * @param \Illuminate\Http\Request $request
+     * @param  Request  $request
      * @param string $provider
      * @return mixed
      * @author Seven Du <shiweidu@outlook.com>
@@ -170,7 +170,7 @@ class SocialiteController extends Controller
      * Get provider driver.
      *
      * @param string $provider
-     * @return \SlimKit\PlusSoacialite\Contracts\Sociable
+     * @return Sociable
      * @author Seven Du <shiweidu@outlook.com>
      */
     protected function provider(string $provider): Sociable

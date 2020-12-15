@@ -28,19 +28,19 @@ class SocialiteManager extends Manager
     /**
      * Get the default driver name.
      *
-     * @throws \Exception
      * @return void
+     * @throws \Exception
      * @author Seven Du <shiweidu@outlook.com>
      */
-    public function getDefaultDriver()
+    public function getDefaultDriver(): void
     {
-        throw new \Exception('不允许使用默认驱动，必须选择驱动并进行使用');
+        throw new \RuntimeException('不允许使用默认驱动，必须选择驱动并进行使用');
     }
 
     /**
      * Create Tencent QQ Driver.
      *
-     * @return \SlimKit\PlusSocialite\Contracts\Sociable
+     * @return Sociable
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function createQQDriver(): Sociable
@@ -51,7 +51,7 @@ class SocialiteManager extends Manager
     /**
      * Create Sina Weibo Driver.
      *
-     * @return \SlimKit\PlusSocialite\Contracts\Sociable
+     * @return Sociable
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function createWeiboDriver(): Sociable
@@ -62,7 +62,7 @@ class SocialiteManager extends Manager
     /**
      * Create Tencent WeChat Driver.
      *
-     * @return \SlimKit\PlusSocialite\Contracts\Sociable
+     * @return Sociable
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function createWeChatDriver(): Sociable

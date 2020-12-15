@@ -53,7 +53,7 @@ class QQDriver extends DriverAbstract
      */
     public function unionid(string $accessToken): string
     {
-        $resuilt = json_decode($this->removeCallback(
+        $result = json_decode($this->removeCallback(
             $this->getHttpClient()->get('/oauth2.0/me', [
                 'query' => [
                     'access_token' => $accessToken,
@@ -64,11 +64,11 @@ class QQDriver extends DriverAbstract
             ->getContents()
         ), true);
 
-        $this->abortIf(isset($resuilt['error']), function ($abort) use ($resuilt) {
-            $abort(500, sprintf('%s (#%s)', $resuilt['error_description'], $resuilt['error']));
+        $this->abortIf(isset($result['error']), function ($abort) use ($result) {
+            $abort(500, sprintf('%s (#%s)', $result['error_description'], $result['error']));
         });
 
-        return (string) $resuilt['unionid'];
+        return (string) $result['unionid'];
     }
 
     /**

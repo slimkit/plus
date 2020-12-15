@@ -20,6 +20,7 @@ declare(strict_types=1);
 
 namespace SlimKit\PlusSocialite\Drivers;
 
+use Illuminate\Contracts\Container\BindingResolutionException;
 use SlimKit\PlusSocialite\Contracts\Sociable;
 use SlimKit\PlusSocialite\Models\UserSocialite as UserSocialiteModel;
 use SlimKit\PlusSocialite\Traits\SocialiteDriverHelper;
@@ -41,7 +42,7 @@ abstract class DriverAbstract implements Sociable
     /**
      * Get provider union ID.
      *
-     * @param string $accessToken
+     * @param  string  $accessToken
      * @return string
      * @author Seven Du <shiweidu@outlook.com>
      */
@@ -50,7 +51,7 @@ abstract class DriverAbstract implements Sociable
     /**
      * Check bind and get user auth token.
      *
-     * @param string $accessToken
+     * @param  string  $accessToken
      * @return mixed
      * @author Seven Du <shiweidu@outlook.com>
      */
@@ -58,7 +59,7 @@ abstract class DriverAbstract implements Sociable
     {
         $unionid = $this->unionid($accessToken);
         $provider = $this->provider();
-        $this->abortIf(! ($socialite = UserSocialiteModel::provider($provider, $unionid)->first()), function ($abort) {
+        $this->abortIf(!($socialite = UserSocialiteModel::provider($provider, $unionid)->first()), function ($abort) {
             $abort(404, '请绑定账号');
         });
 
@@ -68,14 +69,15 @@ abstract class DriverAbstract implements Sociable
     /**
      * Bind provider for user.
      *
-     * @param string $accessToken
-     * @param Zhiyi\Plus\Models\User $user
+     * @param  string  $accessToken
+     * @param  UserModel  $user
      * @return mixed
+     * @throws BindingResolutionException
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function bindForUser(string $accessToken, UserModel $user)
     {
-        if (! $user->phone) {
+        if (!$user->phone) {
             return response()->json(['message' => ['绑定第三方账号必须绑定手机号码']], 422);
         }
 
@@ -98,9 +100,9 @@ abstract class DriverAbstract implements Sociable
     /**
      * Bind provider for account.
      *
-     * @param string $accessToken
-     * @param string|int $login
-     * @param string $password
+     * @param  string  $accessToken
+     * @param  string|int  $login
+     * @param  string  $password
      * @return mixed
      * @author Seven Du <shiweidu@outlook.com>
      */
@@ -109,11 +111,15 @@ abstract class DriverAbstract implements Sociable
         $user = UserModel::where(username($login), $login)->first();
         $provider = $this->provider();
 
-        if (! $user) {
+        if (!$user) {
             return response()->json(['login' => ['用户不存在']], 404);
-        } elseif (! $user->verifyPassword($password)) {
+        }
+
+        if (!$user->verifyPassword($password)) {
             return response()->json(['password' => ['密码错误']], 422);
-        } elseif (UserSocialiteModel::providerToUser($provider, $user->id)->first()) {
+        }
+
+        if (UserSocialiteModel::providerToUser($provider, $user->id)->first()) {
             return response()->json(['message' => ['该账户已绑定其他第三方账号']], 422);
         }
 
@@ -132,10 +138,11 @@ abstract class DriverAbstract implements Sociable
     /**
      * Create user and check create attribute.
      *
-     * @param string $accessToken
-     * @param string $name
-     * @param bool $check
+     * @param  string  $accessToken
+     * @param  string  $name
+     * @param  bool  $check
      * @return mixed
+     * @throws BindingResolutionException
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function createUser(string $accessToken, string $name, $check = false)
@@ -153,15 +160,16 @@ abstract class DriverAbstract implements Sociable
     /**
      * Unbind provider for user.
      *
-     * @param \Zhiyi\Plus\Models\User $user
+     * @param  UserModel  $user
      * @return mixed
+     * @throws BindingResolutionException
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function unbindForUser(UserModel $user)
     {
         $provider = $this->provider();
 
-        if (! $user->phone) {
+        if (!$user->phone) {
             return response()->json(['message' => ['解绑第三方账号必须绑定手机号码']], 422);
         }
 
