@@ -40,7 +40,7 @@ class ReportNewsTest extends TestCase
     {
         parent::setUp();
         $this->user = UserModel::factory()->create();
-        $this->cate = NewsCateModel::factory()->create(););
+        $this->cate = NewsCateModel::factory()->create();
         $this->news = NewsModel::factory()->create([
             'title' => 'test',
             'user_id' => $this->user->id,

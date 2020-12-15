@@ -40,7 +40,7 @@ class EditPublishNewsTest extends TestCase
     public function testEditRejectNews()
     {
         $user = UserModel::factory()->create();
-        $cate = NewsCateModel::factory()->create(););
+        $cate = NewsCateModel::factory()->create();
 
         $news = NewsModel::factory()->create([
             'user_id' => $user->id,
@@ -68,7 +68,7 @@ class EditPublishNewsTest extends TestCase
     public function testEditPassNews()
     {
         $user = UserModel::factory()->create();
-        $cate = NewsCateModel::factory()->create(););
+        $cate = NewsCateModel::factory()->create();
 
         $news = NewsModel::factory()->create([
             'user_id' => $user->id,
@@ -96,7 +96,7 @@ class EditPublishNewsTest extends TestCase
      */
     protected function createTags()
     {
-        $cate = TagCateModel::factory()->create(););
+        $cate = TagCateModel::factory()->create();
         $tags = TagModel::factory(3)->create([
             'tag_category_id' => $cate->id,
         ]);

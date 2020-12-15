@@ -63,7 +63,7 @@ class GetPublishNewsListTest extends TestCase
      */
     protected function createTags()
     {
-        $cate = TagCateModel::factory()->create(););
+        $cate = TagCateModel::factory()->create();
         $tags = TagModel::factory(3)->create([
             'tag_category_id' => $cate->id,
         ]);

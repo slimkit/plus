@@ -36,7 +36,7 @@ class CollectNewsTest extends TestCase
 
     protected $news;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
         $this->user = UserModel::factory()->create();

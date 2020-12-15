@@ -40,7 +40,7 @@ class DeletePublishNewsTest extends TestCase
     public function testDeleteAuditNews()
     {
         $user = UserModel::factory()->create();
-        $cate = NewsCateModel::factory()->create(););
+        $cate = NewsCateModel::factory()->create();
 
         $news = NewsModel::factory()->create([
             'user_id' => $user->id,
@@ -69,7 +69,7 @@ class DeletePublishNewsTest extends TestCase
     public function testDeleteNotAuditNews()
     {
         $user = UserModel::factory()->create();
-        $cate = NewsCateModel::factory()->create(););
+        $cate = NewsCateModel::factory()->create();
 
         $news = NewsModel::factory()->create([
             'user_id' => $user->id,
