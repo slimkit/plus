@@ -145,7 +145,7 @@
     },
     "config": {
         "platform": {
-            "php": "7.4"
+            "php": "7.3|7.4"
         },
         "optimize-autoloader": true,
         "preferred-install": "dist",

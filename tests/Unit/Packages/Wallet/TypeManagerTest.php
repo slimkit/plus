@@ -33,7 +33,7 @@ class TypeManagerTest extends TestCase
      *
      * @author Seven Du <shiweidu@outlook.com>
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 

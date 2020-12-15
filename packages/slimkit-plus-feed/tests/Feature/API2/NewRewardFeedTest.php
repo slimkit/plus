@@ -35,7 +35,7 @@ class NewRewardFeedTest extends TestCase
 
     protected $feed;
 
-    public function setUp()
+    public function setUp():void
     {
         parent::setUp();
 

@@ -88,7 +88,7 @@ class SendImageAndTextFeedTest extends TestCase
             ->json('POST', '/api/v2/feeds', [
                 'feed_content' => 'test',
                 'feed_from' => 5,
-                'feed_mark' => intval(time().rand(1000, 9999)),
+                'feed_mark' => (int) (time().rand(1000, 9999)),
                 'images' => [
                     ['id' => $this->getFileId($user)],
                 ],

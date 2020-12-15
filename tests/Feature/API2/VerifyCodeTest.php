@@ -31,7 +31,7 @@ class VerifyCodeTest extends TestCase
     use DatabaseTransactions;
     protected $user;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
