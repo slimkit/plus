@@ -92,7 +92,7 @@
         }
     ],
     "require": {
-        "php": "^7.3|^7.4|^8.0",
+        "php": "^7.4|^8.0",
         "aliyuncs/oss-sdk-php": "^2.4",
         "doctrine/dbal": "^2.12",
         "erusev/parsedown": "^1.7",
