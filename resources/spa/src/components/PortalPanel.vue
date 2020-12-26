@@ -34,7 +34,7 @@
       </div>
     </header>
 
-    <main>
+    <main :class="{ padding1rem: showFooter }">
       <div
         ref="banner"
         :style="bannerStyle"
@@ -64,7 +64,7 @@
             class="load-more-btn"
             @click.stop="$emit('loadmore')"
           >
-            {{ fetching ? 0 : 2 | t('loadmore.bottom') }}
+            {{ $t(`loadmore.bottom[${fetching ? 0 : 2}]`) }}
           </span>
         </div>
       </slot>
@@ -263,7 +263,9 @@ export default {
       }
     }
   }
-
+  .padding1rem {
+    padding-bottom: 1rem;
+  }
   .banner {
     position: relative;
     width: 100%;

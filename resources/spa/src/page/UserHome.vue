@@ -8,6 +8,7 @@
       :show-footer="!isMine"
       :back="beforeBack"
       :show-more="!isMine"
+      :no-data="!feeds.length"
       @update="updateData"
       @more="onMoreClick"
       @loadmore="fetchUserFeed(true)"
@@ -332,7 +333,7 @@ export default {
     followUserByStatus (status) {
       if (!status || this.fetchFollow) return
       this.fetchFollow = true
-      let { user: { extra: { followers_count: followersCount = 0 } = {} } = {} } = this
+      const { user: { extra: { followers_count: followersCount = 0 } = {} } = {} } = this
       userApi
         .followUserByStatus({
           id: this.user.id,

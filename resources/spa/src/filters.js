@@ -1,5 +1,5 @@
 import xss from 'xss'
-import plueMessageBundle from 'plus-message-bundle'
+import plueMessageBundle from 'ts-msg-handler'
 import i18n from '@/i18n'
 import { transTime } from '@/util'
 
