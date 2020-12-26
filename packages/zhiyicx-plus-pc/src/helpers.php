@@ -321,18 +321,18 @@ function formatList($body)
  */
 function getUserInfo($id): array
 {
-    return User::query()->find($id)->toArray();
+    return User::withTrashed()->find($id)->toArray();
 }
 
 /**
  * [setPinneds 置顶数据组装].
  *
- * @param $data
- * @param $pinneds
+ * @param array $data
+ * @param array $pinneds
  * @return mixed
  * @author Foreach
  */
-function formatPinneds($data, $pinneds)
+function formatPinneds(array $data, array $pinneds)
 {
     if (empty($pinneds)) {
         return $data;

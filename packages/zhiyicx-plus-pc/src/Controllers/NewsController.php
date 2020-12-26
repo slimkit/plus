@@ -144,8 +144,8 @@ class NewsController extends BaseController
         ];
 
         $comments = api('GET', '/api/v2/news/'.$news_id.'/comments', $params);
-        $after = last($comments['comments'])['id'] ?? 0;
-        $comments['comments'] = formatPinneds($comments['comments'], $comments['pinneds']);
+        $after = last($comments['comments'] ?? [])['id'] ?? 0;
+        $comments['comments'] = formatPinneds($comments['comments'] ?? [], $comments['pinneds']);
         $commentData = view('pcview::templates.comment', $comments, $this->PlusData)->render();
 
         return response()->json([

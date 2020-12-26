@@ -52,9 +52,10 @@ class CurrentUserController extends Controller
     /**
      * Update the authenticated user.
      *
-     * @param \Illuminate\Http\Request $request
-     * @param \Illuminate\Contracts\Routing\ResponseFactory $response
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Contracts\Routing\ResponseFactory  $response
      * @return mixed
+     * @throws \Illuminate\Validation\ValidationException
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function update(Request $request, ResponseFactoryContract $response)

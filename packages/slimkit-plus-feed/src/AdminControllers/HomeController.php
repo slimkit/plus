@@ -121,7 +121,7 @@ class HomeController extends Controller
         $payCount = $feedModel->whereExists(function ($query) {
             return $query->from('paid_nodes')->where('channel', 'feed')->whereRaw('paid_nodes.raw = feeds.id');
         })->get()->map(function ($feed) {
-            return $feed->paidNode->amount;
+            return $feed->paidNode->amount ?? 0;
         })->sum();
 
         return response()->json([
