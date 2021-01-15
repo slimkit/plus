@@ -102,11 +102,11 @@ function filterUrlStringLength(string $data, int $length = 0): string
     }
 
     // Match all URLs.
-    preg_match_all('/http(s)?:\/\/([\w-]+\.)+[\w-]+(\/[\w- .\/?%&=]*)?/', $data, $matches);
+    preg_match_all('/http(s)?:\/\/([\w\-]+\.)+[\w\-]+(\/[\w\- .\/?%&=]*)?/', $data, $matches);
     $urls = $matches[0] ?? [];
 
     // Explode data.
-    $data = preg_replace('/http(s)?:\/\/([\w-]+\.)+[\w-]+(\/[\w- .\/?%&=]*)?/', '<a>', $data);
+    $data = preg_replace('/http(s)?:\/\/([\w\-]+\.)+[\w\-]+(\/[\w\- .\/?%&=]*)?/', '<a>', $data);
     $data = explode('<a>', $data);
 
     $value = '';
