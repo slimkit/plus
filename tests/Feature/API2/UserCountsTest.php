@@ -32,10 +32,10 @@ class UserCountsTest extends TestCase
     {
         parent::setUp();
 
-        $this->user = factory(UserModel::class)->create();
+        $this->user = UserModel::factory()->create();
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->user->forceDelete();
 
@@ -59,14 +59,17 @@ class UserCountsTest extends TestCase
                 'following',
             ],
         ]);
-
-        $this->assertEquals(1, $response->decodeResponseJson('user.following'));
+        $response->assertJson([
+            'user' => [
+                'following' => 1
+            ]
+        ]);
 
         $followingCount = UserCountModel::where('type', 'user-following')
             ->where('user_id', $this->user->id)
             ->first();
 
-        $this->assertNotNull($followingCount);
-        $this->assertEquals(1, $followingCount->total);
+        self::assertNotNull($followingCount);
+        self::assertEquals(1, $followingCount->total);
     }
 }

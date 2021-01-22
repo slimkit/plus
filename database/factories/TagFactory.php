@@ -16,19 +16,19 @@
  * +----------------------------------------------------------------------+
  */
 
-namespace Database\Factories\Zhiyi\Plus\Models;
+namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Zhiyi\Plus\Models\Ability;
+use Zhiyi\Plus\Models\Tag;
 
-class AbilityFactory extends Factory
+class TagFactory extends Factory
 {
-    protected $model = Ability::class;
+    protected $model = Tag::class;
 
     public function definition()
     {
         return [
-            //
+            'name' => $this->faker->unique()->firstName,
         ];
     }
 }

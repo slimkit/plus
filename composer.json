@@ -134,7 +134,6 @@
     },
     "require-dev": {
         "beyondcode/laravel-dump-server": "^1.6",
-        "codacy/coverage": "^1.4",
         "filp/whoops": "^2.9",
         "facade/ignition": "^2.5",
         "fakerphp/faker": "^1.10",

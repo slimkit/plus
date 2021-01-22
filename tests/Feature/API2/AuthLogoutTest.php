@@ -46,7 +46,7 @@ class AuthLogoutTest extends TestCase
     {
         parent::setUp();
 
-        $this->user = factory(UserModel::class)->create();
+        $this->user = UserModel::factory()->create();
     }
 
     /**

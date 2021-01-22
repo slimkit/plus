@@ -42,9 +42,9 @@ class Order
     /**
      * state types.
      */
-    const STATE_WAIT = 0;    // 等待
-    const STATE_SUCCESS = 1; // 成功
-    const STATE_FAIL = -1;   // 失败
+    public const STATE_WAIT = 0;    // 等待
+    public const STATE_SUCCESS = 1; // 成功
+    public const STATE_FAIL = -1;   // 失败
 
     /**
      * The order model.

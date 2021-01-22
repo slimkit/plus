@@ -33,7 +33,7 @@ class AuthRefreshTest extends TestCase
     /**
      * The user.
      *
-     * @var Zhiyi\Plus\Models\User
+     * @var UserModel $user
      */
     protected $user;
 
@@ -46,7 +46,7 @@ class AuthRefreshTest extends TestCase
     {
         parent::setUp();
 
-        $this->user = factory(UserModel::class)->create();
+        $this->user = UserModel::factory()->create();
     }
 
     /**

@@ -40,26 +40,26 @@ class UserTypeTest extends TestCase
 
         // Create a order mock.
         $order = $this->getMockBuilder(Order::class)
-                      ->setMethods(['autoComplete'])
+                      ->addMethods(['autoComplete'])
                       ->getMock();
 
         // Set order::autoComplete return.
-        $order->expects($this->once())
+        $order->expects(self::once())
               ->method('autoComplete')
               ->willReturn(true);
 
         // Create a UserType mock.
         $userType = $this->getMockBuilder(UserType::class)
-                         ->setMethods(['createOrder'])
+                         ->addMethods(['createOrder'])
                          ->getMock();
 
         // Set UserType::createOrder return.
-        $userType->expects($this->once())
+        $userType->expects(self::once())
                  ->method('createOrder')
-                 ->with($this->equalTo($owner), $this->equalTo($target), $this->equalTo($amount))
-                 ->will($this->returnValue($order));
+                 ->with(self::equalTo($owner), self::equalTo($target), self::equalTo($amount))
+                 ->willReturn($order);
 
-        $this->assertTrue($userType->transfer($owner, $target, $amount));
+        self::assertTrue($userType->transfer($owner, $target, $amount));
     }
 
     /**
@@ -81,7 +81,7 @@ class UserTypeTest extends TestCase
 
         // Create a UserType::class mock.
         $userType = $this->getMockBuilder(UserType::class)
-                         ->setMethods(['createOrderModel'])
+                         ->addMethods(['createOrderModel'])
                          ->getMock();
 
         // Set UserType::createOrderModel return.
@@ -91,7 +91,7 @@ class UserTypeTest extends TestCase
                  ->willReturn($model);
 
         $result = $userType->createOrder($model->owner_id, $model->target_id, $model->amount);
-        $this->assertInstanceOf(Order::class, $result);
+        self::assertInstanceOf(Order::class, $result);
     }
 
     /**
@@ -108,13 +108,13 @@ class UserTypeTest extends TestCase
         $userType = new UserType();
         $model = $userType->createOrderModel($owner, $target, $amount);
 
-        $this->assertInstanceOf(WalletOrderModel::class, $model);
-        $this->assertSame($owner, $model->owner_id);
-        $this->assertSame($target, $model->target_id);
-        $this->assertSame($amount, $model->amount);
-        $this->assertSame(Order::TARGET_TYPE_USER, $model->target_type);
-        $this->assertSame(Order::TYPE_EXPENSES, $model->type);
-        $this->assertSame(Order::STATE_WAIT, $model->state);
-        $this->assertSame(UserTarget::ORDER_TITLE, $model->title);
+        self::assertInstanceOf(WalletOrderModel::class, $model);
+        self::assertSame($owner, $model->owner_id);
+        self::assertSame($target, $model->target_id);
+        self::assertSame($amount, $model->amount);
+        self::assertSame(Order::TARGET_TYPE_USER, $model->target_type);
+        self::assertSame(Order::TYPE_EXPENSES, $model->type);
+        self::assertSame(Order::STATE_WAIT, $model->state);
+        self::assertSame(UserTarget::ORDER_TITLE, $model->title);
     }
 }

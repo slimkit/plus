@@ -33,9 +33,8 @@ class WalletTransferTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-
-        $this->user = factory(UserModel::class)->create();
-        $this->target_user = factory(UserModel::class)->create();
+        $this->user = UserModel::factory()->create();
+        $this->target_user = UserModel::factory()->create();
         $this->user->newWallet()->update(['balance' => 999999, 'total_income' => 0, 'total_expenses' => 0]);
     }
 
@@ -47,12 +46,12 @@ class WalletTransferTest extends TestCase
      */
     public function testTransfer()
     {
-        $response = $this->actingAs($this->user, 'api')->json('POST', '/api/v2/plus-pay/transfer', ['user' => $this->target_user->id, 'amount' => 2121]);
-
+        $response = $this->actingAs($this->user, 'api')
+            ->json('POST', '/api/v2/plus-pay/transfer', ['user' => $this->target_user->id, 'amount' => 2121]);
         $response->assertStatus(201);
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->user->forceDelete();
         $this->target_user->forceDelete();

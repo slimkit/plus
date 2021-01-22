@@ -469,7 +469,7 @@ Route::group(['prefix' => 'v2'], function (RouteContract $api) {
             $api->get('/orders/{order}', API2\NewWalletRechargeController::class.'@retrieve');
 
             // 转账
-            tap($api->post('/transfer', API2\TransferController::class.'@transfer'), function ($route) {
+            tap($api->post('/transfer', API2\TransferController::class.'@transfer'), static function ($route) {
                 $route->setAction(array_merge($route->getAction(), [
                     'middleware' => [
                         'cors-should',

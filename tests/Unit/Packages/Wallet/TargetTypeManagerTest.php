@@ -39,9 +39,9 @@ class TargetTypeManagerTest extends TestCase
 
         // Create a Order::class mock.
         $order = $this->getMockBuilder(Order::class)
-                      ->setMethods(['getOrderModel'])
+                      ->onlyMethods(['getOrderModel'])
                       ->getMock();
-        $order->expects($this->exactly(1))
+        $order->expects(self::once())
               ->method('getOrderModel')
               ->willReturn($model);
 
@@ -53,9 +53,9 @@ class TargetTypeManagerTest extends TestCase
 
         // test getDefaultDriver.
         $model->target_type = Order::TARGET_TYPE_USER;
-        $this->assertSame(Order::TARGET_TYPE_USER, $targetTypeManager->getDefaultDriver());
+        self::assertSame(Order::TARGET_TYPE_USER, $targetTypeManager->getDefaultDriver());
 
         // test Order::TARGET_TYPE_USER Driver instance of.
-        $this->assertInstanceOf(UserTarget::class, $targetTypeManager->driver(Order::TARGET_TYPE_USER));
+        self::assertInstanceOf(UserTarget::class, $targetTypeManager->driver(Order::TARGET_TYPE_USER));
     }
 }

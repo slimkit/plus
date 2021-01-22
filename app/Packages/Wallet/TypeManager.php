@@ -45,7 +45,7 @@ class TypeManager extends Manager
      */
     protected function createUserDriver(): Type
     {
-        return $this->app->make(Types\UserType::class);
+        return $this->container->make(Types\UserType::class);
     }
 
     /**
@@ -56,7 +56,7 @@ class TypeManager extends Manager
      */
     protected function createWidthdrawDriver(): Type
     {
-        return $this->app->make(Types\WidthdrawType::class);
+        return $this->container->make(Types\WidthdrawType::class);
     }
 
     /**
@@ -67,7 +67,7 @@ class TypeManager extends Manager
      */
     protected function createRewardDriver(): Type
     {
-        return $this->app->make(Types\RewardType::class);
+        return $this->container->make(Types\RewardType::class);
     }
 
     /**
@@ -78,7 +78,7 @@ class TypeManager extends Manager
      */
     protected function createRechargePingPPDriver(): Type
     {
-        return $this->app->make(Types\RechargeType::class);
+        return $this->container->make(Types\RechargeType::class);
     }
 
     /**
@@ -89,6 +89,6 @@ class TypeManager extends Manager
      */
     protected function createTransformDriver(): Type
     {
-        return $this->app->make(Types\TransformCurrencyType::class);
+        return $this->container->make(Types\TransformCurrencyType::class);
     }
 }

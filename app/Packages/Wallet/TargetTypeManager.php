@@ -57,7 +57,7 @@ class TargetTypeManager extends Manager
      */
     protected function createUserDriver(): Target
     {
-        $driver = $this->app->make(TargetTypes\UserTarget::class);
+        $driver = $this->container->make(TargetTypes\UserTarget::class);
         $driver->setOrder($this->order);
 
         return $driver;
@@ -71,7 +71,7 @@ class TargetTypeManager extends Manager
      */
     protected function createWidthdrawDriver(): Target
     {
-        $driver = $this->app->make(TargetTypes\WidthdrawTarget::class);
+        $driver = $this->container->make(TargetTypes\WidthdrawTarget::class);
         $driver->setOrder($this->order);
 
         return $driver;
@@ -85,7 +85,7 @@ class TargetTypeManager extends Manager
      */
     protected function createRewardDriver(): Target
     {
-        $driver = $this->app->make(TargetTypes\RewardTarget::class);
+        $driver = $this->container->make(TargetTypes\RewardTarget::class);
         $driver->setOrder($this->order);
 
         return $driver;
@@ -99,7 +99,7 @@ class TargetTypeManager extends Manager
      */
     protected function createRechargePingPPDriver(): Target
     {
-        $driver = $this->app->make(TargetTypes\RechargeTarget::class);
+        $driver = $this->container->make(TargetTypes\RechargeTarget::class);
         $driver->setOrder($this->order);
 
         return $driver;
@@ -113,7 +113,7 @@ class TargetTypeManager extends Manager
      */
     protected function createTransformDriver(): Target
     {
-        $driver = $this->app->make(TargetTypes\TransformCurrencyTarget::class);
+        $driver = $this->container->make(TargetTypes\TransformCurrencyTarget::class);
         $driver->setOrder($this->order);
 
         return $driver;

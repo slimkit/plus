@@ -16,10 +16,10 @@
  * +----------------------------------------------------------------------+
  */
 
-namespace Tests\Feature;
+namespace Zhiyi\Plus\Tests\Feature;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Tests\TestCase;
+use Zhiyi\Plus\Tests\TestCase;
 
 class ExampleTest extends TestCase
 {

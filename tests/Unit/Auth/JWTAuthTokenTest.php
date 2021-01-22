@@ -35,7 +35,7 @@ class JWTAuthTokenTest extends TestCase
     public function testCreate()
     {
         $jwtAuthToken = $this->app->make(\Zhiyi\Plus\Auth\JWTAuthToken::class);
-        $user = factory(UserModel::class)->create();
+        $user = UserModel::factory()->create();
         $token = $jwtAuthToken->create($user);
 
         $this->assertTrue((bool) $token);
@@ -50,7 +50,7 @@ class JWTAuthTokenTest extends TestCase
     public function testRefresh()
     {
         $jwtAuthToken = $this->app->make(\Zhiyi\Plus\Auth\JWTAuthToken::class);
-        $user = factory(UserModel::class)->create();
+        $user = UserModel::factory()->create();
         $token = $jwtAuthToken->create($user);
         $newToken = $jwtAuthToken->refresh($token);
 

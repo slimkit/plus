@@ -16,25 +16,20 @@
  * +----------------------------------------------------------------------+
  */
 
-namespace Database\Factories\Zhiyi\Plus\Models;
+namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Zhiyi\Plus\Models\WalletCash;
+use Zhiyi\Plus\Models\TagCategory;
 
-class CashFactory extends Factory
+class TagCategoryFactory extends Factory
 {
-    public static $user_id;
-    protected $model = WalletCash::class;
+    protected $model = TagCategory::class;
 
     public function definition()
     {
         return [
-            'user_id' => $this->user_id,
-            'type' => 'alipay',
-            'account' => '1212121212',
-            'value' => random_int(1, 999999),
-            'status' => rand(0, 2),
-            'remark' => '',
+            'name' => $this->faker->firstName,
+            'weight' => $this->faker->numberBetween(100, 999),
         ];
     }
 }

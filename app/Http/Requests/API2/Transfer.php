@@ -21,7 +21,6 @@ declare(strict_types=1);
 namespace Zhiyi\Plus\Http\Requests\API2;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rule;
 use Zhiyi\Plus\Packages\Wallet\Wallet;
 
 class Transfer extends FormRequest
@@ -40,8 +39,9 @@ class Transfer extends FormRequest
      * Get the validation rules that apply to the request.
      *
      * @return array
+     * @throws \Exception
      */
-    public function rules()
+    public function rules(): array
     {
         $wallet = new Wallet($this->user());
 
@@ -62,7 +62,7 @@ class Transfer extends FormRequest
      * @return array
      * @author Seven Du <shiweidu@outlook.com>
      */
-    public function messages()
+    public function messages(): array
     {
         return [
             'amount.required' => '请输入转账金额',

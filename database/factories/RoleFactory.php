@@ -16,14 +16,14 @@
  * +----------------------------------------------------------------------+
  */
 
-namespace Database\Factories\Zhiyi\Plus\Models;
+namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Zhiyi\Plus\Models\Comment;
+use Zhiyi\Plus\Models\Role;
 
-class CommentFactory extends Factory
+class RoleFactory extends Factory
 {
-    protected $model = Comment::class;
+    protected $model = Role::class;
 
     public function definition()
     {

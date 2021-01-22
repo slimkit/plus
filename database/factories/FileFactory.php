@@ -16,27 +16,19 @@
  * +----------------------------------------------------------------------+
  */
 
-namespace Database\Factories\Zhiyi\Plus\Models;
+namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Support\Str;
-use Zhiyi\Plus\Models\User;
+use Zhiyi\Plus\Models\File;
 
-class UserFactory extends Factory
+class FileFactory extends Factory
 {
-    protected $model = User::class;
+    protected $model = File::class;
 
     public function definition()
     {
         return [
-            'name' => $this->faker->name,
-            'email' => $this->faker->unique()->safeEmail,
-            'phone' => $this->faker->unique()->phoneNumber,
-            'email_verified_at' => now(),
-            'phone_verified_at' => now(),
-            'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi',
-            // password
-            'remember_token' => Str::random(10),
+            //
         ];
     }
 }

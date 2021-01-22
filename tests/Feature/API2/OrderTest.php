@@ -37,10 +37,10 @@ class OrderTest extends TestCase
     {
         parent::setUp();
 
-        $this->user = factory(UserModel::class)->create();
-        factory(WalletOrderModel::class)->create(['owner_id' => $this->user->id]);
-        factory(WalletOrderModel::class)->create(['owner_id' => $this->user->id]);
-        factory(WalletOrderModel::class)->create(['owner_id' => $this->user->id]);
+        $this->user = UserModel::factory()->create();
+        WalletOrderModel::factory()->create(['owner_id' => $this->user->id]);
+        WalletOrderModel::factory()->create(['owner_id' => $this->user->id]);
+        WalletOrderModel::factory()->create(['owner_id' => $this->user->id]);
     }
 
     /**
@@ -53,14 +53,14 @@ class OrderTest extends TestCase
     {
         $token = $this->guard()->login($this->user);
 
-        $firstrResponse = $this->json('GET', '/api/v2/plus-pay/orders?limit=1', [
+        $firstResponse = $this->json('GET', '/api/v2/plus-pay/orders?limit=1', [
             'Authorization' => 'Bearer '.$token,
         ]);
 
-        $firstrResponse->assertStatus(200);
+        $firstResponse->assertStatus(200);
 
-        $data = $firstrResponse->json()[0];
-        $this->assertTrue(count($firstrResponse->json()) === 1);
+        $data = $firstResponse->json()[0];
+        self::assertSame(count($firstResponse->json()), 1);
 
         $this->assertOrderData($data);
 
@@ -73,8 +73,8 @@ class OrderTest extends TestCase
         $afterData = $after->json()[0];
 
         $this->assertOrderData($afterData);
-        $this->assertTrue(count($after->json()) === 1);
-        $this->assertTrue($afterData['id'] < $data['id']);
+        self::assertSame(count($after->json()), 1);
+        self::assertTrue($afterData['id'] < $data['id']);
     }
 
     /**
@@ -86,15 +86,15 @@ class OrderTest extends TestCase
      */
     protected function assertOrderData(array $singleData)
     {
-        $this->assertArrayHasKey('id', $singleData);
-        $this->assertArrayHasKey('owner_id', $singleData);
-        $this->assertArrayHasKey('target_type', $singleData);
-        $this->assertArrayHasKey('target_id', $singleData);
-        $this->assertArrayHasKey('title', $singleData);
-        $this->assertArrayHasKey('body', $singleData);
-        $this->assertArrayHasKey('type', $singleData);
-        $this->assertArrayHasKey('amount', $singleData);
-        $this->assertArrayHasKey('state', $singleData);
+        self::assertArrayHasKey('id', $singleData);
+        self::assertArrayHasKey('owner_id', $singleData);
+        self::assertArrayHasKey('target_type', $singleData);
+        self::assertArrayHasKey('target_id', $singleData);
+        self::assertArrayHasKey('title', $singleData);
+        self::assertArrayHasKey('body', $singleData);
+        self::assertArrayHasKey('type', $singleData);
+        self::assertArrayHasKey('amount', $singleData);
+        self::assertArrayHasKey('state', $singleData);
     }
 
     /**
@@ -107,7 +107,7 @@ class OrderTest extends TestCase
         return Auth::guard('api');
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->user->forceDelete();
 

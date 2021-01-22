@@ -16,14 +16,14 @@
  * +----------------------------------------------------------------------+
  */
 
-namespace Database\Factories\Zhiyi\Plus\Models;
+namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Zhiyi\Plus\Models\UserCount;
+use Zhiyi\Plus\Models\Like;
 
-class ModelUserCountFactory extends Factory
+class LikeFactory extends Factory
 {
-    protected $model = UserCount::class;
+    protected $model = Like::class;
 
     public function definition()
     {

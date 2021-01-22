@@ -35,7 +35,7 @@ class OrderTest extends TestCase
     {
         $order = new Order(new WalletOrderModel());
 
-        $this->assertInstanceOf(WalletOrderModel::class, $order->getOrderModel());
+        self::assertInstanceOf(WalletOrderModel::class, $order->getOrderModel());
     }
 
     /**
@@ -51,13 +51,13 @@ class OrderTest extends TestCase
 
         // Create a Order::class mock.
         $order = $this->getMockBuilder(Order::class)
-                      ->setMethods(['getOrderModel'])
-                      ->getMock();
-        $order->expects($this->exactly(1))
-              ->method('getOrderModel')
-              ->will($this->returnValue($model));
+            ->onlyMethods(['getOrderModel'])
+            ->getMock();
+        $order->expects(self::once())
+            ->method('getOrderModel')
+            ->willReturn($model);
 
-        $this->assertTrue($order->hasSuccess());
+        self::assertTrue($order->hasSuccess());
     }
 
     /**
@@ -73,11 +73,11 @@ class OrderTest extends TestCase
 
         // Create a Order::class mock.
         $order = $this->getMockBuilder(Order::class)
-                      ->setMethods(['getOrderModel'])
-                      ->getMock();
-        $order->expects($this->exactly(1))
-              ->method('getOrderModel')
-              ->will($this->returnValue($model));
+            ->onlyMethods(['getOrderModel'])
+            ->getMock();
+        $order->expects(self::once())
+            ->method('getOrderModel')
+            ->willReturn($model);
 
         $this->assertTrue($order->hasFail());
     }
@@ -95,13 +95,13 @@ class OrderTest extends TestCase
 
         // Create a Order::class mock.
         $order = $this->getMockBuilder(Order::class)
-                      ->setMethods(['getOrderModel'])
-                      ->getMock();
-        $order->expects($this->exactly(1))
-              ->method('getOrderModel')
-              ->will($this->returnValue($model));
+            ->onlyMethods(['getOrderModel'])
+            ->getMock();
+        $order->expects(self::once())
+            ->method('getOrderModel')
+            ->willReturn($model);
 
-        $this->assertTrue($order->hasWait());
+        self::assertTrue($order->hasWait());
     }
 
     /**
@@ -114,21 +114,21 @@ class OrderTest extends TestCase
     {
         // Create a WalletOrderModel::class mock.
         $model = $this->getMockBuilder(WalletOrderModel::class)
-                      ->setMethods(['save'])
-                      ->getMock();
-        $model->expects($this->exactly(1))
-              ->method('save')
-              ->willReturn(true);
+            ->onlyMethods(['save'])
+            ->getMock();
+        $model->expects(self::once())
+            ->method('save')
+            ->willReturn(true);
 
         // Create a Order::class mock.
         $order = $this->getMockBuilder(Order::class)
-                      ->setMethods(['getOrderModel'])
-                      ->getMock();
-        $order->expects($this->exactly(1))
-              ->method('getOrderModel')
-              ->will($this->returnValue($model));
+            ->onlyMethods(['getOrderModel'])
+            ->getMock();
+        $order->expects(self::once())
+            ->method('getOrderModel')
+            ->willReturn($model);
 
-        $this->assertTrue($order->save());
+        self::assertTrue($order->save());
     }
 
     /**
@@ -143,17 +143,17 @@ class OrderTest extends TestCase
 
         // Create a Order::class mock.
         $order = $this->getMockBuilder(Order::class)
-                      ->setMethods(['getOrderModel', 'save'])
-                      ->getMock();
-        $order->expects($this->exactly(2))
-              ->method('getOrderModel')
-              ->willReturn($model);
-        $order->expects($this->exactly(1))
-              ->method('save')
-              ->willReturn(true);
+            ->onlyMethods(['getOrderModel', 'save'])
+            ->getMock();
+        $order->expects(self::exactly(2))
+            ->method('getOrderModel')
+            ->willReturn($model);
+        $order->expects(self::once())
+            ->method('save')
+            ->willReturn(true);
 
-        $this->assertTrue($order->saveStateSuccess());
-        $this->assertSame(Order::STATE_SUCCESS, $order->getOrderModel()->state);
+        self::assertTrue($order->saveStateSuccess());
+        self::assertSame(Order::STATE_SUCCESS, $order->getOrderModel()->state);
     }
 
     /**
@@ -168,17 +168,17 @@ class OrderTest extends TestCase
 
         // Create a Order::class mock.
         $order = $this->getMockBuilder(Order::class)
-                      ->setMethods(['getOrderModel', 'save'])
-                      ->getMock();
-        $order->expects($this->exactly(2))
-              ->method('getOrderModel')
-              ->willReturn($model);
-        $order->expects($this->exactly(1))
-              ->method('save')
-              ->willReturn(true);
+            ->onlyMethods(['getOrderModel', 'save'])
+            ->getMock();
+        $order->expects(self::exactly(2))
+            ->method('getOrderModel')
+            ->willReturn($model);
+        $order->expects(self::once())
+            ->method('save')
+            ->willReturn(true);
 
-        $this->assertTrue($order->saveStateFial());
-        $this->assertSame(Order::STATE_FAIL, $order->getOrderModel()->state);
+        self::assertTrue($order->saveStateFial());
+        self::assertSame(Order::STATE_FAIL, $order->getOrderModel()->state);
     }
 
     /**
@@ -194,39 +194,40 @@ class OrderTest extends TestCase
 
         // Create a Order::class mock.
         $order = $this->getMockBuilder(Order::class)
-                      ->setMethods(['getOrderModel', 'getTargetTypeManager'])
-                      ->getMock();
-        $order->expects($this->exactly(3))
-              ->method('getOrderModel')
-              ->willReturn($model);
+            ->onlyMethods(['getOrderModel', 'getTargetTypeManager'])
+            ->getMock();
+        $order->expects(self::exactly(3))
+            ->method('getOrderModel')
+            ->willReturn($model);
 
         // Test success
         $model->state = Order::STATE_SUCCESS;
-        $this->assertTrue($order->autoComplete());
+        self::assertTrue($order->autoComplete());
 
         // Test fail.
         $model->state = Order::STATE_FAIL;
-        $this->assertTrue($order->autoComplete());
+        self::assertTrue($order->autoComplete());
 
         // Create a TargetTypeManager::class mock.
         $targetManager = $this->getMockBuilder(TargetTypeManager::class)
-                              ->setMethods(['handle', 'setOrder'])
-                              ->setConstructorArgs([$this->app])
-                              ->getMock();
-        $targetManager->expects($this->exactly(1))
-                      ->method('setOrder')
-                      ->with($this->identicalTo($order))
-                      ->will($this->returnSelf());
-        $targetManager->expects($this->exactly(1))
-                      ->method('handle')
-                      ->with($this->equalTo(true))
-                      ->willReturn(true);
-        $order->expects($this->exactly(1))
-              ->method('getTargetTypeManager')
-              ->willReturn($targetManager);
+            ->addMethods(['handle'])
+            ->onlyMethods(['setOrder'])
+            ->setConstructorArgs([$this->app])
+            ->getMock();
+        $targetManager->expects(self::once())
+            ->method('setOrder')
+            ->with(self::identicalTo($order))
+            ->will(self::returnSelf());
+        $targetManager->expects(self::once())
+            ->method('handle')
+            ->with(self::equalTo(true))
+            ->willReturn(true);
+        $order->expects(self::once())
+            ->method('getTargetTypeManager')
+            ->willReturn($targetManager);
 
         $model->state = Order::STATE_WAIT;
-        $this->assertTrue($order->autoComplete(true));
+        self::assertTrue($order->autoComplete(true));
     }
 
     /**
@@ -239,6 +240,6 @@ class OrderTest extends TestCase
     {
         $order = new Order();
 
-        $this->assertInstanceOf(TargetTypeManager::class, $order->getTargetTypeManager());
+        self::assertInstanceOf(TargetTypeManager::class, $order->getTargetTypeManager());
     }
 }

@@ -97,7 +97,7 @@ class VerifyCodeTest extends TestCase
         return Auth::guard('api');
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->user->forceDelete();
 

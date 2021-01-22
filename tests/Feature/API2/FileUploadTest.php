@@ -41,7 +41,7 @@ class FileUploadTest extends TestCase
     {
         parent::setUp();
 
-        $this->user = factory(UserModel::class)->create();
+        $this->user = UserModel::factory()->create();
     }
 
     /**
@@ -62,7 +62,7 @@ class FileUploadTest extends TestCase
         $response->assertStatus(201)->assertJsonStructure(['id', 'message']);
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->user->forceDelete();
 

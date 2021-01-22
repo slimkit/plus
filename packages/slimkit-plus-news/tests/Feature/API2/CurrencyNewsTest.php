@@ -163,8 +163,8 @@ class CurrencyNewsTest extends TestCase
     // public function testAuditNewsCommentPinned()
     // {
     //     $this->withoutExceptionHandling();
-    //     $user = factory(UserModel::class)->create();
-    //     $other = factory(UserModel::class)->create();
+    //     $user = UserModel::factory()->create();
+    //     $other = UserModel::factory()->create();
     //
     //     $cate = factory(NewsCateModel::class)->create();
     //     $news = factory(NewsModel::class)->create([
@@ -211,8 +211,8 @@ class CurrencyNewsTest extends TestCase
     //  */
     // public function testRejectNewsCommentPinned()
     // {
-    //     $user = factory(UserModel::class)->create();
-    //     $other = factory(UserModel::class)->create();
+    //     $user = UserModel::factory()->create();
+    //     $other = UserModel::factory()->create();
     //
     //     $cate = factory(NewsCateModel::class)->create();
     //     $news = factory(NewsModel::class)->create([

@@ -16,17 +16,19 @@
  * +----------------------------------------------------------------------+
  */
 
-namespace Database\Factories\Zhiyi\Plus\Models;
+namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Zhiyi\Plus\Models\Like;
+use Zhiyi\Plus\Models\Comment;
 
-class LikeFactory extends Factory
+class CommentFactory extends Factory
 {
-    protected $model = Like::class;
+    protected $model = Comment::class;
 
     public function definition()
     {
-        return [];
+        return [
+            //
+        ];
     }
 }

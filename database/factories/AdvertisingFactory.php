@@ -16,27 +16,26 @@
  * +----------------------------------------------------------------------+
  */
 
-namespace Database\Factories\Zhiyi\Plus\Models;
+namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Zhiyi\Plus\Models\WalletOrder;
+use Zhiyi\Plus\Models\Advertising;
 
-class OrderFactory extends Factory
+class AdvertisingFactory extends Factory
 {
-    public static $user_id;
-    protected $model = WalletOrder::class;
+    protected $model = Advertising::class;
 
     public function definition()
     {
         return [
-            'owner_id' => $this->user_id,
-            'target_type' => 'user',
-            'target_id' => 'id',
+            'space_id' => 1,
             'title' => '测试标题',
-            'body' => '测试内容',
-            'type' => 1,
-            'amount' => random_int(1, 999999),
-            'state' => rand(-1, 1),
+            'type' => 'image',
+            'data' => [
+                'image' => 'http://xxx/xxx.jpg',
+                'url' => 'http://www.xxxxx.com',
+            ],
+            'sort' => 0,
         ];
     }
 }

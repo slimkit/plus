@@ -16,19 +16,17 @@
  * +----------------------------------------------------------------------+
  */
 
-namespace Database\Factories\Zhiyi\Plus\Models;
+namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Zhiyi\Plus\Models\Role;
+use Zhiyi\Plus\Models\UserCount;
 
-class RoleFactory extends Factory
+class ModelUserCountFactory extends Factory
 {
-    protected $model = Role::class;
+    protected $model = UserCount::class;
 
     public function definition()
     {
-        return [
-            //
-        ];
+        return [];
     }
 }

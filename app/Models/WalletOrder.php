@@ -20,6 +20,7 @@ declare(strict_types=1);
 
 namespace Zhiyi\Plus\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
@@ -57,6 +58,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
  */
 class WalletOrder extends Model
 {
+    use HasFactory;
     /**
      * The table associated with the model.
      *

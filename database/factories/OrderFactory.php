@@ -16,19 +16,27 @@
  * +----------------------------------------------------------------------+
  */
 
-namespace Database\Factories\Zhiyi\Plus\Models;
+namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Zhiyi\Plus\Models\Tag;
+use Zhiyi\Plus\Models\WalletOrder;
 
-class TagFactory extends Factory
+class OrderFactory extends Factory
 {
-    protected $model = Tag::class;
+    public static $user_id;
+    protected $model = WalletOrder::class;
 
     public function definition()
     {
         return [
-            'name' => $this->faker->unique()->firstName,
+            'owner_id' => $this->user_id,
+            'target_type' => 'user',
+            'target_id' => 'id',
+            'title' => '测试标题',
+            'body' => '测试内容',
+            'type' => 1,
+            'amount' => random_int(1, 999999),
+            'state' => rand(-1, 1),
         ];
     }
 }

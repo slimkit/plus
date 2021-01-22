@@ -18,14 +18,14 @@ declare(strict_types=1);
  * +----------------------------------------------------------------------+
  */
 
-namespace Zhiyi\Plus\EaseMobIM\Controllers;
+namespace Zhiyi\Plus\EaseMobIm\Controllers;
 
 use GuzzleHttp\Client;
 use Illuminate\Http\Request;
 use Zhiyi\Plus\Cdn\UrlManager;
-use Zhiyi\Plus\EaseMobIM\Requests\CheckGroup;
-use Zhiyi\Plus\EaseMobIM\Requests\GroupMember;
-use Zhiyi\Plus\EaseMobIM\Requests\UpdateGroup;
+use Zhiyi\Plus\EaseMobIm\Requests\CheckGroup;
+use Zhiyi\Plus\EaseMobIm\Requests\GroupMember;
+use Zhiyi\Plus\EaseMobIm\Requests\UpdateGroup;
 use Zhiyi\Plus\Models\FileWith;
 use Zhiyi\Plus\Models\ImGroup;
 use Zhiyi\Plus\Models\User;

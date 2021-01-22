@@ -16,26 +16,27 @@
  * +----------------------------------------------------------------------+
  */
 
-namespace Database\Factories\Zhiyi\Plus\Models;
+namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Zhiyi\Plus\Models\Advertising;
+use Illuminate\Support\Str;
+use Zhiyi\Plus\Models\User;
 
-class AdvertisingFactory extends Factory
+class UserFactory extends Factory
 {
-    protected $model = Advertising::class;
+    protected $model = User::class;
 
     public function definition()
     {
         return [
-            'space_id' => 1,
-            'title' => '测试标题',
-            'type' => 'image',
-            'data' => [
-                'image' => 'http://xxx/xxx.jpg',
-                'url' => 'http://www.xxxxx.com',
-            ],
-            'sort' => 0,
+            'name' => $this->faker->name,
+            'email' => $this->faker->unique()->safeEmail,
+            'phone' => $this->faker->unique()->phoneNumber,
+            'email_verified_at' => now(),
+            'phone_verified_at' => now(),
+            'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi',
+            // password
+            'remember_token' => Str::random(10),
         ];
     }
 }

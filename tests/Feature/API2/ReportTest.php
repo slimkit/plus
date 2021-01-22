@@ -40,8 +40,8 @@ class ReportTest extends TestCase
     {
         parent::setUp();
 
-        $this->user = factory(UserModel::class)->create();
-        $this->target_user = factory(UserModel::class)->create();
+        $this->user = UserModel::factory()->create();
+        $this->target_user = UserModel::factory()->create();
     }
 
     /**
@@ -79,7 +79,7 @@ class ReportTest extends TestCase
         $response->assertStatus(201);
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->user->forceDelete();
         $this->target_user->forceDelete();

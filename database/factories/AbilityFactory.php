@@ -16,14 +16,14 @@
  * +----------------------------------------------------------------------+
  */
 
-namespace Database\Factories\Zhiyi\Plus\Models;
+namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Zhiyi\Plus\Models\Sensitive;
+use Zhiyi\Plus\Models\Ability;
 
-class SensitiveFactory extends Factory
+class AbilityFactory extends Factory
 {
-    protected $model = Sensitive::class;
+    protected $model = Ability::class;
 
     public function definition()
     {

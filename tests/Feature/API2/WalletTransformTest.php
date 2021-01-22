@@ -33,7 +33,7 @@ class WalletTransformTest extends TestCase
     {
         parent::setUp();
 
-        $this->user = factory(UserModel::class)->create();
+        $this->user = UserModel::factory()->create();
         $this->user->newWallet()->update(['balance' => 999999]);
     }
 
@@ -51,7 +51,7 @@ class WalletTransformTest extends TestCase
         $response->assertStatus(201);
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->user->forceDelete();
 
