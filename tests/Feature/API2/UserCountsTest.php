@@ -61,8 +61,8 @@ class UserCountsTest extends TestCase
         ]);
         $response->assertJson([
             'user' => [
-                'following' => 1
-            ]
+                'following' => 1,
+            ],
         ]);
 
         $followingCount = UserCountModel::where('type', 'user-following')

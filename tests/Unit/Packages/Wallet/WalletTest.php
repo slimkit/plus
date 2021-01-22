@@ -50,7 +50,7 @@ class WalletTest extends TestCase
      */
     public function testSetUser()
     {
-        $this->expectExceptionMessage("传递的不是一个用户");
+        $this->expectExceptionMessage('传递的不是一个用户');
         $this->expectException(\Exception::class);
         $user = UserModel::factory()->make();
         $user->id = 1;

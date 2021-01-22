@@ -33,7 +33,7 @@ class AuthRefreshTest extends TestCase
     /**
      * The user.
      *
-     * @var UserModel $user
+     * @var UserModel
      */
     protected $user;
 
