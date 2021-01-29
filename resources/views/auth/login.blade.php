@@ -11,7 +11,7 @@
     <title>登录 - {{ config('app.name') }}</title>
 
     <link rel="icon" type="image/x-icon" href="{{ asset('/favicon.ico') }}">
-    <link href="https://fonts.googleapis.com/css?family=Raleway:100,600" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway:100,600" integrity="sha384-lwxeEnZ/8/DTJKQLgxxfGt8U7Mlw+C5zwhBns7MErbky9RJzYxgUTsOjzQUzeVlk" crossorigin="anonymous">
     <style type="text/css">
         html, body {
             color: #636b6f;
