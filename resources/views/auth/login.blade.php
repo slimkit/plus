@@ -108,7 +108,7 @@
         </div>
 
         <div class="form-group {{ $errors->has('password') ? 'has-error' : '' }} ">
-            <input class="form-control" type="password" name="password" placeholder="请输入密码" required />
+            <input class="form-control" type="password" name="password" placeholder="请输入密码" required autocomplete="off"/>
 
             @if ($errors->has('password'))
                 <span class="help-block">

@@ -267,7 +267,7 @@ weibo.showTopics = function(show) {
     // 填充列表
     TS.HOT_TOPICS.forEach(function(topic) {
         $('.ev-view-topic-list').append('<li data-topic-id="'+topic.id+'" data-topic-name="'+topic.name+'">'+topic.name+'</li>');
-    });
+    })
 }
 
 /**

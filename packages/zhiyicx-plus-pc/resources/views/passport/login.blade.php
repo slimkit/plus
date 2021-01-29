@@ -19,7 +19,7 @@
                 <input type="text" placeholder="输入手机号/邮箱/昵称" name="login" value="{{ old('email', old('phone', old('name', old('id', '')))) }}" required autofocus />
             </div>
             <div class="login_input">
-                <input type="password" placeholder="输入密码" name="password" required/>
+                <input type="password" placeholder="输入密码" name="password" required autocomplete="off"/>
             </div>
             <div class="login_extra">
                 <a class="forget_pwd" href="{{ route('pc:findpassword') }}">忘记密码</a>
