@@ -6,9 +6,9 @@
 
     <!-- body -->
     <div class="panel-body">
-      
+
       <!-- loading -->
-      <sb-ui-loading v-if="loading" />
+      <ui-loading v-if="loading" />
 
       <!-- form -->
       <div class="form-horizontal" v-else>
@@ -44,12 +44,12 @@
                 <tr v-for="header in cors.allowHeaders" :key="header">
                   <td>{{ header }}</td>
                   <td>
-                    <sb-ui-button
+                    <ui-button
                       class="btn btn-danger"
                       @click="event => { handleRemove(event, 'allowHeaders', header) }"
                       label="删除"
                       proces-label="删除中..."
-                    ></sb-ui-button>
+                    ></ui-button>
                   </td>
                 </tr>
                 <tr>
@@ -57,12 +57,12 @@
                     <input type="text" class="form-control" v-model="addHeaderText">
                   </td>
                   <td>
-                    <sb-ui-button
+                    <ui-button
                       class="btn btn-primary"
                       @click="event => {handleAppend(event, 'allowHeaders', 'addHeaderText')}"
                       label="添加"
                       proces-label="添加中..."
-                    ></sb-ui-button>
+                    ></ui-button>
                   </td>
                 </tr>
               </tbody>
@@ -88,12 +88,12 @@
                 <tr v-for="header in cors.exposeHeaders" :key="header">
                   <td>{{ header }}</td>
                   <td>
-                    <sb-ui-button
+                    <ui-button
                       class="btn btn-danger"
                       @click="event => { handleRemove(event, 'exposeHeaders', header) }"
                       label="删除"
                       proces-label="删除中..."
-                    ></sb-ui-button>
+                    ></ui-button>
                   </td>
                 </tr>
                 <tr>
@@ -101,12 +101,12 @@
                     <input type="text" class="form-control" v-model="addExposeHeaderText">
                   </td>
                   <td>
-                    <sb-ui-button
+                    <ui-button
                       class="btn btn-primary"
                       @click="event => {handleAppend(event, 'exposeHeaders', 'addExposeHeaderText')}"
                       label="添加"
                       proces-label="添加中..."
-                    ></sb-ui-button>
+                    ></ui-button>
                   </td>
                 </tr>
               </tbody>
@@ -132,7 +132,7 @@
                 <tr v-for="origin in cors.origins" :key="origin">
                   <td>{{ origin }}</td>
                   <td>
-                    <sb-ui-button
+                    <ui-button
                       class="btn btn-danger"
                       @click="event => { handleRemove(event, 'origins', origin) }"
                       label="删除"
@@ -145,7 +145,7 @@
                     <input type="text" class="form-control" v-model="addOriginText">
                   </td>
                   <td>
-                    <sb-ui-button
+                    <ui-button
                       class="btn btn-primary"
                       @click="event => {handleAppend(event, 'origins', 'addOriginText')}"
                       label="添加"
@@ -176,7 +176,7 @@
                 <tr v-for="method in cors.methods" :key="method">
                   <td>{{ method }}</td>
                   <td>
-                    <sb-ui-button
+                    <ui-button
                       class="btn btn-danger"
                       @click="event => { handleRemove(event, 'methods', method) }"
                       label="删除"
@@ -189,7 +189,7 @@
                     <input type="text" class="form-control" v-model="addMethodText">
                   </td>
                   <td>
-                    <sb-ui-button
+                    <ui-button
                       class="btn btn-primary"
                       @click="event => {handleAppend(event, 'methods', 'addMethodText')}"
                       label="添加"
@@ -221,13 +221,13 @@
 
       <!-- Submit -->
       <div class="form-group" v-show="!loading">
-        <sb-ui-button
+        <ui-button
           class="btn btn-primary"
           label="提交设置"
           proces-label="提交中..."
           @click="handleSubmit"
         >
-        </sb-ui-button>
+        </ui-button>
       </div>
 
     </div>

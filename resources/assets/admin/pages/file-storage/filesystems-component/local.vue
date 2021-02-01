@@ -2,7 +2,7 @@
     <div class="panel panel-default">
         <div class="panel-heading">本地存储</div>
         <div class="panel-body">
-            <sb-ui-loading v-if="loading" />
+            <ui-loading v-if="loading" />
 
             <div class="form-horizontal" v-else>
 

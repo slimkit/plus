@@ -10,7 +10,7 @@
             </div>
             <!-- loading -->
             <div class="panel-body" v-if="loading">
-                <sb-ui-loading></sb-ui-loading>
+                <ui-loading></ui-loading>
             </div>
             <div class="panel-body" v-else>
                 <!-- table -->
@@ -31,13 +31,13 @@
                         <td>{{ user.email }}</td>
                         <td>{{ user.phone }}</td>
                         <td>
-                            <sb-ui-button
+                            <ui-button
                                     class="btn btn-warning btn-sm"
                                     label="恢复"
                                     proces-label="恢复中..."
                                     @click="event => { handleRestoreEventCallable(event, user.id); }"
                             >
-                            </sb-ui-button>
+                            </ui-button>
                         </td>
                     </tr>
                     </tbody>

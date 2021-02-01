@@ -27,6 +27,7 @@
 </head>
 <body>
     <div id="app"></div>
+   <script src="https://cdn.bootcss.com/babel-polyfill/7.4.4/polyfill.min.js?id=20190520"></script>
     <script src="{{ mix('admin.js', 'assets/feed') }}"></script>
 </body>
 </html>

@@ -6,7 +6,7 @@
                 默认文件系统是用于在<code>频道</code>没有指定文件系统时候使用的默认文件系统。
             </div>
 
-            <sb-ui-loading v-if="loading" />
+            <ui-loading v-if="loading" />
 
             <div class="form-horizontal" v-else>
                 <div class="form-group">

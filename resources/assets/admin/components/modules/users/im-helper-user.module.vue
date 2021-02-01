@@ -8,11 +8,11 @@
     <div class="panel-body">
 
       <!-- loading -->
-      <sb-ui-loading v-if="loading" />
+      <ui-loading v-if="loading" />
 
       <!-- form -->
       <div class="form-horizontal" v-else>
-        
+
         <!-- im helper user -->
         <div class="form-group">
           <label class="col-sm-2 control-label">小助手用户</label>
@@ -26,13 +26,13 @@
 
         <!-- submit -->
         <div class="col-sm-10 col-sm-offset-2">
-          <sb-ui-button
+          <ui-button
             class="btn btn-primary"
             label="提交设置"
             proces-label="提交中..."
             @click="handleSubmit"
           >
-          </sb-ui-button>
+          </ui-button>
         </div>
 
       </div>

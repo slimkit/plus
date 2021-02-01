@@ -9,7 +9,7 @@
                 限制尺寸信息还有助于避免服务器错误，例如你是用 <code>local</code> 文件系统，进行图像裁剪的时候可以考虑到系统内存情况进行设置，不至于内存溢出。
             </div>
 
-            <sb-ui-loading v-if="loading" />
+            <ui-loading v-if="loading" />
 
             <form class="form-horizontal" v-else>
                 <!-- 宽度设置 -->

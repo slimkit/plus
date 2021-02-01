@@ -7,7 +7,7 @@
   <meta name="api-basename" content="{{ url('/api/v2') }}">
   <meta name="domain" content="{{ config('app.url') }}" />
   <meta name="admin-api-basename" content="{{ url('/news/admin') }}">
-  
+
   <link rel="stylesheet" href="{{mix('css/index.css', 'assets/news/assets')}}">
 
     @parent
@@ -17,6 +17,7 @@
 @section('body')
   <div id="app"></div>
     @parent
+ <script src="https://cdn.bootcss.com/babel-polyfill/7.4.4/polyfill.min.js?id=20190520"></script>
 <script src="{{ mix('js/manifest.js', 'assets/news/assets') }}"></script>
 <script src="{{ mix('js/vendor.js', 'assets/news/assets') }}"></script>
 <script src="{{ mix('js/index.js', 'assets/news/assets') }}"></script>

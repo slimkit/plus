@@ -1,18 +1,18 @@
 <template>
   <div class="panel panel-default">
-      
+
       <!-- title -->
       <div class="panel-heading">Web 终端</div>
 
       <!-- body -->
       <div class="panel-body">
-        
+
         <!-- loading -->
-        <sb-ui-loading v-if="loading" />
+        <ui-loading v-if="loading" />
 
         <!-- form -->
         <div class="form-horizontal" v-else>
-          
+
           <!-- desktop client watch -->
           <div class="form-group">
             <label class="col-sm-2 control-label">开关</label>
@@ -69,7 +69,7 @@
 
           <!-- submit button -->
           <div class="col-sm-10 col-sm-offset-2">
-            <sb-ui-button class="btn btn-primary" @click="handleSubmit" />
+            <ui-button class="btn btn-primary" @click="handleSubmit" />
           </div>
 
         </div>

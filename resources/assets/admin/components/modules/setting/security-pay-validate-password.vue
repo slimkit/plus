@@ -2,17 +2,17 @@
     <div class="panel panel-default">
         <div class="panel-heading">支付验证密码</div>
         <div class="panel-body">
-            <sb-ui-loading v-if="loading" />
+            <ui-loading v-if="loading" />
             <div class="form-horizontal" v-else>
                 <div class="form-group">
                     <label class="col-sm-2 control-label">开关</label>
                     <div class="col-sm-4">
-                        <sb-ui-button
+                        <ui-button
                             class="btn btn-primary"
                             :label="setting ? '关闭' : '开启'"
                             @click="changeSwitchHandler"
                         >
-                        </sb-ui-button>
+                        </ui-button>
                     </div>
                     <div class="col-sm-6 help-block">
                         默认关闭，如果开启那么用户发生付款行为需要用户输入登录密码进行安全验证，关闭后泽不需要输入密码验证！

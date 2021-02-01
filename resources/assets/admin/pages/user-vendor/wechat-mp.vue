@@ -5,7 +5,7 @@
                 <div class="panel panel-default">
                     <div class="panel-heading">微信公众平台</div>
                     <div class="panel-body">
-                        <sb-ui-loading v-if="loading" />
+                        <ui-loading v-if="loading" />
                         <form class="form-horizontal" v-else>
 
                             <!-- app id -->

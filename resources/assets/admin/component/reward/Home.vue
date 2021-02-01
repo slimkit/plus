@@ -49,7 +49,7 @@
 <script>
 import request, { createRequestURI } from '../../util/request';
 import { plusMessageFirst } from '../../filters';
-import IEcharts from 'vue-echarts-v3/src/lite';
+import IEcharts from 'vue-echarts-v3';
 import 'echarts/lib/chart/line';
 import 'echarts/lib/component/grid';
 import 'echarts/lib/component/legend';
@@ -61,7 +61,7 @@ const HomeComponent = {
     components: {
       chart: IEcharts
     },
-    data: () => ({     
+    data: () => ({
       loading: true,
       reward_types: [
         { name: '', alias: '全部' },
@@ -87,7 +87,7 @@ const HomeComponent = {
           left: 50,
         },
         tooltip: {
-          trigger: 'axis', 
+          trigger: 'axis',
         },
         legend: {
           data:['打赏次数', '打赏金额'],
@@ -146,7 +146,7 @@ const HomeComponent = {
       exportUrl () {
         let url = '/admin/rewards/export?export_type=statistic';
         let filter = this.filter;
-  
+
         url  += '&type=' + filter.type;
         if (filter.scope == 'custom') {
           url += '&start=' + (filter.start ? filter.start : '');
@@ -191,7 +191,7 @@ const HomeComponent = {
           let total_amount = 0;
 
           _.forEach(data, function(n, key) {
- 
+
             total_count  = total_count + data[key].reward_count;
             total_amount = parseInt(data[key].reward_amount) + parseInt(total_amount);
 

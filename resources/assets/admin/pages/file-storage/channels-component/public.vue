@@ -9,7 +9,7 @@
                 等场景。
             </div>
 
-            <sb-ui-loading v-if="loading" />
+            <ui-loading v-if="loading" />
 
             <div class="form-horizontal" v-else>
 

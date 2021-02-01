@@ -5,7 +5,7 @@
                 <div class="panel panel-default">
                     <div class="panel-heading">QQ 登录</div>
                     <div class="panel-body">
-                        <sb-ui-loading v-if="loading" />
+                        <ui-loading v-if="loading" />
                         <form class="form-horizontal" v-else>
 
                             <!-- App ID -->

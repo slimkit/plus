@@ -10,7 +10,7 @@
                 ，所以最大不建议超出这个值！不正确的文件上传大小限制，将会影响到正常用户的上传！请配置适合你应用的限制信息。
             </div>
 
-            <sb-ui-loading v-if="loading" />
+            <ui-loading v-if="loading" />
 
             <form class="form-horizontal" v-else>
                 <!-- 宽度设置 -->

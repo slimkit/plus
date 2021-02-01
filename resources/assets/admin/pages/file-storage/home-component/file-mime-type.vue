@@ -9,7 +9,7 @@
             </div>
 
             <!-- 加载状态 -->
-            <sb-ui-loading v-if="loading" />
+            <ui-loading v-if="loading" />
 
             <form class="form-horizontal" v-else>
                 <div class="form-group">

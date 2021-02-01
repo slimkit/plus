@@ -6,7 +6,7 @@
                     <div class="panel-heading">环信配置</div>
                     <div class="panel-body">
 
-                        <sb-ui-loading v-if="loading" />
+                        <ui-loading v-if="loading" />
 
                         <form class="form-horizontal" v-else>
                             <!-- 开关 -->

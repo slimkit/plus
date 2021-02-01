@@ -106,11 +106,12 @@
                         </tr>
                     @endforeach
                 </tbody>
-                
+
             </table>
             {{ $page }}
         @endsection
     </div>
+   <script src="https://cdn.bootcss.com/babel-polyfill/7.4.4/polyfill.min.js?id=20190520"></script>
     <script type="text/javascript" src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
     <script type="text/javascript" src="/assets/music/js/bootstrap.js"></script>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
