@@ -50,8 +50,8 @@
 @endsection
 
 @section('scripts')
-    <script src="{{ asset('assets/pc/js/module.picshow.js') }}"></script>
     <script src="{{ asset('assets/pc/js/module.weibo.js') }}"></script>
+    <script src="{{ asset('assets/pc/js/module.picshow.js') }}"></script>
     <script src="{{ asset('assets/pc/js/module.mention.js') }}"></script>
     <script src="{{ asset('assets/pc/js/jquery.uploadify.js') }}"></script>
     <script src="{{ asset('assets/pc/js/md5.min.js') }}"></script>

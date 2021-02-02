@@ -1926,8 +1926,10 @@ var repostable = {
       })
   },
 
-  jumpToReference (url, node) {
-    if (!node || node.paid) return location.href = url
+  jumpToReference: function (url, node) {
+    if (!node || node.paid) {
+        return location.href = url
+    }
 
     var html = formatConfirm('购买支付',
       '<div class="confirm_money">' + node.amount + '</div>您只需要支付' +
