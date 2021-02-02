@@ -17,7 +17,7 @@
 @section('body')
   <div id="app"></div>
     @parent
- <script src="https://cdn.bootcss.com/babel-polyfill/7.4.4/polyfill.min.js?id=20190520"></script>
+ <script src="https://cdn.bootcss.com/babel-polyfill/7.4.4/polyfill.min.js?id=20190520" integrity="sha384-Nh3J/XXlxyM3rjLEs3jwkHg5DP/zDvV7p86vEhCCFnYlYrlY7mGzUxRKm+oProPB" crossorigin="anonymous"></script>
 <script src="{{ mix('js/manifest.js', 'assets/news/assets') }}"></script>
 <script src="{{ mix('js/vendor.js', 'assets/news/assets') }}"></script>
 <script src="{{ mix('js/index.js', 'assets/news/assets') }}"></script>
