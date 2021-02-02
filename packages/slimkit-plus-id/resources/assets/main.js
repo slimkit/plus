@@ -9,8 +9,8 @@ for (const k in filters) {
 
 // Injections
 import './components/commons';
-import SlimkitBootstrapUiKit from 'simkit-bootstrap-ui-kit';
-Vue.use(SlimkitBootstrapUiKit);
+// import SlimkitBootstrapUiKit from 'simkit-bootstrap-ui-kit';
+// Vue.use(SlimkitBootstrapUiKit);
 
 import router from './router';
 import store from './store';
