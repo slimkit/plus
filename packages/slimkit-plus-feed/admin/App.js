@@ -58,7 +58,7 @@ class App extends Component {
     let { classes} = this.props;
 
     return (
-      <div className={classes.root}>
+      <div className={classes.root} style={{ paddingTop: 48 }}>
         <AppBar position="fixed">
           <Tabs value={this.handleActiveRoute()} >
             {routes.map(tab => (
@@ -74,7 +74,7 @@ class App extends Component {
           </Tabs>
         </AppBar>
 
-        <main style={{ paddingTop: 48 }}>
+        <main>
           {routes.map(tab => (
             <Route {...tab} key={tab.route} path={tab.route} component={tab.component} />
           ))}
