@@ -3,7 +3,7 @@ var loadHtml = '<div class=\'loading\'><img src=\'' + TS.RESOURCE_URL +
 var confirmTxt = '<svg class="icon" aria-hidden="true"><use xlink:href="#icon-warning"></use></svg> '
 var initNums = 255
 var uploadedTask = 0;
-var buyTSInfo = '开源版无此功能，需要使用此功能，请购买正版授权源码，详情访问www.thinksns.com，也可直接咨询：QQ3515923610；电话：17311245680。'
+var buyTSInfo = '开源版无此功能，需要使用此功能，请购买正版授权源码，详情访问www.thinksns.com，也可直接咨询：QQ3515923610；电话：19934627031。'
 
 axios.defaults.baseURL = TS.SITE_URL
 axios.defaults.headers.common['Accept'] = 'application/json'

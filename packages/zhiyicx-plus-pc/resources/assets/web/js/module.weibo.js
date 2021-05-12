@@ -27,7 +27,7 @@ weibo.postFeed = function() {
     // 付费免费
     var select = $('#feed_select').data('value');
     if (select == 'pay') {
-      layer.alert('开源版无此功能，需要使用此功能，请购买正版授权源码，详情访问www.thinksns.com，也可直接咨询：QQ3515923610；电话：17311245680。')
+      layer.alert('开源版无此功能，需要使用此功能，请购买正版授权源码，详情访问www.thinksns.com，也可直接咨询：QQ3515923610；电话：19934627031。')
       return
     } else {
         // 分享字数限制

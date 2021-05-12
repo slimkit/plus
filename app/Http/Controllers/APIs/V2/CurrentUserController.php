@@ -39,7 +39,7 @@ class CurrentUserController extends Controller
     public function show(Request $request, ResponseFactoryContract $response)
     {
         $user = $request->user();
-        $user->load('wallet', 'newWallet', 'currency');
+        $user->load('newWallet', 'currency');
 
         $user->makeVisible(['phone', 'email']);
         $friends_count = $user->mutual()->get()->count();
