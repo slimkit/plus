@@ -2,6 +2,7 @@ import Api from '@/api/api.js'
 import * as api from '@/api'
 import * as bootApi from '@/api/bootstrappers.js'
 import * as userApi from '@/api/user.js'
+import WebIM from '@/vendor/easemob'
 
 export default {
   /**
@@ -32,6 +33,7 @@ export default {
         { validateStatus: s => (s >= 200 && s < 300) || s === 401 }
       )
       commit('SIGN_OUT')
+      WebIM.conn.close();
     } catch (e) {
       // no condition here
     }
