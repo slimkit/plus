@@ -34,7 +34,8 @@ use Zhiyi\Component\ZhiyiPlus\PlusComponentPc\Models\Navigation;
 use Zhiyi\Plus\Models\User;
 use function Zhiyi\Plus\setting;
 
-function cacheConfig() {
+function cacheConfig()
+{
     return Cache::remember('pc-config', 60, function () {
         $config = [];
 
@@ -58,12 +59,12 @@ function cacheConfig() {
 
         // 环信
         $easemob = setting('user', 'vendor:easemob', []) + [
-                'open' => false,
-                'appKey' => '',
-                'clientId' => '',
-                'clientSecret' => '',
-                'registerType' => 0,
-            ];
+            'open' => false,
+            'appKey' => '',
+            'clientId' => '',
+            'clientSecret' => '',
+            'registerType' => 0,
+        ];
 
         $config['easemob_key'] = $easemob['appKey'] ?? '';
 

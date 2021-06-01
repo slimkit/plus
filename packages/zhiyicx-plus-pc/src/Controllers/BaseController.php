@@ -21,11 +21,11 @@ namespace Zhiyi\Component\ZhiyiPlus\PlusComponentPc\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use function Zhiyi\Component\ZhiyiPlus\PlusComponentPc\api;
+use function Zhiyi\Component\ZhiyiPlus\PlusComponentPc\cacheConfig;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentPc\Models\Navigation;
 use Zhiyi\Plus\Http\Controllers\Controller;
 use Zhiyi\Plus\Models\Comment as CommentModel;
 use Zhiyi\Plus\Models\User;
-use function Zhiyi\Component\ZhiyiPlus\PlusComponentPc\cacheConfig;
 use function Zhiyi\Plus\setting;
 
 class BaseController extends Controller
