@@ -25,6 +25,7 @@ use Zhiyi\Component\ZhiyiPlus\PlusComponentPc\Models\Navigation;
 use Zhiyi\Plus\Http\Controllers\Controller;
 use Zhiyi\Plus\Models\Comment as CommentModel;
 use Zhiyi\Plus\Models\User;
+use function Zhiyi\Component\ZhiyiPlus\PlusComponentPc\cacheConfig;
 use function Zhiyi\Plus\setting;
 
 class BaseController extends Controller
@@ -57,55 +58,7 @@ class BaseController extends Controller
             }
 
             // 站点配置
-            $config = Cache::remember('pc-config', 60, function () {
-                $config = [];
-
-                // 启动信息接口
-                $config['bootstrappers'] = api('GET', '/api/v2/bootstrappers/', []);
-
-                // 删除不需要配置项
-                unset($config['bootstrappers']['registerSettings']['content']);
-
-                // 基本配置
-                $repository = app(\Illuminate\Contracts\Config\Repository::class);
-                $config['common'] = $repository->get('pc');
-                $config['files'] = $repository->get('files');
-                $config['app'] = $repository->get('app');
-
-                // 顶部导航
-                $config['nav'] = Navigation::byPid(0)->byPos(0)->byStatus(1)->orderBy('order_sort')->get();
-
-                // 底部导航
-                $config['nav_bottom'] = Navigation::byPid(0)->byPos(1)->byStatus(1)->get();
-
-                // 环信
-                $easemob = setting('user', 'vendor:easemob', []) + [
-                    'open' => false,
-                    'appKey' => '',
-                    'clientId' => '',
-                    'clientSecret' => '',
-                    'registerType' => 0,
-                ];
-
-                $config['easemob_key'] = $easemob['appKey'] ?? '';
-
-                // 小助手
-                if (isset($config['bootstrappers']['im:helper'])) {
-                    foreach ($config['bootstrappers']['im:helper'] as $key => &$value) {
-                        // 去除自己
-                        if ($value['uid'] == $this->PlusData['TS']['id']) {
-                            unset($config['bootstrappers']['im:helper'][$key]);
-                            continue;
-                        }
-                        $value['name'] = User::where('id', $value['uid'])->value('name');
-                    }
-                }
-
-                // 上传配置
-                $config['files'] = $config['files'] ?: ['upload_max_size' => '102400'];
-
-                return $config;
-            });
+            $config = cacheConfig();
 
             $this->PlusData['config'] = $config;
             // 公共地址

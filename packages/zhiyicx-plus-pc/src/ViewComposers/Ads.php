@@ -20,12 +20,13 @@ namespace Zhiyi\Component\ZhiyiPlus\PlusComponentPc\ViewComposers;
 
 use Illuminate\Support\Facades\Cache;
 use Illuminate\View\View;
+use function Zhiyi\Component\ZhiyiPlus\PlusComponentPc\cacheConfig;
 
 class Ads
 {
     public function compose(View $view)
     {
-        $config = Cache::get('pc-config');
+        $config = cacheConfig();
         // 获取具体广告位内容
         $ads = api('GET', '/api/v2/advertisingspace/'.$config['ads_space'][$view['space']]['id'].'/advertising');
         $view->with('ads', $ads);
