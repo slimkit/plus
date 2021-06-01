@@ -40,7 +40,7 @@ class RevokedPublishNewsTest extends TestCase
     public function testRevokedNews()
     {
         $user = UserModel::factory()->create();
-        $cate = NewsCateModel::factory()->create(););
+        $cate = NewsCateModel::factory()->create();
 
         $news = NewsModel::factory()->create([
             'user_id' => $user->id,
@@ -64,7 +64,7 @@ class RevokedPublishNewsTest extends TestCase
      */
     protected function createTags()
     {
-        $cate = TagCateModel::factory()->create(););
+        $cate = TagCateModel::factory()->create();
         $tags = TagModel::factory(3)->create([
             'tag_category_id' => $cate->id,
         ]);
