@@ -15,8 +15,8 @@
         "docs:build": "vuepress build docs"
     },
     "devDependencies": {
+        "@babel/plugin-proposal-class-properties": "^7.14.5",
         "@babel/core": "^7.15.5",
-        "@babel/plugin-proposal-class-properties": "^7.5.5",
         "@vue/babel-preset-app": "^3.9.2",
         "conventional-changelog-cli": "^2.0.23",
         "cross-env": "^7.0.3",
