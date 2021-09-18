@@ -49,6 +49,7 @@ class WalletCashTest extends TestCase
      * 测试获取提现记录.
      *
      * @return void
+     *
      * @author BS <414606094@qq.com>
      */
     public function testGetCashes()
@@ -75,6 +76,7 @@ class WalletCashTest extends TestCase
      * 测试发起提现.
      *
      * @return void
+     *
      * @author BS <414606094@qq.com>
      */
     public function testCreateCash()
@@ -91,8 +93,9 @@ class WalletCashTest extends TestCase
     /**
      * 断言提现数据基本结构.
      *
-     * @param array $singleData
+     * @param  array  $singleData
      * @return void
+     *
      * @author BS <414606094@qq.com>
      */
     protected function assertOrderData(array $singleData)

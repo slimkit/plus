@@ -28,6 +28,7 @@ class DatabaseSeeder extends Seeder
      * Run the database seeds.
      *
      * @return void
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function run()

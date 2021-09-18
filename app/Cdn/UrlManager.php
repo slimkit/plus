@@ -45,7 +45,8 @@ class UrlManager implements UrlFactoryContract
     /**
      * Create a file URL generator manager instance.
      *
-     * @param \Illuminate\Contracts\Foundation\Application $app
+     * @param  \Illuminate\Contracts\Foundation\Application  $app
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function __construct(ApplicationContract $app)
@@ -56,8 +57,9 @@ class UrlManager implements UrlFactoryContract
     /**
      * Get URL generator.
      *
-     * @param string $driver
+     * @param  string  $driver
      * @return \Zhiyi\Plus\Contracts\Cdn\UrlGenerator
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function generator(string $driver = ''): UrlGeneratorContract
@@ -70,10 +72,11 @@ class UrlManager implements UrlFactoryContract
     /**
      * Make a file url.
      *
-     * @param \Zhiyi\Plus\Models\File $file
-     * @param array $extra
-     * @param string $driver
+     * @param  \Zhiyi\Plus\Models\File  $file
+     * @param  array  $extra
+     * @param  string  $driver
      * @return string
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function make(File $file, array $extra = [], string $driver = ''): string
@@ -90,8 +93,9 @@ class UrlManager implements UrlFactoryContract
     /**
      * Resolve the given generator.
      *
-     * @param string $driver
+     * @param  string  $driver
      * @return \Zhiyi\Plus\Contracts\Cdn\UrlGenerator
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     protected function resolve(string $driver): UrlGeneratorContract
@@ -104,8 +108,9 @@ class UrlManager implements UrlFactoryContract
     /**
      * Get a generator abstract.
      *
-     * @param string $driver
+     * @param  string  $driver
      * @return string
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     protected function getGeneratorAbstract(string $driver): string
@@ -119,6 +124,7 @@ class UrlManager implements UrlFactoryContract
      * Get default file URL generator.
      *
      * @return string
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     protected function getDefaulrGennerator(): string

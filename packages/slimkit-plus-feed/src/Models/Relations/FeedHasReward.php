@@ -36,8 +36,9 @@ trait FeedHasReward
      * Reward a author of feed.
      *
      * @author bs<414606094@qq.com>
-     * @param  mix $user
-     * @param  float $amount
+     *
+     * @param  mix  $user
+     * @param  float  $amount
      * @return mix
      */
     public function reward($user, $amount)
@@ -62,6 +63,7 @@ trait FeedHasReward
      * 打赏总数统计
      *
      * @author bs<414606094@qq.com>
+     *
      * @return mix
      */
     public function rewardCount()

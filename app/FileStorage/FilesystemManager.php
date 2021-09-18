@@ -37,7 +37,9 @@ class FilesystemManager extends Manager
 
     /**
      * Create local driver.
+     *
      * @return \Zhiyi\Plus\FileStorage\Filesystems\FilesystemInterface
+     *
      * @throws \Illuminate\Contracts\Container\BindingResolutionException
      */
     public function createLocalDriver(): Filesystems\FilesystemInterface
@@ -55,7 +57,9 @@ class FilesystemManager extends Manager
 
     /**
      * Create Aliyun OSS filesystem driver.
+     *
      * @return \Zhiyi\Plus\FileStorage\Filesystems\FilesystemInterface
+     *
      * @throws \OSS\Core\OssException
      */
     public function createAliyunOSSDriver(): Filesystems\FilesystemInterface

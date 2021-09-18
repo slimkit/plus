@@ -28,12 +28,14 @@ class CreateTaskValidator extends AbstractValidator
 {
     /**
      * Caching configures.
+     *
      * @var array
      */
     protected $configure;
 
     /**
      * Get the validate rules.
+     *
      * @return array
      */
     public function rules(bool $image = false): array
@@ -60,6 +62,7 @@ class CreateTaskValidator extends AbstractValidator
 
     /**
      * Get the validate error messages.
+     *
      * @return array
      */
     public function messages(): array
@@ -71,6 +74,7 @@ class CreateTaskValidator extends AbstractValidator
 
     /**
      * Get image allow min width.
+     *
      * @return string
      */
     protected function getAllowImageMinWidth(): string
@@ -80,6 +84,7 @@ class CreateTaskValidator extends AbstractValidator
 
     /**
      * Get image allow max width.
+     *
      * @return string
      */
     protected function getAllowImageMaxWidth(): string
@@ -89,6 +94,7 @@ class CreateTaskValidator extends AbstractValidator
 
     /**
      * Get image allow min height.
+     *
      * @return string
      */
     protected function getAllowImageMinHeight(): string
@@ -98,6 +104,7 @@ class CreateTaskValidator extends AbstractValidator
 
     /**
      * Get image allow max height.
+     *
      * @return string
      */
     protected function getAllowImageMaxHeight(): string
@@ -107,6 +114,7 @@ class CreateTaskValidator extends AbstractValidator
 
     /**
      * Get allow min file size.
+     *
      * @return string
      */
     protected function getAllowMinSize(): string
@@ -116,6 +124,7 @@ class CreateTaskValidator extends AbstractValidator
 
     /**
      * Get allow max file size.
+     *
      * @return string
      */
     protected function getAllowMaxSize(): string
@@ -125,6 +134,7 @@ class CreateTaskValidator extends AbstractValidator
 
     /**
      * Get allow mime types.
+     *
      * @return string
      */
     protected function getAllowMimeTypes(): string

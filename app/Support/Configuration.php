@@ -35,7 +35,8 @@ class Configuration
     /**
      * Create basic information.
      *
-     * @param \Illuminate\Contracts\Foundation\Application $app
+     * @param  \Illuminate\Contracts\Foundation\Application  $app
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function __construct(Application $app)
@@ -48,6 +49,7 @@ class Configuration
      * Get vendor configuration.
      *
      * @return \Illuminate\Contracts\Config\Repository
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function getConfiguration(): RepositoryContract
@@ -66,6 +68,7 @@ class Configuration
      * Get the configuration into a primary array, and the application scenario may be overridden in the Repository.
      *
      * @return array
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function getConfigurationBase(): array
@@ -78,9 +81,10 @@ class Configuration
     /**
      * Set configuration save to file.
      *
-     * @param array|string $key
-     * @param mixed $value
+     * @param  array|string  $key
+     * @param  mixed  $value
      * @return \Illuminate\Contracts\Config\Repository
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function set($key, $value = null): RepositoryContract
@@ -97,8 +101,9 @@ class Configuration
     /**
      * Save the custom configuration into the YAML file.
      *
-     * @param RepositoryContract $config
+     * @param  RepositoryContract  $config
      * @return void
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function save(RepositoryContract $config)
@@ -122,10 +127,11 @@ class Configuration
     /**
      * Converts a multidimensional array to a basic array of point divisions.
      *
-     * @param array $target 目标数组
-     * @param string $pre 数组前缀
-     * @param array $org 原始数组
+     * @param  array  $target  目标数组
+     * @param  string  $pre  数组前缀
+     * @param  array  $org  原始数组
      * @return array
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function parse(array $target, string $pre = '', array $org = []): array

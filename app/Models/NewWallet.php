@@ -33,6 +33,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \Zhiyi\Plus\Models\User|null $owner
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|NewWallet newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|NewWallet newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|NewWallet query()
@@ -80,6 +81,7 @@ class NewWallet extends Model
      * The wallet owner.
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function owner(): HasOne

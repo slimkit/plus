@@ -44,12 +44,13 @@ class CommentController extends Controller
     /**
      * 获取评论列表.
      *
-     * @param Request $request
-     * @param Comment $commentModel
-     * @param Carbon $datetime
-     * @param FeedPinned $feedPinned
-     * @param User $user
+     * @param  Request  $request
+     * @param  Comment  $commentModel
+     * @param  Carbon  $datetime
+     * @param  FeedPinned  $feedPinned
+     * @param  User  $user
      * @return mixed
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function show(Request $request, Comment $commentModel, Carbon $datetime, FeedPinned $feedPinned, User $user)
@@ -197,9 +198,11 @@ class CommentController extends Controller
     /**
      * Delete comment.
      *
-     * @param Comment $comment
+     * @param  Comment  $comment
      * @return mixed
+     *
      * @throws Exception
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function delete(Comment $comment)
@@ -255,9 +258,10 @@ class CommentController extends Controller
 
     /**
      * 同意评论置顶申请.
-     * @param Comment $comment
-     * @param FeedPinned $pinned [description]
-     * @param Carbon $datetime [description]
+     *
+     * @param  Comment  $comment
+     * @param  FeedPinned  $pinned  [description]
+     * @param  Carbon  $datetime  [description]
      * @return JsonResponse [type]               [description]
      */
     public function accept(Comment $comment, FeedPinned $pinned, Carbon $datetime)
@@ -325,8 +329,10 @@ class CommentController extends Controller
 
     /**
      * 驳回评论置顶.
-     * @param FeedPinned $pinned
+     *
+     * @param  FeedPinned  $pinned
      * @return JsonResponse
+     *
      * @throws Exception
      */
     public function reject(FeedPinned $pinned)

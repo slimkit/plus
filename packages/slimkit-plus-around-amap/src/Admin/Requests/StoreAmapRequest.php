@@ -26,6 +26,7 @@ class StoreAmapRequest extends Request
      * Get the validation rules that apply to the request.
      *
      * @return array
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function rules(): array
@@ -41,6 +42,7 @@ class StoreAmapRequest extends Request
      * Get custom messages for validator errors.
      *
      * @return array
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function messages(): array

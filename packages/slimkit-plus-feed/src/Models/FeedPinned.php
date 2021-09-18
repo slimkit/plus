@@ -44,6 +44,7 @@ class FeedPinned extends Model
      * Has user.
      *
      * @return HasOne
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function user()
@@ -55,6 +56,7 @@ class FeedPinned extends Model
      *  Has feed.
      *
      * @return HasOne
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function feed()
@@ -71,6 +73,7 @@ class FeedPinned extends Model
      * Has feed comment.
      *
      * @return HasOne
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function comment()

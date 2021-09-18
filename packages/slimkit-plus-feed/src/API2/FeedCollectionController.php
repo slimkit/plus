@@ -31,10 +31,11 @@ class FeedCollectionController extends Controller
     /**
      * 收藏动态.
      *
-     * @param \Illuminate\Http\Request $request
-     * @param \Illuminate\Contracts\Routing\ResponseFactory $response
-     * @param \Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\Feed $feed
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Contracts\Routing\ResponseFactory  $response
+     * @param  \Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\Feed  $feed
      * @return mixed
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function store(Request $request, ResponseContract $response, FeedModel $feed)
@@ -53,10 +54,11 @@ class FeedCollectionController extends Controller
     /**
      * 取消收藏.
      *
-     * @param \Illuminate\Http\Request $request
-     * @param \Illuminate\Contracts\Routing\ResponseFactory $response
-     * @param \Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\Feed $feed
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Contracts\Routing\ResponseFactory  $response
+     * @param  \Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\Feed  $feed
      * @return mixed
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function destroy(Request $request, ResponseContract $response, FeedModel $feed)

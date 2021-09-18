@@ -40,6 +40,7 @@ trait PaidNodeHasUser
      * Paid node users.
      *
      * @return BelongsToMany
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function users()
@@ -52,6 +53,7 @@ trait PaidNodeHasUser
      * the author of paid.
      *
      * @return hasOne
+     *
      * @author bs<414606094@qq.com>
      */
     public function user()
@@ -64,8 +66,8 @@ trait PaidNodeHasUser
      *
      * @param  int  $user  User ID
      * @param  bool  $filter
-     *
      * @return bool
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function paid(int $user, bool $filter = true): bool

@@ -30,10 +30,11 @@ class ReportController extends Controller
     /**
      * 举报一条动态.
      *
-     * @param Request $request
-     * @param FeedModel $feed
-     * @param ReportModel $reportModel
+     * @param  Request  $request
+     * @param  FeedModel  $feed
+     * @param  ReportModel  $reportModel
      * @return mixed
+     *
      * @author BS <414606094@qq.com>
      */
     public function feed(Request $request, FeedModel $feed, ReportModel $reportModel)

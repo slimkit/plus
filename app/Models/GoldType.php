@@ -33,6 +33,7 @@ use Zhiyi\Plus\CacheNames;
  * @property int $status 状态:1-开启 0-关闭
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|GoldType newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|GoldType newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|GoldType query()
@@ -54,7 +55,6 @@ class GoldType extends Model
      * 获取当前使用的积分名称.
      *
      * @param  null  $field
-     *
      * @return mixed
      */
     public static function current($field = null)

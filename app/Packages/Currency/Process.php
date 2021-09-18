@@ -42,9 +42,10 @@ class Process
      *
      * @param $user
      * @param  bool  $throw
-     *
      * @return UserModel | bool
+     *
      * @throws \Exception
+     *
      * @author BS <414606094@qq.com>
      */
     public function checkUser($user, $throw = true)
@@ -68,8 +69,8 @@ class Process
      * 检测用户货币模型，防止后续操作出现错误.
      *
      * @param  UserModel  $user
-     *
      * @return UserModel
+     *
      * @author BS <414606094@qq.com>
      */
     protected function checkCurrency(UserModel $user): UserModel

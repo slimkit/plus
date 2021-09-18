@@ -32,9 +32,10 @@ class UserCertificationController extends Controller
     /**
      * Get a user certification.
      *
-     * @param \Illuminate\Http\Request $request [description]
-     * @param \Illuminate\Contracts\Routing\ResponseFactory $response [description]
+     * @param  \Illuminate\Http\Request  $request  [description]
+     * @param  \Illuminate\Contracts\Routing\ResponseFactory  $response  [description]
      * @return mixed
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function show(Request $request, ResponseFactoryContract $response)
@@ -61,11 +62,12 @@ class UserCertificationController extends Controller
     /**
      * Send certification.
      *
-     * @param \Zhiyi\Plus\Http\Requests\API2\UserCertification $request
-     * @param \Illuminate\Contracts\Routing\ResponseFactory $response
-     * @param \Zhiyi\Plus\Models\Certification $certification
-     * @param \Zhiyi\Plus\Models\FileWith $fileWithModel
+     * @param  \Zhiyi\Plus\Http\Requests\API2\UserCertification  $request
+     * @param  \Illuminate\Contracts\Routing\ResponseFactory  $response
+     * @param  \Zhiyi\Plus\Models\Certification  $certification
+     * @param  \Zhiyi\Plus\Models\FileWith  $fileWithModel
      * @return mixed
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function store(
@@ -103,10 +105,11 @@ class UserCertificationController extends Controller
     /**
      * Update certification.
      *
-     * @param \Zhiyi\Plus\Http\Requests\API2\UserCertification $request
-     * @param \Illuminate\Contracts\Routing\ResponseFactory $response
-     * @param \Zhiyi\Plus\Models\FileWith $fileWithModel
+     * @param  \Zhiyi\Plus\Http\Requests\API2\UserCertification  $request
+     * @param  \Illuminate\Contracts\Routing\ResponseFactory  $response
+     * @param  \Zhiyi\Plus\Models\FileWith  $fileWithModel
      * @return mixed
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function update(
@@ -155,9 +158,10 @@ class UserCertificationController extends Controller
     /**
      * File not with file models.
      *
-     * @param \Illuminate\Http\Request $request
-     * @param \Zhiyi\Plus\Models\FileWith $fileWithModel
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \Zhiyi\Plus\Models\FileWith  $fileWithModel
      * @return \Illuminate\Support\Collection
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     protected function findNotWithFileModels(Request $request, FileWithModel $fileWithModel): Collection

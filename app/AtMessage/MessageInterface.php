@@ -26,9 +26,10 @@ interface MessageInterface
 {
     /**
      * Send at message.
-     * @param \Zhiyi\Plus\Models\User $sender
-     * @param \Zhiyi\Plus\Models\User $user
-     * @param mixed $resource
+     *
+     * @param  \Zhiyi\Plus\Models\User  $sender
+     * @param  \Zhiyi\Plus\Models\User  $user
+     * @param  mixed  $resource
      * @return void
      */
     public function send(UserModel $sender, UserModel $user, $resource): void;

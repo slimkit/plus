@@ -31,9 +31,10 @@ class ResetPasswordController extends Controller
     /**
      * Reset password.
      *
-     * @param \Illuminate\Http\Request $request
-     * @param \Illuminate\Contracts\Routing\ResponseFactory $response
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Contracts\Routing\ResponseFactory  $response
      * @return mixed
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function reset(Request $request, ResponseFactoryContract $response)
@@ -67,6 +68,7 @@ class ResetPasswordController extends Controller
      * Get reset validateion rules.
      *
      * @return array
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     protected function resetRules(): array
@@ -81,6 +83,7 @@ class ResetPasswordController extends Controller
      * Get reset validation error messages.
      *
      * @return array
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     protected function resetValidationErrorMessages(): array
@@ -99,7 +102,8 @@ class ResetPasswordController extends Controller
      * Set new password.
      *
      * @author bs<414606094@qq.com>
-     * @param  Request $request
+     *
+     * @param  Request  $request
      * @param  User  $user
      */
     public function setPassword(Request $request, UserModel $user)
@@ -117,11 +121,12 @@ class ResetPasswordController extends Controller
     /**
      * Retrueve user password.
      *
-     * @param \Illuminate\Http\Request $request
-     * @param \Illuminate\Contracts\Routing\ResponseFactory $response
-     * @param \Zhiyi\Plus\Models\VerificationCode $verificationCodeModel
-     * @param \Zhiyi\Plus\Models\User $userModel
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Contracts\Routing\ResponseFactory  $response
+     * @param  \Zhiyi\Plus\Models\VerificationCode  $verificationCodeModel
+     * @param  \Zhiyi\Plus\Models\User  $userModel
      * @return mixed
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function retrieve(Request $request,

@@ -30,6 +30,7 @@ class Weibo extends Controller
 {
     /**
      * Get configure.
+     *
      * @return \Illuminate\Http\JsonResponse
      */
     public function getConfigure(): JsonResponse
@@ -44,7 +45,8 @@ class Weibo extends Controller
 
     /**
      * set configure.
-     * @param \Zhiyi\Plus\Admin\Requests\SetWeiboConfigureRequest $request
+     *
+     * @param  \Zhiyi\Plus\Admin\Requests\SetWeiboConfigureRequest  $request
      * @return \Illuminate\Http\Response
      */
     public function setConfigure(SetWeiboConfigureRequest $request)

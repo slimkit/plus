@@ -43,9 +43,10 @@ class FileMeta extends FileMetaAbstract
 
     /**
      * Create a file meta.
-     * @param \OSS\OssClient $oss
-     * @param \Zhiyi\Plus\FileStorage\ResourceInterface $resource
-     * @param string $bucket
+     *
+     * @param  \OSS\OssClient  $oss
+     * @param  \Zhiyi\Plus\FileStorage\ResourceInterface  $resource
+     * @param  string  $bucket
      */
     public function __construct(OssClient $oss, ResourceInterface $resource, string $bucket)
     {
@@ -57,6 +58,7 @@ class FileMeta extends FileMetaAbstract
 
     /**
      * Has the file is image.
+     *
      * @return bool
      */
     public function hasImage(): bool
@@ -68,6 +70,7 @@ class FileMeta extends FileMetaAbstract
 
     /**
      * Get image file dimension.
+     *
      * @return \Zhiyi\Plus\FileStorage\ImageDimensionInterface
      */
     public function getImageDimension(): ImageDimensionInterface
@@ -88,6 +91,7 @@ class FileMeta extends FileMetaAbstract
 
     /**
      * Get the file size (Byte).
+     *
      * @return int
      */
     public function getSize(): int
@@ -99,6 +103,7 @@ class FileMeta extends FileMetaAbstract
 
     /**
      * Get the resource mime type.
+     *
      * @return string
      */
     public function getMimeType(): string
@@ -108,6 +113,7 @@ class FileMeta extends FileMetaAbstract
 
     /**
      * Get the storage vendor name.
+     *
      * @return string
      */
     public function getVendorName(): string
@@ -117,7 +123,8 @@ class FileMeta extends FileMetaAbstract
 
     /**
      * Get the resource pay info.
-     * @param \Zhiyi\Plus\Models\User $user
+     *
+     * @param  \Zhiyi\Plus\Models\User  $user
      * @return \Zhiyi\Plus\FileStorage\Pay\PayInterface
      */
     public function getPay(User $user): ?PayInterface
@@ -127,6 +134,7 @@ class FileMeta extends FileMetaAbstract
 
     /**
      * Get the resource url.
+     *
      * @return string
      */
     public function url(): string
@@ -139,6 +147,7 @@ class FileMeta extends FileMetaAbstract
 
     /**
      * Custom using MIME types.
+     *
      * @return null\Closure
      */
     protected function useCustomTypes(): ?Closure

@@ -40,8 +40,9 @@ class AliyunOssFilesystem implements FilesystemInterface
 
     /**
      * Create the Aliyun OSS filesystem instance.
-     * @param \OSS\OssClient $oss
-     * @param array $configure
+     *
+     * @param  \OSS\OssClient  $oss
+     * @param  array  $configure
      */
     public function __construct(OssClient $oss, OssClient $insideOss, array $configure)
     {
@@ -52,8 +53,9 @@ class AliyunOssFilesystem implements FilesystemInterface
 
     /**
      * Create upload task.
-     * @param \Illuminate\Http\Request $request
-     * @param \Zhiyi\Plus\FileStorage\ResourceInterface $resource
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \Zhiyi\Plus\FileStorage\ResourceInterface  $resource
      * @return \Zhiyi\Plus\FileStorage\TaskInterface
      */
     public function createTask(Request $request, ResourceInterface $resource): TaskInterface
@@ -94,7 +96,8 @@ class AliyunOssFilesystem implements FilesystemInterface
 
     /**
      * Get file meta.
-     * @param \Zhiyi\Plus\FileStorage\ResourceInterface $resource
+     *
+     * @param  \Zhiyi\Plus\FileStorage\ResourceInterface  $resource
      * @return \Zhiyi\Plus\FileStorage\FileMetaInterface
      */
     public function meta(ResourceInterface $resource): FileMetaInterface
@@ -110,8 +113,9 @@ class AliyunOssFilesystem implements FilesystemInterface
 
     /**
      * Get file response.
-     * @param \Zhiyi\Plus\FileStorage\ResourceInterface $resource
-     * @param string|null $rule
+     *
+     * @param  \Zhiyi\Plus\FileStorage\ResourceInterface  $resource
+     * @param  string|null  $rule
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function response(ResourceInterface $resource, ?string $rule = null): Response
@@ -131,7 +135,8 @@ class AliyunOssFilesystem implements FilesystemInterface
 
     /**
      * Delete file.
-     * @param string $path
+     *
+     * @param  string  $path
      * @return bool
      */
     public function delete(string $path): bool
@@ -143,8 +148,9 @@ class AliyunOssFilesystem implements FilesystemInterface
 
     /**
      * Put a file.
-     * @param string $path
-     * @param mixed $contents
+     *
+     * @param  string  $path
+     * @param  mixed  $contents
      * @return bool
      */
     public function put(string $path, $contents): bool

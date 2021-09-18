@@ -67,10 +67,11 @@ class HomeController extends Controller
     /**
      * Validate and return the file database model instance.
      *
-     * @param \Zhiyi\Plus\Models\File $fileModel
-     * @param \Illuminate\Http\UploadedFile $file
-     * @param callable $call
+     * @param  \Zhiyi\Plus\Models\File  $fileModel
+     * @param  \Illuminate\Http\UploadedFile  $file
+     * @param  callable  $call
      * @return \Zhiyi\Plus\Models\File
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     protected function validateFileInDatabase(FileModel $fileModel, UploadedFile $file, callable $call): FileModel
@@ -85,10 +86,11 @@ class HomeController extends Controller
     /**
      * 解决数据模型非实例.
      *
-     * @param \Zhiyi\Plus\Models\FileWith $fileWith
-     * @param \Zhiyi\Plus\Models\User $user
-     * @param \Zhiyi\Plus\Models\File $file
+     * @param  \Zhiyi\Plus\Models\FileWith  $fileWith
+     * @param  \Zhiyi\Plus\Models\User  $user
+     * @param  \Zhiyi\Plus\Models\File  $file
      * @return \Zhiyi\Plus\Models\FileWith
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     protected function resolveFileWith(FileWithModel $fileWith, UserModel $user, FileModel $file): FileWithModel
@@ -130,8 +132,9 @@ class HomeController extends Controller
      * get the list of client versions.
      *
      * @author bs<414606094@qq.com>
-     * @param  Illuminate\Http\Request $request
-     * @param  ClientVersion $versionModel
+     *
+     * @param  Illuminate\Http\Request  $request
+     * @param  ClientVersion  $versionModel
      * @return mixed
      */
     public function index(Request $request, ClientVersion $clientVersionModel)
@@ -153,8 +156,9 @@ class HomeController extends Controller
      * create client version.
      *
      * @author bs<414606094@qq.com>
-     * @param  StoreClientVersion $request
-     * @param  ClientVersion      $clientVersionModel
+     *
+     * @param  StoreClientVersion  $request
+     * @param  ClientVersion  $clientVersionModel
      * @return mixed
      */
     public function store(StoreClientVersion $request, ClientVersion $clientVersionModel, FileWithModel $fileWith)
@@ -183,7 +187,8 @@ class HomeController extends Controller
      * delete a client version.
      *
      * @author bs<414606094@qq.com>
-     * @param  ClientVersion $clientVersion
+     *
+     * @param  ClientVersion  $clientVersion
      * @return mixed
      */
     public function delete(ClientVersion $clientVersion)
@@ -195,7 +200,8 @@ class HomeController extends Controller
 
     /**
      * 扩展开启/关闭状态
-     * @param  Request $request [description]
+     *
+     * @param  Request  $request  [description]
      * @return [type]           [description]
      */
     public function status()
@@ -207,7 +213,8 @@ class HomeController extends Controller
 
     /**
      * 更新扩展开关状态
-     * @param  Request $request [description]
+     *
+     * @param  Request  $request  [description]
      * @return [type]           [description]
      */
     public function update(Request $request, Configuration $configuration)

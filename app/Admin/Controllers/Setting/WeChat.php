@@ -30,6 +30,7 @@ class WeChat extends Controller
 {
     /**
      * Get configure.
+     *
      * @return \Illuminate\Http\JsonResponse
      */
     public function getConfigure(): JsonResponse
@@ -44,7 +45,8 @@ class WeChat extends Controller
 
     /**
      * set configure.
-     * @param \Zhiyi\Plus\Admin\Requests\SetWeChatConfigureRequest $request
+     *
+     * @param  \Zhiyi\Plus\Admin\Requests\SetWeChatConfigureRequest  $request
      * @return \Illuminate\Http\Response
      */
     public function setConfigure(SetWeChatConfigureRequest $request)

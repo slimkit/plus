@@ -41,8 +41,9 @@ class Markdown
     /**
      * Create the Markdown util instance.
      *
-     * @param \Parsedown $parsedown
-     * @param \League\HTMLToMarkdown\HtmlConverter $htmlConverter
+     * @param  \Parsedown  $parsedown
+     * @param  \League\HTMLToMarkdown\HtmlConverter  $htmlConverter
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function __construct(Parsedown $parsedown, HtmlConverter $htmlConverter)
@@ -54,8 +55,9 @@ class Markdown
     /**
      * Markdown to html.
      *
-     * @param string $markdown
+     * @param  string  $markdown
      * @return string
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function toHtml(string $markdown): string
@@ -66,8 +68,9 @@ class Markdown
     /**
      * Html to markdown.
      *
-     * @param string $html
+     * @param  string  $html
      * @return string
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function toMarkdown(string $html): string
@@ -78,8 +81,9 @@ class Markdown
     /**
      * Get safety markdown string.
      *
-     * @param string $markdown
+     * @param  string  $markdown
      * @return string
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function safetyMarkdown(string $markdown): string
@@ -93,8 +97,9 @@ class Markdown
     /**
      * Get safety html string.
      *
-     * @param string $html
+     * @param  string  $html
      * @return string
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function safetyHtml(string $html): string
@@ -105,8 +110,9 @@ class Markdown
     /**
      * Filter html.
      *
-     * @param string $html
+     * @param  string  $html
      * @return string
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function filterHtml(string $html): string

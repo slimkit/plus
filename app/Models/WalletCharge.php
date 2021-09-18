@@ -42,6 +42,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property \Illuminate\Support\Carbon|null $deleted_at
  * @property-read \Zhiyi\Plus\Models\User|null $user
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|WalletCharge newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|WalletCharge newQuery()
  * @method static \Illuminate\Database\Query\Builder|WalletCharge onlyTrashed()
@@ -73,6 +74,7 @@ class WalletCharge extends Model
      * User.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function user()
