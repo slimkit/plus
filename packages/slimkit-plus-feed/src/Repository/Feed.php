@@ -65,8 +65,8 @@ class Feed
      *
      * @param  int  $id
      * @param  array  $columns
-     *
      * @return FeedModel
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function find($id, $columns = ['*'])
@@ -82,6 +82,7 @@ class Feed
      * Feed images.
      *
      * @return Collection|static[]
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function images()
@@ -108,6 +109,7 @@ class Feed
      * preview likes.
      *
      * @return FeedModel
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function previewLike()
@@ -133,8 +135,8 @@ class Feed
      * Format feed data.
      *
      * @param  int  $user
-     *
      * @return FeedModel
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function format(int $user = 0): FeedModel
@@ -184,8 +186,8 @@ class Feed
      * Set feed model.
      *
      * @param  FeedModel  $model
-     *
      * @return Feed
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function setModel(FeedModel $model)
@@ -204,6 +206,7 @@ class Feed
      * Ask the feed list of comments data, give priority to return to the top comments.
      *
      * @return FeedModel
+     *
      * @author bs<414606094@qq.com>
      */
     public function previewComments()

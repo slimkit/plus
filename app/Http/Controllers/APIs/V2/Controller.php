@@ -32,9 +32,10 @@ class Controller extends BaseController
     /**
      * The app function alise.
      *
-     * @param string|null $abstract
-     * @param array $parameters
+     * @param  string|null  $abstract
+     * @param  array  $parameters
      * @return mixed|\Illuminate\Foundation\Application
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     protected function app($abstract = null, array $parameters = [])
@@ -45,10 +46,11 @@ class Controller extends BaseController
     /**
      * The response function alise.
      *
-     * @param string $content
-     * @param int $status
-     * @param array $headers
+     * @param  string  $content
+     * @param  int  $status
+     * @param  array  $headers
      * @return \Symfony\Component\HttpFoundation\Response|\Illuminate\Contracts\Routing\ResponseFactory
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     protected function response(...$arguments)
@@ -59,9 +61,10 @@ class Controller extends BaseController
     /**
      * The request function alise.
      *
-     * @param array|string $key
-     * @param mixed $default
+     * @param  array|string  $key
+     * @param  mixed  $default
      * @return \Illuminate\Http\Request|string|array
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     protected function request($key = null, $default = null)

@@ -36,9 +36,10 @@ class MusicCommentController extends Controller
      * 添加音乐评论.
      *
      * @author bs<414606094@qq.com>
-     * @param  Request $request
-     * @param  Music   $music
-     * @param  Comment $comment
+     *
+     * @param  Request  $request
+     * @param  Music  $music
+     * @param  Comment  $comment
      * @return json
      */
     public function store(Request $request, Music $music, Comment $comment)
@@ -77,8 +78,9 @@ class MusicCommentController extends Controller
      * 音乐评论列表.
      *
      * @author bs<414606094@qq.com>
-     * @param  Request $request
-     * @param  Music   $music
+     *
+     * @param  Request  $request
+     * @param  Music  $music
      * @return json
      */
     public function list(Request $request, Music $music)
@@ -98,9 +100,10 @@ class MusicCommentController extends Controller
      * 删除音乐评论.
      *
      * @author bs<414606094@qq.com>
-     * @param  Request $request
-     * @param  Music   $music
-     * @param  Comment $comment
+     *
+     * @param  Request  $request
+     * @param  Music  $music
+     * @param  Comment  $comment
      * @return json
      */
     public function delete(Request $request, Music $music, Comment $comment)
@@ -126,9 +129,10 @@ class MusicCommentController extends Controller
      * 删除专辑评论.
      *
      * @author bs<414606094@qq.com>
-     * @param  Request      $request
-     * @param  MusicSpecial $special
-     * @param  Comment      $comment
+     *
+     * @param  Request  $request
+     * @param  MusicSpecial  $special
+     * @param  Comment  $comment
      * @return json
      */
     public function specialDelete(Request $request, MusicSpecial $special, Comment $comment)
@@ -151,8 +155,9 @@ class MusicCommentController extends Controller
      * 专辑评论列表.
      *
      * @author bs<414606094@qq.com>
-     * @param  Request      $request
-     * @param  MusicSpecial $special
+     *
+     * @param  Request  $request
+     * @param  MusicSpecial  $special
      * @return json
      */
     public function specialList(Request $request, MusicSpecial $special)
@@ -176,9 +181,10 @@ class MusicCommentController extends Controller
      * 添加专辑评论.
      *
      * @author bs<414606094@qq.com>
-     * @param  Request      $request
-     * @param  MusicSpecial $special
-     * @param  Comment      $comment
+     *
+     * @param  Request  $request
+     * @param  MusicSpecial  $special
+     * @param  Comment  $comment
      * @return json
      */
     public function specialStore(Request $request, MusicSpecial $special, Comment $comment)

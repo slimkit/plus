@@ -28,8 +28,8 @@ class Topic
     /**
      * Check the topic can be operated by the user.
      *
-     * @param \Zhiyi\Plus\Models\User $user
-     * @param \Zhiyi\Plus\Models\FeedTopic $topic
+     * @param  \Zhiyi\Plus\Models\User  $user
+     * @param  \Zhiyi\Plus\Models\FeedTopic  $topic
      * @return bool
      */
     public function update(UserModel $user, FeedTopicModel $topic): bool

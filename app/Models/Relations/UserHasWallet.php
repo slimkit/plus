@@ -29,6 +29,7 @@ trait UserHasWallet
      * Bootstrap the trait.
      *
      * @return void
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public static function bootUserHasWallet()
@@ -55,6 +56,7 @@ trait UserHasWallet
      * User wallet.
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function wallet(): HasOne

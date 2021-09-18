@@ -30,6 +30,7 @@ class StoreContribute extends FormRequest
      * Store news contribute authorize.
      *
      * @return bool
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function authorize(): bool
@@ -53,6 +54,7 @@ class StoreContribute extends FormRequest
      * Get the validate rules.
      *
      * @return array
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function rules(): array
@@ -72,6 +74,7 @@ class StoreContribute extends FormRequest
      * Get the validate messages.
      *
      * @return array
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function messages(): array

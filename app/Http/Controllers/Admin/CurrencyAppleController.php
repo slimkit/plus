@@ -31,6 +31,7 @@ class CurrencyAppleController extends Controller
      * 获取苹果IAP设置.
      *
      * @return mixed
+     *
      * @author BS <414606094@qq.com>
      */
     public function getConfig()
@@ -44,8 +45,9 @@ class CurrencyAppleController extends Controller
     /**
      * 保存IAP配置.
      *
-     * @param Request $request
-     * @param Repository $config
+     * @param  Request  $request
+     * @param  Repository  $config
+     *
      * @author BS <414606094@qq.com>
      */
     public function setConfig(Request $request, Configuration $configuration)
@@ -63,8 +65,9 @@ class CurrencyAppleController extends Controller
     /**
      * 获取苹果商品列表.
      *
-     * @param CommonConfig $configModel
+     * @param  CommonConfig  $configModel
      * @return mixed
+     *
      * @author BS <414606094@qq.com>
      */
     public function getProducts(CommonConfig $configModel)
@@ -77,7 +80,8 @@ class CurrencyAppleController extends Controller
     /**
      * 添加商品.
      *
-     * @param Request $request
+     * @param  Request  $request
+     *
      * @author BS <414606094@qq.com>
      */
     public function addProduct(Request $request, CommonConfig $configModel)
@@ -106,9 +110,10 @@ class CurrencyAppleController extends Controller
     /**
      * 删除商品.
      *
-     * @param Request $request
-     * @param CommonConfig $configModel
+     * @param  Request  $request
+     * @param  CommonConfig  $configModel
      * @return mixed
+     *
      * @author BS <414606094@qq.com>
      */
     public function delProduct(Request $request, CommonConfig $configModel)

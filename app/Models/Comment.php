@@ -47,6 +47,7 @@ use Illuminate\Database\Eloquent\Relations\MorphTo;
  * @property-read int|null $reports_count
  * @property-read \Zhiyi\Plus\Models\User $target
  * @property-read \Zhiyi\Plus\Models\User $user
+ *
  * @method static Builder|Comment newModelQuery()
  * @method static Builder|Comment newQuery()
  * @method static Builder|Comment query()
@@ -84,6 +85,7 @@ class Comment extends Model
      * Has commentable.
      *
      * @return MorphTo
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function commentable()
@@ -95,6 +97,7 @@ class Comment extends Model
      * Has a user.
      *
      * @return BelongsTo
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function user()
@@ -109,6 +112,7 @@ class Comment extends Model
      * @Author   Wayne
      * @DateTime 2018-04-14
      * @Email    qiaobin@zhiyicx.com
+     *
      * @return BelongsTo
      */
     public function target()
@@ -127,6 +131,7 @@ class Comment extends Model
      * @Author   Wayne
      * @DateTime 2018-04-14
      * @Email    qiaobin@zhiyicx.com
+     *
      * @return BelongsTo
      */
     public function reply()
@@ -138,6 +143,7 @@ class Comment extends Model
      * 被举报记录.
      *
      * @return MorphMany
+     *
      * @author BS <414606094@qq.com>
      */
     public function reports()

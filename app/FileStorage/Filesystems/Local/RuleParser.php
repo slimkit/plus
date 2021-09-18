@@ -24,13 +24,15 @@ class RuleParser
 {
     /**
      * Cacheing the rules.
+     *
      * @var array
      */
     protected $rule = [];
 
     /**
      * Create a new rule.
-     * @param null|string $rule
+     *
+     * @param  null|string  $rule
      */
     public function __construct(?string $rule = null)
     {
@@ -41,7 +43,8 @@ class RuleParser
 
     /**
      * Parse a rule.
-     * @param null|string $rule
+     *
+     * @param  null|string  $rule
      * @return void
      */
     protected function parse(?string $rule): void
@@ -59,8 +62,9 @@ class RuleParser
 
     /**
      * Get rule.
-     * @param string $key
-     * @param mixed $default
+     *
+     * @param  string  $key
+     * @param  mixed  $default
      * @return mixed
      */
     public function getRule(string $key, $default)
@@ -75,6 +79,7 @@ class RuleParser
 
     /**
      * Get quality.
+     *
      * @return int
      */
     public function getQuality(): int
@@ -84,6 +89,7 @@ class RuleParser
 
     /**
      * Get blur.
+     *
      * @return int
      */
     public function getBlur(): int
@@ -97,6 +103,7 @@ class RuleParser
 
     /**
      * Get width.
+     *
      * @return null|float
      */
     public function getWidth(): ?float
@@ -108,6 +115,7 @@ class RuleParser
 
     /**
      * Get height.
+     *
      * @return null|float
      */
     public function getHeight(): ?float
@@ -119,6 +127,7 @@ class RuleParser
 
     /**
      * Get cacheing filename.
+     *
      * @return string
      */
     public function getFilename(): string

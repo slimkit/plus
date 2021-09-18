@@ -37,8 +37,9 @@ class UserController extends Controller
     /**
      * 获取用户列表数据.
      *
-     * @param Request $request
+     * @param  Request  $request
      * @return mixed
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function users(Request $request)
@@ -154,7 +155,8 @@ class UserController extends Controller
 
     /**
      * 设置注册时关注.
-     * @param  Request $request [description]
+     *
+     * @param  Request  $request  [description]
      * @return [type]           [description]
      */
     public function handleFamous(Request $request, Famous $famous)
@@ -180,7 +182,8 @@ class UserController extends Controller
 
     /**
      * 取消注册时关注.
-     * @param  Request $request [description]
+     *
+     * @param  Request  $request  [description]
      * @return [type]           [description]
      */
     public function handleUnFamous(User $user, Famous $famous)
@@ -272,8 +275,8 @@ class UserController extends Controller
     }
 
     /**
-     * @param Request $request
-     * @param User $user
+     * @param  Request  $request
+     * @param  User  $user
      * @return mixed
      */
     public function update(Request $request, User $user)
@@ -348,7 +351,7 @@ class UserController extends Controller
     }
 
     /**
-     * @param Request $request
+     * @param  Request  $request
      * @return mixed
      */
     public function store(Request $request)
@@ -398,8 +401,9 @@ class UserController extends Controller
     /**
      * 删除用户.
      *
-     * @param User $user
+     * @param  User  $user
      * @return mixed
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function deleteUser(Request $request, User $user)
@@ -418,8 +422,9 @@ class UserController extends Controller
     /**
      * 获取用户资料.
      *
-     * @param User $user
+     * @param  User  $user
      * @return mixed
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function showUser(Request $request, User $user)
@@ -447,6 +452,7 @@ class UserController extends Controller
      * 获取用户信息设置.
      *
      * @return mixed
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function showSetting()
@@ -462,8 +468,9 @@ class UserController extends Controller
     /**
      * 储存用户基本设置.
      *
-     * @param Request $request
+     * @param  Request  $request
      * @return mixed
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function storeSetting(Request $request)
@@ -489,7 +496,8 @@ class UserController extends Controller
 
     /**
      * 增加推荐用户.
-     * @param  Request $request [description]
+     *
+     * @param  Request  $request  [description]
      * @return [type]           [description]
      */
     public function handleRecommend(Request $request, UserRecommended $recommend)
@@ -508,8 +516,9 @@ class UserController extends Controller
 
     /**
      * 取消用户推荐.
-     * @param  Request $request [description]
-     * @param  User    $user    [description]
+     *
+     * @param  Request  $request  [description]
+     * @param  User  $user  [description]
      * @return [type]           [description]
      */
     public function handleUnRecommend(User $user, UserRecommended $recommend)
@@ -526,7 +535,8 @@ class UserController extends Controller
 
     /**
      * 注册配置，暂时存放于配置文件.
-     * @param  Request $request [description]
+     *
+     * @param  Request  $request  [description]
      * @return [type]           [description]
      */
     public function updateRegisterSetting(Request $request)
@@ -544,6 +554,7 @@ class UserController extends Controller
 
     /**
      * 获取注册配置.
+     *
      * @return [type] [description]
      */
     public function getRegisterSetting()

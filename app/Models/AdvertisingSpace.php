@@ -37,6 +37,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \Illuminate\Database\Eloquent\Collection|\Zhiyi\Plus\Models\Advertising[] $advertising
  * @property-read int|null $advertising_count
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|AdvertisingSpace newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|AdvertisingSpace newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|AdvertisingSpace query()

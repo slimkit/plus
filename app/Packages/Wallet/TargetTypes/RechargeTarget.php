@@ -38,6 +38,7 @@ class RechargeTarget extends Target
      * Handle.
      *
      * @return mixed
+     *
      * @author BS <414606094@qq.com>
      */
     public function handle(): bool
@@ -67,6 +68,7 @@ class RechargeTarget extends Target
      * 完成后的通知操作.
      *
      * @return void
+     *
      * @author BS <414606094@qq.com>
      */
     protected function sendNotification()
@@ -78,6 +80,7 @@ class RechargeTarget extends Target
      * 初始化钱包.
      *
      * @return void
+     *
      * @author BS <414606094@qq.com>
      */
     protected function initWallet()

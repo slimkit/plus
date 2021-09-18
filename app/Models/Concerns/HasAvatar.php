@@ -35,6 +35,7 @@ trait HasAvatar
      * Get avatar trait.
      *
      * @return string|int
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     abstract public function getAvatarKey(): string;
@@ -43,6 +44,7 @@ trait HasAvatar
      * avatar extensions.
      *
      * @return array
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function getAvatarExtensions(): array
@@ -54,6 +56,7 @@ trait HasAvatar
      * Avatar prefix.
      *
      * @return string
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function getAvatarPrefix(): string
@@ -64,9 +67,10 @@ trait HasAvatar
     /**
      * Get avatar,.
      *
-     * @param int $size
-     * @param string $prefix
+     * @param  int  $size
+     * @param  string  $prefix
      * @return mixed
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function avatar(int $size = 0, string $prefix = '')
@@ -86,8 +90,9 @@ trait HasAvatar
     /**
      * Get avatar file path.
      *
-     * @param string $prefix
+     * @param  string  $prefix
      * @return string|null
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function avatarPath(string $prefix = '')
@@ -109,8 +114,9 @@ trait HasAvatar
     /**
      * Store avatar.
      *
-     * @param UploadedFile $avatar
+     * @param  UploadedFile  $avatar
      * @return string|false
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function storeAvatar(UploadedFile $avatar, string $prefix = '')
@@ -146,6 +152,7 @@ trait HasAvatar
      * make avatar file path.
      *
      * @return string
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     protected function makeAvatarPath(string $prefix = ''): string
@@ -169,6 +176,7 @@ trait HasAvatar
      *  Get filesystem.
      *
      * @return \Illuminate\Filesystem\FilesystemManager
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     protected function filesystem(): FilesystemManager

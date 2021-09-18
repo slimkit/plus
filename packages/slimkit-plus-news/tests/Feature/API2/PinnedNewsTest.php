@@ -54,6 +54,7 @@ class PinnedNewsTest extends TestCase
      * @Author   Wayne
      * @DateTime 2018-04-24
      * @Email    qiaobin@zhiyicx.com
+     *
      * @return void [type]
      */
     public function testNewPinnedNewsComment()

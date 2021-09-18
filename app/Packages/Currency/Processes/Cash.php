@@ -31,9 +31,10 @@ class Cash extends Process
     /**
      * 创建积分提取记录.
      *
-     * @param int $owner_id
-     * @param int $amount
+     * @param  int  $owner_id
+     * @param  int  $amount
      * @return Zhiyi\Plus\Models\CurrencyOrder
+     *
      * @author BS <414606094@qq.com>
      */
     public function createOrder(int $owner_id, int $amount): CurrencyOrderModel

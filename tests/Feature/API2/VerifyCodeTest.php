@@ -42,6 +42,7 @@ class VerifyCodeTest extends TestCase
      * 测试通过手机号获取验证码.
      *
      * @return void
+     *
      * @author BS <414606094@qq.com>
      */
     public function testGetVerifyCodeByPhone()
@@ -60,6 +61,7 @@ class VerifyCodeTest extends TestCase
      * 测试通过邮箱获取验证码.
      *
      * @return void
+     *
      * @author BS <414606094@qq.com>
      */
     public function testGetVerifyCodeByEmail()
@@ -77,7 +79,6 @@ class VerifyCodeTest extends TestCase
      * Assert login response.
      *
      * @param $response
-     *
      * @return void
      */
     protected function assertLoginResponse($response)

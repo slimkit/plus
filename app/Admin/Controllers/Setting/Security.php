@@ -30,6 +30,7 @@ class Security extends Controller
 {
     /**
      * Get pay validate password switch.
+     *
      * @return \Illuminate\Http\JsonResponse
      */
     public function payValidateSwitch(): JsonResponse
@@ -41,7 +42,8 @@ class Security extends Controller
 
     /**
      * Change pay validate password switch.
-     * @param \Illuminate\Http\Request $request
+     *
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function changePayValidateSwitch(Request $request): Response

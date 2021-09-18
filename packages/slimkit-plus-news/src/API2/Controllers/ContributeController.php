@@ -66,9 +66,10 @@ class ContributeController extends Controller
      * @param  Request  $request
      * @param  ResponseFactoryContract  $response
      * @param  NewsModel  $model
-     *
      * @return mixed
+     *
      * @throws Throwable
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function index(Request $request, ResponseFactoryContract $response, NewsModel $model)
@@ -118,9 +119,10 @@ class ContributeController extends Controller
      * @param  NewsCateModel  $category
      * @param  NewsModel  $news
      * @param  TagModel  $tagModel
-     *
      * @return mixed
+     *
      * @throws Throwable
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function update(
@@ -215,9 +217,10 @@ class ContributeController extends Controller
      * @param  ResponseFactoryContract  $response
      * @param  NewsCateModel  $category
      * @param  NewsModel  $news
-     *
      * @return mixed
+     *
      * @throws Throwable
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function destroy(
@@ -260,9 +263,10 @@ class ContributeController extends Controller
      * @param  ResponseFactoryContract  $response
      * @param  NewsCateModel  $category
      * @param  NewsModel  $news
-     *
      * @return mixed
+     *
      * @throws Throwable
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function revoked(
@@ -298,9 +302,10 @@ class ContributeController extends Controller
      * @param  NewsModel  $news
      * @param  NewsCateModel  $category
      * @param  TagModel  $tagModel
-     *
      * @return mixed
+     *
      * @throws Throwable
+     *
      * @author BS <414606094@qq.com>
      */
     public function newStore(

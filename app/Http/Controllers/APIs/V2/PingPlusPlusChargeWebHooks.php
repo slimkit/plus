@@ -69,9 +69,10 @@ class PingPlusPlusChargeWebHooks
     /**
      * 解决付款订单来源.
      *
-     * @param array $charge
-     * @param string|null $default
+     * @param  array  $charge
+     * @param  string|null  $default
      * @return string|null
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     protected function resolveChargeAccount($charge, $default = null)

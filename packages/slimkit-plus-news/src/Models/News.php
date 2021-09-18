@@ -61,6 +61,7 @@ class News extends Model
      *  Has catrgory.
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function category()
@@ -70,9 +71,11 @@ class News extends Model
 
     /**
      * black list of current user.
+     *
      * @Author   Wayne
      * @DateTime 2018-04-14
      * @Email    qiaobin@zhiyicx.com
+     *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function blacks()
@@ -84,6 +87,7 @@ class News extends Model
      * Has image.
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function image()
@@ -114,6 +118,7 @@ class News extends Model
 
     /**
      * 筛选已审核文章.
+     *
      * @param  Builder  $query
      * @return Builder
      */
@@ -124,7 +129,9 @@ class News extends Model
 
     /**
      *  资讯拥有的置顶评论.
+     *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     *
      * @author Wayne < qiaobinloverabbi@gmail.com >
      */
     public function pinnedComments()
@@ -135,7 +142,9 @@ class News extends Model
 
     /**
      *  是否置顶.
+     *
      * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     *
      * @author Wayne < qiaobinloverabbi@gmail.com >
      */
     public function pinned()
@@ -148,6 +157,7 @@ class News extends Model
      * Has tags of the news.
      *
      * @return \Illuminate\Database\Eloquent\Relations\MorphToMany
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function tags()
@@ -160,6 +170,7 @@ class News extends Model
      * 资讯关联的删除申请记录.
      *
      * @return mixed
+     *
      * @author BS <414606094@qq.com>
      */
     public function applylog()
@@ -171,6 +182,7 @@ class News extends Model
      * 被举报记录.
      *
      * @return morphMany
+     *
      * @author BS <414606094@qq.com>
      */
     public function reports(): morphMany

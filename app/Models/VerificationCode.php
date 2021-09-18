@@ -41,6 +41,7 @@ use Illuminate\Notifications\Notifiable;
  * @property-read \Illuminate\Notifications\DatabaseNotificationCollection|\Illuminate\Notifications\DatabaseNotification[] $notifications
  * @property-read int|null $notifications_count
  * @property-read \Zhiyi\Plus\Models\User|null $user
+ *
  * @method static Builder|VerificationCode byValid($second = 300)
  * @method static Builder|VerificationCode newModelQuery()
  * @method static Builder|VerificationCode newQuery()
@@ -77,6 +78,7 @@ class VerificationCode extends Model
      * Has User.
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function user()
@@ -87,9 +89,8 @@ class VerificationCode extends Model
     /**
      * 设置复用的创建时间范围查询，单位秒.
      *
-     * @param Builder $query  查询对象
-     * @param int     $second 范围时间，单位秒
-     *
+     * @param  Builder  $query  查询对象
+     * @param  int  $second  范围时间，单位秒
      * @return Builder 查询对象
      *
      * @author Seven Du <shiweidu@outlook.com>
@@ -107,8 +108,7 @@ class VerificationCode extends Model
     /**
      * 计算距离验证码过期时间.
      *
-     * @param int $vaildSecond 验证的总时间
-     *
+     * @param  int  $vaildSecond  验证的总时间
      * @return int 剩余时间
      *
      * @author Seven Du <shiweidu@outlook.com>

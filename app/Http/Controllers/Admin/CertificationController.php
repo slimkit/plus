@@ -35,7 +35,7 @@ class CertificationController extends Controller
     /**
      * certification list.
      *
-     * @param Request $request
+     * @param  Request  $request
      * @return $this
      */
     public function index(Request $request)
@@ -92,7 +92,7 @@ class CertificationController extends Controller
     /**
      * certifiction pass.
      *
-     * @param certification $certification
+     * @param  certification  $certification
      * @return \Illuminate\Http\JsonResponse
      */
     public function passCertification(Request $request, Certification $certification)
@@ -124,8 +124,8 @@ class CertificationController extends Controller
     /**
      * certifiction reject.
      *
-     * @param Request $request
-     * @param Certification $certification
+     * @param  Request  $request
+     * @param  Certification  $certification
      * @return \Illuminate\Http\JsonResponse
      */
     public function rejectCertification(Request $request, Certification $certification)
@@ -158,7 +158,7 @@ class CertificationController extends Controller
     /**
      * get certification detail.
      *
-     * @param Certification $certification
+     * @param  Certification  $certification
      * @return $this
      */
     public function show(Certification $certification)
@@ -169,9 +169,9 @@ class CertificationController extends Controller
     /**
      * update user certification.
      *
-     * @param UserCertification $request
-     * @param Certification $certification
-     * @param FileWithModel $fileWithModel
+     * @param  UserCertification  $request
+     * @param  Certification  $certification
+     * @param  FileWithModel  $fileWithModel
      * @return mixed
      */
     public function update(
@@ -288,9 +288,9 @@ class CertificationController extends Controller
     /**
      * add user certification.
      *
-     * @param UserCertification $request
-     * @param Certification $certification
-     * @param FileWithModel $fileWithModel
+     * @param  UserCertification  $request
+     * @param  Certification  $certification
+     * @param  FileWithModel  $fileWithModel
      * @return \Illuminate\Http\JsonResponse|mixed
      */
     public function store(Request $request,
@@ -342,7 +342,7 @@ class CertificationController extends Controller
     /**
      * Search for non certification users.
      *
-     * @param Request $request
+     * @param  Request  $request
      * @return $this|\Illuminate\Http\JsonResponse
      */
     public function findNoCertificationUsers(Request $request)
@@ -359,9 +359,10 @@ class CertificationController extends Controller
     /**
      * File not with file models.
      *
-     * @param \Illuminate\Http\Request $request
-     * @param \Zhiyi\Plus\Models\FileWith $fileWithModel
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \Zhiyi\Plus\Models\FileWith  $fileWithModel
      * @return \Illuminate\Support\Collection
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     protected function findNotWithFileModels(Request $request, FileWithModel $fileWithModel): Collection

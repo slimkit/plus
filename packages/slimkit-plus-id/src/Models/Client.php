@@ -34,9 +34,10 @@ class Client extends Model
     /**
      * make sign.
      *
-     * @param array $action
-     * @param string $key
+     * @param  array  $action
+     * @param  string  $key
      * @return string
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function sign(array $action, string $key = ''): string

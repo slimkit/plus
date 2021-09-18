@@ -30,6 +30,7 @@ class TypeManager extends Manager
      * Get default type driver.
      *
      * @return string User type
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function getDefaultDriver()
@@ -41,6 +42,7 @@ class TypeManager extends Manager
      * Create user driver.
      *
      * @return \Zhiyi\Plus\Packages\Wallet\Types\Type
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     protected function createUserDriver(): Type
@@ -52,6 +54,7 @@ class TypeManager extends Manager
      * Create widthdraw driver.
      *
      * @return \Zhiyi\Plus\Packages\Wallet\Types\Type
+     *
      * @author BS <414606094@qq.com>
      */
     protected function createWidthdrawDriver(): Type
@@ -63,6 +66,7 @@ class TypeManager extends Manager
      * Create reward driver.
      *
      * @return \Zhiyi\Plus\Packages\Wallet\Types\Type
+     *
      * @author hh <915664508@qq.com>
      */
     protected function createRewardDriver(): Type
@@ -74,6 +78,7 @@ class TypeManager extends Manager
      * Create recharge driver.
      *
      * @return \Zhiyi\Plus\Packages\Wallet\Types\Type
+     *
      * @author BS <414606094@qq.com>
      */
     protected function createRechargePingPPDriver(): Type
@@ -85,6 +90,7 @@ class TypeManager extends Manager
      * Create transform driver.
      *
      * @return \Zhiyi\Plus\Packages\Wallet\Types\Type
+     *
      * @author BS <414606094@qq.com>
      */
     protected function createTransformDriver(): Type

@@ -37,6 +37,7 @@ class UserSocialite extends Model
      * Get user.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function user()
@@ -47,7 +48,8 @@ class UserSocialite extends Model
     /**
      * Set type.
      *
-     * @param string $type
+     * @param  string  $type
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function setTypeAttribute(string $type)
@@ -58,10 +60,11 @@ class UserSocialite extends Model
     /**
      * Scope socialite provider.
      *
-     * @param \Illuminate\Database\Eloquent\Builder $query
-     * @param string $type
-     * @param string $unionid
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @param  string  $type
+     * @param  string  $unionid
      * @return \Illuminate\Database\Eloquent\Builder
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function scopeProvider(Builder $query, string $type, string $unionid)
@@ -73,10 +76,11 @@ class UserSocialite extends Model
     /**
      * Scope socialite provider to user.
      *
-     * @param \Illuminate\Database\Eloquent\Builder $query
-     * @param string $type
-     * @param string|int $userID
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @param  string  $type
+     * @param  string|int  $userID
      * @return \Illuminate\Database\Eloquent\Builder
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function scopeProviderToUser(Builder $query, string $type, $userID)

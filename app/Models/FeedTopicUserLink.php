@@ -32,6 +32,7 @@ use Illuminate\Database\Eloquent\Relations\Pivot;
  * @property string|null $following_at
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|FeedTopicUserLink newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|FeedTopicUserLink newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|FeedTopicUserLink query()

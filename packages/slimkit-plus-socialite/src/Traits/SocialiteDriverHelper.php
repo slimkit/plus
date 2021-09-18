@@ -38,8 +38,9 @@ trait SocialiteDriverHelper
     /**
      * Get Http client.
      *
-     * @param bool $httpErrors
+     * @param  bool  $httpErrors
      * @return \GuzzleHttp\Client
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     protected function getHttpClient(bool $httpErrors = false): GuzzleHttpClient
@@ -62,8 +63,9 @@ trait SocialiteDriverHelper
     /**
      * Create User.
      *
-     * @param string $name
+     * @param  string  $name
      * @return \Zhiyi\Plus\Models\User
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     protected function createUserHelper(string $name, $role): UserModel
@@ -80,6 +82,7 @@ trait SocialiteDriverHelper
      * Get default user role.
      *
      * @return int|string
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     protected function getDefaultUserRole()
@@ -90,9 +93,10 @@ trait SocialiteDriverHelper
     /**
      * Provider bind check abort.
      *
-     * @param string $type
-     * @param string $unionid
+     * @param  string  $type
+     * @param  string  $unionid
      * @return bool
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     protected function providerBindCheckAbort(string $type, string $unionid): bool
@@ -105,10 +109,11 @@ trait SocialiteDriverHelper
     /**
      * Provider Create user.
      *
-     * @param string $type
-     * @param string $unionid
-     * @param string $name
+     * @param  string  $type
+     * @param  string  $unionid
+     * @param  string  $name
      * @return mixed
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     protected function providerStoreCreateUser(string $type, string $unionid, string $name)
@@ -134,10 +139,11 @@ trait SocialiteDriverHelper
     /**
      * Throw an HttpException with the given data.
      *
-     * @param mixed $condition
-     * @param int|\Closure $callable
-     * @param string $message
+     * @param  mixed  $condition
+     * @param  int|\Closure  $callable
+     * @param  string  $message
      * @return void
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     protected function abortIf($condition, $callable, string $message = '')
@@ -156,8 +162,9 @@ trait SocialiteDriverHelper
     /**
      * 创建账户授权 Token.
      *
-     * @param \Zhiyi\Plus\Models\User $user
+     * @param  \Zhiyi\Plus\Models\User  $user
      * @return mixed
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     protected function createAuthToken(UserModel $user)
