@@ -43,7 +43,6 @@ class TopicFollow extends Controller
      * @param  Request  $request
      * @param  FeedTopicModel  $model
      * @param  int  $topicID
-     *
      * @return Response
      */
     public function follow(
@@ -102,7 +101,6 @@ class TopicFollow extends Controller
      * @param  Request  $request
      * @param  FeedTopicModel  $model
      * @param  int  $topicID
-     *
      * @return Response
      */
     public function unfollow(

@@ -28,8 +28,9 @@ class HomeController
     /**
      * Home page.
      *
-     * @param \Jenssegers\Agent\Agent $agent
+     * @param  \Jenssegers\Agent\Agent  $agent
      * @return mixed
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function welcome(Agent $agent)
@@ -49,8 +50,9 @@ class HomeController
 
     /**
      * Redirect URL.
-     * @param \Illuminate\Http\Request $request
-     * @param \Jenssegers\Agent\Agent $agent
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \Jenssegers\Agent\Agent  $agent
      * @return mixed
      */
     public function redirect(Request $request, Agent $agent)

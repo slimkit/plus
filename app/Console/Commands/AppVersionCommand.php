@@ -50,6 +50,7 @@ class AppVersionCommand extends Command
      * The console command handle.
      *
      * @return mixed
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function handle()
@@ -74,7 +75,8 @@ class AppVersionCommand extends Command
     /**
      * Set version to Application::class.
      *
-     * @param string $version
+     * @param  string  $version
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     protected function setVersionToApplicationClass(string $version)
@@ -95,9 +97,10 @@ class AppVersionCommand extends Command
     /**
      * Save package [composer.json] file.
      *
-     * @param string $filename
-     * @param Repository $repository
+     * @param  string  $filename
+     * @param  Repository  $repository
      * @return void
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     protected function savePackage(string $filename, Repository $repository)
@@ -111,6 +114,7 @@ class AppVersionCommand extends Command
      * Get packages.
      *
      * @return array
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     protected function getPackages(): array
@@ -134,6 +138,7 @@ class AppVersionCommand extends Command
      * Init the application repositroy.
      *
      * @return void
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     protected function initApplicationRepositroy()
@@ -144,8 +149,9 @@ class AppVersionCommand extends Command
     /**
      * Create composer repositroy.
      *
-     * @param string $path
+     * @param  string  $path
      * @return Repostroy
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function createComposerRepositroy(string $path): Repository
@@ -159,8 +165,9 @@ class AppVersionCommand extends Command
     /**
      * Get file contents.
      *
-     * @param string $filename
+     * @param  string  $filename
      * @return mixed
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function getFileContents(string $filename)

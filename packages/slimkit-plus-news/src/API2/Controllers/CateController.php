@@ -29,7 +29,8 @@ class CateController extends Controller
 {
     /**
      * 分类列表.
-     * @param  $cate_id [分类ID]
+     *
+     * @param  $cate_id  [分类ID]
      * @return mixed 返回结果
      */
     public function list(Request $request)
@@ -61,7 +62,8 @@ class CateController extends Controller
 
     /**
      * Follow news cate.
-     * @param  $follows [分类字符串]
+     *
+     * @param  $follows  [分类字符串]
      * @return mixed 返回结果
      */
     public function follow(Request $request, NewsCateFollow $followModel)

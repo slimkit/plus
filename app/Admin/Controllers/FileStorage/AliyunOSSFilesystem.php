@@ -29,6 +29,7 @@ class AliyunOSSFilesystem
 {
     /**
      * Get Aliyun OSS filesystem.
+     *
      * @return \Illuminate\Http\JsonResponse
      */
     public function show(): JsonResponse
@@ -49,7 +50,8 @@ class AliyunOSSFilesystem
 
     /**
      * Update Aliyun OSS filesystem.
-     * @param \Illuminate\Http\Request $request
+     *
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request): Response

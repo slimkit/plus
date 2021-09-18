@@ -26,12 +26,14 @@ trait HasImageTrait
 {
     /**
      * Custom using MIME types.
+     *
      * @return null\Closure
      */
     abstract protected function useCustomTypes(): ?Closure;
 
     /**
      * Get support image MIME types.
+     *
      * @return array
      */
     protected function getImageMimeTypes(): array
@@ -53,7 +55,8 @@ trait HasImageTrait
 
     /**
      * Check is support image type.
-     * @param string $mimeTypes
+     *
+     * @param  string  $mimeTypes
      * @return bool
      */
     protected function hasImageType(string $mimeTypes): bool

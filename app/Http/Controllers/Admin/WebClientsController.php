@@ -31,6 +31,7 @@ class WebClientsController
      * Fetch web clients setting data.
      *
      * @return \Illuminate\Http\JsonResponse
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function fetch(): JsonResponse
@@ -50,9 +51,10 @@ class WebClientsController
     /**
      * Update web clients settings.
      *
-     * @param \Zhiyi\Plus\Http\Requests\Admin\UpdateWebClientRequest $request
-     * @param \Zhiyi\Plus\Support\Configuration $config
+     * @param  \Zhiyi\Plus\Http\Requests\Admin\UpdateWebClientRequest  $request
+     * @param  \Zhiyi\Plus\Support\Configuration  $config
      * @return \Illuminate\Http\Response
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function update(UpdateWebClientRequest $request, Configuration $config): Response

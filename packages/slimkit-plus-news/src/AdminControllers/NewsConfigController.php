@@ -29,6 +29,7 @@ class NewsConfigController extends Controller
 {
     /**
      * 查看资讯配置.
+     *
      * @return mixed
      */
     public function show()
@@ -48,8 +49,8 @@ class NewsConfigController extends Controller
     /**
      * 更新投稿配置.
      *
-     * @param  Request       $request
-     * @param  Configuration $configuration
+     * @param  Request  $request
+     * @param  Configuration  $configuration
      */
     public function setContribute(Request $request)
     {
@@ -65,8 +66,8 @@ class NewsConfigController extends Controller
     /**
      * 投稿金额配置.
      *
-     * @param  Request       $request
-     * @param  Configuration $configuration
+     * @param  Request  $request
+     * @param  Configuration  $configuration
      */
     public function setPayContribute(Request $request)
     {

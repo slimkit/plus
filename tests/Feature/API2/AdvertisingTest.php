@@ -32,6 +32,7 @@ class AdvertisingTest extends TestCase
      * 测试获取广告位.
      *
      * @return void
+     *
      * @author BS <414606094@qq.com>
      */
     public function testGetAdvertisingSpace()
@@ -52,6 +53,7 @@ class AdvertisingTest extends TestCase
      * 测试获取一个广告位的广告列表.
      *
      * @return void
+     *
      * @author BS <414606094@qq.com>
      */
     public function testGetAdvertising()
@@ -74,6 +76,7 @@ class AdvertisingTest extends TestCase
      * 测试批量获取广告.
      *
      * @return void
+     *
      * @author BS <414606094@qq.com>
      */
     public function testGetMuliteAdvertising()

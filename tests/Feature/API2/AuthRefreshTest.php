@@ -63,6 +63,7 @@ class AuthRefreshTest extends TestCase
      * Test user refresh token.
      *
      * @return void
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function testUserLogout()

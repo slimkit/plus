@@ -36,6 +36,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property-read Model|\Eloquent $rewardable
  * @property-read \Zhiyi\Plus\Models\User|null $target
  * @property-read \Zhiyi\Plus\Models\User|null $user
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|Reward newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Reward newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Reward query()
@@ -62,6 +63,7 @@ class Reward extends Model
      * Has rewardable.
      *
      * @return \Illuminate\Database\Eloquent\Relations\MorphTo
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function rewardable()
@@ -73,6 +75,7 @@ class Reward extends Model
      * Has user for the rewardable.
      *
      * @author bs<414606094@qq.com>
+     *
      * @return \Illuminate\Database\Eloquent\Relations\HasOne|null
      */
     public function user()

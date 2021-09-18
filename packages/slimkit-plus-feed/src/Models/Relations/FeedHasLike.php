@@ -32,6 +32,7 @@ trait FeedHasLike
      * Has likes.
      *
      * @return MorphMany
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function likes()
@@ -43,8 +44,8 @@ trait FeedHasLike
      * Check user like.
      *
      * @param  mixed  $user
-     *
      * @return bool
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function liked($user): bool
@@ -68,8 +69,8 @@ trait FeedHasLike
      * Like feed.
      *
      * @param  mixed  $user
-     *
      * @return mixed
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function like($user)
@@ -97,8 +98,8 @@ trait FeedHasLike
      * Unlike feed.
      *
      * @param  mixed  $user
-     *
      * @return mixed
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function unlike($user)
@@ -124,8 +125,8 @@ trait FeedHasLike
      * Forget like cache.
      *
      * @param  mixed  $user
-     *
      * @return void
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function forgetLike($user)

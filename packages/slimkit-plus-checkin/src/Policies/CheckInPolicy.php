@@ -30,8 +30,8 @@ class CheckInPolicy
      * 检查用户是否可以创建签到记录.
      *
      * @param  User  $user
-     *
      * @return bool
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function create(User $user): bool

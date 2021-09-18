@@ -50,9 +50,9 @@ class PayController extends Controller
     }
 
     /**
-     * @param Request  $request
-     * @param Carbon   $dateTime
-     * @param Response $response
+     * @param  Request  $request
+     * @param  Carbon  $dateTime
+     * @param  Response  $response
      * @return \Illuminate\Http\JsonResponse
      */
     public function getAlipayOrder(Request $request, ResponseFactory $response, NativePayOrder $order)
@@ -402,9 +402,9 @@ class PayController extends Controller
     }
 
     /**
-     * @param Request          $request
-     * @param ResponseContract $response
-     * @param NativePayOrder   $order
+     * @param  Request  $request
+     * @param  ResponseContract  $response
+     * @param  NativePayOrder  $order
      * @return \Illuminate\Http\JsonResponse
      */
     public function getWechatWapOrder(Request $request, ResponseFactory $response, NativePayOrder $order)

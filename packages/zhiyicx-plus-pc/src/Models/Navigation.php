@@ -32,8 +32,8 @@ class Navigation extends Model
     /**
      * 获取位置导航.
      *
-     * @param  Builder $query
-     * @param  int     $pos   0-头部 1-底部
+     * @param  Builder  $query
+     * @param  int  $pos  0-头部 1-底部
      * @return Builder
      */
     public function scopeByPos(Builder $query, int $pos)

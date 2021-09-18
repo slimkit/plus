@@ -30,6 +30,7 @@ class WeChatMp extends Controller
 {
     /**
      * Get configure.
+     *
      * @return \Illuminate\Http\JsonResponse
      */
     public function getConfigure(): JsonResponse
@@ -44,7 +45,8 @@ class WeChatMp extends Controller
 
     /**
      * set configure.
-     * @param \Zhiyi\Plus\Admin\Requests\SetWeChatMpConfigure $request
+     *
+     * @param  \Zhiyi\Plus\Admin\Requests\SetWeChatMpConfigure  $request
      * @return \Illuminate\Http\Response
      */
     public function setConfigure(SetWeChatMpConfigureRequest $request)

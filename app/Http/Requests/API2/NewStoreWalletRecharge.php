@@ -39,6 +39,7 @@ class NewStoreWalletRecharge extends FormRequest
      * Get the validation rules that apply to the request.
      *
      * @return array
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function rules()
@@ -54,6 +55,7 @@ class NewStoreWalletRecharge extends FormRequest
      * Get the valodation error message that apply to the request.
      *
      * @return array
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function messages()

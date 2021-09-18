@@ -63,7 +63,8 @@ class Push
      * 推送别名.
      *
      * @author bs<414606094@qq.com>
-     * @param  Client $client
+     *
+     * @param  Client  $client
      * @param  $alert
      * @param  $audience
      * @param  $notification
@@ -97,7 +98,8 @@ class Push
      * Push all.
      *
      * @author bs<414606094@qq.com>
-     * @param  Client $client
+     *
+     * @param  Client  $client
      * @param  $alert
      * @param  $notification
      * @return array

@@ -24,12 +24,14 @@ class Resource implements ResourceInterface
 {
     /**
      * The resource channel name.
+     *
      * @var string
      */
     protected $channel;
 
     /**
      * The resource path.
+     *
      * @var string
      */
     protected $path;
@@ -41,8 +43,9 @@ class Resource implements ResourceInterface
 
     /**
      * Create a resource.
-     * @param string $resource E.g "public:/feed/2018/08/HDUi89aHD7Dhnmc8NMud8D90d.png"/"public"
-     * @param string|null $path
+     *
+     * @param  string  $resource  E.g "public:/feed/2018/08/HDUi89aHD7Dhnmc8NMud8D90d.png"/"public"
+     * @param  string|null  $path
      */
     public function __construct(string $resource, ?string $path = null)
     {
@@ -68,6 +71,7 @@ class Resource implements ResourceInterface
 
     /**
      * Get the resource channel.
+     *
      * @return string
      */
     public function getChannel(): string
@@ -77,6 +81,7 @@ class Resource implements ResourceInterface
 
     /**
      * Get the resource path.
+     *
      * @return string
      */
     public function getPath(): string
@@ -86,6 +91,7 @@ class Resource implements ResourceInterface
 
     /**
      * The resource to string.
+     *
      * @return string
      */
     public function __toString(): string

@@ -29,6 +29,7 @@ class AdvertisingSpaceTableSeeder extends Seeder
      * Run the ad seeder.
      *
      * @return void
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function run()

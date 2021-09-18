@@ -38,19 +38,22 @@ class LocalFilesystem implements FilesystemInterface
 {
     /**
      * The local filesystem.
+     *
      * @var \Illuminate\Contracts\Filesystem\Filesystem
      */
     protected $filesystem;
 
     /**
      * Cache the file metas.
+     *
      * @var array<\Zhiyi\Plus\FileStorage\FileMetaInterface>
      */
     protected $metas = [];
 
     /**
      * Create the filesystem driver instance.
-     * @param \\Illuminate\Contracts\Filesystem\Filesystem $folesystem
+     *
+     * @param  \\Illuminate\Contracts\Filesystem\Filesystem  $folesystem
      */
     public function __construct(FilesystemContract $filesystem)
     {
@@ -59,7 +62,8 @@ class LocalFilesystem implements FilesystemInterface
 
     /**
      * Get file meta.
-     * @param \Zhiyi\Plus\FileStorage\ResourceInterface $resource
+     *
+     * @param  \Zhiyi\Plus\FileStorage\ResourceInterface  $resource
      * @return \Zhiyi\Plus\FileStorage\FileMetaInterface
      */
     public function meta(ResourceInterface $resource): FileMetaInterface
@@ -76,8 +80,9 @@ class LocalFilesystem implements FilesystemInterface
 
     /**
      * Get file response.
-     * @param \Zhiyi\Plus\FileStorage\ResourceInterface $resource
-     * @param string|null $rule
+     *
+     * @param  \Zhiyi\Plus\FileStorage\ResourceInterface  $resource
+     * @param  string|null  $rule
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function response(ResourceInterface $resource, ?string $rule = null): Response
@@ -120,7 +125,8 @@ class LocalFilesystem implements FilesystemInterface
 
     /**
      * Delete file.
-     * @param string $path
+     *
+     * @param  string  $path
      * @return bool
      */
     public function delete(string $path): bool
@@ -136,8 +142,9 @@ class LocalFilesystem implements FilesystemInterface
 
     /**
      * Create upload task.
-     * @param \Illuminate\Http\Request $request
-     * @param \Zhiyi\Plus\FileStorage\ResourceInterface $resource
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \Zhiyi\Plus\FileStorage\ResourceInterface  $resource
      * @return \Zhiyi\Plus\FileStorage\TaskInterface
      */
     public function createTask(Request $request, ResourceInterface $resource): TaskInterface
@@ -161,8 +168,9 @@ class LocalFilesystem implements FilesystemInterface
 
     /**
      * Put a file.
-     * @param string $path
-     * @param mixed $contents
+     *
+     * @param  string  $path
+     * @param  mixed  $contents
      * @return bool
      */
     public function put(string $path, $contents): bool

@@ -31,6 +31,7 @@ class StoreFeedPost extends FormRequest
      * authorization check.
      *
      * @return bool
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function authorize(): bool
@@ -43,6 +44,7 @@ class StoreFeedPost extends FormRequest
      * get the validator rules.
      *
      * @return array
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function rules(): array
@@ -92,6 +94,7 @@ class StoreFeedPost extends FormRequest
      * Get the validator rule messages.
      *
      * @return array
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function messages(): array

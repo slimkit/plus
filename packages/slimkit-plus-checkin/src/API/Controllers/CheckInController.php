@@ -57,8 +57,8 @@ class CheckInController extends Controller
      * @param  Request  $request
      * @param  ResponseFactoryContract  $response
      * @param  CheckinLogModel  $model
-     *
      * @return mixed
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function show(
@@ -96,8 +96,8 @@ class CheckInController extends Controller
      * @param  Request  $request
      * @param  ResponseFactoryContract  $response
      * @param  GateContract  $gate
-     *
      * @return mixed
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function store(
@@ -166,9 +166,10 @@ class CheckInController extends Controller
      * @param  Request  $request
      * @param  ResponseFactoryContract  $response
      * @param  GateContract  $gate
-     *
      * @return mixed
+     *
      * @throws Exception
+     *
      * @author BS <414606094@qq.com>
      */
     public function newStore(

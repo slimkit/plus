@@ -60,10 +60,11 @@ class UserNotificationMessage
     /**
      * Create the message instance.
      *
-     * @param string $channel
-     * @param mixed $target
-     * @param string $content
-     * @param array $extra
+     * @param  string  $channel
+     * @param  mixed  $target
+     * @param  string  $content
+     * @param  array  $extra
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function __construct(string $channel, string $content, array $extra = [])
@@ -94,6 +95,7 @@ class UserNotificationMessage
      * The message to array.
      *
      * @return array
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function toArray(): array

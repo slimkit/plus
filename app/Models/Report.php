@@ -39,6 +39,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property-read Model|\Eloquent $reportable
  * @property-read \Zhiyi\Plus\Models\User|null $target
  * @property-read \Zhiyi\Plus\Models\User|null $user
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|Report newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Report newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Report query()
@@ -66,6 +67,7 @@ class Report extends Model
      * 举报者.
      *
      * @return hasOne
+     *
      * @author BS <414606094@qq.com>
      */
     public function user()
@@ -77,6 +79,7 @@ class Report extends Model
      * 被举报者.
      *
      * @return hasOne
+     *
      * @author BS <414606094@qq.com>
      */
     public function target()

@@ -36,8 +36,8 @@ class AboutUsController extends Controller
     }
 
     /**
-     * @param Request       $request
-     * @param Configuration $config
+     * @param  Request  $request
+     * @param  Configuration  $config
      * @return Response
      */
     public function store(Request $request, Configuration $config): Response

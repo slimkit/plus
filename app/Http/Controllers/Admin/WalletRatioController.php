@@ -30,8 +30,9 @@ class WalletRatioController extends Controller
     /**
      * Get the recharge conversion value.
      *
-     * @param ResponseFactory $response
+     * @param  ResponseFactory  $response
      * @return mixed
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function show(ResponseFactory $response)
@@ -44,9 +45,10 @@ class WalletRatioController extends Controller
     /**
      * 更新转换比例.
      *
-     * @param Request $request
-     * @param ResponseFactory $response
+     * @param  Request  $request
+     * @param  ResponseFactory  $response
      * @return mixed
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function update(Request $request, ResponseFactory $response)
