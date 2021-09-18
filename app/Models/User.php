@@ -93,6 +93,7 @@ use Zhiyi\Plus\Models\Relations\UserHasWalletCash;
  * @property-read \Zhiyi\Plus\Models\UserUnreadCount|null $unreadCount
  * @property-read \Illuminate\Database\Eloquent\Collection|\Zhiyi\Plus\Models\WalletCash[] $walletCashes
  * @property-read int|null $wallet_cashes_count
+ *
  * @method static Builder|User byEmail($email)
  * @method static Builder|User byName($name)
  * @method static Builder|User byPhone($phone)
@@ -201,6 +202,7 @@ class User extends Authenticatable implements JWTSubject
      * Get the identifier that will be stored in the subject claim of the JWT.
      *
      * @return mixed
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function getJWTIdentifier()
@@ -212,6 +214,7 @@ class User extends Authenticatable implements JWTSubject
      * Return a key value array, containing any custom claims to be added to the JWT.
      *
      * @return array
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function getJWTCustomClaims()
@@ -241,6 +244,7 @@ class User extends Authenticatable implements JWTSubject
      * Get verifed.
      *
      * @return array|null
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     protected function getVerifiedAttribute()
@@ -264,6 +268,7 @@ class User extends Authenticatable implements JWTSubject
      * Has user extra.
      *
      * @return HasOne
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function extra()
@@ -275,6 +280,7 @@ class User extends Authenticatable implements JWTSubject
      * Has user certification.
      *
      * @return HasOne
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function certification()
@@ -286,6 +292,7 @@ class User extends Authenticatable implements JWTSubject
      * Has tags of the user.
      *
      * @return MorphToMany
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function tags()
@@ -319,7 +326,6 @@ class User extends Authenticatable implements JWTSubject
      *
      * @param  Illuminate\Database\Eloquent\Builder  $query  查询对象
      * @param  string  $phone  手机号码
-     *
      * @return Illuminate\Database\Eloquent\Builder 查询对象
      *
      * @author Seven Du <shiweidu@outlook.com>
@@ -335,7 +341,6 @@ class User extends Authenticatable implements JWTSubject
      *
      * @param  Illuminate\Database\Eloquent\Builder  $query  查询对象
      * @param  string  $name  用户名
-     *
      * @return Illuminate\Database\Eloquent\Builder 查询对象
      *
      * @author Seven Du <shiweidu@outlook.com>
@@ -351,8 +356,8 @@ class User extends Authenticatable implements JWTSubject
      *
      * @param  Illuminate\Database\Eloquent\Builder  $query
      * @param  string  $email  [description]
-     *
      * @return Illuminate\Database\Eloquent\Builder
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function scopeByEmail(Builder $query, string $email): Builder
@@ -364,7 +369,6 @@ class User extends Authenticatable implements JWTSubject
      * Create user ppassword.
      *
      * @param  string  $password  user password
-     *
      * @return self
      *
      * @author Seven Du <shiweidu@outlook.com>
@@ -384,7 +388,6 @@ class User extends Authenticatable implements JWTSubject
      * @DateTime 2016-12-30T18:44:40+0800
      *
      * @param  string  $password  [description]
-     *
      * @return bool 验证结果true or false
      */
     public function verifyPassword(string $password): bool
@@ -397,6 +400,7 @@ class User extends Authenticatable implements JWTSubject
      * 用户未读数统计.
      *
      * @return mixed
+     *
      * @author BS <414606094@qq.com>
      */
     public function unreadCount()
@@ -408,6 +412,7 @@ class User extends Authenticatable implements JWTSubject
      * 被举报记录.
      *
      * @return morphMany
+     *
      * @author BS <414606094@qq.com>
      */
     public function reports()

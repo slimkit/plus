@@ -28,8 +28,9 @@ class SensitiveOperation
      * 对敏感操作验证用户密码是否正确.
      *
      * @param $request
-     * @param Closure $next
+     * @param  Closure  $next
      * @return mixed
+     *
      * @author BS <414606094@qq.com>
      */
     public function handle($request, Closure $next)

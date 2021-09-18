@@ -27,44 +27,50 @@ interface StorageInterface
 {
     /**
      * Create a file storage task.
-     * @param \Illuminate\Http\Request $request
+     *
+     * @param  \Illuminate\Http\Request  $request
      * @return \Zhiyi\Plus\FileStorage\TaskInterface
      */
     public function createTask(Request $request): TaskInterface;
 
     /**
      * Get a file info.
-     * @param \Zhiyi\Plus\FileStorage\ResourceInterface $resource
+     *
+     * @param  \Zhiyi\Plus\FileStorage\ResourceInterface  $resource
      * @return \Zhiyi\Plus\FileMetaInterface
      */
     public function meta(ResourceInterface $resource): FileMetaInterface;
 
     /**
      * Get a file response.
-     * @param \Zhiyi\Plus\FileStorage\ResourceInterface $resource
-     * @param string|null $rule
+     *
+     * @param  \Zhiyi\Plus\FileStorage\ResourceInterface  $resource
+     * @param  string|null  $rule
      * @return string
      */
     public function response(ResourceInterface $resource, ?string $rule = null): Response;
 
     /**
      * Deelte a resource.
-     * @param \Zhiyi\Plus\FileStorage\ResourceInterface $resource
+     *
+     * @param  \Zhiyi\Plus\FileStorage\ResourceInterface  $resource
      * @return bool
      */
     public function delete(ResourceInterface $resource): ?bool;
 
     /**
      * Put a file.
-     * @param \Zhiyi\Plus\FileStorage\ResourceInterface $resource
-     * @param mixed $content
+     *
+     * @param  \Zhiyi\Plus\FileStorage\ResourceInterface  $resource
+     * @param  mixed  $content
      * @return bool
      */
     public function put(ResourceInterface $resource, $content): bool;
 
     /**
      * A storage task callback handle.
-     * @param \Zhiyi\Plus\FileStorage\ResourceInterface $resource
+     *
+     * @param  \Zhiyi\Plus\FileStorage\ResourceInterface  $resource
      * @return void
      */
     public function callback(ResourceInterface $resource): void;

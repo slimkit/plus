@@ -24,20 +24,23 @@ class ImageDimension implements ImageDimensionInterface
 {
     /**
      * The dimension width.
+     *
      * @var float
      */
     protected $width;
 
     /**
      * The dimnsion height.
+     *
      * @var float
      */
     protected $height;
 
     /**
      * Create a image dimension.
-     * @param float $width
-     * @param float $height
+     *
+     * @param  float  $width
+     * @param  float  $height
      */
     public function __construct(float $width, float $height)
     {
@@ -47,6 +50,7 @@ class ImageDimension implements ImageDimensionInterface
 
     /**
      * Get image width (px).
+     *
      * @return float
      */
     public function getWidth(): float
@@ -56,6 +60,7 @@ class ImageDimension implements ImageDimensionInterface
 
     /**
      * Get image height (px).
+     *
      * @return float
      */
     public function getHeight(): float

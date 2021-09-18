@@ -27,9 +27,11 @@ class SocialiteController extends BaseController
 {
     /**
      * 三方登录/绑定（未登录）.
+     *
      * @author ZsyD
-     * @param Request $request
-     * @param string  $service [三方类型]
+     *
+     * @param  Request  $request
+     * @param  string  $service  [三方类型]
      * @return mixed
      */
     public function redirectToProvider(Request $request, $service)
@@ -46,9 +48,11 @@ class SocialiteController extends BaseController
 
     /**
      * 三方登录/绑定（已登录）.
+     *
      * @author ZsyD
-     * @param  Request $request
-     * @param  string  $service [三方类型]
+     *
+     * @param  Request  $request
+     * @param  string  $service  [三方类型]
      * @return mixed
      */
     public function redirectToProviderByBind(Request $request, $service)
@@ -73,9 +77,11 @@ class SocialiteController extends BaseController
 
     /**
      * 第三方回调页.
+     *
      * @author ZsyD
-     * @param  Request $request
-     * @param  string  $service [三方类型]
+     *
+     * @param  Request  $request
+     * @param  string  $service  [三方类型]
      * @return mixed
      */
     public function handleProviderCallback(Request $request, $service)
@@ -131,8 +137,10 @@ class SocialiteController extends BaseController
 
     /**
      * 三方用户注册/绑定账号（未登录时）.
+     *
      * @author ZsyD
-     * @param  Request $request
+     *
+     * @param  Request  $request
      * @return mixed
      */
     public function bind(Request $request)
@@ -144,7 +152,9 @@ class SocialiteController extends BaseController
 
     /**
      * 获取登录信息.
+     *
      * @author ZsyD<1251992018@qq.com>
+     *
      * @param $token
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector|void
      */

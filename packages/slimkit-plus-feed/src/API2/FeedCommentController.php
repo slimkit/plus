@@ -45,8 +45,8 @@ class FeedCommentController extends Controller
      * @param  Request  $request
      * @param  ResponseFactoryContract  $response
      * @param  FeedModel  $feed
-     *
      * @return mixed
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function index(
@@ -92,8 +92,8 @@ class FeedCommentController extends Controller
      * @param  ResponseFactoryContract  $response
      * @param  mixed  $feed
      * @param  CommentModel  $comment
-     *
      * @return mixed
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function show(
@@ -113,9 +113,10 @@ class FeedCommentController extends Controller
      * @param  ResponseFactoryContract  $response
      * @param  FeedModel  $feed
      * @param  CommentModel  $comment
-     *
      * @return mixed
+     *
      * @throws \Throwable
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function destroy(
@@ -171,9 +172,10 @@ class FeedCommentController extends Controller
      * @param  ResponseFactoryContract  $response
      * @param  FeedModel  $feed
      * @param  CommentModel  $comment
-     *
      * @return mixed
+     *
      * @throws \Throwable
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function store(

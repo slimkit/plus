@@ -38,9 +38,10 @@ class CommentController extends Controller
      * 发布资讯评论.
      *
      * @author bs<414606094@qq.com>
-     * @param  Request $request
-     * @param  News    $news
-     * @param  Comment $comment
+     *
+     * @param  Request  $request
+     * @param  News  $news
+     * @param  Comment  $comment
      * @return mix
      */
     public function store(StoreNewsComment $request, News $news, Comment $comment)
@@ -85,8 +86,9 @@ class CommentController extends Controller
      * 获取一条资讯的评论列表.
      *
      * @author bs<414606094@qq.com>
-     * @param  Request $request
-     * @param  news    $news
+     *
+     * @param  Request  $request
+     * @param  news  $news
      * @return mix
      */
     public function index(Request $request, news $news)
@@ -116,9 +118,10 @@ class CommentController extends Controller
      * 获取置顶的评论列表.
      *
      * @author bs<414606094@qq.com>
-     * @param  Request $request
+     *
+     * @param  Request  $request
      * @param  Carbon  $dateTime
-     * @param  News    $news
+     * @param  News  $news
      * @return mix
      */
     public function pinneds(Request $request, Carbon $dateTime, News $news)
@@ -139,9 +142,10 @@ class CommentController extends Controller
      * 删除评论.
      *
      * @author bs<414606094@qq.com>
-     * @param  Request $request
-     * @param  news    $news
-     * @param  Comment $comment
+     *
+     * @param  Request  $request
+     * @param  news  $news
+     * @param  Comment  $comment
      * @return mix
      */
     public function destroy(Request $request, news $news, Comment $comment, NewsPinned $pinnedModel)

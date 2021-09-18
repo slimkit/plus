@@ -29,7 +29,7 @@ class VerificationCode implements ShouldQueue
     /**
      * Handle the event.
      *
-     * @param \Illuminate\Notifications\Events\NotificationSent $event
+     * @param  \Illuminate\Notifications\Events\NotificationSent  $event
      * @return void
      */
     public function handle(NotificationSent $event)
@@ -43,9 +43,10 @@ class VerificationCode implements ShouldQueue
     /**
      * Failed handle the event.
      *
-     * @param \Illuminate\Notifications\Events\NotificationSent $event
-     * @param mixed $exception
+     * @param  \Illuminate\Notifications\Events\NotificationSent  $event
+     * @param  mixed  $exception
      * @return void
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function failed(NotificationSent $event, $exception)
@@ -61,8 +62,9 @@ class VerificationCode implements ShouldQueue
     /**
      * Validate the event notifiable instance of verification code model.
      *
-     * @param mixed $notifiable
+     * @param  mixed  $notifiable
      * @return bool
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     protected function validate($notifiable): bool

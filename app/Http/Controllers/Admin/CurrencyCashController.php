@@ -34,9 +34,10 @@ class CurrencyCashController extends Controller
     /**
      * 提现列表.
      *
-     * @param Request $request
-     * @param OrderModel $orderModel
+     * @param  Request  $request
+     * @param  OrderModel  $orderModel
      * @return mixed
+     *
      * @author BS <414606094@qq.com>
      */
     public function list(Request $request, OrderModel $orderModel)
@@ -73,8 +74,8 @@ class CurrencyCashController extends Controller
     /**
      * 审核积分提现.
      *
-     * @param  Request        $request
-     * @param  OrderModel     $order
+     * @param  Request  $request
+     * @param  OrderModel  $order
      * @return mixed
      */
     public function audit(Request $request, OrderModel $order)

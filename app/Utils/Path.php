@@ -27,9 +27,10 @@ class Path
     /**
      * relative PATH.
      *
-     * @param string $fromPath
-     * @param string $toPath
+     * @param  string  $fromPath
+     * @param  string  $toPath
      * @return string
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public static function relative(string $fromPath, string $toPath): string

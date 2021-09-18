@@ -30,6 +30,7 @@ trait NewsHasLike
      * Has likes.
      *
      * @return \Illuminate\Database\Eloquent\Relations\MorphMany
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function likes()
@@ -40,8 +41,9 @@ trait NewsHasLike
     /**
      * Check user like.
      *
-     * @param mixed $user
+     * @param  mixed  $user
      * @return bool
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function liked($user): bool
@@ -67,7 +69,7 @@ trait NewsHasLike
     /**
      * Like news.
      *
-     * @param mixed $user
+     * @param  mixed  $user
      * @return mixed
      */
     public function like($user)
@@ -90,8 +92,9 @@ trait NewsHasLike
     /**
      * Unlike feed.
      *
-     * @param mixed $user
+     * @param  mixed  $user
      * @return mixed
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function unlike($user)
@@ -114,7 +117,7 @@ trait NewsHasLike
     /**
      * Forget like cache.
      *
-     * @param mixed $user
+     * @param  mixed  $user
      * @return void
      */
     public function forgetLike($user)

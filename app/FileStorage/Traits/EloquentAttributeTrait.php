@@ -29,6 +29,7 @@ trait EloquentAttributeTrait
 {
     /**
      * Get file storage instance.
+     *
      * @return \Zhiyi\Plus\FileStorage\StorageInterface
      */
     protected function getFileStorageInstance(): StorageInterface
@@ -38,7 +39,8 @@ trait EloquentAttributeTrait
 
     /**
      * Get resource meta.
-     * @param string $resource
+     *
+     * @param  string  $resource
      * @return null|\Zhiyi\Plus\FileStorage\FileMeatInterface
      */
     protected function getFileStorageResourceMeta(string $resource): ?FileMetaInterface

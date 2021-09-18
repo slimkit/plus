@@ -36,9 +36,10 @@ class User extends Process
      * @param  int  $amount
      * @param  int  $target_id
      * @param  array  $extra
-     *
      * @return bool
+     *
      * @throws Exception
+     *
      * @author BS <414606094@qq.com>
      */
     public function complete($owner, int $amount, $target_id, array $extra): bool
@@ -73,9 +74,10 @@ class User extends Process
      * @param  int  $target_id
      * @param  string  $title
      * @param  string  $body
-     *
      * @return bool
+     *
      * @throws Exception
+     *
      * @author BS <414606094@qq.com>
      */
     public function prepayment($owner, int $amount, int $target_id, string $title, string $body): bool
@@ -100,9 +102,10 @@ class User extends Process
      * @param  int  $target_id
      * @param  string  $title
      * @param  string  $body
-     *
      * @return bool
+     *
      * @throws Exception
+     *
      * @author BS <414606094@qq.com>
      */
     public function receivables($owner, int $amount, int $target_id, string $title, string $body): bool
@@ -127,9 +130,10 @@ class User extends Process
      * @param  int  $target_id
      * @param  string  $title
      * @param  string  $body
-     *
      * @return bool
+     *
      * @throws Exception
+     *
      * @author BS <414606094@qq.com>
      */
     public function reject(int $owner_id, int $amount, int $target_id, string $title, string $body): bool
@@ -155,8 +159,8 @@ class User extends Process
      * @param  string  $title
      * @param  string  $body
      * @param  int|int  $target_id
-     *
      * @return CurrencyOrderModel
+     *
      * @author BS <414606094@qq.com>
      */
     public function createOrder(UserModel $user, int $amount, int $type, string $title = '', string $body = '', int $target_id = 0): CurrencyOrderModel
@@ -179,8 +183,8 @@ class User extends Process
      *
      * @param  int  $amount
      * @param  array  $extra
-     *
      * @return array
+     *
      * @author BS <414606094@qq.com>
      */
     private function checkDefaultParam(int $amount, array $extra): array

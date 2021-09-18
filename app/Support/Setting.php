@@ -54,7 +54,6 @@ class Setting
      * Create a new setting namespace.
      *
      * @param  string|null  $namespace
-     *
      * @return self
      */
     public function new(?string $namespace = null): self
@@ -81,7 +80,6 @@ class Setting
      *
      * @param  string|null  $name
      * @param  any  $default
-     *
      * @return any
      */
     public function get(?string $name = null, $default = null)
@@ -113,8 +111,8 @@ class Setting
      *
      * @param  array|string  $name
      * @param  any  $contents
-     *
      * @return void
+     *
      * @throws \Throwable
      */
     public function set($name, $contents = null): void
@@ -151,7 +149,6 @@ class Setting
      * The static method create a setting namespace.
      *
      * @param  string  $namespace
-     *
      * @return self
      */
     public static function create(string $namespace)

@@ -31,9 +31,10 @@ class WalletChargeController extends Controller
     /**
      * 获取凭据列表.
      *
-     * @param \Illuminate\Http\Request $request
-     * @param \Illuminate\Contracts\Routing\ResponseFactory $response
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Contracts\Routing\ResponseFactory  $response
      * @return mixed
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function show(Request $request, ContractResponse $response)
@@ -65,8 +66,9 @@ class WalletChargeController extends Controller
     /**
      * Setting wheres.
      *
-     * @param \Illuminate\Database\Eloquent\Builder &$query
-     * @param \Illuminate\Http\Request $request
+     * @param  \Illuminate\Database\Eloquent\Builder  &$query
+     * @param  \Illuminate\Http\Request  $request
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     protected function setWhere(Builder &$query, Request $request)
@@ -83,8 +85,9 @@ class WalletChargeController extends Controller
     /**
      * Setting account.
      *
-     * @param \Illuminate\Database\Eloquent\Builder &$query
-     * @param \Illuminate\Http\Request $request
+     * @param  \Illuminate\Database\Eloquent\Builder  &$query
+     * @param  \Illuminate\Http\Request  $request
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     protected function setAccountToBuilder(Builder &$query, Request $request)
@@ -101,8 +104,9 @@ class WalletChargeController extends Controller
     /**
      * Setting user id to builder where.
      *
-     * @param \Illuminate\Database\Eloquent\Builder &$query
-     * @param \Illuminate\Http\Request $request
+     * @param  \Illuminate\Database\Eloquent\Builder  &$query
+     * @param  \Illuminate\Http\Request  $request
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     protected function setUserToBuilder(Builder &$query, Request $request)
@@ -119,8 +123,8 @@ class WalletChargeController extends Controller
     /**
      * Setting user name to builder where.
      *
-     * @param Builder &$query
-     * @param Request $request
+     * @param  Builder  &$query
+     * @param  Request  $request
      */
     protected function setUserNameTobuilder(Builder &$query, Request $request)
     {
@@ -139,6 +143,7 @@ class WalletChargeController extends Controller
      * Get Query.
      *
      * @return \Illuminate\Database\Eloquent\Builder
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     protected function query(): Builder

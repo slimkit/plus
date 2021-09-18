@@ -69,7 +69,7 @@ class CurrencyController extends Controller
     /**
      * 更新积分基础配置.
      *
-     * @param  Request $request
+     * @param  Request  $request
      * @return mixed
      */
     public function updateConfig(Request $request)
@@ -106,9 +106,10 @@ class CurrencyController extends Controller
     /**
      * 积分流水.
      *
-     * @param Request $request
-     * @param OrderModel $orderModel
+     * @param  Request  $request
+     * @param  OrderModel  $orderModel
      * @return mixed
+     *
      * @author BS <414606094@qq.com>
      */
     public function list(Request $request, OrderModel $orderModel)
@@ -148,8 +149,9 @@ class CurrencyController extends Controller
     /**
      * 积分概览.
      *
-     * @param Request $request
+     * @param  Request  $request
      * @return mixed
+     *
      * @author BS <414606094@qq.com>
      */
     public function overview(OrderModel $orderModel)
@@ -166,7 +168,7 @@ class CurrencyController extends Controller
     /**
      * 获取用户积分信息.
      *
-     * @param Request $request
+     * @param  Request  $request
      * @return \Illuminate\Http\JsonResponse
      */
     public function index(Request $request)
@@ -206,8 +208,8 @@ class CurrencyController extends Controller
     /**
      * 用户积分赋值.
      *
-     * @param Request $request
-     * @param Common  $common
+     * @param  Request  $request
+     * @param  Common  $common
      * @return \Illuminate\Http\JsonResponse
      */
     public function add(Request $request, Common $common)

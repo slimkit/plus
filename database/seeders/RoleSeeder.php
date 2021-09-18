@@ -28,6 +28,7 @@ class RoleSeeder extends Seeder
      * 开始运行 seeder.
      *
      * @return void
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function run()

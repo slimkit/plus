@@ -29,6 +29,7 @@ class Comment extends Controller
 {
     /**
      * List all comments.
+     *
      * @param  ListAllComments  $request
      * @param  CommentModel  $model
      * @return JsonResponse

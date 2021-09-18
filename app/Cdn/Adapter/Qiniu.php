@@ -77,9 +77,10 @@ class Qiniu implements FileUrlGeneratorContract
     /**
      * Build the filename url.
      *
-     * @param string $filename
-     * @param array $extra
+     * @param  string  $filename
+     * @param  array  $extra
      * @return string
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function url(string $filename, array $extra = []): string
@@ -94,8 +95,9 @@ class Qiniu implements FileUrlGeneratorContract
     /**
      * Refresh the cdn files and dirs.
      *
-     * @param \Zhiyi\Plus\Cdn\Refresh $refresh
+     * @param  \Zhiyi\Plus\Cdn\Refresh  $refresh
      * @return void
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function refresh(Refresh $refresh)
@@ -110,8 +112,9 @@ class Qiniu implements FileUrlGeneratorContract
     /**
      * 刷新 融合 CDN.
      *
-     * @param \Zhiyi\Plus\Cdn\Refresh $refresh
+     * @param  \Zhiyi\Plus\Cdn\Refresh  $refresh
      * @return void
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     protected function refreshByCdn(Refresh $refresh)
@@ -151,8 +154,9 @@ class Qiniu implements FileUrlGeneratorContract
     /**
      * 删除 Qiniu Object Storage.
      *
-     * @param \Zhiyi\Plus\Cdn\Refresh $refresh
+     * @param  \Zhiyi\Plus\Cdn\Refresh  $refresh
      * @return void
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     protected function refreshByObject(Refresh $refresh)
@@ -198,10 +202,11 @@ class Qiniu implements FileUrlGeneratorContract
     /**
      * Make the filename type.
      *
-     * @param string $filename
-     * @param array $extra
-     * @param bool $image
+     * @param  string  $filename
+     * @param  array  $extra
+     * @param  bool  $image
      * @return string
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     private function make(string $filename, array $extra = [], $image = false): string
@@ -216,8 +221,9 @@ class Qiniu implements FileUrlGeneratorContract
     /**
      * Build file url.
      *
-     * @param string $filename
+     * @param  string  $filename
      * @return string
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     private function makeFile(string $filename): string
@@ -230,9 +236,10 @@ class Qiniu implements FileUrlGeneratorContract
     /**
      * Build image url.
      *
-     * @param string $filename
-     * @param array $extra
+     * @param  string  $filename
+     * @param  array  $extra
      * @return string
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     private function makeImage(string $filename, array $extra = []): string
@@ -250,8 +257,9 @@ class Qiniu implements FileUrlGeneratorContract
     /**
      * Make the private resource token.
      *
-     * @param string $url
+     * @param  string  $url
      * @return string
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     private function makeToken(string $url): string
@@ -284,11 +292,12 @@ class Qiniu implements FileUrlGeneratorContract
     /**
      * Build the image processor.
      *
-     * @param int $width
-     * @param int $height
-     * @param int $quality
-     * @param int $blur
+     * @param  int  $width
+     * @param  int  $height
+     * @param  int  $quality
+     * @param  int  $blur
      * @return string
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     private function makeImageProcessor(int $width, int $height, int $quality, int $blur): string
@@ -299,9 +308,10 @@ class Qiniu implements FileUrlGeneratorContract
     /**
      * Validate is image.
      *
-     * @param string $filename
-     * @param callable $call
+     * @param  string  $filename
+     * @param  callable  $call
      * @return string
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     private function validateImageAnd(string $filename, callable $call): string
@@ -318,6 +328,7 @@ class Qiniu implements FileUrlGeneratorContract
      * Get support make file extension.
      *
      * @return array
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     private function getSupportExtensions(): array

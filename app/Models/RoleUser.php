@@ -27,6 +27,7 @@ use Illuminate\Database\Eloquent\Model;
  *
  * @property int $user_id
  * @property int $role_id
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|RoleUser newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|RoleUser newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|RoleUser query()

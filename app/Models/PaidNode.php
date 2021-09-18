@@ -40,6 +40,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property-read int|null $users_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\Zhiyi\Plus\Models\Wallet[] $wallet
  * @property-read int|null $wallet_count
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|PaidNode newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|PaidNode newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|PaidNode query()

@@ -34,7 +34,8 @@ abstract class Target
     /**
      * Set the order service.
      *
-     * @param \Zhiyi\Plus\Packages\Wallet\Order $order
+     * @param  \Zhiyi\Plus\Packages\Wallet\Order  $order
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function setOrder(Order $order)

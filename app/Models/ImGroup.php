@@ -35,6 +35,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property string|null $deleted_at
  * @property-read \Zhiyi\Plus\Models\FileWith|null $face
  * @property-read \Zhiyi\Plus\Models\User|null $owner
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|ImGroup newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|ImGroup newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|ImGroup query()

@@ -32,9 +32,10 @@ class SmsController extends Controller
     /**
      * Show SMS logs.
      *
-     * @param \Illuminate\Http\Request $request
-     * @param \Illuminate\Contracts\Routing\ResponseFactory $response
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Contracts\Routing\ResponseFactory  $response
      * @return mixed
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function show(Request $request, ResponseFactory $response, VerificationCode $model)
@@ -64,7 +65,7 @@ class SmsController extends Controller
     /**
      * 获取短信所有配置网关.
      *
-     * @param Repository $config
+     * @param  Repository  $config
      * @return ResponseFactory|\Symfony\Component\HttpFoundation\Response
      */
     public function showGateway(Repository $config)
@@ -80,9 +81,9 @@ class SmsController extends Controller
     /**
      * 更新允许的网关.
      *
-     * @param Request $request
-     * @param Repository $config
-     * @param Configuration $store
+     * @param  Request  $request
+     * @param  Repository  $config
+     * @param  Configuration  $store
      * @return ResponseFactory|\Symfony\Component\HttpFoundation\Response
      */
     public function updateGateway(Request $request, Repository $config, Configuration $store)
@@ -108,10 +109,11 @@ class SmsController extends Controller
     /**
      * Get SMS driver configuration information.
      *
-     * @param \Illuminate\Contracts\Config\Repository $config
-     * @param \Illuminate\Contracts\Routing\ResponseFactory $response
-     * @param string $driver
+     * @param  \Illuminate\Contracts\Config\Repository  $config
+     * @param  \Illuminate\Contracts\Routing\ResponseFactory  $response
+     * @param  string  $driver
      * @return mixed
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function showOption(Repository $config, ResponseFactory $response, string $driver)
@@ -128,12 +130,13 @@ class SmsController extends Controller
     /**
      * Update Ali SMS configuration information.
      *
-     * @param Repository $config
-     * @param Configuration $store
-     * @param Request $request
-     * @param ResponseFactory $response
-     * @param string $driver
+     * @param  Repository  $config
+     * @param  Configuration  $store
+     * @param  Request  $request
+     * @param  ResponseFactory  $response
+     * @param  string  $driver
      * @return mixed
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function updateAlidayuOption(Configuration $store, Request $request, ResponseFactory $response)
@@ -153,12 +156,13 @@ class SmsController extends Controller
     /**
      * Update Aliyun SMS configuration information.
      *
-     * @param Repository $config
-     * @param Configuration $store
-     * @param Request $request
-     * @param ResponseFactory $response
-     * @param string $driver
+     * @param  Repository  $config
+     * @param  Configuration  $store
+     * @param  Request  $request
+     * @param  ResponseFactory  $response
+     * @param  string  $driver
      * @return mixed
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function updateAliyunOption(Configuration $store, Request $request)
@@ -178,12 +182,13 @@ class SmsController extends Controller
     /**
      * Update Yunpian SMS configuration information.
      *
-     * @param Repository $config
-     * @param Configuration $store
-     * @param Request $request
-     * @param ResponseFactory $response
-     * @param string $driver
+     * @param  Repository  $config
+     * @param  Configuration  $store
+     * @param  Request  $request
+     * @param  ResponseFactory  $response
+     * @param  string  $driver
      * @return mixed
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function updateYunpianOption(Configuration $store, Request $request)
@@ -217,7 +222,7 @@ class SmsController extends Controller
     /**
      * Get SMS driver Template configuration information.
      *
-     * @param  Repository $config [description]
+     * @param  Repository  $config  [description]
      * @return [type]             [description]
      */
     public function smsTemplate(Repository $config)
@@ -235,9 +240,9 @@ class SmsController extends Controller
     /**
      * Update SMS driver Template configuration information.
      *
-     * @param  Repository    $config
-     * @param  Configuration $store
-     * @param  Request       $request
+     * @param  Repository  $config
+     * @param  Configuration  $store
+     * @param  Request  $request
      * @return [type]
      */
     public function updateTemplate(Configuration $store, Request $request)

@@ -39,11 +39,12 @@ class FilesController extends Controller
     /**
      * Get file.
      *
-     * @param \Illuminate\Http\Request $request
-     * @param \Illuminate\Contracts\Routing\ResponseFactory $response
-     * @param CdnUrlManager $cdn
-     * @param \Zhiyi\Plus\Models\FileWith $fileWith
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Contracts\Routing\ResponseFactory  $response
+     * @param  CdnUrlManager  $cdn
+     * @param  \Zhiyi\Plus\Models\FileWith  $fileWith
      * @return mixed
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function show(Request $request, ResponseContract $response, CdnUrlManager $cdn, FileWithModel $fileWith)
@@ -76,9 +77,10 @@ class FilesController extends Controller
     /**
      * 解决用户是否购买过处理.
      *
-     * @param \Zhiyi\Plus\Models\User|null $user
-     * @param PaidNodeModel $node
+     * @param  \Zhiyi\Plus\Models\User|null  $user
+     * @param  PaidNodeModel  $node
      * @return bool
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     protected function resolveUserPaid($user, PaidNodeModel $node): bool
@@ -89,12 +91,13 @@ class FilesController extends Controller
     /**
      * 储存上传文件.
      *
-     * @param \Zhiyi\Plus\Http\Requests\API2\StoreUploadFile $request
-     * @param \Illuminate\Contracts\Routing\ResponseFactory $response
-     * @param \Carbon\Carbon $dateTime
-     * @param \Zhiyi\Plus\Models\File $fileModel
-     * @param \Zhiyi\Plus\Models\FileWith $fileWith
+     * @param  \Zhiyi\Plus\Http\Requests\API2\StoreUploadFile  $request
+     * @param  \Illuminate\Contracts\Routing\ResponseFactory  $response
+     * @param  \Carbon\Carbon  $dateTime
+     * @param  \Zhiyi\Plus\Models\File  $fileModel
+     * @param  \Zhiyi\Plus\Models\FileWith  $fileWith
      * @return mixed
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function store(StoreUploadFileRequest $request, ResponseContract $response, Carbon $dateTime, FileModel $fileModel, FileWithModel $fileWith)
@@ -134,12 +137,13 @@ class FilesController extends Controller
     /**
      * Get or create a uploaded file with id.
      *
-     * @param \Illuminate\Http\Request $request
-     * @param \Illuminate\Contracts\Routing\ResponseFactory $response
-     * @param \Zhiyi\Plus\Models\File $file
-     * @param \Zhiyi\Plus\Models\FileWith $fileWith
-     * @param string $hash
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Contracts\Routing\ResponseFactory  $response
+     * @param  \Zhiyi\Plus\Models\File  $file
+     * @param  \Zhiyi\Plus\Models\FileWith  $fileWith
+     * @param  string  $hash
      * @return mixed
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function uploaded(Request $request, ResponseContract $response, FileModel $file, FileWithModel $fileWith, string $hash)
@@ -160,10 +164,11 @@ class FilesController extends Controller
     /**
      * Validate and return the file database model instance.
      *
-     * @param \Zhiyi\Plus\Models\File $fileModel
-     * @param \Illuminate\Http\UploadedFile $file
-     * @param callable $call
+     * @param  \Zhiyi\Plus\Models\File  $fileModel
+     * @param  \Illuminate\Http\UploadedFile  $file
+     * @param  callable  $call
      * @return \Zhiyi\Plus\Models\File
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     protected function validateFileInDatabase(FileModel $fileModel, UploadedFile $file, callable $call): FileModel
@@ -178,10 +183,11 @@ class FilesController extends Controller
     /**
      * 解决数据模型非实例.
      *
-     * @param \Zhiyi\Plus\Models\FileWith $fileWith
-     * @param \Zhiyi\Plus\Models\User $user
-     * @param \Zhiyi\Plus\Models\File $file
+     * @param  \Zhiyi\Plus\Models\FileWith  $fileWith
+     * @param  \Zhiyi\Plus\Models\User  $user
+     * @param  \Zhiyi\Plus\Models\File  $file
      * @return \Zhiyi\Plus\Models\FileWith
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     protected function resolveFileWith(FileWithModel $fileWith, UserModel $user, FileModel $file): FileWithModel

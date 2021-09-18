@@ -31,6 +31,7 @@ class MimeType
 {
     /**
      * Caching MIME types.
+     *
      * @var array
      */
     protected $mimeTypes;
@@ -45,6 +46,7 @@ class MimeType
 
     /**
      * Get file storage validate MIME types.
+     *
      * @return \Illuminate\Http\JsonResponse
      */
     public function show(): JsonResponse
@@ -63,8 +65,10 @@ class MimeType
 
     /**
      * Update file storage validate MIME types.
-     * @param \Illuminate\Http\Request $request
+     *
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
+     *
      * @throws \Throwable
      */
     public function update(Request $request): Response

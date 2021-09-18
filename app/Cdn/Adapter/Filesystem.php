@@ -54,7 +54,8 @@ class Filesystem implements FileUrlGeneratorContract
     /**
      * Create the CDN generator.
      *
-     * @param \Illuminate\Contracts\Foundation\Application $app
+     * @param  \Illuminate\Contracts\Foundation\Application  $app
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function __construct(ApplicationContract $app, FilesystemFactoryContract $files)
@@ -68,10 +69,12 @@ class Filesystem implements FileUrlGeneratorContract
     /**
      * Generator a URL.
      *
-     * @param string $filename
-     * @param array $extra
-     * @throws \Exception
+     * @param  string  $filename
+     * @param  array  $extra
      * @return string
+     *
+     * @throws \Exception
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function url(string $filename, array $extra = []): string
@@ -106,8 +109,9 @@ class Filesystem implements FileUrlGeneratorContract
     /**
      * Refresh the cdn files and dirs.
      *
-     * @param \Zhiyi\Plus\Cdn\Refresh $refresh
+     * @param  \Zhiyi\Plus\Cdn\Refresh  $refresh
      * @return void
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function refresh(Refresh $refresh)
@@ -123,9 +127,10 @@ class Filesystem implements FileUrlGeneratorContract
     /**
      * 保存转换后的文件并返回地址.
      *
-     * @param \Intervention\Image\Image $image
-     * @param string $filename
+     * @param  \Intervention\Image\Image  $image
+     * @param  string  $filename
      * @return string
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     private function putProcessFile(Image $image, string $filename): string
@@ -140,9 +145,10 @@ class Filesystem implements FileUrlGeneratorContract
     /**
      * 处理文件尺寸.
      *
-     * @param \Intervention\Image\Image $image
-     * @param array $extra
+     * @param  \Intervention\Image\Image  $image
+     * @param  array  $extra
      * @return void
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     protected function processSize(Image $image, array $extra)
@@ -173,10 +179,11 @@ class Filesystem implements FileUrlGeneratorContract
     /**
      * 验证文件是否需要处理，如果需要则执行回调.
      *
-     * @param string $filename
-     * @param array $extra
-     * @param callable $call
+     * @param  string  $filename
+     * @param  array  $extra
+     * @param  callable  $call
      * @return string
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     private function validateProcessAnd(string $filename, array $extra, callable $call): string
@@ -201,10 +208,11 @@ class Filesystem implements FileUrlGeneratorContract
     /**
      * 验证文件指纹，如果指纹文件存在，则直接返回，否则执行回调.
      *
-     * @param string $filename
-     * @param callable $call
-     * @param array $extra
+     * @param  string  $filename
+     * @param  callable  $call
+     * @param  array  $extra
      * @return string
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     private function validateFingerprint(string $filename, callable $call, array $extra): string
@@ -224,8 +232,9 @@ class Filesystem implements FileUrlGeneratorContract
     /**
      * Make Image.
      *
-     * @param string $filename
+     * @param  string  $filename
      * @return \Intervention\Image\Image
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     protected function makeImage(string $filename): Image
@@ -236,8 +245,9 @@ class Filesystem implements FileUrlGeneratorContract
     /**
      * 生成文件转换信息指纹.
      *
-     * @param array $extra
+     * @param  array  $extra
      * @return string
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     protected function makeProcessFingerprint(array $extra): string
@@ -248,9 +258,10 @@ class Filesystem implements FileUrlGeneratorContract
     /**
      * 生成转换后的文件路径.
      *
-     * @param string $filename
-     * @param string $fingerprint
+     * @param  string  $filename
+     * @param  string  $fingerprint
      * @return string
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     protected function makeProcessFilename(string $filename, string $fingerprint): string
@@ -264,6 +275,7 @@ class Filesystem implements FileUrlGeneratorContract
      * 获取支持的文件 mimeType.
      *
      * @return array
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function getSupportMimeTypes(): array
@@ -289,9 +301,10 @@ class Filesystem implements FileUrlGeneratorContract
     /**
      * 验证是否是图片，如果是并且执行回调.
      *
-     * @param string $filename
-     * @param callable $call
+     * @param  string  $filename
+     * @param  callable  $call
      * @return string
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     private function validateImageAnd(string $filename, callable $call): string
@@ -306,8 +319,9 @@ class Filesystem implements FileUrlGeneratorContract
     /**
      * Make public URL.
      *
-     * @param string $filename
+     * @param  string  $filename
      * @return string
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     protected function makeUrl(string $filename): string

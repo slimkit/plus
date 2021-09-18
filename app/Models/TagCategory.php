@@ -32,6 +32,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \Illuminate\Database\Eloquent\Collection|\Zhiyi\Plus\Models\Tag[] $tags
  * @property-read int|null $tags_count
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|TagCategory newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|TagCategory newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|TagCategory query()
@@ -55,6 +56,7 @@ class TagCategory extends Model
      * Has tags of the category.
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function tags()

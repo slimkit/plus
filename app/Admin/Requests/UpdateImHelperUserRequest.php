@@ -28,6 +28,7 @@ class UpdateImHelperUserRequest extends FormRequest
      * Determine if the user is authorized to make this request.
      *
      * @return bool
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function authorize(): bool
@@ -39,6 +40,7 @@ class UpdateImHelperUserRequest extends FormRequest
      * Get the validation rules that apply to the request.
      *
      * @return array
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function rules(): array
@@ -52,6 +54,7 @@ class UpdateImHelperUserRequest extends FormRequest
      * Get the validation message that apply to the request.
      *
      * @return array
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function messages(): array

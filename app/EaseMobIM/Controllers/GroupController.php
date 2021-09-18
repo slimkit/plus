@@ -35,9 +35,11 @@ class GroupController extends EaseMobController
     /**
      * 创建群组.
      *
-     * @param CheckGroup $request
-     * @param ImGroup $imGroup
+     * @param  CheckGroup  $request
+     * @param  ImGroup  $imGroup
+     *
      * @author ZsyD<1251992018@qq.com>
+     *
      * @return $this
      */
     public function store(CheckGroup $request, ImGroup $imGroup)
@@ -104,9 +106,10 @@ class GroupController extends EaseMobController
     /**
      * 修改群信息.
      *
-     * @param UpdateGroup $request
-     * @param UrlManager $urlManager
+     * @param  UpdateGroup  $request
+     * @param  UrlManager  $urlManager
      * @return $this
+     *
      * @author ZsyD<1251992018@qq.com>
      */
     public function update(UpdateGroup $request, UrlManager $urlManager)
@@ -198,9 +201,10 @@ class GroupController extends EaseMobController
     /**
      * 删除群组.
      *
-     * @param Request $request
-     * @param ImGroup $imGroup
+     * @param  Request  $request
+     * @param  ImGroup  $imGroup
      * @return $this
+     *
      * @author ZsyD<1251992018@qq.com>
      */
     public function delete(Request $request, ImGroup $imGroup)
@@ -247,9 +251,10 @@ class GroupController extends EaseMobController
     /**
      * 获取群信息.
      *
-     * @param Request $request
-     * @param UrlManager $urlManager
+     * @param  Request  $request
+     * @param  UrlManager  $urlManager
      * @return $this
+     *
      * @author ZsyD<1251992018@qq.com>
      */
     public function newGetGroup(Request $request, UrlManager $urlManager)
@@ -331,8 +336,9 @@ class GroupController extends EaseMobController
     /**
      * 获取群头像(多个用","隔开).
      *
-     * @param GroupId $request
+     * @param  GroupId  $request
      * @return \Illuminate\Http\JsonResponse
+     *
      * @author ZsyD<1251992018@qq.com>
      */
     public function getGroupFace(GroupId $request)
@@ -352,6 +358,7 @@ class GroupController extends EaseMobController
      * @param $members
      * @param $owner
      * @return mixed
+     *
      * @author ZsyD<1251992018@qq.com>
      */
     private function getUser($members, $owner)
@@ -373,8 +380,9 @@ class GroupController extends EaseMobController
     /**
      * 添加群成员(多个用","隔开).
      *
-     * @param GroupMember $request
+     * @param  GroupMember  $request
      * @return $this
+     *
      * @author ZsyD<1251992018@qq.com>
      */
     public function addGroupMembers(GroupMember $request)
@@ -431,8 +439,9 @@ class GroupController extends EaseMobController
     /**
      * 移除群成员(多个用","隔开).
      *
-     * @param GroupMember $request
+     * @param  GroupMember  $request
      * @return $this
+     *
      * @author ZsyD<1251992018@qq.com>
      */
     public function removeGroupMembers(GroupMember $request)

@@ -26,6 +26,7 @@ class QQDriver extends DriverAbstract
      * Get base URI.
      *
      * @return string
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     protected function getBaseURI(): string
@@ -37,6 +38,7 @@ class QQDriver extends DriverAbstract
      * Get the provider.
      *
      * @return string
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function provider(): string
@@ -47,8 +49,9 @@ class QQDriver extends DriverAbstract
     /**
      * Request Tencent QQ user unionid.
      *
-     * @param string $accessToken
+     * @param  string  $accessToken
      * @return string
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function unionid(string $accessToken): string
@@ -74,8 +77,7 @@ class QQDriver extends DriverAbstract
     /**
      * Remove the fucking callback parentheses.
      *
-     * @param string $response
-     *
+     * @param  string  $response
      * @return string
      */
     protected function removeCallback(string $response): string

@@ -32,6 +32,7 @@ class WalletTest extends TestCase
      * Test Wallet::class implements.
      *
      * @return void
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function testClassImplements()
@@ -47,7 +48,9 @@ class WalletTest extends TestCase
      *
      * @expectedException \Exception
      * @expectedExceptionMessage 传递的不是一个用户
+     *
      * @return void
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function testSetUser()
@@ -82,7 +85,9 @@ class WalletTest extends TestCase
      *
      * @expectedException \Exception
      * @expectedExceptionMessage 没有设置钱包用户
+     *
      * @return void
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function testGetWalletModel()
@@ -110,6 +115,7 @@ class WalletTest extends TestCase
      * Test increment method.
      *
      * @return void
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function testIncrement()
@@ -141,6 +147,7 @@ class WalletTest extends TestCase
      * Test decrement method.
      *
      * @return void
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function testDecrement()
@@ -172,6 +179,7 @@ class WalletTest extends TestCase
      * Test enough method.
      *
      * @return void
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function testEnough()
@@ -195,6 +203,7 @@ class WalletTest extends TestCase
      * Test toArray method.
      *
      * @return void
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function testToArray()
@@ -224,6 +233,7 @@ class WalletTest extends TestCase
      * Test jsonSerialize method.
      *
      * @return void
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function testJsonSerialize()
@@ -245,7 +255,9 @@ class WalletTest extends TestCase
      * Test toJson method.
      *
      * @expectedException \RuntimeException
+     *
      * @return void
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function testToJson()
@@ -276,6 +288,7 @@ class WalletTest extends TestCase
      * Test __toString method.
      *
      * @return void
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function test__toString()
