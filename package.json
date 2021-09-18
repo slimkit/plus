@@ -25,7 +25,7 @@
         "resolve-url-loader": "^3.1.0",
         "sass": "^1.22.9",
         "sass-loader": "7.*",
-        "vue-template-compiler": "^2.6.10"
+        "vue-template-compiler": "^2.6.14"
     },
     "dependencies": {
         "@slimkit/plus-editor": "^0.0.3",
@@ -41,7 +41,7 @@
         "markdown-it": "^8.4.1",
         "plus-message-bundle": "^1.0.2",
         "simkit-bootstrap-ui-kit": "^1.1.1",
-        "vue": "^2.6.10",
+        "vue": "^2.6.14",
         "vue-echarts-v3": "^2.0.1",
         "vue-router": "^3.0.1",
         "vuex": "^3.1.1",
