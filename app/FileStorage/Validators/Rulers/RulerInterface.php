@@ -24,7 +24,8 @@ interface RulerInterface
 {
     /**
      * Rule handler.
-     * @param array $params
+     *
+     * @param  array  $params
      * @return bool
      */
     public function handle(array $params): bool;

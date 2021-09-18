@@ -35,7 +35,7 @@ class PcPackageHandler extends PackageHandler
     /**
      * Create the handler instance.
      *
-     * @param \Zhiyi\Plus\Support\Configuration $conft
+     * @param  \Zhiyi\Plus\Support\Configuration  $conft
      */
     public function __construct(Configuration $config)
     {
@@ -100,8 +100,9 @@ class PcPackageHandler extends PackageHandler
     /**
      * Create a soft link to public.
      *
-     * @param \Illuminate\Console\Command $command
+     * @param  \Illuminate\Console\Command  $command
      * @return mixed
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function linkHandle($command)
@@ -126,6 +127,7 @@ class PcPackageHandler extends PackageHandler
      * Delete links.
      *
      * @return void
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     protected function unlink()
@@ -142,6 +144,7 @@ class PcPackageHandler extends PackageHandler
      * Get the Publish path,.
      *
      * @return array
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     protected function getPaths(): array

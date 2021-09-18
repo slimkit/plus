@@ -46,7 +46,8 @@ class NotificationController extends Controller
 
     /**
      * Get the request notification type.
-     * @param \Illuminate\Http\Request $request
+     *
+     * @param  \Illuminate\Http\Request  $request
      * @return string
      */
     protected function getQueryType(Request $request, bool $getTypes = false)
@@ -70,7 +71,8 @@ class NotificationController extends Controller
 
     /**
      * Get the user notifications.
-     * @param \Illuminate\Http\Request $request
+     *
+     * @param  \Illuminate\Http\Request  $request
      * @return mixed
      */
     public function index(Request $request)
@@ -88,7 +90,8 @@ class NotificationController extends Controller
 
     /**
      * Set notifications make read at.
-     * @param \Illuminate\Http\Request $request
+     *
+     * @param  \Illuminate\Http\Request  $request
      * @return mixed
      */
     public function update(Request $request)
@@ -106,7 +109,8 @@ class NotificationController extends Controller
 
     /**
      * Clear follow notifications.
-     * @param \Illuminate\Http\Request $request
+     *
+     * @param  \Illuminate\Http\Request  $request
      * @return mixed
      */
     public function clearFollowNotifications(Request $request)
@@ -118,7 +122,8 @@ class NotificationController extends Controller
 
     /**
      * Get the user notification statistics.
-     * @param \Illuminate\Http\Request $request
+     *
+     * @param  \Illuminate\Http\Request  $request
      * @return mixed
      */
     public function statistics(Request $request)

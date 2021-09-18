@@ -45,10 +45,11 @@ class NewPinnedController extends Controller
     /**
      * 申请资讯置顶.
      *
-     * @param Request $request
-     * @param NewsModel $news
-     * @param Carbon $dateTime
+     * @param  Request  $request
+     * @param  NewsModel  $news
+     * @param  Carbon  $dateTime
      * @return mixed
+     *
      * @author BS <414606094@qq.com>
      */
     public function newsPinned(Request $request, NewsModel $news, Carbon $dateTime)
@@ -112,11 +113,12 @@ class NewPinnedController extends Controller
     /**
      * 申请资讯评论置顶.
      *
-     * @param Request $request
-     * @param NewsModel $news
-     * @param CommentModel $comment
-     * @param Carbon $dateTime
+     * @param  Request  $request
+     * @param  NewsModel  $news
+     * @param  CommentModel  $comment
+     * @param  Carbon  $dateTime
      * @return mixed
+     *
      * @author BS <414606094@qq.com>
      */
     public function commentPinned(Request $request, NewsModel $news, CommentModel $comment, Carbon $dateTime)
@@ -208,9 +210,10 @@ class NewPinnedController extends Controller
     /**
      * check Request.
      *
-     * @param Request $request
-     * @param NewsPinnedModel $pinned
-     * @param callable $call
+     * @param  Request  $request
+     * @param  NewsPinnedModel  $pinned
+     * @param  callable  $call
+     *
      * @author BS <414606094@qq.com>
      */
     public function PinnedValidate(Request $request, NewsPinnedModel $pinned, callable $call)

@@ -28,10 +28,12 @@ class WechatController extends Controller
 {
     /**
      * 获取授权跳转页面, 防止appid外泄.
+     *
      * @Author   Wayne
      * @DateTime 2018-03-19
      * @Email    qiaobin@zhiyicx.com
-     * @return   [type]              [description]
+     *
+     * @return [type]              [description]
      */
     public function getOauthUrl(Request $request)
     {
@@ -51,12 +53,14 @@ class WechatController extends Controller
 
     /**
      * 获取网页授权的access_token, 以及unionid.
+     *
      * @Author   Wayne
      * @DateTime 2018-03-19
      * @Email    qiaobin@zhiyicx.com
-     * @param    Request             $request [description]
-     * @param    string              $code    [description]
-     * @return   [type]                       [description]
+     *
+     * @param  Request  $request  [description]
+     * @param  string  $code  [description]
+     * @return [type]                       [description]
      */
     public function getAccess(string $code)
     {
@@ -72,11 +76,13 @@ class WechatController extends Controller
 
     /**
      * 获取微信用户信息.
+     *
      * @Author   Wayne
      * @DateTime 2018-03-19
      * @Email    qiaobin@zhiyicx.com
-     * @param    Request             $request [description]
-     * @return   [type]                       [description]
+     *
+     * @param  Request  $request  [description]
+     * @return [type]                       [description]
      */
     public function getUser(Request $request)
     {

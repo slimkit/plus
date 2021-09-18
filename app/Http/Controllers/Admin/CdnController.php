@@ -30,6 +30,7 @@ class CdnController extends Controller
      * Get selected cdn.
      *
      * @return mixed
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function getCdnSelected()
@@ -41,6 +42,7 @@ class CdnController extends Controller
      * Get qiniu setting.
      *
      * @return mixed
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function qiniu()
@@ -59,8 +61,9 @@ class CdnController extends Controller
     /**
      * Qiniu setting.
      *
-     * @param \Illuminate\Http\Request $request
-     * @param \Zhiyi\Plus\Support\Configuration $repository
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \Zhiyi\Plus\Support\Configuration  $repository
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function setQiniu(Request $request, ConfigurationRepository $repository)
@@ -84,6 +87,7 @@ class CdnController extends Controller
      * Get local disk.
      *
      * @return mixed
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function getFilesystemDisk()
@@ -94,7 +98,8 @@ class CdnController extends Controller
     /**
      * 设置本地文件系统公开磁盘.
      *
-     * @param \Zhiyi\Plus\Support\Configuration $repository
+     * @param  \Zhiyi\Plus\Support\Configuration  $repository
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function setPublicDisk(ConfigurationRepository $repository)
@@ -111,6 +116,7 @@ class CdnController extends Controller
      * 获取 local 磁盘公开地址.
      *
      * @return mixed
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function getLocalDisk()
@@ -121,8 +127,9 @@ class CdnController extends Controller
     /**
      * 设置 local 磁盘配置.
      *
-     * @param \Illuminate\Http\Request $request
-     * @param \Zhiyi\Plus\Support\Configuration $repository
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \Zhiyi\Plus\Support\Configuration  $repository
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function setLocalDisk(Request $request, ConfigurationRepository $repository)
@@ -140,6 +147,7 @@ class CdnController extends Controller
      * 获取 S3 Disk 配置.
      *
      * @return mixed
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function getS3Disk()
@@ -150,8 +158,9 @@ class CdnController extends Controller
     /**
      * 设置 S3 配置.
      *
-     * @param \Illuminate\Http\Request $request
-     * @param \Zhiyi\Plus\Support\Configuration $repository
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \Zhiyi\Plus\Support\Configuration  $repository
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function setS3Disk(Request $request, ConfigurationRepository $repository)
@@ -172,6 +181,7 @@ class CdnController extends Controller
      * Get alioss setting.
      *
      * @return mixed
+     *
      * @author BS <414606094@qq.com>
      */
     public function alioss()
@@ -191,8 +201,9 @@ class CdnController extends Controller
     /**
      * alioss setting.
      *
-     * @param \Illuminate\Http\Request $request
-     * @param \Zhiyi\Plus\Support\Configuration $repository
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \Zhiyi\Plus\Support\Configuration  $repository
+     *
      * @author BS <414606094@qq.com>
      */
     public function setAlioss(Request $request, ConfigurationRepository $repository)

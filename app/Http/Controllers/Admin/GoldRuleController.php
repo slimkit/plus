@@ -48,7 +48,7 @@ class GoldRuleController extends Controller
     /**
      * show rule.
      *
-     * @param  GoldRule $rule
+     * @param  GoldRule  $rule
      * @return \Illuminate\Http\JsonResponse
      */
     public function showRule(GoldRule $rule)
@@ -73,7 +73,7 @@ class GoldRuleController extends Controller
     /**
      * store gold rule.
      *
-     * @param Request $request
+     * @param  Request  $request
      * @return \Illuminate\Http\JsonResponse
      */
     public function storeRule(Request $request)
@@ -94,8 +94,8 @@ class GoldRuleController extends Controller
     /**
      * update gold rule.
      *
-     * @param Request $request
-     * @param GoldRule $goldRule
+     * @param  Request  $request
+     * @param  GoldRule  $goldRule
      * @return \Illuminate\Http\JsonResponse
      */
     public function updateRule(Request $request, GoldRule $rule)
@@ -115,7 +115,8 @@ class GoldRuleController extends Controller
 
     /**
      * delete rule.
-     * @param  GoldRule $rule
+     *
+     * @param  GoldRule  $rule
      * @return \Illuminate\Http\JsonResponse
      */
     public function deleteRule(GoldRule $rule)

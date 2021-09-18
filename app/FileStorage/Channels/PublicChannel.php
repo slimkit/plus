@@ -27,6 +27,7 @@ class PublicChannel extends AbstractChannel
 {
     /**
      * Create a upload task.
+     *
      * @return \Zhiyi\Plus\FileStorage\TaskInterface
      */
     public function createTask(): TaskInterface
@@ -36,6 +37,7 @@ class PublicChannel extends AbstractChannel
 
     /**
      * Get a resource meta.
+     *
      * @return \Zhiyi\Plus\FileStorage\FileMetaInterface
      */
     public function meta(): FileMetaInterface
@@ -45,6 +47,7 @@ class PublicChannel extends AbstractChannel
 
     /**
      * Uploaded callback handler.
+     *
      * @return void
      */
     public function callback(): void

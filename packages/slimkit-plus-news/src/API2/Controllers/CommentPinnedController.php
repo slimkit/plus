@@ -38,9 +38,10 @@ class CommentPinnedController extends Controller
     /**
      * 获取资讯评论当前用户审核列表.
      *
-     * @param Request $request
-     * @param NewsPinnedModel $model
+     * @param  Request  $request
+     * @param  NewsPinnedModel  $model
      * @return mixed
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function index(Request $request, NewsPinnedModel $model)
@@ -91,15 +92,18 @@ class CommentPinnedController extends Controller
 
     /**
      *  审核评论置顶.
-     * @param Request $request [description]
-     * @param ResponseContract $response [description]
-     * @param Carbon $dateTime [description]
-     * @param WalletChargeModel $charge [description]
-     * @param NewsModel $news [description]
-     * @param CommentModel $comment [description]
-     * @param NewsPinnedModel $pinned [description]
+     *
+     * @param  Request  $request  [description]
+     * @param  ResponseContract  $response  [description]
+     * @param  Carbon  $dateTime  [description]
+     * @param  WalletChargeModel  $charge  [description]
+     * @param  NewsModel  $news  [description]
+     * @param  CommentModel  $comment  [description]
+     * @param  NewsPinnedModel  $pinned  [description]
      * @return JsonResponse [type]                      [description]
+     *
      * @throws Throwable
+     *
      * @author Wayne < qiaobinloverabbi@gmail.com >
      */
     public function accept(
@@ -155,7 +159,9 @@ class CommentPinnedController extends Controller
 
     /**
      *  拒绝评论置顶.
+     *
      *  @author Wayne < qiaobinloverabbi@gmail.com >
+     *
      *  @param  Request           $request  [description]
      *  @param  ResponseContract  $response [description]
      *  @param  Carbon            $dateTime [description]
@@ -224,8 +230,8 @@ class CommentPinnedController extends Controller
      * @param  NewsModel  $news
      * @param $comment
      * @param  NewsPinnedModel  $pinned
-     *
      * @return mixed
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function destroy(

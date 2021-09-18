@@ -31,6 +31,7 @@ use Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\Feed as FeedModel;
  * @property int $topic_id Topic ID
  * @property int $feed_id Feed ID
  * @property-read FeedModel|null $feed
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|FeedTopicLink newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|FeedTopicLink newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|FeedTopicLink query()

@@ -35,6 +35,7 @@ class RouteRegistrar
      * Create a new route registrar instance.
      *
      * @param  \Illuminate\Contracts\Routing\Registrar  $router
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function __construct(RouterContract $router)
@@ -46,6 +47,7 @@ class RouteRegistrar
      * Register all.
      *
      * @return void
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function all()
@@ -58,6 +60,7 @@ class RouteRegistrar
      * Register admin routes.
      *
      * @return void
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function forAdmin()
@@ -77,6 +80,7 @@ class RouteRegistrar
      * Register api 2 routes.
      *
      * @return void
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function forApi2()

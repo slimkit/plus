@@ -30,6 +30,7 @@ class ClientsController
      * Get all clients.
      *
      * @return mixed
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function index()
@@ -40,8 +41,9 @@ class ClientsController
     /**
      * Store a client.
      *
-     * @param \SlimKit\PlusID\Admin\Requests\CreateClientRequest $request
+     * @param  \SlimKit\PlusID\Admin\Requests\CreateClientRequest  $request
      * @return mixed
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function store(CreateClientRequest $request)
@@ -65,8 +67,9 @@ class ClientsController
     /**
      * Destory a client.
      *
-     * @param \SlimKit\PlusID\Models\Client $client
+     * @param  \SlimKit\PlusID\Models\Client  $client
      * @return mixed
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function destroy(ClientModel $client)
@@ -79,9 +82,10 @@ class ClientsController
     /**
      * Update a client.
      *
-     * @param \SlimKit\PlusID\Admin\Requests\UpdateClientRequest $request
-     * @param \SlimKit\PlusID\Models\Client $client
+     * @param  \SlimKit\PlusID\Admin\Requests\UpdateClientRequest  $request
+     * @param  \SlimKit\PlusID\Models\Client  $client
      * @return mixed
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function update(UpdateClientRequest $request, ClientModel $client)

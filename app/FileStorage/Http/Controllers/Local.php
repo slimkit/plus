@@ -39,13 +39,15 @@ class Local extends Controller
 {
     /**
      * File storage instance.
+     *
      * @var \Zhiyi\Plus\FileStorage\StorageInterface
      */
     protected $storage;
 
     /**
      * Create the controller instance.
-     * @param \Zhiyi\Plus\FileStorage\StorageInterface $storage
+     *
+     * @param  \Zhiyi\Plus\FileStorage\StorageInterface  $storage
      */
     public function __construct(StorageInterface $storage)
     {
@@ -61,9 +63,10 @@ class Local extends Controller
 
     /**
      * Get a file.
-     * @param \Illuminate\Http\Request $request
-     * @param string $channel
-     * @param string $path
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  string  $channel
+     * @param  string  $path
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function get(Request $request, string $channel, string $path): Response
@@ -75,10 +78,11 @@ class Local extends Controller
 
     /**
      * Put a file.
-     * @param \Illuminate\Http\Request $request
-     * @param s\Illuminate\Contracts\Cache\Factory $cache
-     * @param string $channel
-     * @param string $path
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  s\Illuminate\Contracts\Cache\Factory  $cache
+     * @param  string  $channel
+     * @param  string  $path
      * @return Symfony\Component\HttpFoundation\Response
      */
     public function put(Request $request, FactoryContract $cache, string $channel, string $path): JsonResponse

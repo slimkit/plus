@@ -66,6 +66,7 @@ class TransformCurrencyTarget extends Target
      * 初始化钱包.
      *
      * @return void
+     *
      * @author BS <414606094@qq.com>
      */
     protected function initWallet()

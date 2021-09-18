@@ -25,7 +25,9 @@ class AccountController extends BaseController
 {
     /**
      * 基本设置.
+     *
      * @author Foreach
+     *
      * @return mixed
      */
     public function index()
@@ -40,7 +42,9 @@ class AccountController extends BaseController
 
     /**
      * 认证
+     *
      * @author 28youth
+     *
      * @return mixed
      */
     public function authenticate()
@@ -58,7 +62,9 @@ class AccountController extends BaseController
 
     /**
      * 更新认证
+     *
      * @author 28youth
+     *
      * @return mixed
      */
     public function updateAuthenticate()
@@ -74,7 +80,9 @@ class AccountController extends BaseController
 
     /**
      * 标签管理.
+     *
      * @author 28youth
+     *
      * @return mixed
      */
     public function tags()
@@ -88,7 +96,9 @@ class AccountController extends BaseController
 
     /**
      * 密码修改.
+     *
      * @author 28youth
+     *
      * @return mixed
      */
     public function security()
@@ -102,8 +112,10 @@ class AccountController extends BaseController
 
     /**
      * 我的钱包.
+     *
      * @author Foreach
-     * @param  int|int $type    [类型]
+     *
+     * @param  int|int  $type  [类型]
      * @return mixed
      */
     public function wallet(int $type = 1)
@@ -119,8 +131,10 @@ class AccountController extends BaseController
 
     /**
      * 钱包记录列表.
+     *
      * @author Foreach
-     * @param  Request $request
+     *
+     * @param  Request  $request
      * @return \Illuminate\Http\JsonResponse
      */
     public function records(Request $request)
@@ -162,7 +176,9 @@ class AccountController extends BaseController
 
     /**
      * 充值
+     *
      * @author Foreach
+     *
      * @return mixed
      */
     public function pay()
@@ -175,8 +191,10 @@ class AccountController extends BaseController
 
     /**
      * ping++充值调起.
+     *
      * @author Foreach
-     * @param  Request $request
+     *
+     * @param  Request  $request
      * @return mixed
      */
     public function gateway(Request $request)
@@ -188,7 +206,9 @@ class AccountController extends BaseController
 
     /**
      * 提现.
+     *
      * @author Foreach
+     *
      * @return mixed
      */
     public function draw()
@@ -200,7 +220,9 @@ class AccountController extends BaseController
 
     /**
      * 获取绑定信息.
+     *
      * @author ZsyD
+     *
      * @return mixed
      */
     public function getMyBinds()
@@ -231,8 +253,10 @@ class AccountController extends BaseController
 
     /**
      * 我的积分.
+     *
      * @author szlvincent
-     * @param  int|int $type    [类型]
+     *
+     * @param  int|int  $type  [类型]
      * @return mixed
      */
     public function currency(int $type = 1)
@@ -247,8 +271,10 @@ class AccountController extends BaseController
 
     /**
      * 积分记录列表.
+     *
      * @author szlvincent
-     * @param  Request $request
+     *
+     * @param  Request  $request
      * @return \Illuminate\Http\JsonResponse
      */
     public function currencyRecords(Request $request)
@@ -298,7 +324,9 @@ class AccountController extends BaseController
 
     /**
      * 积分充值
+     *
      * @author szlvincent
+     *
      * @return mixed
      */
     public function currencyPay()
@@ -312,7 +340,9 @@ class AccountController extends BaseController
 
     /**
      * 积分提取.
+     *
      * @author szlvincent
+     *
      * @return mixed
      */
     public function currencyDraw()

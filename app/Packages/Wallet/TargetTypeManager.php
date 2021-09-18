@@ -30,7 +30,8 @@ class TargetTypeManager extends Manager
     /**
      * Set the manager order.
      *
-     * @param \Zhiyi\Plus\Packages\Wallet\Order $order
+     * @param  \Zhiyi\Plus\Packages\Wallet\Order  $order
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function setOrder(Order $order)
@@ -42,6 +43,7 @@ class TargetTypeManager extends Manager
      * Get the order target type driver.
      *
      * @return string
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function getDefaultDriver()
@@ -53,6 +55,7 @@ class TargetTypeManager extends Manager
      * Create user target type driver.
      *
      * @return \Zhiyi\Plus\Packages\TargetTypes\Target
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     protected function createUserDriver(): Target
@@ -67,6 +70,7 @@ class TargetTypeManager extends Manager
      * Create widthdraw target type driver.
      *
      * @return \Zhiyi\Plus\Packages\TargetTypes\Target
+     *
      * @author BS <414606094@qq.com>
      */
     protected function createWidthdrawDriver(): Target
@@ -81,6 +85,7 @@ class TargetTypeManager extends Manager
      * Create Rew target type driver.
      *
      * @return \Zhiyi\Plus\Packages\TargetTypes\Target
+     *
      * @author hh <915664508@qq.com>
      */
     protected function createRewardDriver(): Target
@@ -95,6 +100,7 @@ class TargetTypeManager extends Manager
      * Create Charge target type driver.
      *
      * @return \Zhiyi\Plus\Packages\TargetTypes\Target
+     *
      * @author BS <414606094@qq.com>
      */
     protected function createRechargePingPPDriver(): Target
@@ -109,6 +115,7 @@ class TargetTypeManager extends Manager
      * Create Transform target type driver.
      *
      * @return \Zhiyi\Plus\Packages\TargetTypes\Target
+     *
      * @author BS <414606094@qq.com>
      */
     protected function createTransformDriver(): Target

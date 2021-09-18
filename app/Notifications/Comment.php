@@ -36,8 +36,8 @@ class Comment extends Notification implements ShouldQueue
     /**
      * Create a new notification instance.
      *
-     * @param CommentModel $comment
-     * @param UserModel $sender
+     * @param  CommentModel  $comment
+     * @param  UserModel  $sender
      */
     public function __construct(CommentModel $comment, UserModel $sender)
     {

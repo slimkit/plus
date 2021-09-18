@@ -28,8 +28,9 @@ class TrashedUserResource extends JsonResource
     /**
      * The resource to array handle.
      *
-     * @param \Illuminate\Http\Request $request
+     * @param  \Illuminate\Http\Request  $request
      * @return array
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function toArray($request): array

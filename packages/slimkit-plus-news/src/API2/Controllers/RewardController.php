@@ -46,9 +46,10 @@ class RewardController extends Controller
      * 打赏一条资讯.
      *
      * @author bs<414606094@qq.com>
-     * @param  Request      $request
-     * @param  News         $news
-     * @param  WalletCharge $charge
+     *
+     * @param  Request  $request
+     * @param  News  $news
+     * @param  WalletCharge  $charge
      * @return mix
      */
     public function reward(Request $request, News $news, WalletCharge $charge)
@@ -126,8 +127,9 @@ class RewardController extends Controller
      * 一条资讯的打赏列表.
      *
      * @author bs<414606094@qq.com>
-     * @param  Request $request
-     * @param  News    $news
+     *
+     * @param  Request  $request
+     * @param  News  $news
      * @return mix
      */
     public function index(Request $request, News $news)
@@ -158,7 +160,8 @@ class RewardController extends Controller
      * 查看一条资讯的打赏统计
      *
      * @author bs<414606094@qq.com>
-     * @param  News   $news
+     *
+     * @param  News  $news
      * @return array
      */
     public function sum(News $news)

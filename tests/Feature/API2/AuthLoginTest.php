@@ -41,6 +41,7 @@ class AuthLoginTest extends TestCase
      * Test User ID login.
      *
      * @return void
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function testUserLogin()
@@ -71,6 +72,7 @@ class AuthLoginTest extends TestCase
      *
      * @param [type] $response
      * @return void
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     protected function assertLoginResponse($response)

@@ -43,7 +43,8 @@ class NewsController extends Controller
 
     /**
      * 资讯列表.
-     * @param  $cate_id [分类ID]
+     *
+     * @param  $cate_id  [分类ID]
      * @return mixed 返回结果
      */
     public function getNewsList(Request $request, Carbon $datetime)
@@ -84,7 +85,7 @@ class NewsController extends Controller
     /**
      * 回收站资讯列表.
      *
-     * @param  $cate_id [分类ID]
+     * @param  $cate_id  [分类ID]
      * @return mixed 返回结果
      */
     public function getRecycleList(Request $request)
@@ -110,9 +111,10 @@ class NewsController extends Controller
     }
 
     /**
-     * @param Request  $request
-     * @param TagModel $tagModel
+     * @param  Request  $request
+     * @param  TagModel  $tagModel
      * @return \Illuminate\Http\JsonResponse
+     *
      * @throws \Throwable
      */
     public function doSaveNews(Request $request, TagModel $tagModel)

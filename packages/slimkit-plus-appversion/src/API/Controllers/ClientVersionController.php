@@ -29,8 +29,9 @@ class ClientVersionController
      * get the list of client versions.
      *
      * @author bs<414606094@qq.com>
-     * @param  Illuminate\Http\Request $request
-     * @param  ClientVersion $versionModel
+     *
+     * @param  Illuminate\Http\Request  $request
+     * @param  ClientVersion  $versionModel
      * @return mixed
      */
     public function index(Request $request, ClientVersion $versionModel)

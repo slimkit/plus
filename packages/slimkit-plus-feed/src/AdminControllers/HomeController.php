@@ -34,6 +34,7 @@ class HomeController extends Controller
      * feed management background entry.
      *
      * @return mixed
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function show()
@@ -49,6 +50,7 @@ class HomeController extends Controller
      * 获取分享统计信息.
      *
      * @return mixed
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function statistics(Request $request, Feed $feedModel, Comment $commentModel, Carbon $datetime)
@@ -139,7 +141,8 @@ class HomeController extends Controller
 
     /**
      * 关闭应用打赏.
-     * @param  Request $request [description]
+     *
+     * @param  Request  $request  [description]
      * @return [type]           [description]
      */
     public function handleRewardStatus(Request $request)

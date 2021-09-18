@@ -25,8 +25,9 @@ interface UserAbility
     /**
      * get users all roles.
      *
-     * @param string $role
+     * @param  string  $role
      * @return mixed
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function roles(string $role = '');
@@ -34,8 +35,9 @@ interface UserAbility
     /**
      * Get users all abilities.
      *
-     * @param string $ability
+     * @param  string  $ability
      * @return mixed
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function all(string $ability = '');

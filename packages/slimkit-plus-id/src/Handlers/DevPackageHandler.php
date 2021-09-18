@@ -48,7 +48,6 @@ class DevPackageHandler extends \Zhiyi\Plus\Support\PackageHandler
      * Create a migration file.
      *
      * @param  \Illuminate\Console\Command  $command
-     *
      * @return mixed
      */
     public function makeMigrationHandle(Command $command)
@@ -89,8 +88,8 @@ class DevPackageHandler extends \Zhiyi\Plus\Support\PackageHandler
      * Create a database seeder.
      *
      * @param  \Illuminate\Console\Command  $command
-     *
      * @return mixed
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function makeSeederHandle(Command $command)
@@ -129,8 +128,8 @@ class DevPackageHandler extends \Zhiyi\Plus\Support\PackageHandler
      * Make package model.
      *
      * @param  \Illuminate\Console\Command  $command
-     *
      * @return mixed
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function makeModelHandle(Command $command)

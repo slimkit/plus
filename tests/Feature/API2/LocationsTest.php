@@ -26,6 +26,7 @@ class LocationsTest extends TestCase
      * 测试获取地区.
      *
      * @return void
+     *
      * @author BS <414606094@qq.com>
      */
     public function testSearchLocations()
@@ -39,6 +40,7 @@ class LocationsTest extends TestCase
      * 测试获取热门城市.
      *
      * @return void
+     *
      * @author BS <414606094@qq.com>
      */
     public function testGetHotLocations()

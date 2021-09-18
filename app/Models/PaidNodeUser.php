@@ -27,6 +27,7 @@ use Illuminate\Database\Eloquent\Model;
  *
  * @property int $node_id 付费发布ID
  * @property int $user_id 用户ID
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|PaidNodeUser newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|PaidNodeUser newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|PaidNodeUser query()

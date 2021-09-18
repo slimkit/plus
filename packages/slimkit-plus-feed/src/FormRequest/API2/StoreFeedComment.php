@@ -30,6 +30,7 @@ class StoreFeedComment extends FormRequest
      * authorization check.
      *
      * @return bool
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function authorize(): bool
@@ -41,6 +42,7 @@ class StoreFeedComment extends FormRequest
      * get the validator rules.
      *
      * @return array
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function rules(): array
@@ -58,6 +60,7 @@ class StoreFeedComment extends FormRequest
      * Get the validator messages.
      *
      * @return array
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function messages(): array

@@ -32,6 +32,7 @@ class CheckinTest extends TestCase
      * Test get checkin ranks.
      *
      * @return void
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function testCheckin()

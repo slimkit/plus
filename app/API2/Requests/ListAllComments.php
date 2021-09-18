@@ -24,6 +24,7 @@ class ListAllComments extends Request
 {
     /**
      * The validate rules.
+     *
      * @return array
      */
     public function rules(): array
@@ -43,6 +44,7 @@ class ListAllComments extends Request
 
     /**
      * Get the validate error messages.
+     *
      * @return array
      */
     public function messages(): array

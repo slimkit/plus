@@ -30,20 +30,23 @@ class ChannelManager extends Manager
 {
     /**
      * Support drives.
+     *
      * @var array
      */
     public const DRIVES = ['public', 'protected', 'private'];
 
     /**
      * Filesystem manager.
+     *
      * @var \Zhiyi\Plus\FileStorage\FilesystemManager
      */
     protected $fielsystemManager;
 
     /**
      * Create the manager instance.
-     * @param \Zhiyi\Plus\AppInterface $app
-     * @param \Zhiyi\Plus\FileStorage\FilesystemManager $fielsystemManager
+     *
+     * @param  \Zhiyi\Plus\AppInterface  $app
+     * @param  \Zhiyi\Plus\FileStorage\FilesystemManager  $fielsystemManager
      */
     public function __construct(AppInterface $app, FilesystemManager $fielsystemManager)
     {
@@ -61,6 +64,7 @@ class ChannelManager extends Manager
 
     /**
      * Create public channel driver.
+     *
      * @return \Zhiyi\Plus\FileStorage\Channels\ChannelInterface
      */
     protected function createPublicDriver(): ChannelInterface

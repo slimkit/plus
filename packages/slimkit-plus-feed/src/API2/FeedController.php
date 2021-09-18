@@ -60,6 +60,7 @@ class FeedController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @param  \Illuminate\Contracts\Foundation\Application  $app
      * @return mixed
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function index(
@@ -155,6 +156,7 @@ class FeedController extends Controller
      * @param  \Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\Feed  $feedModel
      * @param  \Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Repository\Feed  $repository
      * @return mixed
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function new(
@@ -242,6 +244,7 @@ class FeedController extends Controller
      * @param  \Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Repository\Feed  $repository
      * @param  \Carbon\Carbon  $dateTime
      * @return mixed
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function hot(
@@ -308,6 +311,7 @@ class FeedController extends Controller
      * @param  \Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Repository\Feed  $repository
      * @param  Carbon  $datetime
      * @return mixed
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function follow(
@@ -383,7 +387,9 @@ class FeedController extends Controller
      * @param  \Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Repository\Feed  $repository
      * @param  int  $feed
      * @return mixed
+     *
      * @throws Throwable
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function show(
@@ -572,6 +578,7 @@ class FeedController extends Controller
      *
      * @param  StoreFeedPostRequest  $request
      * @return mixed
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     protected function makeFileWith(StoreFeedPostRequest $request)
@@ -595,6 +602,7 @@ class FeedController extends Controller
      * @Author   Wayne
      * @DateTime 2018-04-02
      * @Email    qiaobin@zhiyicx.com
+     *
      * @param  StoreFeedPostRequest  $request
      * @return \Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Eloquent\Model|object|null
      */
@@ -619,6 +627,7 @@ class FeedController extends Controller
      * @Author   Wayne
      * @DateTime 2018-04-02
      * @Email    qiaobin@zhiyicx.com
+     *
      * @param  StoreFeedPostRequest  $request
      * @return \Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Eloquent\Model|object|null
      */
@@ -642,6 +651,7 @@ class FeedController extends Controller
      *
      * @param  StoreFeedPostRequest  $request
      * @return mixed
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     protected function makePaidNode(StoreFeedPostRequest $request)
@@ -666,10 +676,12 @@ class FeedController extends Controller
      * @Author   Wayne
      * @DateTime 2018-04-02
      * @Email    qiaobin@zhiyicx.com
+     *
      * @param $videoWith
      * @param $videoCoverWith
      * @param  FeedModel  $feed
      * @return void
+     *
      * @throws \Throwable
      */
     protected function saveFeedVideoWith(
@@ -707,6 +719,7 @@ class FeedController extends Controller
      * @param  array  $fileWiths
      * @param  \Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\Feed  $feed
      * @return void
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     protected function saveFeedFileWith($fileWiths, FeedModel $feed)
@@ -724,6 +737,7 @@ class FeedController extends Controller
      * @param  array  $nodes
      * @param  \Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\Feed  $feed
      * @return void
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     protected function saveFeedFilePaidNode($nodes, FeedModel $feed)
@@ -742,6 +756,7 @@ class FeedController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @param  \Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\Feed  $feed
      * @return void
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     protected function saveFeedPaidNode(Request $request, FeedModel $feed)
@@ -768,6 +783,7 @@ class FeedController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @param  \Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\Feed  $feed
      * @return \Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\Feed
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     protected function fillFeedBaseData(Request $request, FeedModel $feed): FeedModel
@@ -794,7 +810,9 @@ class FeedController extends Controller
      * @param  ResponseContract  $response
      * @param  FeedModel  $feed
      * @return mixed
+     *
      * @throws Throwable
+     *
      * @author BS <414606094@qq.com>
      */
     public function newDestroy(
@@ -877,6 +895,7 @@ class FeedController extends Controller
      * @param  FeedModel  $feedModel
      * @param  FeedRepository  $repository
      * @return mixed
+     *
      * @author bs<414606094@qq.com>
      */
     public function users(
