@@ -30,6 +30,7 @@ class FileSize
 {
     /**
      * Get file storage validate size.
+     *
      * @return \Illuminate\Http\JsonResponse
      */
     public function show(): JsonResponse
@@ -51,7 +52,8 @@ class FileSize
 
     /**
      * Update file storage validate file size.
-     * @param \Illuminate\Http\Request $request
+     *
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request): Response

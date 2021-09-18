@@ -36,10 +36,11 @@ class RechargeType extends Type
      * 创建充值订单.
      *
      * @param $owner
-     * @param int $amount
-     * @param string $type
-     * @param array $extra
+     * @param  int  $amount
+     * @param  string  $type
+     * @param  array  $extra
      * @return mixed
+     *
      * @author BS <414606094@qq.com>
      */
     public function create($owner, int $amount, string $type, array $extra = [])
@@ -69,6 +70,7 @@ class RechargeType extends Type
      * 主动取回凭据.
      *
      * @return boolen
+     *
      * @author BS <414606094@qq.com>
      */
     public function retrieve(WalletOrderModel $walletOrder): bool
@@ -85,8 +87,9 @@ class RechargeType extends Type
     /**
      * 异步回调通知.
      *
-     * @param Request $request
+     * @param  Request  $request
      * @return boolen
+     *
      * @author BS <414606094@qq.com>
      */
     public function webhook(Request $request): bool
@@ -109,6 +112,7 @@ class RechargeType extends Type
      * 完成订单.
      *
      * @return boolen
+     *
      * @author BS <414606094@qq.com>
      */
     public function complete(WalletOrderModel $walletOrder): bool
@@ -121,8 +125,9 @@ class RechargeType extends Type
     /**
      * Check user.
      *
-     * @param int|UserModel $user
+     * @param  int|UserModel  $user
      * @return int
+     *
      * @author BS <414606094@qq.com>
      */
     protected function checkUserId($user): int
@@ -137,9 +142,10 @@ class RechargeType extends Type
     /**
      * Create Order.
      *
-     * @param int $owner
-     * @param int $amount
+     * @param  int  $owner
+     * @param  int  $amount
      * @return Zhiyi\Plus\Models\WalletOrderModel
+     *
      * @author BS <414606094@qq.com>
      */
     protected function createOrder(int $owner, int $amount): Order
@@ -160,9 +166,10 @@ class RechargeType extends Type
     /**
      * 解决付款订单来源.
      *
-     * @param array $charge
-     * @param string|null $default
+     * @param  array  $charge
+     * @param  string|null  $default
      * @return string|null
+     *
      * @author BS <414606094@qq.com>
      */
     protected function resolveChargeAccount($charge, $default = null)
@@ -182,8 +189,9 @@ class RechargeType extends Type
     /**
      * 验证回调信息.
      *
-     * @param Request $request
+     * @param  Request  $request
      * @return boolen
+     *
      * @author BS <414606094@qq.com>
      */
     protected function verifyWebHook(Request $request): bool

@@ -32,6 +32,7 @@ class UserCheckinTest extends TestCase
      * Test Not login request.
      *
      * @return void
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function testNotLoginRequest()
@@ -45,6 +46,7 @@ class UserCheckinTest extends TestCase
      * Test get user checkin data.
      *
      * @return void
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function testGetUserCheckin()

@@ -26,10 +26,13 @@ class UserController extends BaseController
 {
     /**
      * 找伙伴.
-     * @param Request $request
-     * @param int|int $type [类型]
+     *
+     * @param  Request  $request
+     * @param  int|int  $type  [类型]
      * @return mixed
+     *
      * @throws \Throwable
+     *
      * @author Foreach
      */
     public function users(Request $request, int $type = 1)
@@ -85,7 +88,9 @@ class UserController extends BaseController
 
     /**
      * 地区搜索.
+     *
      * @author 28youth
+     *
      * @return mixed
      */
     public function area()
@@ -98,10 +103,12 @@ class UserController extends BaseController
 
     /**
      * 用户粉丝.
+     *
      * @author Foreach
-     * @param  Request     $request
-     * @param  int|int $type    [类型]
-     * @param  int|int $user_id [用户id]
+     *
+     * @param  Request  $request
+     * @param  int|int  $type  [类型]
+     * @param  int|int  $user_id  [用户id]
      * @return mixed
      */
     public function follower(Request $request, int $user_id = 0)
@@ -139,10 +146,12 @@ class UserController extends BaseController
 
     /**
      * 用户关注.
+     *
      * @author Foreach
-     * @param  Request     $request
-     * @param  int|int $type    [类型]
-     * @param  int|int $user_id [用户id]
+     *
+     * @param  Request  $request
+     * @param  int|int  $type  [类型]
+     * @param  int|int  $user_id  [用户id]
      * @return mixed
      */
     public function following(Request $request, int $user_id = 0)

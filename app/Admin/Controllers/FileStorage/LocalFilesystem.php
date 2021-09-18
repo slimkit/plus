@@ -30,6 +30,7 @@ class LocalFilesystem
 {
     /**
      * Get local filesystem.
+     *
      * @return \Illuminate\Http\JsonResponse
      */
     public function show(): JsonResponse
@@ -46,7 +47,8 @@ class LocalFilesystem
 
     /**
      * Update local filesystem.
-     * @param \Illuminate\Http\Request $request
+     *
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request): Response

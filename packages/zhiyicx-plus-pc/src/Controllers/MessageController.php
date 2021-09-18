@@ -39,8 +39,8 @@ class MessageController extends BaseController
      * 评论消息列表.
      *
      * @param  Request  $request
-     *
      * @return JsonResponse
+     *
      * @throws Throwable
      */
     public function comments(Request $request)
@@ -161,8 +161,8 @@ class MessageController extends BaseController
      * 点赞消息列表.
      *
      * @param  Request  $request
-     *
      * @return JsonResponse
+     *
      * @throws Throwable
      */
     public function likes(Request $request)
@@ -259,8 +259,8 @@ class MessageController extends BaseController
      * 通知消息列表.
      *
      * @param  Request  $request
-     *
      * @return JsonResponse
+     *
      * @throws Throwable
      */
     public function notifications(Request $request)
@@ -290,8 +290,8 @@ class MessageController extends BaseController
      * 动态评论置顶.
      *
      * @param  Request  $request
-     *
      * @return JsonResponse
+     *
      * @throws Throwable
      */
     public function pinnedFeedComment(Request $request)
@@ -316,8 +316,8 @@ class MessageController extends BaseController
      * 文章评论置顶.
      *
      * @param  Request  $request
-     *
      * @return JsonResponse
+     *
      * @throws Throwable
      */
     public function pinnedNewsComment(Request $request)
@@ -341,8 +341,8 @@ class MessageController extends BaseController
      * 帖子评论置顶.
      *
      * @param  Request  $request
-     *
      * @return JsonResponse
+     *
      * @throws Throwable
      */
     public function pinnedPostComment(Request $request)
@@ -366,8 +366,8 @@ class MessageController extends BaseController
      * 圈子帖子置顶.
      *
      * @param  Request  $request
-     *
      * @return JsonResponse
+     *
      * @throws Throwable
      */
     public function pinnedPost(Request $request)
@@ -391,8 +391,8 @@ class MessageController extends BaseController
      * 联系人.
      *
      * @param  Request  $request
-     *
      * @return JsonResponse
+     *
      * @throws Throwable
      */
     public function followMutual(Request $request)
@@ -416,8 +416,8 @@ class MessageController extends BaseController
      * at 我的.
      *
      * @param  Request  $request
-     *
      * @return JsonResponse
+     *
      * @throws Throwable
      */
     public function mention(Request $request)

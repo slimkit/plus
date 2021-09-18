@@ -31,8 +31,9 @@ class NewWalletCashController extends Controller
     /**
      * 获取提现列表.
      *
-     * @param \Illuminate\Http\Request $request
+     * @param  \Illuminate\Http\Request  $request
      * @return mixed
+     *
      * @author BS <414606094@qq.com>
      */
     public function show(Request $request)
@@ -58,8 +59,9 @@ class NewWalletCashController extends Controller
     /**
      * 提交提现申请.
      *
-     * @param \Zhiyi\Plus\Http\Requests\API2\NewStoreUserWallerCashPost $request
+     * @param  \Zhiyi\Plus\Http\Requests\API2\NewStoreUserWallerCashPost  $request
      * @return mixed
+     *
      * @author BS <414606094@qq.com>
      */
     public function store(NewStoreUserWallerCashPost $request, TypeManager $manager)

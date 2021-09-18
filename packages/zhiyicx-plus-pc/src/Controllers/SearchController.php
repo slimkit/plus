@@ -26,10 +26,12 @@ class SearchController extends BaseController
 {
     /**
      * 搜索.
+     *
      * @author Foreach
-     * @param  Request     $request
-     * @param  int|int $type     [搜索类型]
-     * @param  string      $keywords [关键字]
+     *
+     * @param  Request  $request
+     * @param  int|int  $type  [搜索类型]
+     * @param  string  $keywords  [关键字]
      * @return mixed
      */
     public function index(int $type = 1, string $keywords = '')
@@ -42,8 +44,10 @@ class SearchController extends BaseController
 
     /**
      * 搜索获取数据.
+     *
      * @author Foreach
-     * @param  Request $request
+     *
+     * @param  Request  $request
      * @return \Illuminate\Http\JsonResponse
      */
     public function getData(Request $request)

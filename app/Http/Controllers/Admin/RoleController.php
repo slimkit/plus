@@ -50,8 +50,7 @@ class RoleController extends Controller
     /**
      * 删除用户组.
      *
-     * @param Role $role
-     *
+     * @param  Role  $role
      * @return mixed
      *
      * @author Seven Du <shiweidu@outlook.com>
@@ -76,8 +75,9 @@ class RoleController extends Controller
     /**
      * 创建角色接口.
      *
-     * @param Request $request
+     * @param  Request  $request
      * @return mixed
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function createRole(Request $request)
@@ -119,9 +119,10 @@ class RoleController extends Controller
     /**
      * 完成获取角色接口.
      *
-     * @param Request $request
-     * @param Role $role
+     * @param  Request  $request
+     * @param  Role  $role
      * @return mixed
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function showRole(Request $request, Role $role)
@@ -153,9 +154,10 @@ class RoleController extends Controller
     /**
      * 更新角色信息.
      *
-     * @param Request $request
-     * @param Role $role
+     * @param  Request  $request
+     * @param  Role  $role
      * @return mixed
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function updateRole(Request $request, Role $role)
@@ -197,8 +199,9 @@ class RoleController extends Controller
     /**
      * 创建权限节点.
      *
-     * @param Request $request
+     * @param  Request  $request
      * @return mixed
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function createAbility(Request $request)
@@ -240,9 +243,8 @@ class RoleController extends Controller
     /**
      * 更新权限节点.
      *
-     * @param Request    $request
-     * @param Ability $ability
-     *
+     * @param  Request  $request
+     * @param  Ability  $ability
      * @return mixed
      *
      * @author Seven Du <shiweidu@outlook.com>
@@ -280,8 +282,9 @@ class RoleController extends Controller
     /**
      * 删除权限节点.
      *
-     * @param Ability $ability
+     * @param  Ability  $ability
      * @return mixed
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function deleteAbility(Request $request, Ability $ability)

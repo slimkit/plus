@@ -35,6 +35,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property-read \Illuminate\Database\Eloquent\Collection|Area[] $items
  * @property-read int|null $items_count
  * @property-read Area|null $parent
+ *
  * @method static Builder|Area byPid($pid)
  * @method static Builder|Area newModelQuery()
  * @method static Builder|Area newQuery()
@@ -52,9 +53,8 @@ class Area extends Model
     /**
      * Scope func by pid.
      *
-     * @param Builder $query
-     * @param int     $pid
-     *
+     * @param  Builder  $query
+     * @param  int  $pid
      * @return Illuminate\Database\Eloquent\Builder
      *
      * @author Seven Du <shiweidu@outlook.com>

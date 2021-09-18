@@ -36,6 +36,7 @@ class RewardTarget extends Target
      * Handle.
      *
      * @return mixed
+     *
      * @author hh <915664508@qq.com>
      */
     public function handle($extra): bool
@@ -84,6 +85,7 @@ class RewardTarget extends Target
      * Send notification.
      *
      * @return void
+     *
      * @author hh <915664508@qq.com>
      */
     protected function sendNotification($extra)
@@ -95,6 +97,7 @@ class RewardTarget extends Target
      * Init owner and target user wallet.
      *
      * @return void
+     *
      * @author hh <915664508@qq.com>
      */
     protected function initWallet()
@@ -114,6 +117,7 @@ class RewardTarget extends Target
      * Create target user order.
      *
      * @return void
+     *
      * @author hh <915664508@qq.com>
      */
     protected function createTargetRewordOrder(string $body)
@@ -135,6 +139,7 @@ class RewardTarget extends Target
      * Get target user order type.
      *
      * @return int
+     *
      * @author hh <915664508@qq.com>
      */
     protected function getTargetRewordOrderType(): int
@@ -149,9 +154,10 @@ class RewardTarget extends Target
     /**
      * Transfer.
      *
-     * @param \Zhiyi\Plus\Packages\Wallet\Order $order
-     * @param \Zhiyi\Plus\Packages\Wallet\Wallet $wallet
+     * @param  \Zhiyi\Plus\Packages\Wallet\Order  $order
+     * @param  \Zhiyi\Plus\Packages\Wallet\Wallet  $wallet
      * @return void
+     *
      * @author hh <915664508@qq.com>
      */
     protected function transfer(Order $order, Wallet $wallet)

@@ -28,6 +28,7 @@ trait UserHasComment
      * Has comments.
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function comments()

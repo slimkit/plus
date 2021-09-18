@@ -43,7 +43,8 @@ class PinnedController extends Controller
     /**
      * Create the controller instance.
      *
-     * @param \Illuminate\Contracts\Foundation\Application $app
+     * @param  \Illuminate\Contracts\Foundation\Application  $app
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function __construct(ApplicationContract $app)
@@ -53,7 +54,9 @@ class PinnedController extends Controller
 
     /**
      *  ask for top the comment.
+     *
      *  @author Wayne < qiaobinloverabbi@gmail.com >
+     *
      *  @param  Request      $request [description]
      *  @param  NewsModel    $news    [description]
      *  @param  CommentModel $comment [description]
@@ -114,7 +117,9 @@ class PinnedController extends Controller
 
     /**
      *  ask for top the comment.
+     *
      *  @author Wayne < qiaobinloverabbi@gmail.com >
+     *
      *  @param  Request      $request [description]
      *  @param  NewsModel    $news    [description]
      *  @param  CommentModel $comment [description]
@@ -208,11 +213,12 @@ class PinnedController extends Controller
     /**
      * 保存所有数据库记录.
      *
-     * @param \Illuminate\Http\Request $request
-     * @param \Illuminate\Contracts\Routing\ResponseFactory $response
-     * @param \Zhiyi\Plus\Models\WalletCharge $charge
-     * @param \Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\FeedPinned $pinned
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Contracts\Routing\ResponseFactory  $response
+     * @param  \Zhiyi\Plus\Models\WalletCharge  $charge
+     * @param  \Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\FeedPinned  $pinned
      * @return mixed
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function save(
@@ -243,7 +249,9 @@ class PinnedController extends Controller
 
     /**
      *  check request.
+     *
      *  @author Wayne < qiaobinloverabbi@gmail.com >
+     *
      *  @param  Request         $request [description]
      *  @param  NewsPinnedModel $pinned  [description]
      *  @param  callable        $call    [description]

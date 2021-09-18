@@ -29,8 +29,10 @@ class ConfigController extends Controller
 {
     /**
      * 导航配置列表.
+     *
      * @author 28youth
-     * @param  int|int $pos  0-顶部 1-底部
+     *
+     * @param  int|int  $pos  0-顶部 1-底部
      * @return mixed
      */
     public function index(int $pos = 0)
@@ -63,8 +65,10 @@ class ConfigController extends Controller
 
     /**
      * 添加编辑导航.
+     *
      * @author 28youth
-     * @param  Request $request
+     *
+     * @param  Request  $request
      * @return mixed
      */
     public function manage(Request $request)
@@ -115,8 +119,10 @@ class ConfigController extends Controller
 
     /**
      * 获取一条导航记录.
+     *
      * @author 28youth
-     * @param  int     $nid  记录id
+     *
+     * @param  int  $nid  记录id
      * @return mixed
      */
     public function getnav(int $nid)
@@ -129,8 +135,10 @@ class ConfigController extends Controller
 
     /**
      * 删除导航记录.
+     *
      * @author 28youth
-     * @param  int     $nid   记录id
+     *
+     * @param  int  $nid  记录id
      * @return mixed
      */
     public function delete(int $nid)
@@ -147,9 +155,11 @@ class ConfigController extends Controller
 
     /**
      * 获取pc基础配置信息.
+     *
      * @author 28youth
-     * @param Repository $config
-     * @param Configuration $configuration
+     *
+     * @param  Repository  $config
+     * @param  Configuration  $configuration
      * @return \Illuminate\Http\JsonResponse
      */
     public function get(Repository $config, Configuration $configuration)
@@ -165,9 +175,11 @@ class ConfigController extends Controller
 
     /**
      * 初始化站点设置.
+     *
      * @author 28youth
-     * @param Repository $config
-     * @param Configuration $configuration
+     *
+     * @param  Repository  $config
+     * @param  Configuration  $configuration
      * @return mixed
      */
     private function initSiteConfiguration(Configuration $configuration)
@@ -194,9 +206,11 @@ class ConfigController extends Controller
 
     /**
      * 更新pc站基本配置信息.
+     *
      * @author 28youth
-     * @param  Request $request
-     * @param Configuration $configuration
+     *
+     * @param  Request  $request
+     * @param  Configuration  $configuration
      * @return mixed
      */
     public function updateSiteInfo(Request $request, Configuration $configuration)

@@ -35,7 +35,8 @@ class JWTAuthToken
     /**
      * Create the JWTAuthToken instance.
      *
-     * @param \Tymon\JWTAuth\JWT $jwt
+     * @param  \Tymon\JWTAuth\JWT  $jwt
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function __construct(JWT $jwt)
@@ -46,8 +47,9 @@ class JWTAuthToken
     /**
      * Create user token.
      *
-     * @param UserModel $user
+     * @param  UserModel  $user
      * @return mixed
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function create(UserModel $user)
@@ -58,8 +60,9 @@ class JWTAuthToken
     /**
      * Refresh token.
      *
-     * @param string $token
+     * @param  string  $token
      * @return mixed
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function refresh(string $token)

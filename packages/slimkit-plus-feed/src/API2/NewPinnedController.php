@@ -49,12 +49,13 @@ class NewPinnedController extends Controller
     /**
      * 申请动态评论置顶.
      *
-     * @param Request $request
-     * @param ResponseContract $response
-     * @param FeedModel $feed
-     * @param CommentModel $comment
-     * @param Carbon $datetime
+     * @param  Request  $request
+     * @param  ResponseContract  $response
+     * @param  FeedModel  $feed
+     * @param  CommentModel  $comment
+     * @param  Carbon  $datetime
      * @return mixed
+     *
      * @author BS <414606094@qq.com>
      */
     public function commentPinned(Request $request, FeedModel $feed, CommentModel $comment, Carbon $datetime)
@@ -122,10 +123,11 @@ class NewPinnedController extends Controller
     /**
      * 申请动态置顶.
      *
-     * @param Request $request
-     * @param FeedModel $feed
-     * @param Carbon $datetime
+     * @param  Request  $request
+     * @param  FeedModel  $feed
+     * @param  Carbon  $datetime
      * @return mixed
+     *
      * @author BS <414606094@qq.com>
      */
     public function feedPinned(Request $request, FeedModel $feed, Carbon $datetime)
@@ -165,10 +167,11 @@ class NewPinnedController extends Controller
     /**
      * 基础验证.
      *
-     * @param \Illuminate\Http\Request $request
-     * @param \Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\FeedPinned $pinned
-     * @param callable $call
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\FeedPinned  $pinned
+     * @param  callable  $call
      * @return mixed
+     *
      * @author BS <414606094@qq.com>
      */
     public function validateBase(Request $request, FeedPinnedModel $pinned, callable $call)

@@ -52,7 +52,6 @@ class NewWalletController extends Controller
      * 新版钱包流水.
      *
      * @param  Request  $request
-     *
      * @return \Illuminate\Http\JsonResponse
      */
     public function waters(Request $request)

@@ -29,6 +29,7 @@ class HomeController
      * 签到后台入口.
      *
      * @return mixed
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function index()
@@ -42,8 +43,9 @@ class HomeController
     /**
      * Store checkin config.
      *
-     * @param \SlimKit\PlusCheckIn\Admin\Requests\StoreConfig $request
+     * @param  \SlimKit\PlusCheckIn\Admin\Requests\StoreConfig  $request
      * @return mixed
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function store(StoreConfigRequest $request)

@@ -30,20 +30,23 @@ class Feed implements ResourceInterface
 {
     /**
      * The feed resource.
+     *
      * @var \Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\Feed
      */
     protected $feed;
 
     /**
      * Sender resource.
+     *
      * @var \Zhiyi\Plus\Models\User
      */
     protected $sender;
 
     /**
      * Create a feed resource.
-     * @param \Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\Feed $feed
-     * @param \Zhiyi\Plus\Models\User $sender
+     *
+     * @param  \Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\Feed  $feed
+     * @param  \Zhiyi\Plus\Models\User  $sender
      */
     public function __construct(FeedModel $feed, UserModel $sender)
     {
@@ -53,6 +56,7 @@ class Feed implements ResourceInterface
 
     /**
      * Get the resourceable type.
+     *
      * @return string
      */
     public function type(): string
@@ -68,6 +72,7 @@ class Feed implements ResourceInterface
 
     /**
      * Get the resourceable id.
+     *
      * @return int
      */
     public function id(): int
@@ -77,6 +82,7 @@ class Feed implements ResourceInterface
 
     /**
      * Get the pusher message.
+     *
      * @return string
      */
     public function message(): string

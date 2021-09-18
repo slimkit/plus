@@ -30,8 +30,9 @@ class CollectionController extends Controller
      * 收藏资讯.
      *
      * @author bs<414606094@qq.com>
-     * @param  Request $request
-     * @param  News    $news
+     *
+     * @param  Request  $request
+     * @param  News  $news
      * @return json
      */
     public function collection(Request $request, News $news)
@@ -54,8 +55,9 @@ class CollectionController extends Controller
      * 取消收藏资讯.
      *
      * @author bs<414606094@qq.com>
-     * @param  Request $request
-     * @param  News    $news
+     *
+     * @param  Request  $request
+     * @param  News  $news
      * @return void
      */
     public function cancel(Request $request, News $news)
@@ -75,7 +77,8 @@ class CollectionController extends Controller
      * 获取用户收藏资讯.
      *
      * @author bs<414606094@qq.com>
-     * @param  Request $request
+     *
+     * @param  Request  $request
      * @return mixed
      */
     public function index(Request $request)

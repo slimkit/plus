@@ -29,8 +29,9 @@ class UserTrashedController extends Controller
     /**
      * List trashed users.
      *
-     * @param \Illuminate\Http\Request $request
+     * @param  \Illuminate\Http\Request  $request
      * @return mixed
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function index(Request $request)
@@ -52,8 +53,9 @@ class UserTrashedController extends Controller
     /**
      * Restore a trashed user.
      *
-     * @param int $user
+     * @param  int  $user
      * @return mixed
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function restore(int $user)

@@ -29,9 +29,10 @@ class TransferController extends Controller
     /**
      * 用户之间转账.
      *
-     * @param TransferRequest $request
-     * @param TypeManager $manager
+     * @param  TransferRequest  $request
+     * @param  TypeManager  $manager
      * @return mixed
+     *
      * @author BS <414606094@qq.com>
      */
     public function transfer(TransferRequest $request, TypeManager $manager)

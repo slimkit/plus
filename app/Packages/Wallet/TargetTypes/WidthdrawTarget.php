@@ -39,6 +39,7 @@ class WidthdrawTarget extends Target
      * Handle.
      *
      * @return mixed
+     *
      * @author BS <414606094@qq.com>
      */
     public function handle($type, $account): bool
@@ -70,6 +71,7 @@ class WidthdrawTarget extends Target
      * 完成后的通知操作.
      *
      * @return void
+     *
      * @author BS <414606094@qq.com>
      */
     protected function sendNotification()
@@ -81,6 +83,7 @@ class WidthdrawTarget extends Target
      * 初始化钱包.
      *
      * @return void
+     *
      * @author BS <414606094@qq.com>
      */
     protected function initWallet()
@@ -94,6 +97,7 @@ class WidthdrawTarget extends Target
      * @param $type
      * @param $account
      * @return void
+     *
      * @author BS <414606094@qq.com>
      */
     protected function createCash($type, $account)

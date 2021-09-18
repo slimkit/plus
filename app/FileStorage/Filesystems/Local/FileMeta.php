@@ -37,26 +37,30 @@ class FileMeta extends FileMetaAbstract
 
     /**
      * Local filesystem.
+     *
      * @var \Illuminate\Contracts\Filesystem\Filesystem
      */
     protected $filesystem;
 
     /**
      * Resource instance.
+     *
      * @var \Zhiyi\Plus\FileStorage\ResourceInterface
      */
     protected $resource;
 
     /**
      * Cache the instance image dimension.
+     *
      * @var \Zhiyi\Plus\FileStorage\ImageDimensionInterface
      */
     protected $dimension;
 
     /**
      * Create a file meta.
-     * @param \Illuminate\Contracts\Filesystem\Filesystem $filesystem
-     * @param \Zhiyi\Plus\FileStorage\ResourceInterface $resource
+     *
+     * @param  \Illuminate\Contracts\Filesystem\Filesystem  $filesystem
+     * @param  \Zhiyi\Plus\FileStorage\ResourceInterface  $resource
      */
     public function __construct(FilesystemContract $filesystem, ResourceInterface $resource)
     {
@@ -67,6 +71,7 @@ class FileMeta extends FileMetaAbstract
 
     /**
      * Use custom MIME types.
+     *
      * @return null|\Closure
      */
     protected function useCustomTypes(): ?Closure
@@ -83,6 +88,7 @@ class FileMeta extends FileMetaAbstract
 
     /**
      * Has the file is image.
+     *
      * @return bool
      */
     public function hasImage(): bool
@@ -94,6 +100,7 @@ class FileMeta extends FileMetaAbstract
 
     /**
      * Get image file dimension.
+     *
      * @return \Zhiyi\Plus\FileStorage\ImageDimensionInterface
      */
     public function getImageDimension(): ImageDimensionInterface
@@ -114,6 +121,7 @@ class FileMeta extends FileMetaAbstract
 
     /**
      * Get the file size (Byte).
+     *
      * @return int
      */
     public function getSize(): int
@@ -125,6 +133,7 @@ class FileMeta extends FileMetaAbstract
 
     /**
      * Get the resource mime type.
+     *
      * @return string
      */
     public function getMimeType(): string
@@ -136,7 +145,8 @@ class FileMeta extends FileMetaAbstract
 
     /**
      * Get the resource pay info.
-     * @param \Zhiyi\Plus\Models\User $user
+     *
+     * @param  \Zhiyi\Plus\Models\User  $user
      * @return \Zhiyi\Plus\FileStorage\Pay\PayInterface
      */
     public function getPay(User $user): ?PayInterface
@@ -146,6 +156,7 @@ class FileMeta extends FileMetaAbstract
 
     /**
      * Get the storage vendor name.
+     *
      * @return string
      */
     public function getVendorName(): string
@@ -155,6 +166,7 @@ class FileMeta extends FileMetaAbstract
 
     /**
      * Get the resource url.
+     *
      * @return string
      */
     public function url(): string

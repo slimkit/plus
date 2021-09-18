@@ -28,13 +28,15 @@ class Callback
 {
     /**
      * File storage instance.
+     *
      * @var \Zhiyi\Plus\FileStorage\StorageInterface
      */
     protected $storage;
 
     /**
      * Create the controller instance.
-     * @param \Zhiyi\Plus\FileStorage\StorageInterface $storage
+     *
+     * @param  \Zhiyi\Plus\FileStorage\StorageInterface  $storage
      */
     public function __construct(StorageInterface $storage)
     {
@@ -43,8 +45,9 @@ class Callback
 
     /**
      * Callcack handler.
-     * @param string $channel
-     * @param string $path
+     *
+     * @param  string  $channel
+     * @param  string  $path
      * @return \Illuminate\Http\JsonResponse;
      */
     public function __invoke(string $channel, string $path): JsonResponse

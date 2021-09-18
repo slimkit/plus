@@ -30,8 +30,9 @@ class MusicLikeController extends Controller
      * 点赞一个音乐.
      *
      * @author bs<414606094@qq.com>
-     * @param  Request $request [description]
-     * @param  Music   $Music_id [description]
+     *
+     * @param  Request  $request  [description]
+     * @param  Music  $Music_id  [description]
      * @return [type]           [description]
      */
     public function like(Request $request, Music $music)
@@ -53,8 +54,9 @@ class MusicLikeController extends Controller
      * 取消点赞一个动态
      *
      * @author bs<414606094@qq.com>
-     * @param  Request $request
-     * @param  Music   $Music
+     *
+     * @param  Request  $request
+     * @param  Music  $Music
      * @return [type]
      */
     public function cancel(Request $request, Music $music)
