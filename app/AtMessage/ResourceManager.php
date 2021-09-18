@@ -27,6 +27,7 @@ class ResourceManager implements ResourceManagerInterface
 {
     /**
      * Resource map.
+     *
      * @var array
      */
     public static $map = [
@@ -36,9 +37,11 @@ class ResourceManager implements ResourceManagerInterface
 
     /**
      * Get resource.
-     * @param mixed $resource
-     * @param \Zhiyi\Plus\Models\User $sender
+     *
+     * @param  mixed  $resource
+     * @param  \Zhiyi\Plus\Models\User  $sender
      * @return \Zhiyi\Plus\AtMessage\ResourceInterface
+     *
      * @throws \InvalidArgumentException
      */
     public function resource($resource, UserModel $sender): ResourceInterface
@@ -56,7 +59,8 @@ class ResourceManager implements ResourceManagerInterface
 
     /**
      * Get resource class name.
-     * @param mixed $resource
+     *
+     * @param  mixed  $resource
      * @return string
      */
     public function getClassName($resource): string

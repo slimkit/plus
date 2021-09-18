@@ -47,8 +47,8 @@ class AuthUserController extends Controller
     /**
      * 认证用户.
      *
-     * @param  Request $request [description]
-     * @param  int     $aid     [description]
+     * @param  Request  $request  [description]
+     * @param  int  $aid  [description]
      * @return [type]           [description]
      */
     public function audit(Request $request, int $aid)
@@ -67,7 +67,7 @@ class AuthUserController extends Controller
     /**
      * 删除用户认证信息.
      *
-     * @param  int    $aid [description]
+     * @param  int  $aid  [description]
      * @return [type]      [description]
      */
     public function delAuthInfo(int $aid)

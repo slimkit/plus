@@ -31,8 +31,9 @@ class UserAbility implements UserAbilityContract
     /**
      * Get all roles or get first role.
      *
-     * @param string $role
+     * @param  string  $role
      * @return mixed
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function roles(string $role = '')
@@ -52,8 +53,9 @@ class UserAbility implements UserAbilityContract
     /**
      * Get all abilities or get first ability.
      *
-     * @param string $ability
+     * @param  string  $ability
      * @return mixed
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function all(string $ability = '')
@@ -77,6 +79,7 @@ class UserAbility implements UserAbilityContract
      * Get user instance.
      *
      * @return \Zhiyi\Plus\Models\User
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function user(): UserModel
@@ -87,7 +90,8 @@ class UserAbility implements UserAbilityContract
     /**
      * Set user model.
      *
-     * @param \Zhiyi\Plus\Models\User $user
+     * @param  \Zhiyi\Plus\Models\User  $user
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function setUser(UserModel $user)

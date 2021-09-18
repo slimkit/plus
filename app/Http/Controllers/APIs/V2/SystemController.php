@@ -32,7 +32,8 @@ class SystemController extends Controller
      * create a feedback.
      *
      * @author bs<414606094@qq.com>
-     * @param  Request $request
+     *
+     * @param  Request  $request
      * @return mixed
      */
     public function createFeedback(Request $request, Conversation $feedback, Carbon $datetime)
@@ -53,6 +54,7 @@ class SystemController extends Controller
      * about us.
      *
      * @author bs<414606094@qq.com>
+     *
      * @return html
      */
     public function about()
@@ -71,6 +73,7 @@ class SystemController extends Controller
      * 注册协议.
      *
      * @author Foreach<791477842@qq.com>
+     *
      * @return html
      */
     public function agreement(Markdown $markdown)
@@ -87,8 +90,9 @@ class SystemController extends Controller
      * 获取系统会话列表.
      *
      * @author bs<414606094@qq.com>
-     * @param  Request $request
-     * @param  Conversation $conversationModel
+     *
+     * @param  Request  $request
+     * @param  Conversation  $conversationModel
      * @return mixed
      */
     public function getConversations(Request $request, Conversation $conversationModel)

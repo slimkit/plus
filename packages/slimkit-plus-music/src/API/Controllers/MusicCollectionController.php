@@ -32,8 +32,9 @@ class MusicCollectionController extends Controller
      * 用户收藏列表.
      *
      * @author bs<414606094@qq.com>
-     * @param  Request      $request
-     * @param  MusicSpecial $musicSpecialModel
+     *
+     * @param  Request  $request
+     * @param  MusicSpecial  $musicSpecialModel
      * @return json
      */
     public function list(Request $request, MusicSpecial $musicSpecialModel)
@@ -62,8 +63,9 @@ class MusicCollectionController extends Controller
      * 收藏专辑.
      *
      * @author bs<414606094@qq.com>
-     * @param  Request      $request
-     * @param  MusicSpecial $special
+     *
+     * @param  Request  $request
+     * @param  MusicSpecial  $special
      * @return json
      */
     public function store(Request $request, MusicSpecial $special)
@@ -92,8 +94,9 @@ class MusicCollectionController extends Controller
      * 取消收藏专辑.
      *
      * @author bs<414606094@qq.com>
-     * @param  Request      $request
-     * @param  MusicSpecial $special
+     *
+     * @param  Request  $request
+     * @param  MusicSpecial  $special
      * @return json
      */
     public function delete(Request $request, MusicSpecial $special)

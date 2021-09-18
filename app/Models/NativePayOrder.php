@@ -38,6 +38,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \Zhiyi\Plus\Models\User $user
  * @property-read \Zhiyi\Plus\Models\WalletCharge|null $walletCharge
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|NativePayOrder newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|NativePayOrder newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|NativePayOrder query()

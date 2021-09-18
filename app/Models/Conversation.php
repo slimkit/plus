@@ -36,6 +36,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \Zhiyi\Plus\Models\User|null $target
  * @property-read \Zhiyi\Plus\Models\User|null $user
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|Conversation newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Conversation newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Conversation query()

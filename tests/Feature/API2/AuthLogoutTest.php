@@ -63,6 +63,7 @@ class AuthLogoutTest extends TestCase
      * Test user logout.
      *
      * @return void
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function testUserLogout()

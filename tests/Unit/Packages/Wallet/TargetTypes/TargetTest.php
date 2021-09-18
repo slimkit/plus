@@ -28,6 +28,7 @@ class TargetTest extends TestCase
      * Test target setOrder method.
      *
      * @return void
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function testSetOrder()

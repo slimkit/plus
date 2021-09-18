@@ -32,9 +32,10 @@ class WalletChargeController extends Controller
     /**
      *  Get charges.
      *
-     * @param \Illuminate\Http\Request $request
-     * @param \Illuminate\Contracts\Routing\ResponseFactory $response
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Contracts\Routing\ResponseFactory  $response
      * @return mixed
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function list(Request $request, ContractResponse $response)
@@ -67,10 +68,11 @@ class WalletChargeController extends Controller
     /**
      * Get a charge.
      *
-     * @param \Illuminate\Http\Request $request
-     * @param \Illuminate\Contracts\Routing\ResponseFactory $response
-     * @param \Zhiyi\Plus\Models\WalletCharge $charge
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Contracts\Routing\ResponseFactory  $response
+     * @param  \Zhiyi\Plus\Models\WalletCharge  $charge
      * @return mixed
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function show(Request $request, ContractResponse $response, WalletCharge $charge)
@@ -92,8 +94,9 @@ class WalletChargeController extends Controller
     /**
      * Retrieve charge.
      *
-     * @param \Zhiyi\Plus\Models\WalletCharge $charge
+     * @param  \Zhiyi\Plus\Models\WalletCharge  $charge
      * @return \Zhiyi\Plus\Models\WalletCharge
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     protected function retrieveCharge(WalletCharge &$charge, User $user): WalletCharge
@@ -130,9 +133,10 @@ class WalletChargeController extends Controller
     /**
      * 解决付款订单来源.
      *
-     * @param array $charge
-     * @param string|null $default
+     * @param  array  $charge
+     * @param  string|null  $default
      * @return string|null
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     protected function resolveChargeAccount($charge, $default = null)

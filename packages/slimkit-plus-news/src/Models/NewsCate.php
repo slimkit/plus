@@ -35,6 +35,7 @@ class NewsCate extends Model
      * Has news.
      *
      * @return null|
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function news()

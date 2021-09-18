@@ -33,10 +33,10 @@ class NewsApplyLogController extends Controller
     /**
      * 删除申请列表.
      *
-     * @param Request $request
-     * @param NewsApplyLog $model
-     *
+     * @param  Request  $request
+     * @param  NewsApplyLog  $model
      * @return mixed
+     *
      * @author BS <414606094@qq.com>
      */
     public function index(Request $request, NewsApplyLog $model)

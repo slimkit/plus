@@ -28,10 +28,12 @@ trait UserHasBlackList
 {
     /**
      * get blacklists of current user.
+     *
      * @Author   Wayne
      * @DateTime 2018-04-08
      * @Email    qiaobin@zhiyicx.com
-     * @return   [type]              [description]
+     *
+     * @return [type]              [description]
      */
     public function blacklists()
     {
@@ -40,11 +42,13 @@ trait UserHasBlackList
 
     /**
      * is user blacked by current_user.
+     *
      * @Author   Wayne
      * @DateTime 2018-04-18
      * @Email    qiaobin@zhiyicx.com
+     *
      * @param    [type]              $user [description]
-     * @return   [type]                    [description]
+     * @return [type]                    [description]
      */
     public function blacked($user): bool
     {

@@ -31,9 +31,10 @@ class CurrentUserController extends Controller
     /**
      * Get a single user.
      *
-     * @param \Illuminate\Http\Request $request
-     * @param \Illuminate\Contracts\Routing\ResponseFactory $response
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Contracts\Routing\ResponseFactory  $response
      * @return mixed
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function show(Request $request, ResponseFactoryContract $response)
@@ -52,9 +53,10 @@ class CurrentUserController extends Controller
     /**
      * Update the authenticated user.
      *
-     * @param \Illuminate\Http\Request $request
-     * @param \Illuminate\Contracts\Routing\ResponseFactory $response
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Contracts\Routing\ResponseFactory  $response
      * @return mixed
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function update(Request $request, ResponseFactoryContract $response)
@@ -102,10 +104,11 @@ class CurrentUserController extends Controller
     /**
      * Update phone or email of the authenticated user.
      *
-     * @param \Illuminate\Http\Request $request
-     * @param \Illuminate\Contracts\Routing\ResponseFactory $response
-     * @param \Zhiyi\Plus\Models\VerificationCode $model
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Contracts\Routing\ResponseFactory  $response
+     * @param  \Zhiyi\Plus\Models\VerificationCode  $model
      * @return mixed
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function updatePhoneOrMail(Request $request, ResponseFactoryContract $response, VerificationCodeModel $model)
@@ -156,9 +159,10 @@ class CurrentUserController extends Controller
     /**
      * Show user followers.
      *
-     * @param \Illuminate\Http\Request $request
-     * @param \Illuminate\Contracts\Routing\ResponseFactory $response
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Contracts\Routing\ResponseFactory  $response
      * @return mixed
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function followers(Request $request, ResponseFactoryContract $response)
@@ -187,9 +191,10 @@ class CurrentUserController extends Controller
     /**
      * Show user followings.
      *
-     * @param \Illuminate\Http\Request $request
-     * @param \Illuminate\Contracts\Routing\ResponseFactory $response
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Contracts\Routing\ResponseFactory  $response
      * @return mixed
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function followings(Request $request, ResponseFactoryContract $response)
@@ -218,10 +223,11 @@ class CurrentUserController extends Controller
     /**
      * Attach a following user.
      *
-     * @param \Illuminate\Http\Request $request
-     * @param \Illuminate\Contracts\Routing\ResponseFactory $response
-     * @param \Zhiyi\Plus\Models\User $target
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Contracts\Routing\ResponseFactory  $response
+     * @param  \Zhiyi\Plus\Models\User  $target
      * @return mixed
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function attachFollowingUser(Request $request, UserModel $target)
@@ -248,9 +254,10 @@ class CurrentUserController extends Controller
     /**
      * detach a following user.
      *
-     * @param \Illuminate\Http\Request $request
-     * @param \Zhiyi\Plus\Models\User $target
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \Zhiyi\Plus\Models\User  $target
      * @return mixed
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function detachFollowingUser(Request $request, UserModel $target)
@@ -268,9 +275,10 @@ class CurrentUserController extends Controller
     /**
      * 获取授权用户相互关注的用户列表.
      *
-     * @param \Illuminate\Http\Request $request
-     * @param \Illuminate\Contracts\Routing\ResponseFactory $response
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Contracts\Routing\ResponseFactory  $response
      * @return mixed
+     *
      * @author ZsyD<1251992018@qq.com>
      */
     public function followMutual(Request $request, ResponseFactoryContract $response)

@@ -36,8 +36,9 @@ class WalletRechargeAlipayController extends WalletRechargeController
     /**
      * Create a Alipay recharge charge.
      *
-     * @param \Zhiyi\Plus\Http\Requests\API2\StoreWalletRecharge $request
+     * @param  \Zhiyi\Plus\Http\Requests\API2\StoreWalletRecharge  $request
      * @return mixed
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function create(StoreWalletRecharge $request)
@@ -55,8 +56,9 @@ class WalletRechargeAlipayController extends WalletRechargeController
     /**
      * Create a APP rechrage by Alipay.
      *
-     * @param \Illuminate\Contracts\Routing\ResponseFactory $response
+     * @param  \Illuminate\Contracts\Routing\ResponseFactory  $response
      * @return mixed
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function alipayStore(ContractResponse $response)
@@ -75,9 +77,10 @@ class WalletRechargeAlipayController extends WalletRechargeController
     /**
      * Create a wap recharge by Alipay.
      *
-     * @param \Zhiyi\Plus\Http\Requests\API2\StoreWalletRecharge $request
-     * @param \Illuminate\Contracts\Routing\ResponseFactory $response
+     * @param  \Zhiyi\Plus\Http\Requests\API2\StoreWalletRecharge  $request
+     * @param  \Illuminate\Contracts\Routing\ResponseFactory  $response
      * @return mixed
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function alipayWapStore(StoreWalletRecharge $request, ContractResponse $response)
@@ -104,9 +107,10 @@ class WalletRechargeAlipayController extends WalletRechargeController
     /**
      * Create a PC recharge by Alipay.
      *
-     * @param \Zhiyi\Plus\Http\Requests\API2\StoreWalletRecharge $request
-     * @param \Illuminate\Contracts\Routing\ResponseFactory $response
+     * @param  \Zhiyi\Plus\Http\Requests\API2\StoreWalletRecharge  $request
+     * @param  \Illuminate\Contracts\Routing\ResponseFactory  $response
      * @return mixed
+     *
      * @author bs <414606094@qq.com>
      */
     public function alipayPcDirectStore(StoreWalletRecharge $request, ContractResponse $response)

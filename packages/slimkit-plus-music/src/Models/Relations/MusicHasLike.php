@@ -30,6 +30,7 @@ trait MusicHasLike
      * Has likes.
      *
      * @return \Illuminate\Database\Eloquent\Relations\MorphMany
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function likes()
@@ -40,8 +41,9 @@ trait MusicHasLike
     /**
      * Check user like.
      *
-     * @param mixed $user
+     * @param  mixed  $user
      * @return bool
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function liked($user): bool
@@ -67,8 +69,9 @@ trait MusicHasLike
     /**
      * Like feed.
      *
-     * @param mixed $user
+     * @param  mixed  $user
      * @return mixed
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function like($user)
@@ -89,8 +92,9 @@ trait MusicHasLike
     /**
      * Unlike feed.
      *
-     * @param mixed $user
+     * @param  mixed  $user
      * @return mixed
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function unlike($user)
@@ -112,8 +116,9 @@ trait MusicHasLike
     /**
      * Forget like cache.
      *
-     * @param mixed $user
+     * @param  mixed  $user
      * @return void
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function forgetLike($user)

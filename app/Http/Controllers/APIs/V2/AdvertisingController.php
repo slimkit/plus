@@ -31,7 +31,8 @@ class AdvertisingController extends Controller
      * Get installed ad slot information.
      *
      * @author bs<414606094@qq.com>
-     * @param  AdvertisingSpace $space
+     *
+     * @param  AdvertisingSpace  $space
      * @return mix
      */
     public function index(AdvertisingSpace $space): JsonResponse
@@ -45,8 +46,9 @@ class AdvertisingController extends Controller
      * 查询某一广告位的广告列表.
      *
      * @author bs<414606094@qq.com>
-     * @param  Request          $request
-     * @param  AdvertisingSpace $space
+     *
+     * @param  Request  $request
+     * @param  AdvertisingSpace  $space
      * @return mix
      */
     public function advertising(AdvertisingSpace $space)
@@ -62,7 +64,8 @@ class AdvertisingController extends Controller
      * 批量获取广告列表.
      *
      * @author bs<414606094@qq.com>
-     * @param  Request $request
+     *
+     * @param  Request  $request
      * @return json
      */
     public function batch(Request $request, Advertising $advertisingModel)

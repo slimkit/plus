@@ -61,8 +61,8 @@ class Recharge extends Process
      * @param  int  $amount
      * @param  string  $type
      * @param  array  $extra
-     *
      * @return mixed
+     *
      * @author BS <414606094@qq.com>
      */
     public function createPingPPOrder(int $owner_id, int $amount, string $type, array $extra = [])
@@ -93,6 +93,7 @@ class Recharge extends Process
      * 主动取回凭据.
      *
      * @return boolen
+     *
      * @author BS <414606094@qq.com>
      */
     public function retrieve(CurrencyOrderModel $currencyOrderModel): bool
@@ -110,8 +111,8 @@ class Recharge extends Process
      * 异步回调通知.
      *
      * @param  Request  $request
-     *
      * @return boolen
+     *
      * @author BS <414606094@qq.com>
      */
     public function webhook(Request $request): bool
@@ -136,8 +137,8 @@ class Recharge extends Process
      *
      * @param  PingppCharge  $pingppCharge
      * @param  CurrencyOrderModel  $currencyOrderModel
-     *
      * @return boolen
+     *
      * @author BS <414606094@qq.com>
      */
     private function complete(CurrencyOrderModel $currencyOrderModel): bool
@@ -157,8 +158,8 @@ class Recharge extends Process
      * 验证回调信息.
      *
      * @param  Request  $request
-     *
      * @return boolen
+     *
      * @author BS <414606094@qq.com>
      */
     protected function verifyWebHook(Request $request): bool

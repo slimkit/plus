@@ -45,6 +45,7 @@ class PackageHandlerCommand extends Command
      * Run the command.
      *
      * @return mixed
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function handle()
@@ -68,6 +69,7 @@ class PackageHandlerCommand extends Command
      * Get package handles.
      *
      * @return array
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function getHandles(): array
@@ -79,6 +81,7 @@ class PackageHandlerCommand extends Command
      * display handle.
      *
      * @return mixed
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     protected function displayHandles()
@@ -92,9 +95,10 @@ class PackageHandlerCommand extends Command
     /**
      * Display handler method.
      *
-     * @param string $name
-     * @param PackageHandler $handler
+     * @param  string  $name
+     * @param  PackageHandler  $handler
      * @return mixed
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     protected function displayMethod(string $name, PackageHandler $handler)
@@ -109,8 +113,9 @@ class PackageHandlerCommand extends Command
     /**
      * Resolve handler.
      *
-     * @param string|PackageHandler $handler
+     * @param  string|PackageHandler  $handler
      * @return PackageHandler
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     protected function resolveHandler($handler): PackageHandler

@@ -28,6 +28,7 @@ class PcServiceProvider extends ServiceProvider
      * Bootstrap the provider.
      *
      * @return void
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function boot()
@@ -71,6 +72,7 @@ class PcServiceProvider extends ServiceProvider
      * register provided to provider.
      *
      * @return void
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function register()
@@ -89,6 +91,7 @@ class PcServiceProvider extends ServiceProvider
      * Register route.
      *
      * @return void
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     protected function routeMap()

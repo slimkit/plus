@@ -30,6 +30,7 @@ class DefaultFilesystem
 {
     /**
      * Get default filesystem.
+     *
      * @return \Illuminate\Http\JsonResponse
      */
     public function show(): JsonResponse
@@ -41,7 +42,8 @@ class DefaultFilesystem
 
     /**
      * Update default filesystem.
-     * @param \Illuminate\Http\Request $request
+     *
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request): Response

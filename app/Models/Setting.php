@@ -29,6 +29,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property string|null $contents 配置数据
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|Setting byName($name)
  * @method static \Illuminate\Database\Eloquent\Builder|Setting byNamespace($namespace)
  * @method static \Illuminate\Database\Eloquent\Builder|Setting newModelQuery()
@@ -46,6 +47,7 @@ class Setting extends Model
 {
     /**
      * The table name.
+     *
      * @var string
      */
     protected $table = 'settings';

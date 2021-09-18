@@ -29,25 +29,29 @@ abstract class AbstractChannel implements ChannelInterface
 {
     /**
      * The resource.
+     *
      * @var \Zhiyi\Plus\FileStorage\ResourceInterface
      */
     protected $resource;
 
     /**
      * A request instance.
+     *
      * @var \Illuminate\Http\Request
      */
     protected $request;
 
     /**
      * Filesystem.
+     *
      * @var \Zhiyi\Plus\FileStorage\Filesystems\FilesystemInterface
      */
     protected $filesystem;
 
     /**
      * Set request.
-     * @param \Illuminate\Http\Request $request
+     *
+     * @param  \Illuminate\Http\Request  $request
      * @return void
      */
     public function setRequest(Request $request): void
@@ -57,7 +61,8 @@ abstract class AbstractChannel implements ChannelInterface
 
     /**
      * Set resource.
-     * @param \Zhiyi\Plus\FileStorage\ResourceInterface $resource
+     *
+     * @param  \Zhiyi\Plus\FileStorage\ResourceInterface  $resource
      * @return void
      */
     public function setResource(ResourceInterface $resource): void
@@ -67,7 +72,8 @@ abstract class AbstractChannel implements ChannelInterface
 
     /**
      * Set filesystem.
-     * @param \Zhiyi\Plus\FileStorage\Filesystems\FilesystemInterface $filesystem
+     *
+     * @param  \Zhiyi\Plus\FileStorage\Filesystems\FilesystemInterface  $filesystem
      * @return void
      */
     public function setFilesystem(FilesystemInterface $filesystem): void
@@ -77,7 +83,8 @@ abstract class AbstractChannel implements ChannelInterface
 
     /**
      * Put a file.
-     * @param mixed $contents
+     *
+     * @param  mixed  $contents
      * @return vodi
      */
     public function put($contents): bool
@@ -87,7 +94,8 @@ abstract class AbstractChannel implements ChannelInterface
 
     /**
      * Get a resource response.
-     * @param string|null $rule
+     *
+     * @param  string|null  $rule
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function response(?string $rule = null): Response

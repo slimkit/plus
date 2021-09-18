@@ -51,6 +51,7 @@ class AreasTableSeeder extends Seeder
      * The seeder handler.
      *
      * @return void
+     *
      * @author Seven Du <shiweidu@outloo.com>
      */
     public function run()

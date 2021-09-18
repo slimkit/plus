@@ -24,18 +24,21 @@ class Models
 {
     /**
      * Key by classname const.
+     *
      * @var string
      */
     public const KEY_BY_CLASSNAME = 'classname';
 
     /**
      * Key by class alise const,.
+     *
      * @var string
      */
     public const KEY_BY_CLASS_ALIAS = 'class alias';
 
     /**
      * Types.
+     *
      * @var array
      */
     public static $types = [
@@ -51,8 +54,8 @@ class Models
     /**
      * Get classname alise or get alias classname.
      *
-     * @param string $keyBy
-     * @param string $key
+     * @param  string  $keyBy
+     * @param  string  $key
      * @return string|null
      */
     public function get(string $key = null, ?string $keyBy = self::KEY_BY_CLASSNAME): ?string
@@ -65,7 +68,7 @@ class Models
     /**
      * Get all types.
      *
-     * @param string $keyBy
+     * @param  string  $keyBy
      * @return array
      */
     public function all(?string $keyBy = self::KEY_BY_CLASSNAME): array

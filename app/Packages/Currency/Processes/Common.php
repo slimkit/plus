@@ -34,9 +34,10 @@ class Common extends Process
      * @param  int  $type
      * @param  string  $title
      * @param  string  $body
-     *
      * @return CurrencyOrderModel
+     *
      * @throws \Exception
+     *
      * @author BS <414606094@qq.com>
      */
     public function createOrder(

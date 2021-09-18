@@ -48,6 +48,7 @@ class ReportTest extends TestCase
      * 测试举报用户.
      *
      * @return void
+     *
      * @author BS <414606094@qq.com>
      */
     public function testReportUser()
@@ -61,6 +62,7 @@ class ReportTest extends TestCase
      * 测试举报评论.
      *
      * @return void
+     *
      * @author BS <414606094@qq.com>
      */
     public function testReportComment()

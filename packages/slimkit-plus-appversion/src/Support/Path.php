@@ -25,8 +25,8 @@ class Path
     /**
      * relative PATH.
      *
-     * @param string $fromPath
-     * @param strong $toPath
+     * @param  string  $fromPath
+     * @param  strong  $toPath
      * @return string
      */
     public static function relative(string $fromPath, string $toPath): string

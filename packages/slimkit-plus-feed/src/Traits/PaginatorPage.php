@@ -27,8 +27,9 @@ trait PaginatorPage
     /**
      * 获取下一页页码.
      *
-     * @param PaginatorContract $paginator
+     * @param  PaginatorContract  $paginator
      * @return int|null|void
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     protected function getNextPage(Paginator $paginator)
@@ -41,8 +42,9 @@ trait PaginatorPage
     /**
      * 获取上一页的页码.
      *
-     * @param PaginatorContract $paginator
+     * @param  PaginatorContract  $paginator
      * @return int|null|void
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     protected function getPrevPage(Paginator $paginator)
