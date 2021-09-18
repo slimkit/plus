@@ -15,17 +15,17 @@
         "docs:build": "vuepress build docs"
     },
     "devDependencies": {
-        "@babel/core": "^7.5.5",
+        "@babel/core": "^7.15.5",
         "@babel/plugin-proposal-class-properties": "^7.5.5",
         "@vue/babel-preset-app": "^3.9.2",
         "conventional-changelog-cli": "^2.0.23",
-        "cross-env": "^5.2.1",
+        "cross-env": "^7.0.3",
         "laravel-mix": "^4.1.2",
         "opencollective": "^1.0.3",
         "resolve-url-loader": "^3.1.0",
-        "sass": "^1.22.9",
+        "sass": "^1.41.1",
         "sass-loader": "7.*",
-        "vue-template-compiler": "^2.6.10"
+        "vue-template-compiler": "^2.6.14"
     },
     "dependencies": {
         "@slimkit/plus-editor": "^0.0.3",
@@ -34,17 +34,17 @@
         "bootstrap-sass": "^3.3.7",
         "chart.js": "^2.7.2",
         "echarts": "^5.2.0",
-        "highlight.js": "^9.12.0",
-        "jquery": "^3.3.1",
+        "highlight.js": "^11.2.0",
+        "jquery": "^3.6.0",
         "js-md5": "^0.7.3",
-        "lodash": "^4.17.15",
+        "lodash": "^4.17.21",
         "markdown-it": "^8.4.1",
         "plus-message-bundle": "^1.0.2",
         "simkit-bootstrap-ui-kit": "^1.1.1",
-        "vue": "^2.6.10",
+        "vue": "^2.6.14",
         "vue-echarts-v3": "^2.0.1",
         "vue-router": "^3.0.1",
-        "vuex": "^3.1.1",
+        "vuex": "^3.6.2",
         "vuex-router-sync": "^5.0.0"
     },
     "collective": {
