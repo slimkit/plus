@@ -30,6 +30,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \Zhiyi\Plus\Models\User|null $user
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|BlackList newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|BlackList newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|BlackList query()

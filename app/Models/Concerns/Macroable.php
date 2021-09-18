@@ -29,8 +29,9 @@ trait Macroable
     /**
      * Get a relationship value from a method.
      *
-     * @param string $key
+     * @param  string  $key
      * @return mixed
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function getRelationValue($key)
@@ -46,9 +47,10 @@ trait Macroable
     /**
      * Handle dynamic method calls into the model.
      *
-     * @param string $method
-     * @param array $parameters
+     * @param  string  $method
+     * @param  array  $parameters
      * @return mixed
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function __call($method, $parameters)

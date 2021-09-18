@@ -31,8 +31,9 @@ class WalletCashController extends Controller
     /**
      * 获取提现列表.
      *
-     * @param \Illuminate\Http\Request $request
+     * @param  \Illuminate\Http\Request  $request
      * @return mixed
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function show(Request $request)
@@ -58,8 +59,9 @@ class WalletCashController extends Controller
     /**
      * 提交提现申请.
      *
-     * @param \Zhiyi\Plus\Http\Requests\API2\StoreUserWallerCashPost $request
+     * @param  \Zhiyi\Plus\Http\Requests\API2\StoreUserWallerCashPost  $request
      * @return mixed
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function store(StoreUserWallerCashPost $request)

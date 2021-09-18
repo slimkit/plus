@@ -34,6 +34,7 @@ class SingerController extends Controller
 {
     /**
      * 歌手列表.
+     *
      * @param  Request  $request
      * @param  MusicSingerModel  $musicSinger
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
@@ -90,8 +91,9 @@ class SingerController extends Controller
 
     /**
      * 恢复被禁用的用户.
-     * @param int $singer
-     * @param MusicSingerModel $singerModel
+     *
+     * @param  int  $singer
+     * @param  MusicSingerModel  $singerModel
      * @return \Illuminate\Http\RedirectResponse
      */
     public function restore(int $singer, MusicSingerModel $singerModel)
@@ -108,11 +110,12 @@ class SingerController extends Controller
 
     /**
      * 格式化歌手封面图.
-     * @param CdnUrlManager $cdn
-     * @param FileWithModel $fileWith
-     * @param int|int $width
-     * @param int|int $height
-     * @param int|int $quality
+     *
+     * @param  CdnUrlManager  $cdn
+     * @param  FileWithModel  $fileWith
+     * @param  int|int  $width
+     * @param  int|int  $height
+     * @param  int|int  $quality
      * @return string
      */
     public function showCover(CdnUrlManager $cdn, FileWithModel $fileWith, int $width = 200, int $height = 200, int $quality = 60)
@@ -139,8 +142,9 @@ class SingerController extends Controller
 
     /**
      * 添加歌手.
-     * @param SingerAddRequest $request
-     * @param MusicSingerModel $singer
+     *
+     * @param  SingerAddRequest  $request
+     * @param  MusicSingerModel  $singer
      * @return \Illuminate\Http\RedirectResponse
      */
     public function store(SingerAddRequest $request, MusicSingerModel $singer)
@@ -160,9 +164,10 @@ class SingerController extends Controller
 
     /**
      * 歌手详情，用于编辑歌手.
-     * @param MusicSingerModel $singer [description]
-     * @param FileWithModel $fileWith
-     * @param CdnUrlManager $cdn
+     *
+     * @param  MusicSingerModel  $singer  [description]
+     * @param  FileWithModel  $fileWith
+     * @param  CdnUrlManager  $cdn
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function detail(MusicSingerModel $singer, FileWithModel $fileWith, CdnUrlManager $cdn)
@@ -180,8 +185,10 @@ class SingerController extends Controller
 
     /**
      * 禁用歌手.
-     * @param MusicSingerModel $singer
+     *
+     * @param  MusicSingerModel  $singer
      * @return \Illuminate\Http\RedirectResponse
+     *
      * @throws \Exception
      */
     public function disabled(MusicSingerModel $singer)
@@ -228,7 +235,8 @@ class SingerController extends Controller
 
     /**
      * 添加歌手设置封面.
-     * @param SingerAddRequest $request [description]
+     *
+     * @param  SingerAddRequest  $request  [description]
      * @return FileWithModel
      */
     protected function makeFileWith(SingerAddRequest $request)
@@ -244,7 +252,8 @@ class SingerController extends Controller
 
     /**
      * 保存需要更新的歌手设置封面.
-     * @param SingerUpdateRequest $request [description]
+     *
+     * @param  SingerUpdateRequest  $request  [description]
      * @return FileWithModel
      */
     protected function updateFileWith(SingerUpdateRequest $request)
@@ -260,8 +269,9 @@ class SingerController extends Controller
 
     /**
      * 保存专辑封面.
+     *
      * @param  [type]       $fileWith [description]
-     * @param  MusicSingerModel $singer  [description]
+     * @param  MusicSingerModel  $singer  [description]
      * @return void
      */
     protected function saveFileWith($fileWith, MusicSingerModel $singer)

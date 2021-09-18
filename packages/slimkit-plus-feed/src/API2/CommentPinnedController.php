@@ -37,9 +37,10 @@ class CommentPinnedController extends Controller
     /**
      * 获取动态评论当前用户审核列表.
      *
-     * @param \Illuminate\Http\Request $request
-     * @param \Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\FeedPinned $model
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\FeedPinned  $model
      * @return mixed
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function index(Request $request, FeedPinnedModel $model, FeedRepository $repository)
@@ -100,14 +101,15 @@ class CommentPinnedController extends Controller
     /**
      * 固定评论.
      *
-     * @param \Illuminate\Http\Request $request
-     * @param \Illuminate\Contracts\Routing\ResponseFactory $response
-     * @param \Carbon\Carbon $dateTime
-     * @param \Zhiyi\Plus\Models\WalletCharge $charge
-     * @param \Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\Feed $feed
-     * @param \Zhiyi\Plus\Models\Comment $comment
-     * @param \Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\FeedPinned $pinned
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Contracts\Routing\ResponseFactory  $response
+     * @param  \Carbon\Carbon  $dateTime
+     * @param  \Zhiyi\Plus\Models\WalletCharge  $charge
+     * @param  \Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\Feed  $feed
+     * @param  \Zhiyi\Plus\Models\Comment  $comment
+     * @param  \Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\FeedPinned  $pinned
      * @return mixed
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function pass(
@@ -213,12 +215,13 @@ class CommentPinnedController extends Controller
     /**
      * 取消置顶.
      *
-     * @param \Illuminate\Http\Request $request
-     * @param \Illuminate\Contracts\Routing\ResponseFactory $response
-     * @param \Carbon\Carbon $dateTime
-     * @param \Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\Feed $feed
-     * @param \Zhiyi\Plus\Models\Comment $comment
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Contracts\Routing\ResponseFactory  $response
+     * @param  \Carbon\Carbon  $dateTime
+     * @param  \Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\Feed  $feed
+     * @param  \Zhiyi\Plus\Models\Comment  $comment
      * @return mixed
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function delete(

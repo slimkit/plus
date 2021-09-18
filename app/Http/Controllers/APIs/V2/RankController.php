@@ -30,8 +30,9 @@ class RankController extends Controller
      * Get the full rank of user who has more followers.
      *
      * @author bs<414606094@qq.com>
-     * @param  Illuminate\Http\Request $request
-     * @param  Zhiyi\Plus\Models\User $userModel
+     *
+     * @param  Illuminate\Http\Request  $request
+     * @param  Zhiyi\Plus\Models\User  $userModel
      * @return mixed
      */
     public function followers(Request $request, User $userModel)
@@ -69,8 +70,9 @@ class RankController extends Controller
      * Get the total fortune ranking.
      *
      * @author bs<414606094@qq.com>
-     * @param  Illuminate\Http\Request $request
-     * @param  Zhiyi\Plus\Models\User $userModel
+     *
+     * @param  Illuminate\Http\Request  $request
+     * @param  Zhiyi\Plus\Models\User  $userModel
      * @return mixed
      */
     public function balance(Request $request, User $userModel)
@@ -106,8 +108,9 @@ class RankController extends Controller
      * Get the rank of user`s income.
      *
      * @author bs<414606094@qq.com>
-     * @param  Illuminate\Http\Request $request
-     * @param  Zhiyi\Plus\Models\User $userModel
+     *
+     * @param  Illuminate\Http\Request  $request
+     * @param  Zhiyi\Plus\Models\User  $userModel
      * @return mixed
      */
     public function income(Request $request, User $userModel)

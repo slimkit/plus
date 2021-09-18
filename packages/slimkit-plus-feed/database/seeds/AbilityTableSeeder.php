@@ -30,6 +30,7 @@ class AbilityTableSeeder extends Seeder
      * Run the seeder.
      *
      * @return void
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function run()

@@ -68,8 +68,8 @@ class ModelServiceProvider extends ServiceProvider
     /**
      * Set or get the morph map for polymorphic relations.
      *
-     * @param array|null $map
-     * @param bool $merge
+     * @param  array|null  $map
+     * @param  bool  $merge
      * @return array
      */
     protected function morphMap(array $map = null, bool $merge = true): array

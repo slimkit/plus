@@ -28,10 +28,10 @@ use Zhiyi\Plus\Http\Controllers\Controller;
 class AverageController extends Controller
 {
     /**
-     * @param Request          $request
-     * @param Carbon           $date
-     * @param FeedPinned       $pinned
-     * @param ResponseContract $response
+     * @param  Request  $request
+     * @param  Carbon  $date
+     * @param  FeedPinned  $pinned
+     * @param  ResponseContract  $response
      * @return object
      */
     public function show(Carbon $date, NewsPinned $pinned, ResponseContract $response)

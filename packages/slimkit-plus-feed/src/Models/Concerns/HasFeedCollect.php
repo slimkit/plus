@@ -30,6 +30,7 @@ trait HasFeedCollect
      * 动态收藏用户列表.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function collections()
@@ -43,8 +44,8 @@ trait HasFeedCollect
      * check if user has collected.
      *
      * @param  int  $user
-     *
      * @return bool
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function collected(int $user): bool
@@ -63,8 +64,8 @@ trait HasFeedCollect
      * 动态收藏.
      *
      * @param  int  $user
-     *
      * @return mixed
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function collect(int $user)
@@ -78,8 +79,8 @@ trait HasFeedCollect
      * 取消动态收藏.
      *
      * @param  int  $user
-     *
      * @return mixed
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function uncollect(int $user)
@@ -94,8 +95,8 @@ trait HasFeedCollect
      *
      * @param  int  $feed
      * @param  int  $user
-     *
      * @return void
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function forgetCollet(int $feed, int $user)

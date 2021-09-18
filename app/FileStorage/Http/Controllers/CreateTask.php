@@ -37,8 +37,9 @@ class CreateTask extends Controller
 
     /**
      * Create a upload task.
-     * @param \Illuminate\Http\Request $request
-     * @param \Zhiyi\Plus\FileStorage\StorageInterface $storage
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \Zhiyi\Plus\FileStorage\StorageInterface  $storage
      * @return \Illuminate\Http\JsonResponse
      */
     public function __invoke(Request $request, StorageInterface $storage)

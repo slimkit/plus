@@ -28,7 +28,8 @@ class CertificationCategoryController extends Controller
 {
     /**
      * certification categories list.
-     * @param Request $request
+     *
+     * @param  Request  $request
      * @author: huhao <915664508@qq.com>
      */
     public function certifications()
@@ -54,7 +55,8 @@ class CertificationCategoryController extends Controller
 
     /**
      * update certification category.
-     * @param Request $request
+     *
+     * @param  Request  $request
      * @param $name
      * @return $this
      * @author: huhao <915664508@qq.com>

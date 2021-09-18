@@ -34,7 +34,8 @@ class Application extends LaravelApplication implements AppInterface
     /**
      * Create a new Illuminate application instance.
      *
-     * @param string|null $basePath
+     * @param  string|null  $basePath
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function __construct($basePath = null)
@@ -55,6 +56,7 @@ class Application extends LaravelApplication implements AppInterface
      * Get the version number of the Laravel framework.
      *
      * @return string
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function getLaravelVersion()
@@ -99,7 +101,8 @@ class Application extends LaravelApplication implements AppInterface
 
     /**
      * The app configure path.
-     * @param  string $path
+     *
+     * @param  string  $path
      * @return string
      */
     public function appConfigurePath(string $path = ''): string
@@ -109,6 +112,7 @@ class Application extends LaravelApplication implements AppInterface
 
     /**
      * Get the app YAML configure filename.
+     *
      * @return string
      */
     public function appYamlConfigureFile(): string

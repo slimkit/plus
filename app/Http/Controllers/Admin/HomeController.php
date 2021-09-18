@@ -30,8 +30,9 @@ class HomeController extends Controller
     /**
      * Admin home.
      *
-     * @param \Illuminate\Http\Request $request
+     * @param  \Illuminate\Http\Request  $request
      * @return mixed
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function index(Request $request)
@@ -53,6 +54,7 @@ class HomeController extends Controller
      * 后台导航菜单.
      *
      * @return mixed
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function showManages(ManageRepository $repository)

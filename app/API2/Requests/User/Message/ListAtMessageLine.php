@@ -26,6 +26,7 @@ class ListAtMessageLine extends Request
 {
     /**
      * Get the validate rules.
+     *
      * @return array
      */
     public function rules(): array
@@ -40,6 +41,7 @@ class ListAtMessageLine extends Request
 
     /**
      * Get the validate error messages.
+     *
      * @return array
      */
     public function messages(): array

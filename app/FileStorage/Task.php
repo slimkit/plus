@@ -41,6 +41,7 @@ class Task implements TaskInterface
 
     /**
      * Get the task URI.
+     *
      * @return string
      */
     public function getUri(): string
@@ -50,6 +51,7 @@ class Task implements TaskInterface
 
     /**
      * Get the task method.
+     *
      * @return string
      */
     public function getMethod(): string
@@ -59,6 +61,7 @@ class Task implements TaskInterface
 
     /**
      * Get the task headers.
+     *
      * @return array
      */
     public function getHeaders(): array
@@ -68,6 +71,7 @@ class Task implements TaskInterface
 
     /**
      * Get the task form.
+     *
      * @return null|array
      */
     public function getForm(): ?array
@@ -77,6 +81,7 @@ class Task implements TaskInterface
 
     /**
      * Get the task file key.
+     *
      * @return null|string
      */
     public function getFileKey(): ?string
@@ -86,6 +91,7 @@ class Task implements TaskInterface
 
     /**
      * Get resource node string.
+     *
      * @return string
      */
     public function getNode(): string

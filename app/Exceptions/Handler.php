@@ -51,6 +51,7 @@ class Handler extends ExceptionHandler
      * Register the exception handling callbacks for the application.
      *
      * @return void
+     *
      * @throws \Throwable
      */
     public function register()
@@ -63,8 +64,8 @@ class Handler extends ExceptionHandler
      *
      * @param  $request
      * @param  \Throwable  $exception
-     *
      * @return \Illuminate\Http\Response
+     *
      * @throws \Throwable
      */
     public function render($request, \Throwable $exception)
@@ -75,9 +76,10 @@ class Handler extends ExceptionHandler
     /**
      * Convert a validation exception into a JSON response.
      *
-     * @param \Illuminate\Http\Request $request
-     * @param \Illuminate\Validation\ValidationException $exception
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Validation\ValidationException  $exception
      * @return \Illuminate\Http\JsonResponse
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     protected function invalidJson($request, \Illuminate\Validation\ValidationException $exception)

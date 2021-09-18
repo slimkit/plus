@@ -30,8 +30,9 @@ class VerifyCodeController extends Controller
     /**
      * 创建注册验证码.
      *
-     * @param \Zhiyi\Plus\Http\Requests\API2\CreateRegisterVerifyCodeRequest $request
+     * @param  \Zhiyi\Plus\Http\Requests\API2\CreateRegisterVerifyCodeRequest  $request
      * @return mixed
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function storeByRegister(CreateRegisterVerifyCodeRequest $request)
@@ -42,8 +43,9 @@ class VerifyCodeController extends Controller
     /**
      * 创建并发送用户验证码.
      *
-     * @param \Zhiyi\Plus\Http\Requests\API2\StoreVerifyCode $request [description]
+     * @param  \Zhiyi\Plus\Http\Requests\API2\StoreVerifyCode  $request  [description]
      * @return mixed
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function store(StoreVerifyCode $request)
@@ -54,7 +56,7 @@ class VerifyCodeController extends Controller
     /**
      * 发送验证码通过请求
      *
-     * @param Request $request
+     * @param  Request  $request
      * @return mixed
      */
     protected function sendFromRequest(Request $request)
@@ -92,6 +94,7 @@ class VerifyCodeController extends Controller
      * @param  string  $channel
      * @param  array  $data
      * @return mixed
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     protected function send(string $account, string $channel = '', array $data = [])
@@ -111,8 +114,9 @@ class VerifyCodeController extends Controller
     /**
      * Validate sent.
      *
-     * @param string $account
+     * @param  string  $account
      * @return void
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     protected function validateSent(string $account)

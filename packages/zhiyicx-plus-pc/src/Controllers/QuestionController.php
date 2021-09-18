@@ -26,8 +26,10 @@ class QuestionController extends BaseController
 {
     /**
      * 问答.
+     *
      * @author 28youth
-     * @param  Request $request
+     *
+     * @param  Request  $request
      * @return mixed
      */
     public function question(Request $request)

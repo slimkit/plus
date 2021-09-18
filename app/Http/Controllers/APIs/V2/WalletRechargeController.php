@@ -61,8 +61,8 @@ class WalletRechargeController extends Controller
      * Create a recharge charge.
      *
      * @param  \Zhiyi\Plus\Http\Requests\API2\StoreWalletRecharge  $request
-     *
      * @return mixed
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function store(StoreWalletRecharge $request)
@@ -97,8 +97,8 @@ class WalletRechargeController extends Controller
      * Resolve store method.
      *
      * @param  string  $type
-     *
      * @return mixed
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     protected function resolveStore(string $type)
@@ -111,8 +111,8 @@ class WalletRechargeController extends Controller
      *
      * @param  \Zhiyi\Plus\Models\WalletCharge  $charge
      * @param  array  $extra
-     *
      * @return array
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     protected function createCharge(
@@ -127,8 +127,8 @@ class WalletRechargeController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  string  $channel
-     *
      * @return \Zhiyi\Plus\Models\WalletCharge
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     protected function createChargeModel(Request $request, string $channel): WalletChargeModel

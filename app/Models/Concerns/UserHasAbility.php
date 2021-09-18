@@ -35,11 +35,12 @@ trait UserHasAbility
     /**
      * User ability.
      *
-     * @param array $parameters
-     *        ability();
-     *        ability($ability);
-     *        ability($role, $ability);
+     * @param  array  $parameters
+     *                             ability();
+     *                             ability($ability);
+     *                             ability($role, $ability);
      * @return mixed
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function ability(...$parameters)
@@ -59,8 +60,9 @@ trait UserHasAbility
     /**
      * The user all roles.
      *
-     * @param string $role
+     * @param  string  $role
      * @return mied
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function roles(string $role = '')
@@ -76,6 +78,7 @@ trait UserHasAbility
      * Resolve ability service.
      *
      * @return \Zhiyi\Plus\Services\UserAbility
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     protected function resolveAbility()

@@ -34,6 +34,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $purchase_count 购买统计
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|CurrencyCommodity newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|CurrencyCommodity newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|CurrencyCommodity query()

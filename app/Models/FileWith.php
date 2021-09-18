@@ -39,6 +39,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
  * @property-read \Zhiyi\Plus\Models\File|null $file
  * @property-read string $pay_index
  * @property-read \Zhiyi\Plus\Models\PaidNode|null $paidNode
+ *
  * @method static Builder|FileWith newModelQuery()
  * @method static Builder|FileWith newQuery()
  * @method static Builder|FileWith query()
@@ -79,6 +80,7 @@ class FileWith extends Model
      * has file.
      *
      * @return HasOne
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function file()
@@ -90,6 +92,7 @@ class FileWith extends Model
      * 获取付费节点.
      *
      * @return HasOne
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function paidNode()

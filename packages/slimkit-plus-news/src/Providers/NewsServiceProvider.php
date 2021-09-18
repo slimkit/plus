@@ -36,6 +36,7 @@ class NewsServiceProvider extends ServiceProvider
      * Bootstrap the provider.
      *
      * @return void
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function boot()
@@ -107,6 +108,7 @@ class NewsServiceProvider extends ServiceProvider
      * register provided to provider.
      *
      * @return void
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function register()

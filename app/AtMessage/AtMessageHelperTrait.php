@@ -26,9 +26,10 @@ trait AtMessageHelperTrait
 {
     /**
      * Send at message.
-     * @param string $content
-     * @param \Zhiyi\Plus\Models\User $sender
-     * @param mixed $resource
+     *
+     * @param  string  $content
+     * @param  \Zhiyi\Plus\Models\User  $sender
+     * @param  mixed  $resource
      * @return void
      */
     public function sendAtMessage(string $content, UserModel $sender, $resource): void

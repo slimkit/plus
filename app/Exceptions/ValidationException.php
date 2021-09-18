@@ -27,7 +27,8 @@ class ValidationException extends IlluminateValidationException
     /**
      * Create a new exception instance.
      *
-     * @param \Illuminate\Validation\ValidationException $exception
+     * @param  \Illuminate\Validation\ValidationException  $exception
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function __construct(IlluminateValidationException $exception)

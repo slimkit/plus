@@ -49,7 +49,6 @@ class NewUserRewardController extends Controller
      * @param  Request  $request
      * @param  User  $target
      * @param  UserProcess  $processer
-     *
      * @return JsonResponse
      */
     public function store(Request $request, User $target, UserProcess $processer)

@@ -39,6 +39,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \Zhiyi\Plus\Models\User|null $owner
  * @property-read \Zhiyi\Plus\Models\NewWallet|null $wallet
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|WalletOrder newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|WalletOrder newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|WalletOrder query()
@@ -68,6 +69,7 @@ class WalletOrder extends Model
      * The order owner.
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function owner(): HasOne
@@ -79,6 +81,7 @@ class WalletOrder extends Model
      * The order owner wallet.
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function wallet(): HasOne

@@ -27,13 +27,15 @@ class Message implements MessageInterface
 {
     /**
      * Resources manager.
+     *
      * @var \Zhiyi\Plus\AtMessage\ResourceManagerInterface
      */
     protected $manager;
 
     /**
      * Create the message instance.
-     * @param \Zhiyi\Plus\AtMessage\ResourceManagerInterface $manager
+     *
+     * @param  \Zhiyi\Plus\AtMessage\ResourceManagerInterface  $manager
      */
     public function __construct(ResourceManagerInterface $manager)
     {
@@ -42,9 +44,10 @@ class Message implements MessageInterface
 
     /**
      * The message send handler.
-     * @param \Zhiyi\Plus\Models\User $sender
-     * @param \Zhiyi\Plus\Models\User $user
-     * @param mixed $resource
+     *
+     * @param  \Zhiyi\Plus\Models\User  $sender
+     * @param  \Zhiyi\Plus\Models\User  $user
+     * @param  mixed  $resource
      * @return void
      */
     public function send(UserModel $sender, UserModel $user, $resource): void

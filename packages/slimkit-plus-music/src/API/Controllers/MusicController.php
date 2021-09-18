@@ -28,7 +28,8 @@ class MusicController extends Controller
 {
     /**
      * List songs.
-     * @param \Illuminate\Http\Request $request
+     *
+     * @param  \Illuminate\Http\Request  $request
      * @return mixed
      */
     public function index(Request $request)
@@ -55,8 +56,9 @@ class MusicController extends Controller
      * 专辑详情.
      *
      * @author bs<414606094@qq.com>
-     * @param  Request $request
-     * @param  Music   $music
+     *
+     * @param  Request  $request
+     * @param  Music  $music
      * @return
      */
     public function show(Request $request, Music $music)
@@ -81,6 +83,7 @@ class MusicController extends Controller
      * 增加歌曲分享数.
      *
      * @author bs<414606094@qq.com>
+     *
      * @param  Music  $music
      * @return mixed
      */

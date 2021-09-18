@@ -32,7 +32,8 @@ abstract class AbstractValidator implements ValidatorInterface
 
     /**
      * The Validator validate handle.
-     * @param \Illuminate\Http\Request $request
+     *
+     * @param  \Illuminate\Http\Request  $request
      * @return void
      */
     public function validate(Request $request): void
@@ -42,12 +43,14 @@ abstract class AbstractValidator implements ValidatorInterface
 
     /**
      * get The validator rules.
+     *
      * @return array
      */
     abstract public function rules(): array;
 
     /**
      * Get the validate error messages.
+     *
      * @return array
      */
     public function messages(): array
@@ -57,6 +60,7 @@ abstract class AbstractValidator implements ValidatorInterface
 
     /**
      * Get the validate attribute custom name.
+     *
      * @return array
      */
     public function customAttributes(): array
