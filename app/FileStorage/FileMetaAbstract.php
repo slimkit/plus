@@ -58,6 +58,7 @@ abstract class FileMetaAbstract implements FileMetaInterface
 
     /**
      * Convert the object to its JSON representation.
+     *
      * @return string
      */
     public function jsonSerialize(): string

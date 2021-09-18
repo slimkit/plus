@@ -30,6 +30,7 @@ class AbilitySeeder extends Seeder
      * Run Abilitys Node Insert Data Method.
      *
      * @return void
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function run()

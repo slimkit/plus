@@ -31,11 +31,12 @@ class FileController extends Controller
     /**
      * Get file.
      *
-     * @param \Illuminate\Http\Request $request
-     * @param \Illuminate\Contracts\Routing\ResponseFactory $response
-     * @param \Zhiyi\Plus\Cdn\UrlManager $manager
-     * @param \Zhiyi\Plus\Models\FileWith $fileWith
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Contracts\Routing\ResponseFactory  $response
+     * @param  \Zhiyi\Plus\Cdn\UrlManager  $manager
+     * @param  \Zhiyi\Plus\Models\FileWith  $fileWith
      * @return mixed
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function show(Request $request, ResponseContract $response, CdnUrlManager $cdn, FileWithModel $file)

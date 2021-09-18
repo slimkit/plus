@@ -74,8 +74,10 @@ class BaseController extends Controller
 
     /**
      * 操作提示.
-     * @param Request $request
+     *
+     * @param  Request  $request
      * @return mixed
+     *
      * @author ZsyD
      */
     public function notice(Request $request)
@@ -92,8 +94,9 @@ class BaseController extends Controller
     /**
      * 查看资源页面.
      *
-     * @param Request $request
+     * @param  Request  $request
      * @return mixed
+     *
      * @author BS <414606094@qq.com>
      */
     public function reportView(Request $request)

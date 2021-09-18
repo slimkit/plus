@@ -74,7 +74,8 @@ class MusicSpecial extends Model
      * 处理付费节点信息.
      *
      * @author bs<414606094@qq.com>
-     * @param  int    $user [description]
+     *
+     * @param  int  $user  [description]
      * @return mix
      */
     public function formatPaidNode(int $user)
@@ -96,6 +97,7 @@ class MusicSpecial extends Model
      * 验证某个用户是否收藏了某个专辑.
      *
      * @author bs<414606094@qq.com>
+     *
      * @param  [int]  $user
      * @return bool
      */

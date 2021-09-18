@@ -64,9 +64,10 @@ class FeedCount
      * 统计数量.
      *
      * @author bs<414606094@qq.com>
+     *
      * @param  [type] $uid      [description]
      * @param  [type] $countKey [description]
-     * @param  string $method   [description]
+     * @param  string  $method  [description]
      * @return [type]           [description]
      */
     public function count($uid, $countKey, $method = 'increment', $countnum = 1)

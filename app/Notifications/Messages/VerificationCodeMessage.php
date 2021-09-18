@@ -32,8 +32,9 @@ class VerificationCodeMessage extends Message
     /**
      * Create the message instance.
      *
-     * @param \Illuminate\Config\Repository $config
-     * @param int $code
+     * @param  \Illuminate\Config\Repository  $config
+     * @param  int  $code
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function __construct(ConfigRepository $config, int $code)
@@ -45,8 +46,9 @@ class VerificationCodeMessage extends Message
     /**
      * Get the message content.
      *
-     * @param \Overtrue\EasySms\Contracts\GatewayInterface|null $gateway
+     * @param  \Overtrue\EasySms\Contracts\GatewayInterface|null  $gateway
      * @return string
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function getContent(GatewayInterface $gateway = null)
@@ -59,8 +61,9 @@ class VerificationCodeMessage extends Message
     /**
      * Get the message template.
      *
-     * @param \Overtrue\EasySms\Contracts\GatewayInterface|null $gateway
+     * @param  \Overtrue\EasySms\Contracts\GatewayInterface|null  $gateway
      * @return string
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function getTemplate(GatewayInterface $gateway = null)
@@ -73,8 +76,9 @@ class VerificationCodeMessage extends Message
     /**
      * Get the message data.
      *
-     * @param \Overtrue\EasySms\Contracts\GatewayInterface|null $gateway
+     * @param  \Overtrue\EasySms\Contracts\GatewayInterface|null  $gateway
      * @return array
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function getData(GatewayInterface $gateway = null)
@@ -89,8 +93,9 @@ class VerificationCodeMessage extends Message
     /**
      * Get Gateway Alias name.
      *
-     * @param \Overtrue\EasySms\Contracts\GatewayInterface $gateway
+     * @param  \Overtrue\EasySms\Contracts\GatewayInterface  $gateway
      * @return string
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     protected function gatewayAliasName(GatewayInterface $gateway = null): string

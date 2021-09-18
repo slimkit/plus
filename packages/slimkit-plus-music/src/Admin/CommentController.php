@@ -32,6 +32,7 @@ class CommentController extends Controller
 {
     /**
      * 所有歌曲应用相关评论.
+     *
      * @param  Request  $request
      * @param  MusicComment  $comment
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
@@ -71,8 +72,9 @@ class CommentController extends Controller
 
     /**
      * 歌曲评论.
-     * @param  Request $request [description]
-     * @param  Music   $music   [description]
+     *
+     * @param  Request  $request  [description]
+     * @param  Music  $music  [description]
      * @return [type]           [description]
      */
     public function musicComments(Request $request, Music $music)
@@ -102,8 +104,9 @@ class CommentController extends Controller
 
     /**
      * 专辑评论.
-     * @param  Request      $request [description]
-     * @param  MusicSpecial $special [description]
+     *
+     * @param  Request  $request  [description]
+     * @param  MusicSpecial  $special  [description]
      * @return [type]                [description]
      */
     public function specialComments(Request $request, MusicSpecial $special)
@@ -130,9 +133,10 @@ class CommentController extends Controller
      * 删除音乐评论.
      *
      * @author bs<414606094@qq.com>
-     * @param  Request $request
-     * @param  Music   $music
-     * @param  Comment $comment
+     *
+     * @param  Request  $request
+     * @param  Music  $music
+     * @param  Comment  $comment
      * @return json
      */
     public function delete(Music $music, Comment $comment)
@@ -153,9 +157,10 @@ class CommentController extends Controller
      * 删除专辑评论.
      *
      * @author bs<414606094@qq.com>
-     * @param  Request      $request
-     * @param  MusicSpecial $special
-     * @param  Comment      $comment
+     *
+     * @param  Request  $request
+     * @param  MusicSpecial  $special
+     * @param  Comment  $comment
      * @return json
      */
     public function specialDelete(MusicSpecial $special, Comment $comment)

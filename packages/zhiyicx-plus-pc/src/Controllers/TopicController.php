@@ -74,7 +74,8 @@ class TopicController extends BaseController
      * 话题详情.
      *
      * @author mutoe <mutoe@foxmail.com>
-     * @param int $topic_id
+     *
+     * @param  int  $topic_id
      */
     public function detail(int $topic_id)
     {
@@ -111,8 +112,9 @@ class TopicController extends BaseController
      * 编辑话题.
      *
      * @author mutoe <mutoe@foxmail.com>
-     * @param Request $request
-     * @param int $topic_id
+     *
+     * @param  Request  $request
+     * @param  int  $topic_id
      */
     public function edit(int $topic_id)
     {

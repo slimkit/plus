@@ -30,6 +30,7 @@ class NewsComment extends Model
 
     /**
      * 单条评论属于一条资讯.
+     *
      * @return [type] [description]
      */
     public function news()

@@ -31,8 +31,9 @@ class MusicPaidController extends Controller
      * Get the specials that the user has purchased.
      *
      * @author bs<414606094@qq.com>
-     * @param  Illuminate\Http\Request $request
-     * @param  Zhiyi\Component\ZhiyiPlus\PlusComponentMusic\Models\MusicSpecial $musicSpecial
+     *
+     * @param  Illuminate\Http\Request  $request
+     * @param  Zhiyi\Component\ZhiyiPlus\PlusComponentMusic\Models\MusicSpecial  $musicSpecial
      * @return mixed
      */
     public function specials(Request $request, MusicSpecial $musicSpecial)
@@ -69,8 +70,9 @@ class MusicPaidController extends Controller
      * Get the musics that the user has purchased.
      *
      * @author bs<414606094@qq.com>
-     * @param  Illuminate\Http\Request $request
-     * @param  Zhiyi\Component\ZhiyiPlus\PlusComponentMusic\Models\Music $musicModel
+     *
+     * @param  Illuminate\Http\Request  $request
+     * @param  Zhiyi\Component\ZhiyiPlus\PlusComponentMusic\Models\Music  $musicModel
      * @return mixed
      */
     public function musics(Request $request, Music $musicModel)

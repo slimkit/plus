@@ -28,8 +28,10 @@ class SocialiteManager extends Manager
     /**
      * Get the default driver name.
      *
-     * @throws \Exception
      * @return void
+     *
+     * @throws \Exception
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function getDefaultDriver()
@@ -41,6 +43,7 @@ class SocialiteManager extends Manager
      * Create Tencent QQ Driver.
      *
      * @return \SlimKit\PlusSocialite\Contracts\Sociable
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function createQQDriver(): Sociable
@@ -52,6 +55,7 @@ class SocialiteManager extends Manager
      * Create Sina Weibo Driver.
      *
      * @return \SlimKit\PlusSocialite\Contracts\Sociable
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function createWeiboDriver(): Sociable
@@ -63,6 +67,7 @@ class SocialiteManager extends Manager
      * Create Tencent WeChat Driver.
      *
      * @return \SlimKit\PlusSocialite\Contracts\Sociable
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function createWeChatDriver(): Sociable

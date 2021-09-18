@@ -25,9 +25,10 @@ use function asset as plus_asset;
 /**
  * Generate an asset path for the application.
  *
- * @param string $path
- * @param bool $secure
+ * @param  string  $path
+ * @param  bool  $secure
  * @return string
+ *
  * @author Seven Du <shiweidu@outlook.com>
  * @homepage http://medz.cn
  */
@@ -41,8 +42,9 @@ function asset($path, $secure = null)
 /**
  * Get The component resource asset path.
  *
- * @param string $path
+ * @param  string  $path
  * @return string
+ *
  * @author Seven Du <shiweidu@outlook.com>
  * @homepage http://medz.cn
  */
@@ -54,8 +56,9 @@ function asset_path($path)
 /**
  * Get the component base path.
  *
- * @param string $path
+ * @param  string  $path
  * @return string
+ *
  * @author Seven Du <shiweidu@outlook.com>
  * @homepage http://medz.cn
  */
@@ -68,6 +71,7 @@ function base_path($path = '')
  * Get the component name.
  *
  * @return string
+ *
  * @author Seven Du <shiweidu@outlook.com>
  * @homepage http://medz.cn
  */
@@ -80,6 +84,7 @@ function component_name()
  * Get the component route filename.
  *
  * @return string
+ *
  * @author Seven Du <shiweidu@outlook.com>
  * @homepage http://medz.cn
  */
@@ -92,6 +97,7 @@ function route_path()
  * Get the component resource path.
  *
  * @return string
+ *
  * @author Seven Du <shiweidu@outlook.com>
  * @homepage http://medz.cn
  */

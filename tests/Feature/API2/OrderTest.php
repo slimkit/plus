@@ -47,6 +47,7 @@ class OrderTest extends TestCase
      * 测试获取订单流水.
      *
      * @return void
+     *
      * @author BS <414606094@qq.com>
      */
     public function testGetOrders()
@@ -80,8 +81,9 @@ class OrderTest extends TestCase
     /**
      * 断言订单基本结构.
      *
-     * @param array $singleData
+     * @param  array  $singleData
      * @return void
+     *
      * @author BS <414606094@qq.com>
      */
     protected function assertOrderData(array $singleData)

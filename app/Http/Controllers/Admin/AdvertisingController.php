@@ -31,7 +31,7 @@ class AdvertisingController extends Controller
     /**
      * 获取广告.
      *
-     * @param Request $request
+     * @param  Request  $request
      * @return \Illuminate\Http\JsonResponse
      */
     public function ads(Request $request)
@@ -63,7 +63,7 @@ class AdvertisingController extends Controller
     /**
      * 根据ID获取广告.
      *
-     * @param  Advertising $ad
+     * @param  Advertising  $ad
      * @return \Illuminate\Http\JsonResponse
      */
     public function showAd(Advertising $ad)
@@ -74,7 +74,7 @@ class AdvertisingController extends Controller
     /**
      * 创建广告.
      *
-     * @param Request $request
+     * @param  Request  $request
      * @return \Illuminate\Http\JsonResponse
      */
     public function storeAd(Request $request)
@@ -114,8 +114,8 @@ class AdvertisingController extends Controller
     /**
      * 更新广告.
      *
-     * @param  Request $request
-     * @param  Advertising $ad
+     * @param  Request  $request
+     * @param  Advertising  $ad
      * @return \Illuminate\Http\JsonResponse
      */
     public function updateAd(Request $request, Advertising $ad)
@@ -173,9 +173,10 @@ class AdvertisingController extends Controller
     /**
      * 验证广告详细数据.
      *
-     * @param AdvertisingSpace $space
-     * @param Request $request
+     * @param  AdvertisingSpace  $space
+     * @param  Request  $request
      * @return mixed
+     *
      * @author BS <414606094@qq.com>
      */
     protected function checkData(AdvertisingSpace $space, Request $request)
@@ -243,7 +244,7 @@ class AdvertisingController extends Controller
     /**
      * 删除广告.
      *
-     * @param  Advertising $ad
+     * @param  Advertising  $ad
      * @return \Illuminate\Http\JsonResponse
      */
     public function deleteAd(Advertising $ad)

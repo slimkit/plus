@@ -36,13 +36,14 @@ class NewCommentPinnedController extends Controller
     /**
      * 固定评论.
      *
-     * @param \Illuminate\Http\Request $request
-     * @param \Illuminate\Contracts\Routing\ResponseFactory $response
-     * @param \Carbon\Carbon $dateTime
-     * @param \Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\Feed $feed
-     * @param \Zhiyi\Plus\Models\Comment $comment
-     * @param \Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\FeedPinned $pinned
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Contracts\Routing\ResponseFactory  $response
+     * @param  \Carbon\Carbon  $dateTime
+     * @param  \Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\Feed  $feed
+     * @param  \Zhiyi\Plus\Models\Comment  $comment
+     * @param  \Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\FeedPinned  $pinned
      * @return mixed
+     *
      * @author BS <414606094@qq.com>
      */
     public function pass(
@@ -93,11 +94,12 @@ class NewCommentPinnedController extends Controller
     /**
      * 拒绝置顶.
      *
-     * @param Request $request
-     * @param ResponseContract $response
-     * @param Carbon $dateTime
-     * @param FeedPinnedModel $pinned
+     * @param  Request  $request
+     * @param  ResponseContract  $response
+     * @param  Carbon  $dateTime
+     * @param  FeedPinnedModel  $pinned
      * @return mixed
+     *
      * @author BS <414606094@qq.com>
      */
     public function reject(

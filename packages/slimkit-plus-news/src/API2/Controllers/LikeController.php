@@ -31,8 +31,9 @@ class LikeController extends Controller
      * 点赞一个资讯.
      *
      * @author bs<414606094@qq.com>
-     * @param  Request $request [description]
-     * @param  int     $news_id [description]
+     *
+     * @param  Request  $request  [description]
+     * @param  int  $news_id  [description]
      * @return [type]           [description]
      */
     public function like(Request $request, News $news)
@@ -57,8 +58,9 @@ class LikeController extends Controller
      * 取消点赞一个资讯.
      *
      * @author bs<414606094@qq.com>
-     * @param  Request $request [description]
-     * @param  int     $news_id [description]
+     *
+     * @param  Request  $request  [description]
+     * @param  int  $news_id  [description]
      * @return [type]           [description]
      */
     public function cancel(Request $request, News $news)
@@ -80,8 +82,9 @@ class LikeController extends Controller
      * 一条资讯的点赞列表.
      *
      * @author bs<414606094@qq.com>
-     * @param  Request $request
-     * @param  News    $news
+     *
+     * @param  Request  $request
+     * @param  News  $news
      * @return mix
      */
     public function index(Request $request, News $news)

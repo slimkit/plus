@@ -31,8 +31,9 @@ class CurrencyApplePayController extends Controller
     /**
      * 发起充值订单.
      *
-     * @param StoreCurrencyAppleIAPRecharge $request
+     * @param  StoreCurrencyAppleIAPRecharge  $request
      * @return mixed
+     *
      * @author BS <414606094@qq.com>
      */
     public function store(StoreCurrencyAppleIAPRecharge $request)
@@ -52,9 +53,10 @@ class CurrencyApplePayController extends Controller
     /**
      * 主动取回凭据.
      *
-     * @param Request $request
-     * @param CurrencyOrderModel $currencyOrder
+     * @param  Request  $request
+     * @param  CurrencyOrderModel  $currencyOrder
      * @return mixed
+     *
      * @author BS <414606094@qq.com>
      */
     public function retrieve(Request $request, CurrencyOrderModel $order)
@@ -72,8 +74,9 @@ class CurrencyApplePayController extends Controller
     /**
      * apple商品列表.
      *
-     * @param CommonConfig $config
+     * @param  CommonConfig  $config
      * @return mixed
+     *
      * @author BS <414606094@qq.com>
      */
     public function productList(CommonConfig $config)

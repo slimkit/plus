@@ -29,10 +29,11 @@ class UserFollowController extends Controller
     /**
      * List followers of a user.
      *
-     * @param \Illuminate\Http\Request $request
-     * @param \Illuminate\Contracts\Routing\ResponseFactory $response
-     * @param \Zhiyi\Plus\Models\User $user
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Contracts\Routing\ResponseFactory  $response
+     * @param  \Zhiyi\Plus\Models\User  $user
      * @return mixed
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function followers(Request $request, ResponseFactoryContract $response, UserModel $user)
@@ -61,10 +62,11 @@ class UserFollowController extends Controller
     /**
      * List users followed by another user.
      *
-     * @param \Illuminate\Http\Request $request
-     * @param \Illuminate\Contracts\Routing\ResponseFactory $response
-     * @param \Zhiyi\Plus\Models\User $user
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Contracts\Routing\ResponseFactory  $response
+     * @param  \Zhiyi\Plus\Models\User  $user
      * @return mixed
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function followings(Request $request, ResponseFactoryContract $response, UserModel $user)

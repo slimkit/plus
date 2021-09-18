@@ -26,8 +26,10 @@ class RankController extends BaseController
 {
     /**
      * 排行榜.
+     *
      * @author ZysD
-     * @param  int|int $mold [排行榜类型]
+     *
+     * @param  int|int  $mold  [排行榜类型]
      * @return mixed
      */
     public function index(int $mold = 1)
@@ -65,8 +67,10 @@ class RankController extends BaseController
 
     /**
      * 排行榜列表.
+     *
      * @author ZysD
-     * @param  Request $request
+     *
+     * @param  Request  $request
      * @return mixed
      */
     public function _getRankList(Request $request)
@@ -159,12 +163,14 @@ class RankController extends BaseController
 
     /**
      * 排行榜缓存.
+     *
      * @author ZysD
-     * @param  string  $key    [键名]
-     * @param  string  $url    [api地址]
-     * @param  array   $params [参数]
-     * @param  int $time   [时间]
-     * @param  string  $type   [请求类型]
+     *
+     * @param  string  $key  [键名]
+     * @param  string  $url  [api地址]
+     * @param  array  $params  [参数]
+     * @param  int  $time  [时间]
+     * @param  string  $type  [请求类型]
      * @return mixed
      */
     public function rankCache(string $key, string $url, array $params = [], int $time = 5, string $type = 'GET')

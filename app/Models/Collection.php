@@ -32,6 +32,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read Model|\Eloquent $collectible
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|Collection newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Collection newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Collection query()
@@ -56,6 +57,7 @@ class Collection extends Model
      * Has collectible.
      *
      * @return \Illuminate\Database\Eloquent\Relations\MorphTo
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function collectible()

@@ -30,6 +30,7 @@ class Easemob extends Controller
 {
     /**
      * Get configure.
+     *
      * @return \Illuminate\Http\JsonResponse
      */
     public function getConfigure(): JsonResponse
@@ -47,7 +48,8 @@ class Easemob extends Controller
 
     /**
      * set configure.
-     * @param \Zhiyi\Plus\Admin\Requests\SetEasemob $request
+     *
+     * @param  \Zhiyi\Plus\Admin\Requests\SetEasemob  $request
      * @return \Illuminate\Http\Response
      */
     public function setConfigure(SetEasemobRequest $request)

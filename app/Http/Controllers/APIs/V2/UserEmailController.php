@@ -29,9 +29,10 @@ class UserEmailController extends Controller
     /**
      * 解除用户 E-Mail 绑定.
      *
-     * @param \Illuminate\Http\Request $request
-     * @param \Illuminate\Contracts\Routing\ResponseFactory $response
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Contracts\Routing\ResponseFactory  $response
      * @return mixed
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function delete(Request $request, ResponseFactoryContract $response)

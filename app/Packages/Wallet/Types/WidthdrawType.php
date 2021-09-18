@@ -30,11 +30,12 @@ class WidthdrawType extends Type
     /**
      * 提现.
      *
-     * @param int|UserModel $owner
-     * @param int $amount
-     * @param string $type
-     * @param string $account
+     * @param  int|UserModel  $owner
+     * @param  int  $amount
+     * @param  string  $type
+     * @param  string  $account
      * @return boolen
+     *
      * @author BS <414606094@qq.com>
      */
     public function widthdraw($owner, $amount, $type, $account): bool
@@ -48,8 +49,9 @@ class WidthdrawType extends Type
     /**
      * Check user.
      *
-     * @param int|UserModel $user
+     * @param  int|UserModel  $user
      * @return int
+     *
      * @author BS <414606094@qq.com>
      */
     protected function checkUserId($user): int
@@ -64,9 +66,10 @@ class WidthdrawType extends Type
     /**
      * Create Order.
      *
-     * @param int $owner
-     * @param int $amount
+     * @param  int  $owner
+     * @param  int  $amount
      * @return Zhiyi\Plus\Models\WalletOrderModel
+     *
      * @author BS <414606094@qq.com>
      */
     protected function createOrder(int $owner, int $amount): Order

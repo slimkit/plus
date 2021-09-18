@@ -39,6 +39,7 @@ class StoreCurrencyRecharge extends FormRequest
      * Get the validation rules that apply to the request.
      *
      * @return array
+     *
      * @author BS <414606094@qq.com>
      */
     public function rules()
@@ -67,6 +68,7 @@ class StoreCurrencyRecharge extends FormRequest
      * Get the valodation error message that apply to the request.
      *
      * @return array
+     *
      * @author BS <414606094@qq.com>
      */
     public function messages()

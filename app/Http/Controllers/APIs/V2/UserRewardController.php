@@ -42,9 +42,10 @@ class UserRewardController extends Controller
      * 打赏用户.
      *
      * @author bs<414606094@qq.com>
-     * @param  Request      $request
-     * @param  User         $target
-     * @param  WalletCharge $chargeModel
+     *
+     * @param  Request  $request
+     * @param  User  $target
+     * @param  WalletCharge  $chargeModel
      * @return json
      */
     public function store(Request $request, User $target, UserProcess $processer)

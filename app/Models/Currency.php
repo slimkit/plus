@@ -30,6 +30,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $sum 货币总和
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|Currency newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Currency newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Currency query()

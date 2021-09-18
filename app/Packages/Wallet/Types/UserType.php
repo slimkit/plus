@@ -30,10 +30,11 @@ class UserType extends Type
     /**
      * User to user transfer.
      *
-     * @param int|\Zhiyi\Plus\Models\User $owner
-     * @param int|\Zhiyi\Plus\Models\User $target
-     * @param int $amount
+     * @param  int|\Zhiyi\Plus\Models\User  $owner
+     * @param  int|\Zhiyi\Plus\Models\User  $target
+     * @param  int  $amount
      * @return bool
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function transfer($owner, $target, int $amount): bool
@@ -48,8 +49,9 @@ class UserType extends Type
     /**
      * Resolve get user id.
      *
-     * @param int|\Zhiyi\Plus\Models\User $user
+     * @param  int|\Zhiyi\Plus\Models\User  $user
      * @return int
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     protected function resolveGetUserId($user): int
@@ -64,10 +66,11 @@ class UserType extends Type
     /**
      * Create a order.
      *
-     * @param int $owner
-     * @param int $target
-     * @param int $amount
+     * @param  int  $owner
+     * @param  int  $target
+     * @param  int  $amount
      * @return \Zhiyi\Plus\Packages\Wallet\Order
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function createOrder(int $owner, int $target, int $amount): Order
@@ -78,10 +81,11 @@ class UserType extends Type
     /**
      * Create order model.
      *
-     * @param int $owner
-     * @param int $target
-     * @param int $amount
+     * @param  int  $owner
+     * @param  int  $target
+     * @param  int  $amount
      * @return \Ziyi\Plus\Models\WalletOrder
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function createOrderModel(int $owner, int $target, int $amount): WalletOrderModel

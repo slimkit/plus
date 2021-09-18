@@ -30,6 +30,7 @@ class WalletCashSettingController extends Controller
      * 获取提现设置.
      *
      * @return mixed
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function show()
@@ -43,8 +44,9 @@ class WalletCashSettingController extends Controller
     /**
      * 更新提现设置.
      *
-     * @param Request $request
+     * @param  Request  $request
      * @return mexed
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function update(Request $request)

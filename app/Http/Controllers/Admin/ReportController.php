@@ -30,7 +30,7 @@ class ReportController extends Controller
     /**
      * 举报列表.
      *
-     * @param  Request $request
+     * @param  Request  $request
      * @return mixed
      */
     public function index(Request $request)
@@ -59,8 +59,8 @@ class ReportController extends Controller
     /**
      * 处理举报.
      *
-     * @param  Request     $request
-     * @param  ReportModel $report
+     * @param  Request  $request
+     * @param  ReportModel  $report
      * @return mixed
      */
     public function deal(Request $request, ReportModel $report)
@@ -88,9 +88,10 @@ class ReportController extends Controller
     /**
      * 驳回举报.
      *
-     * @param Request $request
-     * @param ReportModel $report
+     * @param  Request  $request
+     * @param  ReportModel  $report
      * @return mixed
+     *
      * @author BS <414606094@qq.com>
      */
     public function reject(Request $request, ReportModel $report)
@@ -119,6 +120,7 @@ class ReportController extends Controller
      * 判断是否安装了pc扩展.
      *
      * @return bool
+     *
      * @author BS <414606094@qq.com>
      */
     protected function getPcInstalled(): bool

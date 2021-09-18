@@ -41,6 +41,7 @@ class WalletTransformTest extends TestCase
      * 测试发起转换积分.
      *
      * @return void
+     *
      * @author BS <414606094@qq.com>
      */
     public function testTransfer()

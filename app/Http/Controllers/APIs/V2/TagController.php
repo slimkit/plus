@@ -28,9 +28,10 @@ class TagController extends Controller
     /**
      * Get all tags.
      *
-     * @param \Illuminate\Contracts\Routing\ResponseFactory $response
-     * @param \Zhiyi\Plus\Models\TagCategory $categoryModel
+     * @param  \Illuminate\Contracts\Routing\ResponseFactory  $response
+     * @param  \Zhiyi\Plus\Models\TagCategory  $categoryModel
      * @return mixed
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function index(ResponseFactoryContract $response, TagCategoryModel $categoryModel)

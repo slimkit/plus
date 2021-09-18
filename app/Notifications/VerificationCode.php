@@ -42,7 +42,8 @@ class VerificationCode extends Notification implements ShouldQueue
     /**
      * Create the verification notification instance.
      *
-     * @param \Zhiyi\Plus\Models\VerificationCode $model
+     * @param  \Zhiyi\Plus\Models\VerificationCode  $model
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function __construct(VerificationCodeModel $model)
@@ -53,7 +54,7 @@ class VerificationCode extends Notification implements ShouldQueue
     /**
      * Get the notification's delivery channels.
      *
-     * @param \Zhiyi\Plus\Models\VerificationCode $notifiable
+     * @param  \Zhiyi\Plus\Models\VerificationCode  $notifiable
      * @return array
      */
     public function via(VerificationCodeModel $notifiable)
@@ -64,7 +65,7 @@ class VerificationCode extends Notification implements ShouldQueue
     /**
      * Get the mail representation of the notification.
      *
-     * @param \Zhiyi\Plus\Models\VerificationCode $notifiable
+     * @param  \Zhiyi\Plus\Models\VerificationCode  $notifiable
      * @return \Illuminate\Notifications\Messages\MailMessage
      */
     public function toMail(VerificationCodeModel $notifiable)
@@ -78,8 +79,9 @@ class VerificationCode extends Notification implements ShouldQueue
     /**
      * Get the SMS representation of the norification.
      *
-     * @param \Zhiyi\Plus\Models\VerificationCode $notifiable
+     * @param  \Zhiyi\Plus\Models\VerificationCode  $notifiable
      * @return [type]
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function toSms(VerificationCodeModel $notifiable, Config $config)

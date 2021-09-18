@@ -30,6 +30,7 @@ class PublicChannel
 {
     /**
      * Get public channel settings.
+     *
      * @return \Illuminate\Http\JsonResponse
      */
     public function show(): JsonResponse
@@ -44,7 +45,8 @@ class PublicChannel
 
     /**
      * Update public channel settings.
-     * @param \Illuminate\Http\Request $request
+     *
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request): Response

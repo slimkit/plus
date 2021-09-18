@@ -42,9 +42,10 @@ class NewCommentPinnedController extends Controller
      * @param  NewsModel  $news
      * @param  CommentModel  $comment
      * @param  NewsPinnedModel  $pinned
-     *
      * @return mixed
+     *
      * @throws \Exception
+     *
      * @author BS <414606094@qq.com>
      */
     public function accept(
@@ -99,9 +100,10 @@ class NewCommentPinnedController extends Controller
      * @param  NewsPinnedModel  $pinned
      * @param  ResponseContract  $response
      * @param  Carbon  $dateTime
-     *
      * @return mixed
+     *
      * @throws \Exception
+     *
      * @author BS <414606094@qq.com>
      */
     public function reject(

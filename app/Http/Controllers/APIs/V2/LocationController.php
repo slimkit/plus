@@ -30,10 +30,11 @@ class LocationController extends Controller
     /**
      * Search locations.
      *
-     * @param \Illuminate\Http\Request $request
-     * @param \Illuminate\Contracts\Routing\ResponseFactory $response
-     * @param \Zhiyi\Plus\Models\Area $model
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Contracts\Routing\ResponseFactory  $response
+     * @param  \Zhiyi\Plus\Models\Area  $model
      * @return mixed
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function search(Request $request, ResponseFactoryContract $response, AreaModel $model)
@@ -72,7 +73,8 @@ class LocationController extends Controller
      * 获取热门城市列表.
      *
      * @author bs<414606094@qq.com>
-     * @param  \Illuminate\Contracts\Routing\ResponseFactory $response
+     *
+     * @param  \Illuminate\Contracts\Routing\ResponseFactory  $response
      * @return mixed
      */
     public function hots(ResponseFactoryContract $response, ConfigModel $configMModel)

@@ -53,9 +53,10 @@ class RewardController extends Controller
      * @param  Request  $request
      * @param  Feed  $feed
      * @param  WalletCharge  $charge
-     *
      * @return mix
+     *
      * @throws \Throwable
+     *
      * @author bs<414606094@qq.com>
      */
     public function reward(Request $request, Feed $feed, WalletCharge $charge)
@@ -164,8 +165,9 @@ class RewardController extends Controller
      * 一条动态的打赏列表.
      *
      * @author bs<414606094@qq.com>
-     * @param  Request $request
-     * @param  Feed    $feed
+     *
+     * @param  Request  $request
+     * @param  Feed  $feed
      * @return mix
      */
     public function index(Request $request, Feed $feed)

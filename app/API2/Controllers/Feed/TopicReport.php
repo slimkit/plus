@@ -39,8 +39,8 @@ class TopicReport extends Controller
     /**
      * Report a topic.
      *
-     * @param \Zhiyi\Plus\API2\Requests\Feed\ReportATopic $request
-     * @param \Zhiyi\Plus\Models\FeedTopic $topic
+     * @param  \Zhiyi\Plus\API2\Requests\Feed\ReportATopic  $request
+     * @param  \Zhiyi\Plus\Models\FeedTopic  $topic
      * @return \Illuminate\Http\Response
      */
     public function __invoke(ReportATopicRequest $request, FeedTopicModel $topic): Response

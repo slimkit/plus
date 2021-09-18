@@ -30,7 +30,7 @@ class RewardType extends Type
     /**
      * @param $owner
      * @param $target
-     * @param int $amount
+     * @param  int  $amount
      * @param $extra
      * @return bool
      */
@@ -59,6 +59,7 @@ class RewardType extends Type
      *
      * @param $user
      * @return int
+     *
      * @author hh <915664508@qq.com>
      */
     public function resolveGetUserId($user): int
@@ -73,10 +74,11 @@ class RewardType extends Type
     /**
      * Create a order.
      *
-     * @param int $owner
-     * @param int $target
-     * @param int $amount
+     * @param  int  $owner
+     * @param  int  $target
+     * @param  int  $amount
      * @return \Zhiyi\Plus\Packages\Wallet\Order
+     *
      * @author hh <915664508@qq.com>
      */
     public function createOrder(int $owner, int $target, int $amount, string $body): Order
@@ -87,10 +89,11 @@ class RewardType extends Type
     /**
      * Create order model.
      *
-     * @param int $owner
-     * @param int $target
-     * @param int $amount
+     * @param  int  $owner
+     * @param  int  $target
+     * @param  int  $amount
      * @return \Ziyi\Plus\Models\WalletOrder
+     *
      * @author hh <915664508@qq.com>
      */
     public function createOrderModel(int $owner, int $target, int $amount, string $body): WalletOrderModel
