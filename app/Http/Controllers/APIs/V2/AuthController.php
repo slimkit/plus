@@ -54,8 +54,8 @@ class AuthController extends Controller
      * Get a JWT token via given credentials.
      *
      * @param  \Illuminate\Http\Request  $request
-     *
      * @return \Illuminate\Http\JsonResponse
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function login(Request $request): JsonResponse
@@ -124,6 +124,7 @@ class AuthController extends Controller
      * Log the user out (Invalidate the token).
      *
      * @return \Illuminate\Http\JsonResponse
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function logout(): JsonResponse
@@ -137,6 +138,7 @@ class AuthController extends Controller
      * Refresh a token.
      *
      * @return \Illuminate\Http\JsonResponse
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function refresh(): JsonResponse
@@ -150,7 +152,6 @@ class AuthController extends Controller
      * Get the token array structure.
      *
      * @param  string  $token
-     *
      * @return \Illuminate\Http\JsonResponse
      */
     protected function respondWithToken(string $token): JsonResponse

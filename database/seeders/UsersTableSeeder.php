@@ -39,6 +39,7 @@ class UsersTableSeeder extends Seeder
      * Insert the founder information.
      *
      * @return void
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     protected function createFounderUser()

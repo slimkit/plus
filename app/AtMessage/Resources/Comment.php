@@ -29,20 +29,23 @@ class Comment implements ResourceInterface
 {
     /**
      * The comment resource.
+     *
      * @var \Zhiyi\Plus\Models\Comment
      */
     protected $comment;
 
     /**
      * The sender.
+     *
      * @var \Zhiyi\Plus\Models\User
      */
     protected $sender;
 
     /**
      * Create the resource.
-     * @param \Zhiyi\Plus\Models\Comment $comment
-     * @param \Zhiyi\Plus\Models\User $sender
+     *
+     * @param  \Zhiyi\Plus\Models\Comment  $comment
+     * @param  \Zhiyi\Plus\Models\User  $sender
      */
     public function __construct(CommentModel $comment, UserModel $sender)
     {
@@ -52,6 +55,7 @@ class Comment implements ResourceInterface
 
     /**
      * Get the resourceable type.
+     *
      * @return string
      */
     public function type(): string
@@ -67,6 +71,7 @@ class Comment implements ResourceInterface
 
     /**
      * Get the resourceable id.
+     *
      * @return int
      */
     public function id(): int
@@ -76,6 +81,7 @@ class Comment implements ResourceInterface
 
     /**
      * Get the resourceable push message.
+     *
      * @return string
      */
     public function message(): string

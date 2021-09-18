@@ -48,6 +48,7 @@ use Zhiyi\Plus\FileStorage\Traits\EloquentAttributeTrait;
  * @property-read int|null $reports_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\Zhiyi\Plus\Models\User[] $users
  * @property-read int|null $users_count
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|FeedTopic newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|FeedTopic newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|FeedTopic query()
@@ -79,7 +80,8 @@ class FeedTopic extends Model
 
     /**
      * Parse resource and get resource meta.
-     * @param null|string $resource
+     *
+     * @param  null|string  $resource
      * @return null|\Zhiyi\Plus\FileStorage\FileMetaInterface
      */
     protected function getLogoAttribute(?string $resource = null): ?FileMetaInterface
@@ -93,6 +95,7 @@ class FeedTopic extends Model
 
     /**
      * Set logo attribute.
+     *
      * @param mixed
      * @return self
      */
@@ -120,6 +123,7 @@ class FeedTopic extends Model
 
     /**
      * The model feed velongs ti many relation.
+     *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function feeds(): BelongsToMany
@@ -133,6 +137,7 @@ class FeedTopic extends Model
 
     /**
      * The topic creator has one relation.
+     *
      * @return \Illuminate\Database\Eloquent\Relations\HasOne
      */
     public function creator(): HasOne

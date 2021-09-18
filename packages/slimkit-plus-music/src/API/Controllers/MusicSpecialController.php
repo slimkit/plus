@@ -31,6 +31,7 @@ class MusicSpecialController extends Controller
      * 获取专辑列表.
      *
      * @author bs<414606094@qq.com>
+     *
      * @return [type] [description]
      */
     public function list(Request $request, ResponseFactory $response)
@@ -62,9 +63,10 @@ class MusicSpecialController extends Controller
      * 专辑详情.
      *
      * @author bs<414606094@qq.com>
-     * @param  Request         $request
-     * @param  MusicSpecial    $special
-     * @param  ResponseFactory $response
+     *
+     * @param  Request  $request
+     * @param  MusicSpecial  $special
+     * @param  ResponseFactory  $response
      * @return mix
      */
     public function show(Request $request, MusicSpecial $special, ResponseFactory $response)
@@ -99,7 +101,8 @@ class MusicSpecialController extends Controller
      * 增加分享数,供移动端分享专辑时调用.
      *
      * @author bs<414606094@qq.com>
-     * @param  MusicSpecial $special_id
+     *
+     * @param  MusicSpecial  $special_id
      * @return mixed
      */
     public function share(MusicSpecial $special)

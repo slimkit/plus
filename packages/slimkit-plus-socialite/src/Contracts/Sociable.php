@@ -27,8 +27,9 @@ interface Sociable
     /**
      * Check bind and get user auth token.
      *
-     * @param string $accessToken
+     * @param  string  $accessToken
      * @return mixed
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function authUser(string $accessToken);
@@ -36,9 +37,10 @@ interface Sociable
     /**
      * Bind provider for user.
      *
-     * @param string $accessToken
-     * @param Zhiyi\Plus\Models\User $user
+     * @param  string  $accessToken
+     * @param  Zhiyi\Plus\Models\User  $user
      * @return mixed
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function bindForUser(string $accessToken, UserModel $user);
@@ -46,10 +48,11 @@ interface Sociable
     /**
      * Bind provider for account.
      *
-     * @param string $accessToken
-     * @param string|int $login
-     * @param string $password
+     * @param  string  $accessToken
+     * @param  string|int  $login
+     * @param  string  $password
      * @return mixed
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function bindForAccount(string $accessToken, $login, string $password);
@@ -57,10 +60,11 @@ interface Sociable
     /**
      * Create user and check create attribute.
      *
-     * @param string $accessToken
-     * @param string $name
-     * @param bool $check
+     * @param  string  $accessToken
+     * @param  string  $name
+     * @param  bool  $check
      * @return mixed
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function createUser(string $accessToken, string $name, $check = false);
@@ -68,8 +72,9 @@ interface Sociable
     /**
      * Unbind provider for user.
      *
-     * @param \Zhiyi\Plus\Models\User $user
+     * @param  \Zhiyi\Plus\Models\User  $user
      * @return mixed
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function unbindForUser(UserModel $user);

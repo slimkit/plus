@@ -36,7 +36,8 @@ class NewsPostController extends Controller
 
     /**
      * Destory a News post.
-     * @param \Zhiyi\Component\ZhiyiPlus\PlusComponentNews\Models\News $post
+     *
+     * @param  \Zhiyi\Component\ZhiyiPlus\PlusComponentNews\Models\News  $post
      * @return mixed
      */
     public function destroy(News $post)

@@ -32,8 +32,10 @@ class HomeController extends Controller
 
     /**
      * pc后台首页.
+     *
      * @author 28youth
-     * @param  Request $request
+     *
+     * @param  Request  $request
      * @return mixed
      */
     public function show(Request $request, JWTAuthToken $jwt)
@@ -55,7 +57,9 @@ class HomeController extends Controller
 
     /**
      * 菜单.
+     *
      * @author 28youth
+     *
      * @return array
      */
     protected function menus()

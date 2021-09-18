@@ -28,8 +28,9 @@ class CurrencyCashController extends Controller
     /**
      * 发起提现订单.
      *
-     * @param StoreCurrencyCash $request
+     * @param  StoreCurrencyCash  $request
      * @return mixed
+     *
      * @author BS <414606094@qq.com>
      */
     public function store(StoreCurrencyCash $request)

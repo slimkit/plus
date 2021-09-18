@@ -47,9 +47,10 @@ class AppStorePay extends Process
     /**
      * 验证票据.
      *
-     * @param string $receipt
+     * @param  string  $receipt
      * @param Zhiyi\Plus\Models\CurrencyOrderModel
      * @return mixed
+     *
      * @author BS <414606094@qq.com>
      */
     public function verifyReceipt(string $receipt, CurrencyOrderModel $currencyOrder): bool
@@ -98,9 +99,10 @@ class AppStorePay extends Process
     /**
      * Create Order.
      *
-     * @param int $owner
-     * @param int $amount
+     * @param  int  $owner
+     * @param  int  $amount
      * @return Zhiyi\Plus\Models\CurrencyOrderModel
+     *
      * @author BS <414606094@qq.com>
      */
     public function createOrder(int $owner_id, int $amount): CurrencyOrderModel
@@ -127,8 +129,9 @@ class AppStorePay extends Process
     /**
      * 完成充值操作.
      *
-     * @param CurrencyOrderModel $currencyOrderModel
+     * @param  CurrencyOrderModel  $currencyOrderModel
      * @return boolen
+     *
      * @author BS <414606094@qq.com>
      */
     private function complete(CurrencyOrderModel $currencyOrderModel): bool
@@ -147,8 +150,9 @@ class AppStorePay extends Process
     /**
      * 验证苹果收据与系统内订单是否一致.
      *
-     * @param array $data
-     * @param CurrencyOrderModel $order
+     * @param  array  $data
+     * @param  CurrencyOrderModel  $order
+     *
      * @author BS <414606094@qq.com>
      */
     protected function checkAppleOrder(array $data, CurrencyOrderModel $order)
@@ -175,6 +179,7 @@ class AppStorePay extends Process
 
     /**
      * 设置状态错误消息.
+     *
      * @param $status
      */
     private function getStatusError($status): string

@@ -34,8 +34,9 @@ class NewsPinnedController extends Controller
      * 获取置顶审核列表.
      *
      * @author bs<414606094@qq.com>
-     * @param  Request    $request
-     * @param  NewsPinned $newsPinnedModel
+     *
+     * @param  Request  $request
+     * @param  NewsPinned  $newsPinnedModel
      * @return mixed
      */
     public function index(Request $request, NewsPinned $newsPinnedModel)
@@ -84,8 +85,9 @@ class NewsPinnedController extends Controller
      * 审核资讯置顶.
      *
      * @author bs<414606094@qq.com>
-     * @param  Request    $request
-     * @param  NewsPinned $pinned
+     *
+     * @param  Request  $request
+     * @param  NewsPinned  $pinned
      * @return mixed
      */
     public function audit(Request $request, UserProcess $userProcess, NewsPinned $pinned)
@@ -164,8 +166,9 @@ class NewsPinnedController extends Controller
      * 后台设置置顶.
      *
      * @author bs<414606094@qq.com>
-     * @param  Request $request
-     * @param  News    $news
+     *
+     * @param  Request  $request
+     * @param  News  $news
      * @param  Carbon  $datetime
      */
     public function set(Request $request, News $news, Carbon $datetime)
@@ -197,10 +200,11 @@ class NewsPinnedController extends Controller
     /**
      * 取消后台资讯.
      *
-     * @param \Illuminate\Http\Request $request
-     * @param \Zhiyi\Component\ZhiyiPlus\PlusComponentNews\Models\News $news
-     * @param \Illuminate\Support\Carbon $datetime
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \Zhiyi\Component\ZhiyiPlus\PlusComponentNews\Models\News  $news
+     * @param  \Illuminate\Support\Carbon  $datetime
      * @return mixed
+     *
      * @author BS <414606094@qq.com>
      */
     public function cancel(News $news, Carbon $datetime)

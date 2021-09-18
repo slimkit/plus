@@ -56,7 +56,9 @@ class PassportController extends BaseController
 
     /**
      * 登录.
+     *
      * @author Foreach
+     *
      * @return mixed
      */
     public function index()
@@ -84,8 +86,10 @@ class PassportController extends BaseController
 
     /**
      * 验证码登录.
+     *
      * @author Foreach
-     * @param  Request $request
+     *
+     * @param  Request  $request
      * @return \Illuminate\Http\JsonResponse
      */
     public function dynamicLogin(Request $request)
@@ -122,7 +126,9 @@ class PassportController extends BaseController
 
     /**
      * 注册.
+     *
      * @author Foreach
+     *
      * @param  \Illuminate\Http\Request  $request
      * @return mixed
      */
@@ -139,7 +145,9 @@ class PassportController extends BaseController
 
     /**
      * 找回密码
+     *
      * @author Foreach
+     *
      * @param  \Illuminate\Http\Request  $request
      * @return mixed
      */
@@ -156,7 +164,9 @@ class PassportController extends BaseController
 
     /**
      * 完善资料.
+     *
      * @author Foreach
+     *
      * @return mixed
      */
     public function perfect()
@@ -169,7 +179,9 @@ class PassportController extends BaseController
 
     /**
      * 图形验证码生成.
+     *
      * @author Foreach
+     *
      * @return mixed
      */
     public function captcha()
@@ -195,8 +207,10 @@ class PassportController extends BaseController
 
     /**
      * 图形验证码验证
+     *
      * @author Foreach
-     * @param  Request $request
+     *
+     * @param  Request  $request
      * @return \Illuminate\Http\JsonResponse
      */
     public function checkCaptcha(Request $request)
@@ -221,8 +235,10 @@ class PassportController extends BaseController
 
     /**
      * 通过token登录用户.
+     *
      * @param  Request  $request
      * @return mixed
+     *
      * @author Foreach
      */
     public function token(Request $request)

@@ -42,7 +42,8 @@ class BootstrapAPIsEventer
     /**
      * Create the eventer instance.
      *
-     * @param \Illuminate\Contracts\Events\Dispatcher $events
+     * @param  \Illuminate\Contracts\Events\Dispatcher  $events
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function __construct(EventsDispatcherContract $events)
@@ -53,9 +54,10 @@ class BootstrapAPIsEventer
     /**
      * Register an event listener with the dispatcher.
      *
-     * @param string $version
-     * @param \Closure $callback
+     * @param  string  $version
+     * @param  \Closure  $callback
      * @return mixed
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function listen(string $version, Closure $callback)
@@ -69,9 +71,10 @@ class BootstrapAPIsEventer
     /**
      * Fire an event and call the listeners.
      *
-     * @param string $version
-     * @param array $payload
+     * @param  string  $version
+     * @param  array  $payload
      * @return array
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function dispatch(string $version, array $payload = []): array

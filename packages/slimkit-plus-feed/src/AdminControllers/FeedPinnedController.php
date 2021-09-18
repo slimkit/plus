@@ -149,8 +149,9 @@ class FeedPinnedController extends Controller
 
     /**
      * 撤销置顶.
-     * @param Feed $feed [description]
-     * @param FeedPinned $pinned [description]
+     *
+     * @param  Feed  $feed  [description]
+     * @param  FeedPinned  $pinned  [description]
      * @return JsonResponse [type]              [description]
      */
     public function destroy(Feed $feed, FeedPinned $pinned)

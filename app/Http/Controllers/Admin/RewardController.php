@@ -36,7 +36,7 @@ class RewardController extends Controller
     /**
      * 打赏日期分组统计.
      *
-     * @param Request $request
+     * @param  Request  $request
      * @return \Illuminate\Http\JsonResponse
      */
     public function statistics(Request $request)
@@ -49,7 +49,7 @@ class RewardController extends Controller
     /**
      * 根据条件获取统计数据.
      *
-     * @param Request $request
+     * @param  Request  $request
      * @return mixed
      */
     protected function byConditionsGetStatisticsData(Request $request)
@@ -96,7 +96,7 @@ class RewardController extends Controller
     /**
      * 打赏清单.
      *
-     * @param Request $request
+     * @param  Request  $request
      * @return \Illuminate\Http\JsonResponse
      */
     public function rewards(Request $request)
@@ -141,7 +141,7 @@ class RewardController extends Controller
     /**
      * 导出下载.
      *
-     * @param Request $request
+     * @param  Request  $request
      */
     public function export(Request $request)
     {
@@ -160,7 +160,7 @@ class RewardController extends Controller
     /**
      * 根据条件获取打赏数据.
      *
-     * @param Request $request
+     * @param  Request  $request
      * @return mixed
      */
     protected function byConditionsGetRewardData(Request $request)
@@ -199,7 +199,7 @@ class RewardController extends Controller
     /**
      * 转换打赏数组.
      *
-     * @param array $data
+     * @param  array  $data
      * @return array
      */
     public function convertRewardData(array $data)
@@ -235,9 +235,9 @@ class RewardController extends Controller
     /**
      * export excel.
      *
-     * @param array $data  数据
-     * @param array $title 列名
-     * @param string $filename
+     * @param  array  $data  数据
+     * @param  array  $title  列名
+     * @param  string  $filename
      */
     public function exportExcel(array $data = [], array $title = [], $filename = 'export')
     {

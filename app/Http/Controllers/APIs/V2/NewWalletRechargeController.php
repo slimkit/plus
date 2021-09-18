@@ -37,9 +37,10 @@ class NewWalletRechargeController extends Controller
     /**
      * 钱包流水列表.
      *
-     * @param Request $request
-     * @param WalletOrderModel $walletOrderModel
+     * @param  Request  $request
+     * @param  WalletOrderModel  $walletOrderModel
      * @return mixed
+     *
      * @author BS <414606094@qq.com>
      */
     public function list(Request $request, WalletOrderModel $walletOrderModel)
@@ -65,9 +66,10 @@ class NewWalletRechargeController extends Controller
     /**
      * 创建充值订单.
      *
-     * @param NewStoreWalletRecharge $request
-     * @param TypeManager $manager
+     * @param  NewStoreWalletRecharge  $request
+     * @param  TypeManager  $manager
      * @return mixed
+     *
      * @author BS <414606094@qq.com>
      */
     public function store(NewStoreWalletRecharge $request, TypeManager $manager)
@@ -87,9 +89,10 @@ class NewWalletRechargeController extends Controller
     /**
      * 充值回调通知.
      *
-     * @param Request $request
-     * @param TypeManager $manager
+     * @param  Request  $request
+     * @param  TypeManager  $manager
      * @return mixed
+     *
      * @author BS <414606094@qq.com>
      */
     public function webhook(Request $request, TypeManager $manager)
@@ -104,8 +107,9 @@ class NewWalletRechargeController extends Controller
     /**
      * 主动取回凭据.
      *
-     * @param WalletOrderModel $walletOrder
+     * @param  WalletOrderModel  $walletOrder
      * @return mixed
+     *
      * @author BS <414606094@qq.com>
      */
     public function retrieve(WalletOrderModel $order, TypeManager $manager)
@@ -120,9 +124,10 @@ class NewWalletRechargeController extends Controller
     /**
      * 创建转换积分订单.
      *
-     * @param Request $request
-     * @param TypeManager $manager
+     * @param  Request  $request
+     * @param  TypeManager  $manager
      * @return mixed
+     *
      * @author BS <414606094@qq.com>
      */
     public function transform(StoreTransform $request, TypeManager $manager)

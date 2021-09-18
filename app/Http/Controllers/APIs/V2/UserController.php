@@ -40,9 +40,10 @@ class UserController extends Controller
      * @param  Request  $request
      * @param  ResponseFactoryContract  $response
      * @param  User  $model
-     *
      * @return mixed
+     *
      * @throws Throwable
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function index(
@@ -114,8 +115,8 @@ class UserController extends Controller
      *
      * @param  Request  $request
      * @param  string  $user
-     *
      * @return mixed
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function show(Request $request, string $user)
@@ -149,8 +150,8 @@ class UserController extends Controller
      * @param  StoreUserPost  $request
      * @param  ResponseFactoryContract  $response
      * @param  JWTAuth  $auth
-     *
      * @return mixed
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function store(
@@ -209,9 +210,9 @@ class UserController extends Controller
      * Handle the state of my follow status.
      *
      * @param  Request  $request
-     * @param  User &$user
-     *
+     * @param  User  &$user
      * @return void
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     protected function hasFollowing(Request $request, User &$user)
@@ -226,9 +227,9 @@ class UserController extends Controller
      * Verify that I am followed.
      *
      * @param  Request  $request
-     * @param  User &$user
-     *
+     * @param  User  &$user
      * @return void
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     protected function hasFollower(Request $request, User &$user)

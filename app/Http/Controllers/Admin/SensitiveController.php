@@ -31,8 +31,9 @@ class SensitiveController extends Controller
     /**
      * List all sensitives.
      *
-     * @param \Illuminate\Http\Request $request
+     * @param  \Illuminate\Http\Request  $request
      * @return mixed
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function index(Request $request)
@@ -63,8 +64,9 @@ class SensitiveController extends Controller
     /**
      * Create a sensitive.
      *
-     * @param \Zhiyi\Plus\Http\Requests\Admin\CreateSensitive $request
+     * @param  \Zhiyi\Plus\Http\Requests\Admin\CreateSensitive  $request
      * @return mixed
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function store(CreateSensitiveRequest $request)
@@ -85,9 +87,10 @@ class SensitiveController extends Controller
     /**
      * Uodate a sensitive.
      *
-     * @param \Zhiyi\Plus\Http\Requests\Admin\UpdateSensitive $request
-     * @param \Zhiyi\Plus\Models\Sensitive $sensitive
+     * @param  \Zhiyi\Plus\Http\Requests\Admin\UpdateSensitive  $request
+     * @param  \Zhiyi\Plus\Models\Sensitive  $sensitive
      * @return mixed
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function update(UpdateSensitiveRequest $request, SensitiveModel $sensitive)
@@ -111,8 +114,9 @@ class SensitiveController extends Controller
     /**
      * Destroy a sensitive.
      *
-     * @param \Zhiyi\Plus\Models\Sensitive $sensitive
+     * @param  \Zhiyi\Plus\Models\Sensitive  $sensitive
      * @return mixed
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function destroy(SensitiveModel $sensitive)

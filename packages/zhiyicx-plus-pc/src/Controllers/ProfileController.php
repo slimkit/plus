@@ -29,10 +29,13 @@ class ProfileController extends BaseController
 {
     /**
      * 动态
-     * @param Request $request
-     * @param string $user [用户id 或用户名]
+     *
+     * @param  Request  $request
+     * @param  string  $user  [用户id 或用户名]
      * @return mixed
+     *
      * @throws \Throwable
+     *
      * @author Foreach
      */
     public function feeds(Request $request, ?string $user = null)
@@ -81,10 +84,13 @@ class ProfileController extends BaseController
 
     /**
      * 文章.
-     * @param Request $request
-     * @param string $user [用户id 或用户名]
+     *
+     * @param  Request  $request
+     * @param  string  $user  [用户id 或用户名]
      * @return mixed
+     *
      * @throws \Throwable
+     *
      * @author 28youth
      */
     public function news(Request $request, ?string $user = null)
@@ -124,9 +130,12 @@ class ProfileController extends BaseController
 
     /**
      * 收藏的动态
-     * @param Request $request
+     *
+     * @param  Request  $request
      * @return mixed
+     *
      * @throws \Throwable
+     *
      * @author 28youth
      */
     public function collectFeeds(Request $request)
@@ -160,9 +169,12 @@ class ProfileController extends BaseController
 
     /**
      * 收藏的文章.
-     * @param Request $request
+     *
+     * @param  Request  $request
      * @return mixed
+     *
      * @throws \Throwable
+     *
      * @author 28youth
      */
     public function collectNews(Request $request)
@@ -194,9 +206,12 @@ class ProfileController extends BaseController
 
     /**
      * 收藏的问答.
-     * @param Request $request
+     *
+     * @param  Request  $request
      * @return mixed
+     *
      * @throws \Throwable
+     *
      * @author 28youth
      */
     public function collectQuestion(Request $request)
@@ -229,9 +244,12 @@ class ProfileController extends BaseController
 
     /**
      * 收藏的帖子.
-     * @param Request $request
+     *
+     * @param  Request  $request
      * @return mixed
+     *
      * @throws \Throwable
+     *
      * @author ZSYD
      */
     public function collectGroup(Request $request)
@@ -265,10 +283,13 @@ class ProfileController extends BaseController
 
     /**
      * 问答信息.
-     * @param Request $request
-     * @param string|null $user
+     *
+     * @param  Request  $request
+     * @param  string|null  $user
      * @return mixed
+     *
      * @throws \Throwable
+     *
      * @author 28youth
      */
     public function question(Request $request, ?string $user)

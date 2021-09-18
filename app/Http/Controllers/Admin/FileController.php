@@ -30,8 +30,9 @@ class FileController extends Controller
     /**
      * 获取附件基本配置.
      *
-     * @param Repository $config
+     * @param  Repository  $config
      * @return mixed
+     *
      * @author BS <414606094@qq.com>
      */
     public function getConfig(Repository $config)
@@ -47,8 +48,9 @@ class FileController extends Controller
     /**
      * 保存附件基本配置.
      *
-     * @param Request $request
-     * @param Configuration $config
+     * @param  Request  $request
+     * @param  Configuration  $config
+     *
      * @author BS <414606094@qq.com>
      */
     public function setConfig(Request $request, Configuration $config)

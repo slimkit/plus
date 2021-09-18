@@ -30,6 +30,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $unread_likes_count 未读点赞数
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|UserUnreadCount newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|UserUnreadCount newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|UserUnreadCount query()

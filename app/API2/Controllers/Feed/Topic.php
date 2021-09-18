@@ -83,7 +83,6 @@ class Topic extends Controller
      *
      * @param  \Zhiyi\Plus\Requests\Feed\TopicIndex  $request
      * @param  \Zhiyi\Plus\Models\FeedTopic  $model
-     *
      * @return \Illuminate\Http\JsonResponse
      */
     public function index(IndexRequest $request, FeedTopicModel $model): JsonResponse
@@ -145,7 +144,6 @@ class Topic extends Controller
      * Create an topic.
      *
      * @param  \Zhiyi\Plus\API2\Requests\Feed\CreateTopic  $request
-     *
      * @return \Illuminate\Http\JsonResponse
      */
     public function create(CreateTopicRequest $request): JsonResponse
@@ -212,7 +210,6 @@ class Topic extends Controller
      *
      * @param  \Zhiyi\Plus\API2\Requests\Feed\EditTopic  $request
      * @param  \Zhiyi\Plus\Models\FeedTopic  $topic
-     *
      * @return \Illuminate\Http\Response
      */
     public function update(EditTopicRequest $request, FeedTopicModel $topic): Response
@@ -241,7 +238,6 @@ class Topic extends Controller
      * Get a single topic.
      *
      * @param  \Zhiyi\Plus\Models\FeedTopic  $topic
-     *
      * @return \Illuminate\Http\JsonResponse
      */
     public function show(FeedTopicModel $topic): JsonResponse

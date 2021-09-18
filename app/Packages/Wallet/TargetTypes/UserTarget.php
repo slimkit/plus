@@ -36,6 +36,7 @@ class UserTarget extends Target
      * Handle.
      *
      * @return mixed
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function handle(): bool
@@ -68,6 +69,7 @@ class UserTarget extends Target
      * Send notification.
      *
      * @return void
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     protected function sendNotification()
@@ -79,6 +81,7 @@ class UserTarget extends Target
      * Init owner and target user wallet.
      *
      * @return void
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     protected function initWallet()
@@ -98,6 +101,7 @@ class UserTarget extends Target
      * Create target user order.
      *
      * @return void
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     protected function createTargetUserOrder()
@@ -118,6 +122,7 @@ class UserTarget extends Target
      * Get target user order type.
      *
      * @return int
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     protected function getTargetUserOrderType(): int
@@ -132,9 +137,10 @@ class UserTarget extends Target
     /**
      * Transfer.
      *
-     * @param \Zhiyi\Plus\Packages\Wallet\Order $order
-     * @param \Zhiyi\Plus\Packages\Wallet\Wallet $wallet
+     * @param  \Zhiyi\Plus\Packages\Wallet\Order  $order
+     * @param  \Zhiyi\Plus\Packages\Wallet\Wallet  $wallet
      * @return void
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     protected function transfer(Order $order, Wallet $wallet)

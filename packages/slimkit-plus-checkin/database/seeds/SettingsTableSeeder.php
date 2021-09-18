@@ -29,6 +29,7 @@ class SettingsTableSeeder extends Seeder
      * Run the package seeder.
      *
      * @return void
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function run()

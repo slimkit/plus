@@ -44,7 +44,8 @@ class PinnedController extends Controller
     /**
      * Create the controller instance.
      *
-     * @param \Illuminate\Contracts\Foundation\Application $app
+     * @param  \Illuminate\Contracts\Foundation\Application  $app
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function __construct(ApplicationContract $app)
@@ -55,11 +56,12 @@ class PinnedController extends Controller
     /**
      * 申请评论置顶.
      *
-     * @param \Illuminate\Http\Request $request
-     * @param \Illuminate\Contracts\Routing\ResponseFactory $response
-     * @param \Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\Feed $feed
-     * @param \Zhiyi\Plus\Models\Comment $comment
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Contracts\Routing\ResponseFactory  $response
+     * @param  \Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\Feed  $feed
+     * @param  \Zhiyi\Plus\Models\Comment  $comment
      * @return mixed
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function commentPinned(Request $request, ResponseContract $response, FeedModel $feed, CommentModel $comment, Carbon $datetime)
@@ -128,10 +130,11 @@ class PinnedController extends Controller
     /**
      * 申请动态置顶.
      *
-     * @param \Illuminate\Http\Request $request
-     * @param \Illuminate\Contracts\Routing\ResponseFactory $response
-     * @param \Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\Feed $feed
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Contracts\Routing\ResponseFactory  $response
+     * @param  \Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\Feed  $feed
      * @return mixed
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function feedPinned(Request $request, ResponseContract $response, FeedModel $feed, Carbon $datetime)
@@ -174,11 +177,12 @@ class PinnedController extends Controller
     /**
      * 保存所有数据库记录.
      *
-     * @param \Illuminate\Http\Request $request
-     * @param \Illuminate\Contracts\Routing\ResponseFactory $response
-     * @param \Zhiyi\Plus\Models\WalletCharge $charge
-     * @param \Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\FeedPinned $pinned
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Contracts\Routing\ResponseFactory  $response
+     * @param  \Zhiyi\Plus\Models\WalletCharge  $charge
+     * @param  \Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\FeedPinned  $pinned
      * @return mixed
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function save(
@@ -213,10 +217,11 @@ class PinnedController extends Controller
     /**
      * 基础验证.
      *
-     * @param \Illuminate\Http\Request $request
-     * @param \Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\FeedPinned $pinned
-     * @param callable $call
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\FeedPinned  $pinned
+     * @param  callable  $call
      * @return mixed
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function validateBase(Request $request, FeedPinnedModel $pinned, callable $call)

@@ -30,9 +30,10 @@ class TagUserController extends Controller
     /**
      * Get all tags of the authenticated user.
      *
-     * @param \Illuminate\Http\Request $request
-     * @param \Illuminate\Contracts\Routing\ResponseFactory $response
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Contracts\Routing\ResponseFactory  $response
      * @return mixed
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function index(Request $request, ResponseFactoryContract $response)
@@ -43,10 +44,11 @@ class TagUserController extends Controller
     /**
      * Attach a tag for the authenticated user.
      *
-     * @param \Illuminate\Http\Request $request
-     * @param \Illuminate\Contracts\Routing\ResponseFactory $response
-     * @param \Zhiyi\Plus\Models\Tag $tag
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Contracts\Routing\ResponseFactory  $response
+     * @param  \Zhiyi\Plus\Models\Tag  $tag
      * @return mixed
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function store(Request $request, ResponseFactoryContract $response, TagModel $tag)
@@ -70,10 +72,11 @@ class TagUserController extends Controller
     /**
      * Detach a tag for the authenticated user.
      *
-     * @param \Illuminate\Http\Request $request
-     * @param \Illuminate\Contracts\Routing\ResponseFactory $response
-     * @param \Zhiyi\Plus\Models\Tag $tag
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Contracts\Routing\ResponseFactory  $response
+     * @param  \Zhiyi\Plus\Models\Tag  $tag
      * @return mixed
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function destroy(Request $request, ResponseFactoryContract $response, TagModel $tag)
@@ -98,9 +101,10 @@ class TagUserController extends Controller
     /**
      * Get the user's tags.
      *
-     * @param \Illuminate\Contracts\Routing\ResponseFactory $response [description]
-     * @param \Zhiyi\Plus\Models\User $user [description]
+     * @param  \Illuminate\Contracts\Routing\ResponseFactory  $response  [description]
+     * @param  \Zhiyi\Plus\Models\User  $user  [description]
      * @return mixed
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function userTgas(ResponseFactoryContract $response, int $user)

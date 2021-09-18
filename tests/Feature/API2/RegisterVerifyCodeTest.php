@@ -31,6 +31,7 @@ class RegisterVerifyCodeTest extends TestCase
      * 测试获取验证码.
      *
      * @return void
+     *
      * @author BS <414606094@qq.com>
      */
     public function testGetVerifyCode()
@@ -49,7 +50,6 @@ class RegisterVerifyCodeTest extends TestCase
      * Assert login response.
      *
      * @param $response
-     *
      * @return void
      */
     protected function assertLoginResponse($response)
