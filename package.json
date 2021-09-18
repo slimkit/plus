@@ -37,7 +37,7 @@
         "highlight.js": "^9.12.0",
         "jquery": "^3.6.0",
         "js-md5": "^0.7.3",
-        "lodash": "^4.17.15",
+        "lodash": "^4.17.21",
         "markdown-it": "^8.4.1",
         "plus-message-bundle": "^1.0.2",
         "simkit-bootstrap-ui-kit": "^1.1.1",
