@@ -25,8 +25,7 @@ use Zhiyi\Plus\Support\Setting;
 /**
  * 验证是否是中国验证码.
  *
- * @param string $number
- *
+ * @param  string  $number
  * @return bool
  */
 function validateChinaPhoneNumber(string $number): bool
@@ -37,7 +36,7 @@ function validateChinaPhoneNumber(string $number): bool
 /**
  * 验证用户名是否合法.
  *
- * @param string $username
+ * @param  string  $username
  * @return bool
  */
 function validateUsername(string $username): bool
@@ -48,9 +47,10 @@ function validateUsername(string $username): bool
 /**
  * Get user login field.
  *
- * @param string $login
- * @param string $default
+ * @param  string  $login
+ * @param  string  $default
  * @return string
+ *
  * @author Seven Du <shiweidu@outlook.com>
  */
 function username(string $login, string $default = 'id'): string
@@ -73,8 +73,9 @@ function username(string $login, string $default = 'id'): string
 /**
  * Find markdown image IDs.
  *
- * @param string $markdown
+ * @param  string  $markdown
  * @return array
+ *
  * @author Seven Du <shiweidu@outlook.com>
  */
 function findMarkdownImageIDs(string $markdown): array
@@ -90,9 +91,10 @@ function findMarkdownImageIDs(string $markdown): array
 /**
  * Filter URLs Return part of a string.
  *
- * @param string $data
- * @param int $length
+ * @param  string  $data
+ * @param  int  $length
  * @return string
+ *
  * @author Seven Du <shiweidu@outlook.com>
  */
 function filterUrlStringLength(string $data, int $length = 0): string
@@ -135,7 +137,6 @@ function filterUrlStringLength(string $data, int $length = 0): string
  * @param  string  $namespace
  * @param  string|null  $name
  * @param  null  $default
- *
  * @return Support\any|Setting
  */
 function setting(string $namespace, ?string $name = null, $default = null)

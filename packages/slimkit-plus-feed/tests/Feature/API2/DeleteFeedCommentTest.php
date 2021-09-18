@@ -81,6 +81,7 @@ class DeleteFeedCommentTest extends TestCase
      * @param $user
      * @param $feed
      * @return mixed
+     *
      * @throws \Exception
      */
     protected function addFeedComment($user, $feed)
@@ -99,6 +100,7 @@ class DeleteFeedCommentTest extends TestCase
      * 删除动态评论.
      *
      * @return mixed
+     *
      * @throws \Exception
      */
     public function testDeleteFeedComment()

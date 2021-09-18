@@ -29,6 +29,7 @@ class ImageDimension
 {
     /**
      * Show file storage validate image dimension.
+     *
      * @return \Illuminate\Http\JsonResponse
      */
     public function show(): JsonResponse
@@ -58,7 +59,8 @@ class ImageDimension
 
     /**
      * Update file storage validate image dimension.
-     * @param \Illuminate\Http\Request $request
+     *
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request): Response

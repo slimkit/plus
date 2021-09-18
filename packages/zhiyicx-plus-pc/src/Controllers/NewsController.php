@@ -27,9 +27,12 @@ class NewsController extends BaseController
 {
     /**
      * 资讯首页.
-     * @param Request $request
+     *
+     * @param  Request  $request
      * @return mixed
+     *
      * @throws \Throwable
+     *
      * @author Foreach
      */
     public function index(Request $request)
@@ -79,8 +82,10 @@ class NewsController extends BaseController
 
     /**
      * 资讯详情.
-     * @param News $news
+     *
+     * @param  News  $news
      * @return mixed
+     *
      * @author Foreach
      */
     public function read(News $news)
@@ -104,8 +109,10 @@ class NewsController extends BaseController
 
     /**
      * 资讯投稿
+     *
      * @author ZsyD
-     * @param  int $news_id [资讯id]
+     *
+     * @param  int  $news_id  [资讯id]
      * @return mixed
      */
     public function release(int $news_id = 0)
@@ -131,10 +138,13 @@ class NewsController extends BaseController
 
     /**
      * 文章评论列表.
-     * @param Request $request
-     * @param int $news_id [资讯id]
+     *
+     * @param  Request  $request
+     * @param  int  $news_id  [资讯id]
      * @return \Illuminate\Http\JsonResponse
+     *
      * @throws \Throwable
+     *
      * @author ZsyD
      */
     public function comments(Request $request, int $news_id)

@@ -29,10 +29,11 @@ class UserCommentController extends Controller
     /**
      * Get user comments.
      *
-     * @param \Illuminate\Http\Request $request
-     * @param \Illuminate\Contracts\Routing\ResponseFactory $response
-     * @param \Zhiyi\Plus\Models\Comment $model
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Contracts\Routing\ResponseFactory  $response
+     * @param  \Zhiyi\Plus\Models\Comment  $model
      * @return mixed
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function index(Request $request, ResponseContract $response, CommentModel $model)

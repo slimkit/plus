@@ -41,8 +41,9 @@ class UserCountsController extends Controller
     /**
      * The route controller to callable handle.
      *
-     * @param \Illuminate\Http\Request $request
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\JsonResponse
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function count(Request $request): JsonResponse
@@ -59,11 +60,13 @@ class UserCountsController extends Controller
 
     /**
      * 重置某项为度数为0.
+     *
      * @Author   Wayne
      * @DateTime 2018-04-16
      * @Email    qiaobin@zhiyicx.com
-     * @param    Request             $request [description]
-     * @return   [type]                       [description]
+     *
+     * @param  Request  $request  [description]
+     * @return [type]                       [description]
      */
     public function reset(Request $request)
     {

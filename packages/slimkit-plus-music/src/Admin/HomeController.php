@@ -42,6 +42,7 @@ class HomeController extends Controller
      * @param  Request  $request
      * @param  Music  $music
      * @return mixed
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function show(Request $request, Music $music)
@@ -77,8 +78,10 @@ class HomeController extends Controller
 
     /**
      * 删除音乐.
-     * @param Music $music
+     *
+     * @param  Music  $music
      * @return \Illuminate\Http\RedirectResponse
+     *
      * @throws \Exception
      */
     public function handleDelete(Music $music)
@@ -97,8 +100,9 @@ class HomeController extends Controller
 
     /**
      * 查看专辑.
-     * @param Request $request [description]
-     * @param MusicSpecial $special
+     *
+     * @param  Request  $request  [description]
+     * @param  MusicSpecial  $special
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function showSpecial(Request $request, MusicSpecial $special)
@@ -124,8 +128,9 @@ class HomeController extends Controller
 
     /**
      * 显示专辑详情.
-     * @param MusicSpecial $special
-     * @param CdnUrlManager $cdn
+     *
+     * @param  MusicSpecial  $special
+     * @param  CdnUrlManager  $cdn
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function specialDetail(MusicSpecial $special, CdnUrlManager $cdn)
@@ -144,11 +149,12 @@ class HomeController extends Controller
     /**
      * Get file.
      *
-     * @param \Illuminate\Http\Request $request
-     * @param \Illuminate\Contracts\Routing\ResponseFactory $response
-     * @param \Zhiyi\Plus\Cdn\UrlManager $manager
-     * @param \Zhiyi\Plus\Models\FileWith $fileWith
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Contracts\Routing\ResponseFactory  $response
+     * @param  \Zhiyi\Plus\Cdn\UrlManager  $manager
+     * @param  \Zhiyi\Plus\Models\FileWith  $fileWith
      * @return mixed
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     protected function showStorage(CdnUrlManager $cdn, FileWithModel $fileWith, int $width = 200, int $height = 200, int $quality = 80)
@@ -167,8 +173,10 @@ class HomeController extends Controller
 
     /**
      * 禁用专辑.
-     * @param MusicSpecial $special
+     *
+     * @param  MusicSpecial  $special
      * @return \Illuminate\Http\RedirectResponse
+     *
      * @throws \Throwable
      */
     public function handleDisableSpecial(MusicSpecial $special)
@@ -187,6 +195,7 @@ class HomeController extends Controller
 
     /**
      * 增加专辑页面.
+     *
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function handleAddSpecial()
@@ -196,9 +205,11 @@ class HomeController extends Controller
 
     /**
      * 保存专辑.
-     * @param SpecialAddRequest $request
-     * @param MusicSpecial $special
+     *
+     * @param  SpecialAddRequest  $request
+     * @param  MusicSpecial  $special
      * @return \Illuminate\Http\RedirectResponse
+     *
      * @throws \Throwable
      */
     public function handleStoreSpecial(SpecialAddRequest $request, MusicSpecial $special)
@@ -227,10 +238,12 @@ class HomeController extends Controller
 
     /**
      * 更改专辑.
-     * @param SpecialUpdateRequest $request
-     * @param MusicSpecial $special
-     * @param FileWithModel $fileWithModel
+     *
+     * @param  SpecialUpdateRequest  $request
+     * @param  MusicSpecial  $special
+     * @param  FileWithModel  $fileWithModel
      * @return \Illuminate\Http\RedirectResponse
+     *
      * @throws \Throwable
      */
     public function handleUpdateSpecial(SpecialUpdateRequest $request, MusicSpecial $special, FileWithModel $fileWithModel)
@@ -284,8 +297,9 @@ class HomeController extends Controller
 
     /**
      * 歌曲详情.
-     * @param MusicSpecial $special
-     * @param MusicSinger $singer
+     *
+     * @param  MusicSpecial  $special
+     * @param  MusicSinger  $singer
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function handleAddMuisc(Request $request, MusicSpecial $special, MusicSinger $singer)
@@ -362,8 +376,9 @@ class HomeController extends Controller
     /**
      * 创建付费节点模型.
      *
-     * @param MusicAddRequest $request
+     * @param  MusicAddRequest  $request
      * @return mixed
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     protected function makePaidNode(Request $request)
@@ -386,8 +401,9 @@ class HomeController extends Controller
 
     /**
      * 创建专辑付费节点.
-     * @param SpecialAddRequest $request [description]
-     * @param MusicSpecial $special
+     *
+     * @param  SpecialAddRequest  $request  [description]
+     * @param  MusicSpecial  $special
      * @return PaidNodeModel|null
      */
     protected function makeSpecialNode(SpecialAddRequest $request, MusicSpecial $special)
@@ -408,7 +424,8 @@ class HomeController extends Controller
 
     /**
      * 创建专辑付费节点.
-     * @param  SpecialAddRequest $request [description]
+     *
+     * @param  SpecialAddRequest  $request  [description]
      * @return [type]                     [description]
      */
     protected function updateSpecialNode(SpecialUpdateRequest $request, MusicSpecial $special)
@@ -430,8 +447,9 @@ class HomeController extends Controller
     /**
      * 创建文件使用模型.
      *
-     * @param StoreFeedPostRequest $request
+     * @param  StoreFeedPostRequest  $request
      * @return mixed
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     protected function makeFileWith(Request $request)
@@ -448,7 +466,8 @@ class HomeController extends Controller
 
     /**
      * 添加专辑设置封面.
-     * @param  SpecialAddRequest $request [description]
+     *
+     * @param  SpecialAddRequest  $request  [description]
      * @return [type]                     [description]
      */
     protected function makeSpecialFileWith(SpecialAddRequest $request)
@@ -464,7 +483,8 @@ class HomeController extends Controller
 
     /**
      * 保存需要更新的专辑设置封面.
-     * @param  SpecialAddRequest $request [description]
+     *
+     * @param  SpecialAddRequest  $request  [description]
      * @return [type]                     [description]
      */
     protected function updateSpecialFileWith(SpecialUpdateRequest $request)
@@ -481,9 +501,10 @@ class HomeController extends Controller
     /**
      * 保存歌曲使用.
      *
-     * @param array $fileWiths
-     * @param \Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\Feed $feed
+     * @param  array  $fileWiths
+     * @param  \Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\Feed  $feed
      * @return void
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     protected function saveMusicFileWith($fileWith, Music $music)
@@ -495,8 +516,9 @@ class HomeController extends Controller
 
     /**
      * 保存专辑封面.
+     *
      * @param  [type]       $fileWith [description]
-     * @param  MusicSpecial $special  [description]
+     * @param  MusicSpecial  $special  [description]
      * @return [type]                 [description]
      */
     protected function saveSpecialFileWith($fileWith, MusicSpecial $special)
@@ -509,9 +531,10 @@ class HomeController extends Controller
     /**
      * 保存分享文件付费节点.
      *
-     * @param array $nodes
-     * @param \Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\Feed $feed
+     * @param  array  $nodes
+     * @param  \Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\Feed  $feed
      * @return void
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     protected function saveMusicPaidNode($nodes, Music $music)
@@ -528,8 +551,9 @@ class HomeController extends Controller
 
     /**
      * 保存专辑收费节点.
+     *
      * @param $node
-     * @param MusicSpecial $special
+     * @param  MusicSpecial  $special
      * @return void
      */
     protected function saveSpecialPaidNode($node, MusicSpecial $special)

@@ -30,8 +30,9 @@ class WalletPingPlusPlusController extends Controller
     /**
      * Get the Ping++ config.
      *
-     * @param \Illuminate\Contracts\Routing\ResponseFactory $response
+     * @param  \Illuminate\Contracts\Routing\ResponseFactory  $response
      * @return mixed
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function show(ContractResponse $response)
@@ -44,9 +45,10 @@ class WalletPingPlusPlusController extends Controller
     /**
      * Update Ping++ config.
      *
-     * @param \Illuminate\Http\Request $request
-     * @param \Illuminate\Contracts\Routing\ResponseFactory $response
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Contracts\Routing\ResponseFactory  $response
      * @return mixed
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function update(Request $request, ContractResponse $response)
@@ -64,6 +66,7 @@ class WalletPingPlusPlusController extends Controller
      * Get valodate rule.
      *
      * @return array
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     protected function rules(): array
@@ -80,6 +83,7 @@ class WalletPingPlusPlusController extends Controller
      * Get validate error messages.
      *
      * @return array
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     protected function validateErrorMessages(): array

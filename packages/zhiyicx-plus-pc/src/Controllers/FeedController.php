@@ -30,10 +30,13 @@ class FeedController extends BaseController
 {
     /**
      * 动态首页/列表.
-     * @param Request $request
+     *
+     * @param  Request  $request
      * @return mixed
+     *
      * @throws Throwable
      * @throws \GuzzleHttp\Exception\GuzzleException
+     *
      * @author Foreach
      */
     public function feeds(Request $request)
@@ -115,9 +118,12 @@ class FeedController extends BaseController
 
     /**
      * 动态详情.
-     * @param Feed $feed
+     *
+     * @param  Feed  $feed
      * @return mixed
+     *
      * @throws \GuzzleHttp\Exception\GuzzleException
+     *
      * @author Foreach
      */
     public function read(Feed $feed)
@@ -135,11 +141,14 @@ class FeedController extends BaseController
 
     /**
      * 动态评论列表.
-     * @param Request $request
-     * @param int $feed_id [动态id]
+     *
+     * @param  Request  $request
+     * @param  int  $feed_id  [动态id]
      * @return JsonResponse
+     *
      * @throws Throwable
      * @throws \GuzzleHttp\Exception\GuzzleException
+     *
      * @author Foreach
      */
     public function comments(Request $request, int $feed_id)

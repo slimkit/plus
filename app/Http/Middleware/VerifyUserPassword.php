@@ -31,6 +31,7 @@ class VerifyUserPassword
 {
     /**
      * The user guard.
+     *
      * @var \Illuminate\Contracts\Auth\Guard
      */
     protected $auth;
@@ -38,7 +39,7 @@ class VerifyUserPassword
     /**
      * Creates a new instance of the middleware.
      *
-     * @param Guard $auth
+     * @param  Guard  $auth
      */
     public function __construct(Guard $auth)
     {
@@ -47,9 +48,11 @@ class VerifyUserPassword
 
     /**
      * The middleware handler.
-     * @param \Illuminate\Http\Request $request
-     * @param \Closure $next
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \Closure  $next
      * @return mixed
+     *
      * @throws \Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException
      * @throws \Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException
      */

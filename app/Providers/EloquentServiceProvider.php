@@ -51,6 +51,7 @@ class EloquentServiceProvider extends ServiceProvider
      * Register model morp map.
      *
      * @return void
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     protected function registerMorpMap()
@@ -64,9 +65,10 @@ class EloquentServiceProvider extends ServiceProvider
     /**
      * Set the morph map for polymorphic relations.
      *
-     * @param array|null $map
-     * @param bool|bool $merge
+     * @param  array|null  $map
+     * @param  bool|bool  $merge
      * @return array
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     private function setMorphMap(array $map = null, bool $merge = true)

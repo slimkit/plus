@@ -37,6 +37,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property int|null $checkin_count 用户签到统计
  * @property int|null $last_checkin_count 用户连续签到统计
  * @property-read \Zhiyi\Plus\Models\User $user
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|UserExtra newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|UserExtra newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|UserExtra query()

@@ -31,7 +31,7 @@ class UserAbility
     /**
      * Creates a new instance of the middleware.
      *
-     * @param Guard $auth
+     * @param  Guard  $auth
      */
     public function __construct(Guard $auth)
     {
@@ -41,10 +41,11 @@ class UserAbility
     /**
      * Handle an incoming request.
      *
-     * @param \Illuminate\Http\Request $request
-     * @param \Closure $next
-     * @param string $ability
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \Closure  $next
+     * @param  string  $ability
      * @return mixed
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function handle(Request $request, Closure $next, string $ability, string $message = '')

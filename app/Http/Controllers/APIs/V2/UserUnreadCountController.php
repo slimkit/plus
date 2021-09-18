@@ -39,8 +39,8 @@ class UserUnreadCountController extends Controller
      * @param  Request  $request
      * @param  CommentModel  $commentModel
      * @param  LikeModel  $likeModel
-     *
      * @return mixed
+     *
      * @author BS <414606094@qq.com>
      */
     public function index(

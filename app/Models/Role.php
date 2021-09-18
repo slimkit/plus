@@ -40,6 +40,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property-read int|null $abilities_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\Zhiyi\Plus\Models\User[] $users
  * @property-read int|null $users_count
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|Role newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Role newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Role query()
@@ -60,6 +61,7 @@ class Role extends Model
      * Get all abilities of the role.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function abilities()
@@ -71,6 +73,7 @@ class Role extends Model
      * Get all users of the role.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function users()
@@ -81,8 +84,9 @@ class Role extends Model
     /**
      * Get or check The role ability.
      *
-     * @param string $ability
+     * @param  string  $ability
      * @return false|Ability
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function ability(string $ability)

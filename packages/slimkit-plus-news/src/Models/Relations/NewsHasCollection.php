@@ -30,6 +30,7 @@ trait NewsHasCollection
      * 资讯收藏记录.
      *
      * @author bs<414606094@qq.com>
+     *
      * @return null|HasMany
      */
     public function collections()
@@ -41,7 +42,8 @@ trait NewsHasCollection
      * 判断用户是否已收藏.
      *
      * @author bs<414606094@qq.com>
-     * @param  User|int $user
+     *
+     * @param  User|int  $user
      * @return bool
      */
     public function collected($user): bool
@@ -66,7 +68,8 @@ trait NewsHasCollection
      * 收藏操作.
      *
      * @author bs<414606094@qq.com>
-     * @param  User|int $user
+     *
+     * @param  User|int  $user
      * @return mix
      */
     public function collection($user)
@@ -89,7 +92,8 @@ trait NewsHasCollection
      * 取消收藏.
      *
      * @author bs<414606094@qq.com>
-     * @param  User|int $user
+     *
+     * @param  User|int  $user
      * @return mix
      */
     public function unCollection($user)

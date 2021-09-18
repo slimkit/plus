@@ -38,6 +38,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \Zhiyi\Plus\Models\User|null $user
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|CurrencyOrder newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|CurrencyOrder newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|CurrencyOrder query()
@@ -61,6 +62,7 @@ class CurrencyOrder extends Model
      * the owner of order.
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     *
      * @author BS <414606094@qq.com>
      */
     public function user()

@@ -58,12 +58,14 @@ class UserBlacklistController extends Controller
 
     /**
      * 移出黑名单.
+     *
      * @Author   Wayne
      * @DateTime 2018-04-17
      * @Email    qiaobin@zhiyicx.com
-     * @param    Request             $request [description]
-     * @param    UserModel           $user    [description]
-     * @return   [type]                       [description]
+     *
+     * @param  Request  $request  [description]
+     * @param  UserModel  $user  [description]
+     * @return [type]                       [description]
      */
     public function unBlack(Request $request, UserModel $targetUser, UserBlacklistModel $blackList)
     {
@@ -82,11 +84,13 @@ class UserBlacklistController extends Controller
 
     /**
      * black list of current user.
+     *
      * @Author   Wayne
      * @DateTime 2018-04-18
      * @Email    qiaobin@zhiyicx.com
-     * @param    Request             $request [description]
-     * @return   [type]                       [description]
+     *
+     * @param  Request  $request  [description]
+     * @return [type]                       [description]
      */
     public function blackList(Request $request)
     {

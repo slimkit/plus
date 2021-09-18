@@ -35,6 +35,7 @@ class FeedServiceProvider extends ServiceProvider
      * Bootstrap the provider.
      *
      * @return void
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function boot()
@@ -95,6 +96,7 @@ class FeedServiceProvider extends ServiceProvider
      * register provided to provider.
      *
      * @return void
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function register()
@@ -113,6 +115,7 @@ class FeedServiceProvider extends ServiceProvider
      * Register model events.
      *
      * @return void
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     protected function registerObserves()
@@ -124,6 +127,7 @@ class FeedServiceProvider extends ServiceProvider
      * Register route.
      *
      * @return void
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     protected function routeMap()

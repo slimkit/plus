@@ -29,9 +29,10 @@ class UserPhoneController extends Controller
     /**
      * 删除用户手机号码.
      *
-     * @param \Illuminate\Http\Request $request
-     * @param \Illuminate\Contracts\Routing\ResponseFactory $response
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Contracts\Routing\ResponseFactory  $response
      * @return mixed
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function delete(Request $request, ResponseFactoryContract $response)

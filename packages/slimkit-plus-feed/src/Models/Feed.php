@@ -100,6 +100,7 @@ class Feed extends Model
      * Has feed pinned.
      *
      * @return HasOne
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function pinned()
@@ -114,6 +115,7 @@ class Feed extends Model
      * @Author   Wayne
      * @DateTime 2018-04-13
      * @Email    qiaobin@zhiyicx.com
+     *
      * @return HasMany
      */
     public function blacks()
@@ -125,6 +127,7 @@ class Feed extends Model
      * Get feed images.
      *
      * @return HasMany
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function images()
@@ -137,6 +140,7 @@ class Feed extends Model
      * 动态付费节点.
      *
      * @return HasOne
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function paidNode()
@@ -160,6 +164,7 @@ class Feed extends Model
      * Has comments.
      *
      * @return MorphMany
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function comments()
@@ -171,6 +176,7 @@ class Feed extends Model
      * Has pinned comments.
      *
      * @return BelongsToMany
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function pinnedComments()
@@ -198,7 +204,6 @@ class Feed extends Model
      *
      * @param  Builder  $query
      * @param  int  $userId
-     *
      * @return Builder
      */
     public function scopeByUserId(Builder $query, int $userId): Builder
@@ -211,8 +216,8 @@ class Feed extends Model
      *
      * @param  Builder  $query  [description]
      * @param  int  $feedId  [description]
-     *
      * @return Builder
+     *
      * @author bs<414606094@qq.com>
      */
     public function scopeByFeedId(Builder $query, int $feedId): Builder
@@ -224,8 +229,8 @@ class Feed extends Model
      * 筛选已审核动态
      *
      * @param  Builder  $query  [description]
-     *
      * @return Builder
+     *
      * @author bs<414606094@qq.com>
      */
     public function scopeByAudit(Builder $query): Builder
@@ -247,6 +252,7 @@ class Feed extends Model
      * Has reports.
      *
      * @return MorphMany
+     *
      * @author bs<414606094@qq.com>
      */
     public function reports()

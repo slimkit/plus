@@ -29,9 +29,10 @@ class CheckInSwitch
     /**
      * The middleware handle.
      *
-     * @param mixed $request
-     * @param \Closure $next
+     * @param  mixed  $request
+     * @param  \Closure  $next
      * @return mixed
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function handle($request, Closure $next)

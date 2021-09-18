@@ -31,6 +31,7 @@ class WalletLabelController extends Controller
      * Get wallet labels.
      *
      * @return mixed
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function labels()
@@ -43,8 +44,9 @@ class WalletLabelController extends Controller
     /**
      * Create a recharge option tab.
      *
-     * @param Request $request
+     * @param  Request  $request
      * @return mixed
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function storeLabel(Request $request)
@@ -79,8 +81,9 @@ class WalletLabelController extends Controller
     /**
      * Remove the recharge option.
      *
-     * @param int $label
+     * @param  int  $label
      * @return mixed
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function deleteLabel(int $label)

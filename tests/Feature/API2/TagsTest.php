@@ -29,6 +29,7 @@ class TagsTest extends TestCase
      * 测试获取标签.
      *
      * @return void
+     *
      * @author BS <414606094@qq.com>
      */
     public function testGetTags()

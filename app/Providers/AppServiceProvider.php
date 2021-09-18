@@ -84,6 +84,7 @@ class AppServiceProvider extends ServiceProvider
      * 注册验证规则.
      *
      * @return void
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     protected function registerValidator()
@@ -120,8 +121,8 @@ class AppServiceProvider extends ServiceProvider
      *
      * @param  string|int  $value
      * @param  array  $parameters
-     *
      * @return bool
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     protected function validateDisplayLength(string $value, array $parameters): bool
@@ -138,7 +139,6 @@ class AppServiceProvider extends ServiceProvider
      *
      * @param  string  $value
      * @param  array  $parameters
-     *
      * @return bool
      */
     protected function validateDisplayWidth(string $value, array $parameters): bool
@@ -153,7 +153,6 @@ class AppServiceProvider extends ServiceProvider
      *
      * @param  float  $number
      * @param  array  $parameters
-     *
      * @return bool
      */
     private function validateBetween(float $number, array $parameters): bool

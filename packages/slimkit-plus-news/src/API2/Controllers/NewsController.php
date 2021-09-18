@@ -30,9 +30,11 @@ class NewsController extends Controller
      * 获取资讯列表.
      *
      * @author bs<414606094@qq.com>
-     * @param  Request $request
-     * @param  News    $newsModel
+     *
+     * @param  Request  $request
+     * @param  News  $newsModel
      * @return json
+     *
      * @throws \Throwable
      */
     public function index(Request $request, News $newsModel)
@@ -86,10 +88,12 @@ class NewsController extends Controller
      * 获取一个分类的置顶资讯.
      *
      * @author bs<414606094@qq.com>
-     * @param  Request $request
-     * @param News     $newsModel
+     *
+     * @param  Request  $request
+     * @param  News  $newsModel
      * @param  Carbon  $datetime
      * @return json
+     *
      * @throws \Throwable
      */
     public function pinned(Request $request, News $newsModel, Carbon $datetime)
@@ -121,10 +125,12 @@ class NewsController extends Controller
      * Get single news info.
      *
      * @author bs<414606094@qq.com>
-     * @param  Request $request
-     * @param  News    $news
-     * @param Carbon   $datetime
+     *
+     * @param  Request  $request
+     * @param  News  $news
+     * @param  Carbon  $datetime
      * @return json
+     *
      * @throws \Throwable
      */
     public function detail(Request $request, News $news, Carbon $datetime)
@@ -153,9 +159,11 @@ class NewsController extends Controller
      * Get correlation news from single news by tags.
      *
      * @author bs<414606094@qq.com>
-     * @param  Request $request
-     * @param  News    $news
+     *
+     * @param  Request  $request
+     * @param  News  $news
      * @return json
+     *
      * @throws \Throwable
      */
     public function correlation(Request $request, News $news)

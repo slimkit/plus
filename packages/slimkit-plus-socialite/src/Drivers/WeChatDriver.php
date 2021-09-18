@@ -26,6 +26,7 @@ class WeChatDriver extends DriverAbstract
      * Get base URI.
      *
      * @return string
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     protected function getBaseURI(): string
@@ -37,6 +38,7 @@ class WeChatDriver extends DriverAbstract
      * Get the provider.
      *
      * @return string
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function provider(): string
@@ -47,8 +49,9 @@ class WeChatDriver extends DriverAbstract
     /**
      * Get WeChat union ID.
      *
-     * @param string $accessToken
+     * @param  string  $accessToken
      * @return string
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function unionid(string $accessToken): string

@@ -32,11 +32,12 @@ class FeedPayController extends Controller
     /**
      * Set feed comment pay.
      *
-     * @param \Illuminate\Http\Request $request
-     * @param \Illuminate\Contracts\Routing\ResponseFactory $response
-     * @param \Zhiyi\Plus\Models\PaidNode $paidNode
-     * @param \Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\Feed  $feed
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Contracts\Routing\ResponseFactory  $response
+     * @param  \Zhiyi\Plus\Models\PaidNode  $paidNode
+     * @param  \Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\Feed  $feed
      * @return mixed
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function commentPaid(

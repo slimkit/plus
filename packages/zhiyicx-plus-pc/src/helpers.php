@@ -91,8 +91,8 @@ function cacheConfig()
  * [formatContent 动态列表内容处理].
  *
  * @param  [string] $content [内容]
- *
  * @return [string]
+ *
  * @author Foreach
  */
 function formatContent($content)
@@ -138,8 +138,8 @@ function formatContent($content)
  * @param  array  $params  [参数]
  * @param  int  $instance
  * @param  int  $original
- *
  * @return
+ *
  * @author Foreach
  */
 function inapi(
@@ -181,12 +181,13 @@ function inapi(
 /**
  * [api].
  *
- * @param string $method [请求方式]
- * @param string $url [地址]
- * @param array $params [参数]
- *
+ * @param  string  $method  [请求方式]
+ * @param  string  $url  [地址]
+ * @param  array  $params  [参数]
  * @return mixed
+ *
  * @throws \GuzzleHttp\Exception\GuzzleException
+ *
  * @author Foreach
  */
 function api($method = 'POST', $url = '', $params = [])
@@ -218,8 +219,8 @@ function api($method = 'POST', $url = '', $params = [])
  * [getTime 时间转换].
  *
  * @param  [string] $time [时间]
- *
  * @return
+ *
  * @author Foreach
  */
 function getTime($time)
@@ -256,8 +257,8 @@ function getTime($time)
  * @param  [type]  $height [高度]
  * @param  bool  $cut  [是否裁剪]
  * @param  int  $blur  [是否高斯模糊]
- *
  * @return [string]
+ *
  * @author Foreach
  */
 function getImageUrl($image = [], $width, $height, $cut = true, $blur = 0)
@@ -289,6 +290,7 @@ function getImageUrl($image = [], $width, $height, $cut = true, $blur = 0)
  * [cacheClear 清理缓存].
  *
  * @return
+ *
  * @author Zsyd
  */
 function cacheClear()
@@ -298,9 +300,11 @@ function cacheClear()
 
 /**
  * [getAvatar 获取头像].
+ *
  * @param  [type]  $user  [用户数组]
- * @param int $width [宽度]
+ * @param  int  $width  [宽度]
  * @return string [string]
+ *
  * @author Foreach
  */
 function getAvatar($user, $width = 0)
@@ -333,8 +337,10 @@ function getAvatar($user, $width = 0)
 
 /**
  * [formatMarkdown 转换markdown].
+ *
  * @param  [string] $body [内容]
  * @return string|string[]|null
+ *
  * @author Foreach
  */
 function formatMarkdown($body)
@@ -350,8 +356,8 @@ function formatMarkdown($body)
 
 /**
  * @param  [string] $body [内容]
- *
  * @return string
+ *
  * @author Foreach
  */
 function formatList($body)
@@ -371,8 +377,8 @@ function formatList($body)
  * [getUserInfo 获取用户信息].
  *
  * @param  [type] $id [用户id]
- *
  * @return array
+ *
  * @author Foreach
  */
 function getUserInfo($id): array
@@ -386,6 +392,7 @@ function getUserInfo($id): array
  * @param $data
  * @param $pinneds
  * @return mixed
+ *
  * @author Foreach
  */
 function formatPinneds($data, $pinneds)
@@ -411,8 +418,8 @@ function formatPinneds($data, $pinneds)
  * [formatRepostable 转发数据组装].
  *
  * @param  [array] $feeds
- *
  * @return [array]
+ *
  * @author Foreach
  */
 function formatRepostable($feeds)

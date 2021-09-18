@@ -31,9 +31,10 @@ class UserNotificationController extends Controller
     /**
      * Get user notifications.
      *
-     * @param \Illuminate\Http\Request $request
-     * @param \Illuminate\Contracts\Routing\ResponseFactory $response
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Contracts\Routing\ResponseFactory  $response
      * @return mixed
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function index(Request $request, ContractResponse $response)
@@ -70,10 +71,11 @@ class UserNotificationController extends Controller
     /**
      * Get notification message.
      *
-     * @param \Illuminate\Http\Request $request
-     * @param \Illuminate\Contracts\Routing\ResponseFactory $response
-     * @param string $notification
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Contracts\Routing\ResponseFactory  $response
+     * @param  string  $notification
      * @return mixed
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function show(Request $request, ContractResponse $response, string $notification)
@@ -95,10 +97,11 @@ class UserNotificationController extends Controller
     /**
      * Mark notification status to read.
      *
-     * @param \Illuminate\Http\Request $request
-     * @param \Illuminate\Contracts\Routing\ResponseFactory $response
-     * @param string $notification
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Contracts\Routing\ResponseFactory  $response
+     * @param  string  $notification
      * @return mixed
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function markAsRead(Request $request, ContractResponse $response, string $notification = '')
@@ -124,8 +127,9 @@ class UserNotificationController extends Controller
     /**
      * 标记所有未读消息为已读.
      *
-     * @param Request $request
+     * @param  Request  $request
      * @return mixed
+     *
      * @author BS <414606094@qq.com>
      */
     public function markAllAsRead(Request $request)

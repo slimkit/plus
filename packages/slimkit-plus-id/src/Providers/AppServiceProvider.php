@@ -144,8 +144,8 @@ class AppServiceProvider extends ServiceProvider
     /**
      * Register handler.
      *
-     * @param string $name
-     * @param \Zhiyi\Plus\Support\PackageHandler|string $handler
+     * @param  string  $name
+     * @param  \Zhiyi\Plus\Support\PackageHandler|string  $handler
      * @return void
      */
     private function loadHandleFrom(string $name, $handler)

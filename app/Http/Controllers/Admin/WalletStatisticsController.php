@@ -54,7 +54,7 @@ class WalletStatisticsController extends Controller
     /**
      * 充值统计.
      *
-     * @param array $scope
+     * @param  array  $scope
      * @return array
      */
     private function chargeStatistics(array $scope)
@@ -74,7 +74,7 @@ class WalletStatisticsController extends Controller
     /**
      * 提现统计.
      *
-     * @param array $scope
+     * @param  array  $scope
      * @return array
      */
     private function casheStatistics(array $scope)

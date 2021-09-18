@@ -45,7 +45,8 @@ class Wallet implements Arrayable, Jsonable, JsonSerializable
     /**
      * Create wallet.
      *
-     * @param int|\Zhiyi\Plus\Models\User $user
+     * @param  int|\Zhiyi\Plus\Models\User  $user
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function __construct($user = null)
@@ -58,7 +59,8 @@ class Wallet implements Arrayable, Jsonable, JsonSerializable
     /**
      * Set user.
      *
-     * @param int|\Zhiyi\Plus\Models\User $user
+     * @param  int|\Zhiyi\Plus\Models\User  $user
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function setUser($user)
@@ -72,6 +74,7 @@ class Wallet implements Arrayable, Jsonable, JsonSerializable
      * Get the user wallet model.
      *
      * @return \Zhiyi\Plus\Models\NewWallet
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function getWalletModel(): WalletModel
@@ -86,7 +89,8 @@ class Wallet implements Arrayable, Jsonable, JsonSerializable
     /**
      * Increment the user wallet balance.
      *
-     * @param int $amount
+     * @param  int  $amount
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function increment(int $amount)
@@ -103,7 +107,8 @@ class Wallet implements Arrayable, Jsonable, JsonSerializable
     /**
      * Decrement the user wallet balance.
      *
-     * @param int $amount
+     * @param  int  $amount
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function decrement(int $amount)
@@ -120,8 +125,9 @@ class Wallet implements Arrayable, Jsonable, JsonSerializable
     /**
      * The user wallet balance enough amount.
      *
-     * @param int $amount
+     * @param  int  $amount
      * @return bool
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function enough(int $amount): bool
@@ -134,9 +140,11 @@ class Wallet implements Arrayable, Jsonable, JsonSerializable
     /**
      * Resolve user.
      *
-     * @param int|\Zhiyi\Plus\Models\User $user
+     * @param  int|\Zhiyi\Plus\Models\User  $user
      * @return \Zhiyi\Plus\Models\User
+     *
      * @throws \Exception
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     protected function resolveUser($user): UserModel
@@ -155,8 +163,9 @@ class Wallet implements Arrayable, Jsonable, JsonSerializable
     /**
      * Resolve the user wallet.
      *
-     * @param \Zhiyi\Plus\Models\User $user
+     * @param  \Zhiyi\Plus\Models\User  $user
      * @return \Zhiyi\Plus\Models\User
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     protected function resolveWallet(UserModel $user): UserModel
@@ -178,6 +187,7 @@ class Wallet implements Arrayable, Jsonable, JsonSerializable
      * Convert the model instance to an array.
      *
      * @return array
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function toArray()
@@ -188,9 +198,11 @@ class Wallet implements Arrayable, Jsonable, JsonSerializable
     /**
      * Convert the model instance to JSON.
      *
-     * @param int $options
+     * @param  int  $options
      * @return string
+     *
      * @throws \RuntimeException
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function toJson($options = 0)
@@ -208,6 +220,7 @@ class Wallet implements Arrayable, Jsonable, JsonSerializable
      * Convert the object into something JSON serializable.
      *
      * @return array
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function jsonSerialize()
@@ -219,6 +232,7 @@ class Wallet implements Arrayable, Jsonable, JsonSerializable
      * Convert the model to its string representation.
      *
      * @return string
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function __toString()
@@ -229,8 +243,9 @@ class Wallet implements Arrayable, Jsonable, JsonSerializable
     /**
      * Find user or fail.
      *
-     * @param int $user
+     * @param  int  $user
      * @return \Zhiyi\Plus\Models\User
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     protected function userFindOrFail(int $user): UserModel
@@ -241,8 +256,9 @@ class Wallet implements Arrayable, Jsonable, JsonSerializable
     /**
      * Find wallet.
      *
-     * @param int $user
+     * @param  int  $user
      * @return Zhiyi\Plus\Models\NewWallet
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     protected function walletFind(int $user)

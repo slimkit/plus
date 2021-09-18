@@ -47,7 +47,8 @@ class SiteController extends Controller
     /**
      * Construct handle.
      *
-     * @param \Illuminate\Contracts\Foundation\Application $app
+     * @param  \Illuminate\Contracts\Foundation\Application  $app
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function __construct(Application $app, CommonConfig $config)
@@ -88,8 +89,7 @@ class SiteController extends Controller
     /**
      * 更新网站基本信息.
      *
-     * @param Request $request
-     *
+     * @param  Request  $request
      * @return mixed
      *
      * @author Seven Du <shiweidu@outlook.com>
@@ -144,8 +144,7 @@ class SiteController extends Controller
     /**
      * 添加地区.
      *
-     * @param Request $request
-     *
+     * @param  Request  $request
      * @return mixed [description]
      *
      * @author Seven Du <shiweidu@outlook.com>
@@ -191,8 +190,7 @@ class SiteController extends Controller
     /**
      * 删除地区.
      *
-     * @param int $id
-     *
+     * @param  int  $id
      * @return mixed
      *
      * @author Seven Du <shiweidu@outlook.com>
@@ -222,9 +220,8 @@ class SiteController extends Controller
     /**
      * 更新地区数据.
      *
-     * @param Request $request
-     * @param Area    $area
-     *
+     * @param  Request  $request
+     * @param  Area  $area
      * @return mixed
      *
      * @author Seven Du <shiweidu@outlook.com>
@@ -344,7 +341,7 @@ class SiteController extends Controller
     /**
      * 删除热门城市.
      *
-     * @param  array  &$hotAreas   [description]
+     * @param  array  &$hotAreas  [description]
      * @param  [type] $hotAreaName [description]
      * @return [type]              [description]
      */
@@ -478,7 +475,7 @@ class SiteController extends Controller
     /**
      * 更新站点设置.
      *
-     * @param Request $request
+     * @param  Request  $request
      * @return \Illuminate\Http\JsonResponse
      */
     public function updateSiteConfigure(Request $request)
@@ -507,8 +504,9 @@ class SiteController extends Controller
     /**
      * 获取后台页面配置.
      *
-     * @param Configuration $config [description]
+     * @param  Configuration  $config  [description]
      * @return [type] [description]
+     *
      * @author BS <414606094@qq.com>
      */
     public function getBackGroundConfiguration(Repository $config)

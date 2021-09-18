@@ -38,6 +38,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
  * @property-read \Zhiyi\Plus\Models\CertificationCategory|null $category
  * @property-read string|null $icon
  * @property-read \Zhiyi\Plus\Models\User $user
+ *
  * @method static Builder|Certification newModelQuery()
  * @method static Builder|Certification newQuery()
  * @method static Builder|Certification query()
@@ -104,6 +105,7 @@ class Certification extends Model
      * Get icon url.
      *
      * @return string|null
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function getIconAttribute()
@@ -115,6 +117,7 @@ class Certification extends Model
      * Get avatar trait.
      *
      * @return string|int
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function getAvatarKey()
@@ -126,6 +129,7 @@ class Certification extends Model
      * avatar extensions.
      *
      * @return array
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function getAvatarExtensions(): array
@@ -137,6 +141,7 @@ class Certification extends Model
      * Avatar prefix.
      *
      * @return string
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function getAvatarPrefix(): string
@@ -148,6 +153,7 @@ class Certification extends Model
      * Has certification caregory.
      *
      * @return HasOne
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function category()

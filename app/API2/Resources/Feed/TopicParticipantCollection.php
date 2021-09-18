@@ -27,7 +27,7 @@ class TopicParticipantCollection extends ResourceCollection
     /**
      * The collection to array.
      *
-     * @param \Illuminate\Http\Request $request
+     * @param  \Illuminate\Http\Request  $request
      * @return array
      */
     public function toArray($request): array
@@ -43,7 +43,7 @@ class TopicParticipantCollection extends ResourceCollection
     /**
      * Render the collection item.
      *
-     * @param mixed $item
+     * @param  mixed  $item
      * @return int
      */
     public function renderItem($item): int

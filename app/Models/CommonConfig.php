@@ -32,6 +32,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property string|null $value 缓存值
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ *
  * @method static Builder|CommonConfig byName($name)
  * @method static Builder|CommonConfig byNamespace($namespace)
  * @method static Builder|CommonConfig newModelQuery()
@@ -54,9 +55,8 @@ class CommonConfig extends Model
     /**
      * Scope func to namespace.
      *
-     * @param Illuminate\Database\Eloquent\Builder $query
-     * @param string                               $namespace
-     *
+     * @param  Illuminate\Database\Eloquent\Builder  $query
+     * @param  string  $namespace
      * @return Illuminate\Database\Eloquent\Builder
      *
      * @author Seven Du <shiweidu@outlook.com>
@@ -70,9 +70,8 @@ class CommonConfig extends Model
     /**
      * Scope func to name.
      *
-     * @param Illuminate\Database\Eloquent\Builder $query
-     * @param string                               $name
-     *
+     * @param  Illuminate\Database\Eloquent\Builder  $query
+     * @param  string  $name
      * @return Illuminate\Database\Eloquent\Builder
      *
      * @author Seven Du <shiweidu@outlook.com>

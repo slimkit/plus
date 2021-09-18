@@ -58,8 +58,9 @@ class WalletConfigController extends Controller
     /**
      * Get wallet info.
      *
-     * @param ResponseFactory $response
+     * @param  ResponseFactory  $response
      * @return mixed
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function show(ResponseFactory $response)
@@ -91,9 +92,10 @@ class WalletConfigController extends Controller
     /**
      * 解决数据结构和别名.
      *
-     * @param Collection &$options
-     * @param CommonConfig $item
+     * @param  Collection  &$options
+     * @param  CommonConfig  $item
      * @return vodi
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     protected function resolve(Collection &$options, CommonConfig $item)
@@ -109,9 +111,10 @@ class WalletConfigController extends Controller
     /**
      * 格式化数据.
      *
-     * @param string $type
-     * @param mixed $value
+     * @param  string  $type
+     * @param  mixed  $value
      * @return mixed
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     protected function formatData(string $type, $value)

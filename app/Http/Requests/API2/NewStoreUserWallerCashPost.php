@@ -65,6 +65,7 @@ class NewStoreUserWallerCashPost extends FormRequest
      * Get rule messages.
      *
      * @return array
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function messages()
