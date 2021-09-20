@@ -32,6 +32,7 @@ class ImHelperUserController extends Controller
      * Fetch im helper user id.
      *
      * @return \Illuminate\Http\JsonResponse
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function fetch(): JsonResponse
@@ -42,9 +43,10 @@ class ImHelperUserController extends Controller
     /**
      * Update im helper user id.
      *
-     * @param \Zhiyi\Plus\Admin\Requests\UpdateImHelperUserRequest $request
-     * @param \Zhiyi\Plus\Support\Configuration $config
+     * @param  \Zhiyi\Plus\Admin\Requests\UpdateImHelperUserRequest  $request
+     * @param  \Zhiyi\Plus\Support\Configuration  $config
      * @return \Illuminate\Http\Response
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     // public function update(UpdateImHelperUserRequest $request, Configuration $config): Response

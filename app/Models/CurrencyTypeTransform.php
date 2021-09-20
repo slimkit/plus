@@ -29,6 +29,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $to_type_id 目标货币类型
  * @property int $form_sum 原始货币数量
  * @property int $to_sum 目标货币数量
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|CurrencyTypeTransform newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|CurrencyTypeTransform newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|CurrencyTypeTransform query()

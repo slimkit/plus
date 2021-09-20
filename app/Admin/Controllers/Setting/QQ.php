@@ -30,6 +30,7 @@ class QQ extends Controller
 {
     /**
      * Get configure.
+     *
      * @return \Illuminate\Http\JsonResponse
      */
     public function getConfigure(): JsonResponse
@@ -44,7 +45,8 @@ class QQ extends Controller
 
     /**
      * set configure.
-     * @param \Zhiyi\Plus\Admin\Requests\SetQQConfigure $request
+     *
+     * @param  \Zhiyi\Plus\Admin\Requests\SetQQConfigure  $request
      * @return \Illuminate\Http\Response
      */
     public function setConfigure(SetQQConfigureRequest $request)

@@ -54,6 +54,7 @@ class FileUploadedTest extends TestCase
      * Test not uploaded file hash check.
      *
      * @return void
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function testNotHash()
@@ -72,6 +73,7 @@ class FileUploadedTest extends TestCase
      * Test Uploaded file hash.
      *
      * @return void
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function testUsedHash()

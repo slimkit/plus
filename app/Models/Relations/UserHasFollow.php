@@ -29,6 +29,7 @@ trait UserHasFollow
      * follows - my following.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function followings(): BelongsToMany
@@ -44,6 +45,7 @@ trait UserHasFollow
      * followers - my followers.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function followers(): BelongsToMany
@@ -58,8 +60,9 @@ trait UserHasFollow
     /**
      * Verification is concerned followed.
      *
-     * @param int|\Zhiyi\Plus\Models\User $user
+     * @param  int|\Zhiyi\Plus\Models\User  $user
      * @return bool
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function hasFollwing($user): bool
@@ -81,8 +84,9 @@ trait UserHasFollow
     /**
      * Verify that I am followed.
      *
-     * @param  int|\Zhiyi\Plus\Models\User $user
+     * @param  int|\Zhiyi\Plus\Models\User  $user
      * @return bool
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function hasFollower($user): bool
@@ -105,6 +109,7 @@ trait UserHasFollow
      * 相互关注的好友.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     *
      * @author ZsyD<1251992018@qq.com>
      */
     public function mutual(): BelongsToMany

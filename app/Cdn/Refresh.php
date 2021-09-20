@@ -39,8 +39,9 @@ class Refresh
     /**
      * Create the refresh.
      *
-     * @param array $files
-     * @param array $dirs
+     * @param  array  $files
+     * @param  array  $dirs
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function __construct(array $files = [], array $dirs = [])
@@ -53,6 +54,7 @@ class Refresh
      * Get files.
      *
      * @return array
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function getFiles(): array
@@ -63,7 +65,8 @@ class Refresh
     /**
      * Set files.
      *
-     * @param array $files
+     * @param  array  $files
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function setFiles(array $files)
@@ -77,6 +80,7 @@ class Refresh
      * Get dirs.
      *
      * @return array
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function getDirs(): array
@@ -87,7 +91,8 @@ class Refresh
     /**
      * Set dirs.
      *
-     * @param array $dirs
+     * @param  array  $dirs
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function setDirs(array $dirs)

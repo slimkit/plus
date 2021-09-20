@@ -27,10 +27,11 @@ class ManageRepository
     /**
      * Push manage url.
      *
-     * @param string $name
-     * @param string $uri
-     * @param array $option
+     * @param  string  $name
+     * @param  string  $uri
+     * @param  array  $option
      * @return void
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function loadManageFrom(string $name, string $uri, array $option = [])
@@ -46,6 +47,7 @@ class ManageRepository
      * Get the manages for the provider.
      *
      * @return array
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function getManages(): array

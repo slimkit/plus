@@ -34,6 +34,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \Zhiyi\Plus\Models\AdvertisingSpace $space
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|Advertising newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Advertising newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Advertising query()

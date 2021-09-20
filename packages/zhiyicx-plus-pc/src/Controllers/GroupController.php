@@ -25,8 +25,10 @@ class GroupController extends BaseController
 {
     /**
      * 圈子首页.
+     *
      * @author 28youth
-     * @param  Request $request
+     *
+     * @param  Request  $request
      * @return mixed
      */
     public function index(Request $request)
@@ -44,8 +46,10 @@ class GroupController extends BaseController
 
     /**
      * 圈子列表.
+     *
      * @author 28youth
-     * @param Request $request
+     *
+     * @param  Request  $request
      * @return \Illuminate\Http\JsonResponse
      */
     public function list(Request $request)

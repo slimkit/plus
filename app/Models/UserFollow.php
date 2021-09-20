@@ -28,6 +28,7 @@ use Illuminate\Database\Eloquent\Relations\Pivot;
  * @property int $target 目标用户
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|UserFollow newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|UserFollow newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|UserFollow query()

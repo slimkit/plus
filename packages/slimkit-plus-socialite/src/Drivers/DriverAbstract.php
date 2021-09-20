@@ -35,6 +35,7 @@ abstract class DriverAbstract implements Sociable
      * Get provider type.
      *
      * @return string
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     abstract public function provider(): string;
@@ -44,6 +45,7 @@ abstract class DriverAbstract implements Sociable
      *
      * @param  string  $accessToken
      * @return string
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     abstract public function unionid(string $accessToken): string;
@@ -53,6 +55,7 @@ abstract class DriverAbstract implements Sociable
      *
      * @param  string  $accessToken
      * @return mixed
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function authUser(string $accessToken)
@@ -104,6 +107,7 @@ abstract class DriverAbstract implements Sociable
      * @param  string|int  $login
      * @param  string  $password
      * @return mixed
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function bindForAccount(string $accessToken, $login, string $password)

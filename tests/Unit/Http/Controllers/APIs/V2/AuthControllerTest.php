@@ -42,6 +42,7 @@ class AuthControllerTest extends TestCase
      * Test AuthController::class guard method.
      *
      * @return void
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function testGuard()
@@ -61,6 +62,7 @@ class AuthControllerTest extends TestCase
      * Test AuthController::class login method.
      *
      * @return void
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function testLogin()
@@ -141,6 +143,7 @@ class AuthControllerTest extends TestCase
      * Test AuthController::logout method.
      *
      * @return void
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function testLogout()
@@ -183,6 +186,7 @@ class AuthControllerTest extends TestCase
      * Test AuthController::refresh and respondWithToken method.
      *
      * @return void
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function testRefreshAndTestRespondWithToken()

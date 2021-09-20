@@ -31,10 +31,11 @@ class RanksController extends Controller
     /**
      * Get all users check-in ranks.
      *
-     * @param \Illuminate\Http\Request $request
-     * @param \Illuminate\Contracts\Routing\ResponseFactory $response
-     * @param \Zhiyi\Plus\Models\UserExtra $model
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Contracts\Routing\ResponseFactory  $response
+     * @param  \Zhiyi\Plus\Models\UserExtra  $model
      * @return mixed
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function index(Request $request, ResponseFactoryContract $response, UserExtraModel $model)

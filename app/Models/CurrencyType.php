@@ -31,6 +31,7 @@ use Zhiyi\Plus\CacheNames;
  * @property string $name 货币名称
  * @property string $unit 货币单位
  * @property int|null $enable 货币是否被启用
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|CurrencyType newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|CurrencyType newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|CurrencyType query()
@@ -53,7 +54,6 @@ class CurrencyType extends Model
      * 获取当前使用的积分名称.
      *
      * @param  null  $field
-     *
      * @return mixed
      */
     public static function current($field = null)

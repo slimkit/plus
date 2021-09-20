@@ -30,9 +30,10 @@ class CurrencyRechargeController extends Controller
     /**
      * 钱包流水.
      *
-     * @param Request $request
-     * @param CurrencyOrderModel $currencyOrder
+     * @param  Request  $request
+     * @param  CurrencyOrderModel  $currencyOrder
      * @return mixed
+     *
      * @author BS <414606094@qq.com>
      */
     public function index(Request $request, CurrencyOrderModel $currencyOrder)
@@ -64,8 +65,9 @@ class CurrencyRechargeController extends Controller
     /**
      * 发起充值订单.
      *
-     * @param StoreCurrencyRecharge $request
+     * @param  StoreCurrencyRecharge  $request
      * @return mixed
+     *
      * @author BS <414606094@qq.com>
      */
     public function store(StoreCurrencyRecharge $request)
@@ -87,8 +89,9 @@ class CurrencyRechargeController extends Controller
     /**
      * 充值回调通知.
      *
-     * @param Request $request
+     * @param  Request  $request
      * @return mixed
+     *
      * @author BS <414606094@qq.com>
      */
     public function webhook(Request $request)
@@ -104,8 +107,9 @@ class CurrencyRechargeController extends Controller
     /**
      * 主动取回凭据.
      *
-     * @param CurrencyOrderModel &$currencyOrder
+     * @param  CurrencyOrderModel  &$currencyOrder
      * @return mixed
+     *
      * @author BS <414606094@qq.com>
      */
     public function retrieve(CurrencyOrderModel $order)

@@ -31,6 +31,7 @@ class CorsController
      * Fetch CORS settings.
      *
      * @return \Illuminate\Http\JsonResponse
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function fetch(): JsonResponse

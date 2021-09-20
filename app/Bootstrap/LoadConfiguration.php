@@ -43,6 +43,7 @@ class LoadConfiguration
      *  Run handler.
      *
      * @return void
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function handle()

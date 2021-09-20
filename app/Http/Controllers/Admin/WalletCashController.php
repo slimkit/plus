@@ -33,8 +33,9 @@ class WalletCashController extends Controller
     /**
      * 获取提现列表.
      *
-     * @param \Illuminate\Http\Request $request
+     * @param  \Illuminate\Http\Request  $request
      * @return mixed
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function show(Request $request)
@@ -78,9 +79,10 @@ class WalletCashController extends Controller
     /**
      * 通过审批.
      *
-     * @param Request $request
-     * @param WalletCash $cash
+     * @param  Request  $request
+     * @param  WalletCash  $cash
      * @return mixed
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function passed(Request $request, WalletCash $cash)
@@ -126,9 +128,10 @@ class WalletCashController extends Controller
     /**
      * 提现驳回.
      *
-     * @param Request $request
-     * @param WalletCash $cash
+     * @param  Request  $request
+     * @param  WalletCash  $cash
      * @return mixed
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function refuse(Request $request, WalletCash $cash)

@@ -30,8 +30,9 @@ class WalletRuleController extends Controller
     /**
      * Get the recharge and withdraw the rules.
      *
-     * @param ResponseFactory $response
+     * @param  ResponseFactory  $response
      * @return mixed
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function show(ResponseFactory $response)
@@ -44,9 +45,10 @@ class WalletRuleController extends Controller
     /**
      * 更新规则.
      *
-     * @param Request $request
-     * @param ResponseFactory $response
+     * @param  Request  $request
+     * @param  ResponseFactory  $response
      * @return mixed
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function update(Request $request, ResponseFactory $response)

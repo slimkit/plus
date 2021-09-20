@@ -27,8 +27,9 @@ class UserCountsResource extends JsonResource
     /**
      * The resource to array.
      *
-     * @param \Illuminate\Http\Request $request
+     * @param  \Illuminate\Http\Request  $request
      * @return array
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function toArray($request): array

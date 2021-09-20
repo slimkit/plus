@@ -61,6 +61,7 @@ class SendFeedCommentTest extends TestCase
      *
      * @param $user
      * @return mixed
+     *
      * @throws \Exception
      */
     protected function addFeed($user)

@@ -29,10 +29,11 @@ class ReportController extends Controller
     /**
      * 举报一条资讯.
      *
-     * @param Request $request
-     * @param NewsModel $news
-     * @param ReportModel $reportModel
+     * @param  Request  $request
+     * @param  NewsModel  $news
+     * @param  ReportModel  $reportModel
      * @return mixed
+     *
      * @author BS <414606094@qq.com>
      */
     public function news(Request $request, NewsModel $news, ReportModel $reportModel)

@@ -35,7 +35,6 @@ class BootstrappersController extends Controller
      *
      * @param  BootstrapAPIsEventer  $events
      * @param  AdvertisingSpace  $space
-     *
      * @return JsonResponse
      */
     public function show(BootstrapAPIsEventer $events, AdvertisingSpace $space): JsonResponse
@@ -121,7 +120,8 @@ class BootstrappersController extends Controller
 
     /**
      * Filter null.
-     * @param array $data
+     *
+     * @param  array  $data
      * @return array
      */
     protected function filterNull(array $data): array
@@ -150,8 +150,9 @@ class BootstrappersController extends Controller
     /**
      * 格式化数据.
      *
-     * @param string $value
+     * @param  string  $value
      * @return mixed
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     protected function formatValue(string $value)

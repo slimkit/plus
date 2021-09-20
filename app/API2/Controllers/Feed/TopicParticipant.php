@@ -32,9 +32,9 @@ class TopicParticipant extends Controller
     /**
      * List participants for a topic.
      *
-     * @param \Zhiyi\Plus\API2\Requests\Feed\ListParticipantsForATopic $request
-     * @param \Zhiyi\Plus\Models\FeedTopicUserLink $model
-     * @param int $topic
+     * @param  \Zhiyi\Plus\API2\Requests\Feed\ListParticipantsForATopic  $request
+     * @param  \Zhiyi\Plus\Models\FeedTopicUserLink  $model
+     * @param  int  $topic
      * @return \Illuminate\Http\JsonResponse
      */
     public function index(ListParticipantsForATopicRequest $request, FeedTopicUserLinkModel $model, int $topic): JsonResponse

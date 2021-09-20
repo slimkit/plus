@@ -61,7 +61,6 @@ class Storage implements StorageInterface
      * Create a upload task.
      *
      * @param  Request  $request
-     *
      * @return TaskInterface
      */
     public function createTask(Request $request): TaskInterface
@@ -88,7 +87,6 @@ class Storage implements StorageInterface
      * Get a file info.
      *
      * @param  ResourceInterface  $resource
-     *
      * @return \Zhiyi\Plus\FileMetaInterface
      */
     public function meta(ResourceInterface $resource): FileMetaInterface
@@ -101,7 +99,6 @@ class Storage implements StorageInterface
      *
      * @param  ResourceInterface  $resource
      * @param  string|null  $rule
-     *
      * @return string
      */
     public function response(ResourceInterface $resource, ?string $rule = null): Response
@@ -113,7 +110,6 @@ class Storage implements StorageInterface
      * Deelte a resource.
      *
      * @param  ResourceInterface  $resource
-     *
      * @return bool
      */
     public function delete(ResourceInterface $resource): ?bool
@@ -126,7 +122,6 @@ class Storage implements StorageInterface
      *
      * @param  ResourceInterface  $resource
      * @param  mixed  $content
-     *
      * @return bool
      */
     public function put(ResourceInterface $resource, $content): bool
@@ -138,7 +133,6 @@ class Storage implements StorageInterface
      * A storage task callback handle.
      *
      * @param  ResourceInterface  $resource
-     *
      * @return void
      */
     public function callback(ResourceInterface $resource): void
@@ -150,7 +144,6 @@ class Storage implements StorageInterface
      * Get a channel instance.
      *
      * @param  ResourceInterface  $resource
-     *
      * @return ChannelInterface
      */
     public function getChannel(ResourceInterface $resource): ChannelInterface
@@ -165,7 +158,6 @@ class Storage implements StorageInterface
      * Make a new path.
      *
      * @param  string  $filename
-     *
      * @return string
      */
     public function makePath(string $filename): string

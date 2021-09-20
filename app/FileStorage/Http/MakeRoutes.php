@@ -26,13 +26,15 @@ class MakeRoutes
 {
     /**
      * The router instance.
+     *
      * @var \Illuminate\Contracts\Routing\Registrar
      */
     protected $router;
 
     /**
      * Create the maker instance.
-     * @param \Illuminate\Contracts\Routing\Registrar $router
+     *
+     * @param  \Illuminate\Contracts\Routing\Registrar  $router
      */
     public function __construct(RegistrarContract $router)
     {
@@ -41,6 +43,7 @@ class MakeRoutes
 
     /**
      * The routes resister.
+     *
      * @return void
      */
     public function register(): void
@@ -52,6 +55,7 @@ class MakeRoutes
 
     /**
      * Register local filesystem routes.
+     *
      * @return void
      */
     protected function registerLocalFilesystemRoutes(): void
@@ -68,6 +72,7 @@ class MakeRoutes
 
     /**
      * Register channel callback routes.
+     *
      * @return void
      */
     protected function registerChannelCallbackRoutes(): void
@@ -81,6 +86,7 @@ class MakeRoutes
 
     /**
      * Register create a upload task routes.
+     *
      * @return void
      */
     protected function registerCreateTaskRoutes(): void

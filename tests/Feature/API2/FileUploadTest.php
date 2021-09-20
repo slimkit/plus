@@ -48,6 +48,7 @@ class FileUploadTest extends TestCase
      * 测试上传文件.
      *
      * @return void
+     *
      * @author BS <414606094@qq.com>
      */
     public function testUploadFile()

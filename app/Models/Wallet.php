@@ -33,6 +33,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property string|null $deleted_at
  * @property-read \Zhiyi\Plus\Models\User $user
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|Wallet newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Wallet newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Wallet query()
@@ -52,6 +53,7 @@ class Wallet extends Model
      * Get the user of the wallet.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function user(): BelongsTo

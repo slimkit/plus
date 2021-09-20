@@ -36,9 +36,10 @@ class FeedController extends Controller
     /**
      * Get feeds.
      *
-     * @param \Illuminate\Http\Request $request
-     * @param \Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\Feed $model
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\Feed  $model
      * @return mixed
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function index(Request $request, Feed $model, Carbon $datetime, User $user)
@@ -173,9 +174,10 @@ class FeedController extends Controller
     /**
      * Get deleted feeds.
      *
-     * @param \Illuminate\Http\Request $request
-     * @param \Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\Feed $model
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\Feed  $model
      * @return mixed
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function deleted(Request $request, Feed $model)
@@ -247,9 +249,10 @@ class FeedController extends Controller
     /**
      * Delete feed.
      *
-     * @param \Illuminate\Contracts\Cache\Repository $cache
-     * @param \Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\Feed $feed
+     * @param  \Illuminate\Contracts\Cache\Repository  $cache
+     * @param  \Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\Feed  $feed
      * @return mixed
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function destroy(CacheContract $cache, Feed $feed)

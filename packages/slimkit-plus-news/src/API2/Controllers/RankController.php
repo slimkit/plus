@@ -31,10 +31,11 @@ class RankController extends Controller
      * 获取资讯排行.
      *
      * @author bs<414606094@qq.com>
-     * @param  Illuminate\Http\Request $request
-     * @param  Zhiyi\Component\ZhiyiPlus\PlusComponentNews\Models\News $newsModel
+     *
+     * @param  Illuminate\Http\Request  $request
+     * @param  Zhiyi\Component\ZhiyiPlus\PlusComponentNews\Models\News  $newsModel
      * @param  Carbon\Carbon  $datetime
-     * @return  mixed
+     * @return mixed
      */
     public function index(Request $request, News $newsModel, Carbon $datetime)
     {

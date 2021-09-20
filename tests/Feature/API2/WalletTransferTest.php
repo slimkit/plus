@@ -43,6 +43,7 @@ class WalletTransferTest extends TestCase
      * 测试发起转账.
      *
      * @return void
+     *
      * @author BS <414606094@qq.com>
      */
     public function testTransfer()

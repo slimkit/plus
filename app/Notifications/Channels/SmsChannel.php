@@ -43,8 +43,9 @@ class SmsChannel
     /**
      * Create the SMS notification channel instance.
      *
-     * @param \Illuminate\Contracts\Foundation\Application $app
-     * @param \Overtrue\EasySms\EasySms $sms
+     * @param  \Illuminate\Contracts\Foundation\Application  $app
+     * @param  \Overtrue\EasySms\EasySms  $sms
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function __construct(ApplicationContract $app, EasySms $sms)
@@ -59,6 +60,7 @@ class SmsChannel
      * @param  mixed  $notifiable
      * @param  \Illuminate\Notifications\Notification  $notification
      * @return array|void
+     *
      * @throws \Overtrue\EasySms\Exceptions\InvalidArgumentException
      * @throws \Overtrue\EasySms\Exceptions\NoGatewayAvailableException
      */

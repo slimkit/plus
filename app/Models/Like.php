@@ -34,6 +34,7 @@ use Illuminate\Database\Eloquent\Relations\Pivot;
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \Illuminate\Database\Eloquent\Model|\Eloquent $likeable
  * @property-read \Zhiyi\Plus\Models\User|null $user
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|Like newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Like newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Like query()
@@ -64,6 +65,7 @@ class Like extends Pivot
      * Has likeable.
      *
      * @return \Illuminate\Database\Eloquent\Relations\MorphTo
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function likeable()
@@ -75,6 +77,7 @@ class Like extends Pivot
      * Has user of the likeable.
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function user()

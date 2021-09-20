@@ -63,10 +63,11 @@ class MusicStorageController extends Controller
     /**
      * Validate and return the file database model instance.
      *
-     * @param \Zhiyi\Plus\Models\File $fileModel
-     * @param \Illuminate\Http\UploadedFile $file
-     * @param callable $call
+     * @param  \Zhiyi\Plus\Models\File  $fileModel
+     * @param  \Illuminate\Http\UploadedFile  $file
+     * @param  callable  $call
      * @return \Zhiyi\Plus\Models\File
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     protected function validateFileInDatabase(FileModel $fileModel, UploadedFile $file, callable $call): FileModel
@@ -81,10 +82,11 @@ class MusicStorageController extends Controller
     /**
      * 解决数据模型非实例.
      *
-     * @param \Zhiyi\Plus\Models\FileWith $fileWith
-     * @param \Zhiyi\Plus\Models\User $user
-     * @param \Zhiyi\Plus\Models\File $file
+     * @param  \Zhiyi\Plus\Models\FileWith  $fileWith
+     * @param  \Zhiyi\Plus\Models\User  $user
+     * @param  \Zhiyi\Plus\Models\File  $file
      * @return \Zhiyi\Plus\Models\FileWith
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     protected function resolveFileWith(FileWithModel $fileWith, UserModel $user, FileModel $file): FileWithModel
@@ -106,11 +108,12 @@ class MusicStorageController extends Controller
 
     /**
      * 专辑/歌手附件上传.
-     * @param  SpecialUploadFileRequest $request   [description]
-     * @param  ResponseContract         $response  [description]
-     * @param  Carbon                   $dateTime  [description]
-     * @param  FileModel                $fileModel [description]
-     * @param  FileWithModel            $fileWith  [description]
+     *
+     * @param  SpecialUploadFileRequest  $request  [description]
+     * @param  ResponseContract  $response  [description]
+     * @param  Carbon  $dateTime  [description]
+     * @param  FileModel  $fileModel  [description]
+     * @param  FileWithModel  $fileWith  [description]
      * @return [type]                              [description]
      */
     public function specialStorage(SpecialUploadFileRequest $request, ResponseContract $response, Carbon $dateTime, FileModel $fileModel, FileWithModel $fileWith)

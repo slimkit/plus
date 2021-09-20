@@ -44,10 +44,11 @@ class PurchaseController extends Controller
     /**
      * 获取付费节点和当前用户的付费状态.
      *
-     * @param \Illuminate\Http\Request $request
-     * @param \Illuminate\Contracts\Routing\ResponseFactory $response
-     * @param \Zhiyi\Plus\Models\PaidNode $node
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Contracts\Routing\ResponseFactory  $response
+     * @param  \Zhiyi\Plus\Models\PaidNode  $node
      * @return mixed
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function show(Request $request, ResponseContract $response, PaidNodeModel $node)
@@ -62,12 +63,13 @@ class PurchaseController extends Controller
     /**
      * 支付节点费用.
      *
-     * @param \Illuminate\Http\Request $request
-     * @param \Illuminate\Contracts\Routing\ResponseFactory $response
-     * @param \Illuminate\Contracts\Cache\Repository $cache
-     * @param \Zhiyi\Plus\Models\WalletCharge $charge
-     * @param \Zhiyi\Plus\Models\PaidNode $node
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Contracts\Routing\ResponseFactory  $response
+     * @param  \Illuminate\Contracts\Cache\Repository  $cache
+     * @param  \Zhiyi\Plus\Models\WalletCharge  $charge
+     * @param  \Zhiyi\Plus\Models\PaidNode  $node
      * @return mixed
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function pay(Request $request, ResponseContract $response, CacheContract $cache, WalletChargeModel $charge, PaidNodeModel $node)
@@ -153,10 +155,11 @@ class PurchaseController extends Controller
     /**
      * 使用积分购买付费节点.
      *
-     * @param Request $request
-     * @param CacheContract $cache
-     * @param PaidNodeModel $node
+     * @param  Request  $request
+     * @param  CacheContract  $cache
+     * @param  PaidNodeModel  $node
      * @return mixed
+     *
      * @author BS <414606094@qq.com>
      */
     public function payByCurrency(Request $request, CacheContract $cache, PaidNodeModel $node)

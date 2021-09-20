@@ -33,10 +33,11 @@ class RankController extends Controller
      * 动态排行.
      *
      * @author bs<414606094@qq.com>
-     * @param  Illuminate\Http\Request $request
-     * @param  Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\Feed $feedModel
-     * @param  Carbon\Carbon $datetime
-     * @param  Illuminate\Contracts\Routing\ResponseFactory $response
+     *
+     * @param  Illuminate\Http\Request  $request
+     * @param  Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\Feed  $feedModel
+     * @param  Carbon\Carbon  $datetime
+     * @param  Illuminate\Contracts\Routing\ResponseFactory  $response
      * @return mixed
      */
     public function index(Request $request, FeedModel $feedModel, Carbon $datetime, ResponseContract $response)

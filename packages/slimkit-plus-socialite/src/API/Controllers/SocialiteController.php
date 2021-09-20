@@ -63,6 +63,7 @@ class SocialiteController extends Controller
      *
      * @param  Request  $request
      * @return mixed
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function providersStatus(Request $request)
@@ -79,6 +80,7 @@ class SocialiteController extends Controller
      * @param  AccessTokenRequest  $request
      * @param string $provider
      * @return mixed
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function checkAuth(AccessTokenRequest $request, string $provider)
@@ -95,6 +97,7 @@ class SocialiteController extends Controller
      * @param  CreateUserRequest  $request
      * @param string $provider
      * @return mixed
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function createUser(CreateUserRequest $request, string $provider)
@@ -112,6 +115,7 @@ class SocialiteController extends Controller
      * @param  AccessTokenRequest  $request
      * @param string $provider
      * @return mixed
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function bindForAccount(AccessTokenRequest $request, string $provider)
@@ -129,6 +133,7 @@ class SocialiteController extends Controller
      * @param  AccessTokenRequest  $request
      * @param string $provider
      * @return mixed
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function bindForUser(AccessTokenRequest $request, string $provider)
@@ -145,6 +150,7 @@ class SocialiteController extends Controller
      * @param  Request  $request
      * @param string $provider
      * @return mixed
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function unbindForUser(Request $request, string $provider)
@@ -157,8 +163,9 @@ class SocialiteController extends Controller
     /**
      * Get provider name.
      *
-     * @param string $provider
+     * @param  string  $provider
      * @return string
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     protected function getProviderName(string $provider): string

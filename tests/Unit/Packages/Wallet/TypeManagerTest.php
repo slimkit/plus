@@ -42,9 +42,12 @@ class TypeManagerTest extends TestCase
 
     /**
      * Test get default driver return.
+     *
      * @expectedException RuntimeException
      * @expectedExceptionMessage The manager not support default driver.
+     *
      * @return void
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function testGetDefaultDriver()
@@ -56,6 +59,7 @@ class TypeManagerTest extends TestCase
      * Test Create user driver.
      *
      * @return void
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function testCreateUserDriver()

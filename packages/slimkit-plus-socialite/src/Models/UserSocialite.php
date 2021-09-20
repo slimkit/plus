@@ -48,7 +48,8 @@ class UserSocialite extends Model
     /**
      * Set type.
      *
-     * @param string $type
+     * @param  string  $type
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function setTypeAttribute(string $type): void

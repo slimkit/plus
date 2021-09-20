@@ -99,8 +99,9 @@ class EaseMobController
     /**
      * 开放注册模式.
      *
-     * @param Request $request
+     * @param  Request  $request
      * @return string
+     *
      * @author ZsyD<1251992018@qq.com>
      */
     public function openRegister(Request $request)
@@ -138,6 +139,7 @@ class EaseMobController
      *
      * @param $user_id
      * @return mixed
+     *
      * @author ZsyD<1251992018@qq.com>
      */
     public function getImPwdHash($user_id)
@@ -150,8 +152,9 @@ class EaseMobController
     /**
      * 授权注册.
      *
-     * @param Request $request
+     * @param  Request  $request
      * @return mixed
+     *
      * @author ZsyD<1251992018@qq.com>
      */
     public function createUser(Request $request)
@@ -193,8 +196,9 @@ class EaseMobController
     /**
      * 批量注册用户.
      *
-     * @param Request $request
+     * @param  Request  $request
      * @return mixed
+     *
      * @author ZsyD<1251992018@qq.com>
      */
     public function createUsers(Request $request)
@@ -244,8 +248,9 @@ class EaseMobController
     /**
      * 重置环信密码.
      *
-     * @param Request $request
+     * @param  Request  $request
      * @return mixed
+     *
      * @author ZsyD<1251992018@qq.com>
      */
     public function resetPassword(Request $request)
@@ -316,8 +321,9 @@ class EaseMobController
     /**
      * 获取环信用户信息，无则新注册一个.
      *
-     * @param Request $request
+     * @param  Request  $request
      * @return mixed
+     *
      * @author ZsyD<1251992018@qq.com>
      */
     public function getPassword(Request $request)
@@ -362,8 +368,9 @@ class EaseMobController
     /**
      * 删除单个用户.
      *
-     * @param Request $request
+     * @param  Request  $request
      * @return mixed
+     *
      * @author ZsyD<1251992018@qq.com>
      */
     public function deleteUser(Request $request)
@@ -398,12 +405,13 @@ class EaseMobController
     /**
      * 发送普通消息 [群组相关时需要].
      *
-     * @param string $content       消息内容
-     * @param array  $target        消息发送对象
-     * @param string $from          消息发送者
-     * @param string $target_type   users 给用户发消息。chatgroups: 给群发消息，chatrooms: 给聊天室发消息
-     * @param array  $ext           扩展信息
+     * @param  string  $content  消息内容
+     * @param  array  $target  消息发送对象
+     * @param  string  $from  消息发送者
+     * @param  string  $target_type  users 给用户发消息。chatgroups: 给群发消息，chatrooms: 给聊天室发消息
+     * @param  array  $ext  扩展信息
      * @return bool
+     *
      * @author ZsyD<1251992018@qq.com>
      */
     public function sendCmd(string $content = '', array $target = [], string $from = 'admin', string $target_type = 'chatgroups', array $ext = [])
@@ -438,7 +446,8 @@ class EaseMobController
      * 为未注册环信用户注册环信（兼容老用户）.
      *
      * @author ZsyD<1251992018@qq.com>
-     * @param Request $request
+     *
+     * @param  Request  $request
      * @return mixed
      */
     public function registerOldUsers(Request $request)

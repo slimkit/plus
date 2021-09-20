@@ -34,6 +34,7 @@ class SendTextFeedTest extends TestCase
      * Create the test need user.
      *
      * @return \Zhiyi\Plus\Models\User
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     protected function createUser(): UserModel
@@ -60,6 +61,7 @@ class SendTextFeedTest extends TestCase
      * Test send a public feed.
      *
      * @return void
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function testSendPublic()
@@ -81,6 +83,7 @@ class SendTextFeedTest extends TestCase
      * Test not send ability user send feed.
      *
      * @return void
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function testSendNotSendAbility()

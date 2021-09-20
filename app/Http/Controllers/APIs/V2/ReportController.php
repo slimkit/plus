@@ -30,10 +30,11 @@ class ReportController extends Controller
     /**
      * 举报一个用户.
      *
-     * @param Request $request
-     * @param UserModel $user
-     * @param ReportModel $reportModel
+     * @param  Request  $request
+     * @param  UserModel  $user
+     * @param  ReportModel  $reportModel
      * @return mixed
+     *
      * @author BS <414606094@qq.com>
      */
     public function user(Request $request, UserModel $user, ReportModel $reportModel)
@@ -54,10 +55,11 @@ class ReportController extends Controller
     /**
      * 举报一条评论.
      *
-     * @param Request $request
-     * @param CommentModel $comment
-     * @param ReportModel $reportModel
+     * @param  Request  $request
+     * @param  CommentModel  $comment
+     * @param  ReportModel  $reportModel
      * @return mixed
+     *
      * @author BS <414606094@qq.com>
      */
     public function comment(Request $request, CommentModel $comment, ReportModel $reportModel)

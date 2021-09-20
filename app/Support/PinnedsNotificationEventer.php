@@ -40,7 +40,8 @@ class PinnedsNotificationEventer
     /**
      * create eventer instance.
      *
-     * @param Dispatcher $events
+     * @param  Dispatcher  $events
+     *
      * @author BS <414606094@qq.com>
      */
     public function __construct(Dispatcher $events)
@@ -51,8 +52,9 @@ class PinnedsNotificationEventer
     /**
      * register a listener.
      *
-     * @param Closure $callback [description]
+     * @param  Closure  $callback  [description]
      * @return [type] [description]
+     *
      * @author BS <414606094@qq.com>
      */
     public function listen(Closure $callback)
@@ -64,6 +66,7 @@ class PinnedsNotificationEventer
      * call the listeners.
      *
      * @return [type] [description]
+     *
      * @author BS <414606094@qq.com>
      */
     public function dispatch()

@@ -52,9 +52,10 @@ class NewRewardController extends Controller
      * @param  Request  $request
      * @param  News  $news
      * @param  UserProcess  $processer
-     *
      * @return mix
+     *
      * @throws \Exception
+     *
      * @author bs<414606094@qq.com>
      */
     public function reward(Request $request, News $news, UserProcess $processer)

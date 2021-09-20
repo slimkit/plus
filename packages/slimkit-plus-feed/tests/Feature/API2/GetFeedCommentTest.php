@@ -60,6 +60,7 @@ class GetFeedCommentTest extends TestCase
      *
      * @param $user
      * @return mixed
+     *
      * @throws \Exception
      */
     protected function addFeed($user)
@@ -81,6 +82,7 @@ class GetFeedCommentTest extends TestCase
      * @param $user
      * @param $feed
      * @return mixed
+     *
      * @throws \Exception
      */
     protected function addFeedComment($user, $feed)
