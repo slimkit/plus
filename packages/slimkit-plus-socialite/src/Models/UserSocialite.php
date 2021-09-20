@@ -38,6 +38,7 @@ class UserSocialite extends Model
      * Get user.
      *
      * @return BelongsTo
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function user(): BelongsTo
@@ -61,9 +62,10 @@ class UserSocialite extends Model
      * Scope socialite provider.
      *
      * @param  Builder  $query
-     * @param string $type
-     * @param string $unionId
+     * @param  string  $type
+     * @param  string  $unionId
      * @return Builder
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function scopeProvider(Builder $query, string $type, string $unionId): Builder
@@ -76,9 +78,10 @@ class UserSocialite extends Model
      * Scope socialite provider to user.
      *
      * @param  Builder  $query
-     * @param string $type
-     * @param string|int $userID
+     * @param  string  $type
+     * @param  string|int  $userID
      * @return Builder
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function scopeProviderToUser(Builder $query, string $type, $userID): Builder

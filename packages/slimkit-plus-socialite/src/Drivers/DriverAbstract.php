@@ -75,7 +75,9 @@ abstract class DriverAbstract implements Sociable
      * @param  string  $accessToken
      * @param  UserModel  $user
      * @return mixed
+     *
      * @throws BindingResolutionException
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function bindForUser(string $accessToken, UserModel $user)
@@ -146,7 +148,9 @@ abstract class DriverAbstract implements Sociable
      * @param  string  $name
      * @param  bool  $check
      * @return mixed
+     *
      * @throws BindingResolutionException
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function createUser(string $accessToken, string $name, $check = false)
@@ -166,7 +170,9 @@ abstract class DriverAbstract implements Sociable
      *
      * @param  UserModel  $user
      * @return mixed
+     *
      * @throws BindingResolutionException
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function unbindForUser(UserModel $user)

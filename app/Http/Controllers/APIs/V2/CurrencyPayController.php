@@ -394,10 +394,10 @@ class CurrencyPayController extends Controller
     }
 
     /**
-     * @param Request $request
-     * @param ResponseContract $response
-     * @param PaymentGateway $gateWay
-     * @param NativePayOrder $order
+     * @param  Request  $request
+     * @param  ResponseContract  $response
+     * @param  PaymentGateway  $gateWay
+     * @param  NativePayOrder  $order
      * @return \Illuminate\Http\JsonResponse
      */
     public function getWechatWapOrder(Request $request, ResponseFactory $response, PaymentGateway $gateWay, NativePayOrder $order)

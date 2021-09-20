@@ -51,6 +51,7 @@ class SocialiteController extends Controller
      * Create socialite controller.
      *
      * @param  SocialiteManager  $socialite
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function __construct(SocialiteManager $socialite)
@@ -78,7 +79,7 @@ class SocialiteController extends Controller
      * Check bind and get user auth token.
      *
      * @param  AccessTokenRequest  $request
-     * @param string $provider
+     * @param  string  $provider
      * @return mixed
      *
      * @author Seven Du <shiweidu@outlook.com>
@@ -95,7 +96,7 @@ class SocialiteController extends Controller
      * Create user and return auth token.
      *
      * @param  CreateUserRequest  $request
-     * @param string $provider
+     * @param  string  $provider
      * @return mixed
      *
      * @author Seven Du <shiweidu@outlook.com>
@@ -113,7 +114,7 @@ class SocialiteController extends Controller
      * Bind provider for account.
      *
      * @param  AccessTokenRequest  $request
-     * @param string $provider
+     * @param  string  $provider
      * @return mixed
      *
      * @author Seven Du <shiweidu@outlook.com>
@@ -131,7 +132,7 @@ class SocialiteController extends Controller
      * Bind provider for user.
      *
      * @param  AccessTokenRequest  $request
-     * @param string $provider
+     * @param  string  $provider
      * @return mixed
      *
      * @author Seven Du <shiweidu@outlook.com>
@@ -148,7 +149,7 @@ class SocialiteController extends Controller
      * Unbind provider for user.
      *
      * @param  Request  $request
-     * @param string $provider
+     * @param  string  $provider
      * @return mixed
      *
      * @author Seven Du <shiweidu@outlook.com>
@@ -176,8 +177,9 @@ class SocialiteController extends Controller
     /**
      * Get provider driver.
      *
-     * @param string $provider
+     * @param  string  $provider
      * @return Sociable
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     protected function provider(string $provider): Sociable
