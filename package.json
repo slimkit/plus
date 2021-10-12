@@ -30,7 +30,7 @@
     },
     "dependencies": {
         "@slimkit/plus-editor": "^0.0.3",
-        "axios": "^0.22.0",
+        "axios": "^0.23.0",
         "babel-plugin-transform-class-properties": "^6.24.1",
         "bootstrap-sass": "^3.3.7",
         "echarts": "^5.2.1",
