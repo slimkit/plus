@@ -66,7 +66,7 @@ use function Zhiyi\Component\ZhiyiPlus\PlusComponentPc\getAvatar;
                 <div class="triangle"></div>
                 <ul>
                     <li>
-                        <a href="javascript:;" onclick="news.pinneds({{$post['id']}}, 'news');">
+                        <a href="javascript:;" onclick="news.pinneds({{$post['id']}}, 'pinned');">
                             <svg class="icon" aria-hidden="true"><use xlink:href="#icon-pinned2"></use></svg>申请置顶
                         </a>
                     </li>

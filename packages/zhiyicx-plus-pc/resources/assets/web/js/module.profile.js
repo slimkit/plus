@@ -19,7 +19,7 @@ var weibo = {
         });
     },
     pinneds: function (id) {
-        var url = '/api/v2/feeds/'+id+'/pinneds';
+        var url = '/api/v2/feeds/'+id+'/currency-pinneds';
         pinneds.show(url);
     },
     addComment: function (row_id, type) {
@@ -36,9 +36,9 @@ var weibo = {
 }
 
 var news = {
-    pinneds: function(id) {
-        var url = '/api/v2/news/'+id+'/pinneds';
-        pinneds.show(url);
+    pinneds: function(id, type = 'pinned') {
+        var url = '/api/v2/news/'+id+'/currency-pinneds';
+        pinneds.show(url, type);
     },
     addComment: function(row_id, type) {
         var url = '/api/v2/news/' + row_id + '/comments';

@@ -40,7 +40,7 @@ class AppServiceProvider extends ServiceProvider
         ]); // 静态资源
 
         // Register a database migration path.
-        $this->loadMigrationsFrom(dirname(dirname(__DIR__)).'/database/migrations');
+        $this->loadMigrationsFrom(dirname(__DIR__, 2).'/database/migrations');
     }
 
     public function register()
