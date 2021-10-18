@@ -35,7 +35,7 @@
         "bootstrap-sass": "^3.3.7",
         "echarts": "^5.2.1",
         "chart.js": "^3.5.1",
-        "highlight.js": "^11.2.0",
+        "highlight.js": "^11.3.1",
         "jquery": "^3.6.0",
         "js-md5": "^0.7.3",
         "lodash": "^4.17.21",
