@@ -24,7 +24,7 @@
         "laravel-mix": "^6.0.34",
         "opencollective": "^1.0.3",
         "resolve-url-loader": "^4.0.0",
-        "sass": "^1.41.1",
+        "sass": "^1.44.0",
         "sass-loader": "7.*",
         "vue-template-compiler": "^2.6.14"
     },
