@@ -17,7 +17,7 @@
     "devDependencies": {
         "@babel/core": "^7.15.8",
         "@babel/plugin-proposal-class-properties": "^7.14.5",
-        "@vue/babel-preset-app": "^3.9.2",
+        "@vue/babel-preset-app": "^5.0.1",
         "babel-loader": "^8.2.2",
         "conventional-changelog-cli": "^2.1.1",
         "cross-env": "^7.0.3",
